@@ -1,6 +1,6 @@
 package com.thommil.libgdx.runtime;
 
-import com.thommil.libgdx.runtime.test.SimpleSceneTest;
+import com.thommil.libgdx.runtime.test.basic.BasicScene;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -11,7 +11,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new SimpleSceneTest(), config);
+        return new IOSApplication(new BasicScene(), config);
     }
 
     public static void main(String[] argv) {

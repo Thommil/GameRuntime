@@ -10,7 +10,7 @@
 				{
 					"isa" = "PBXGroup";
 					"children" =
-						("F73CEEF8CA864E8991D4759E", "F68EE1EFD3284447B2BC09F1");
+						("71111063CF2F407D8961FD65", "F68EE1EFD3284447B2BC09F1");
 					"sourceTree" = "<group>";
 				};
 			"100000000000000000000006" =
@@ -87,115 +87,6 @@
 					"defaultConfigurationIsVisible" = "0";
 					"defaultConfigurationName" = "Release";
 				};
-			"9ADE8EB683AF46CF868C6A3F" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default-375w-667h@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default-375w-667h@2x.png";
-				};
-			"F73CEEF8CA864E8991D4759E" =
-				{
-					"isa" = "PBXGroup";
-					"children" =
-						("1E44EC478176449B969431DD", "9ADE8EB683AF46CF868C6A3F", "1C938A206A4440FFA8A6A1E1",
- "DD375B8D049A41659673CA1A", "C05AEDB8424B412F8B4C82B4", "92F8373A852A4F13973B5817",
- "499A59387FBE4397A27501F9", "7058136E3F4842B785D9971D", "E0DD1CCEED4F4EBF8C896382",
- "C77C986AE10F48408BFF1163", "B320B1E2A6194EC29774D695", "492AA80F1D4743F5BA60E65A"
-);
-					"name" = "Resources";
-					"sourceTree" = "<absolute>";
-					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/../android/assets";
-				};
-			"1C938A206A4440FFA8A6A1E1" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default-414w-736h@3x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default-414w-736h@3x.png";
-				};
-			"DD375B8D049A41659673CA1A" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default-568h@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default-568h@2x.png";
-				};
-			"C05AEDB8424B412F8B4C82B4" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default.png";
-				};
-			"92F8373A852A4F13973B5817" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default@2x.png";
-				};
-			"499A59387FBE4397A27501F9" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default@2x~ipad.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default@2x~ipad.png";
-				};
-			"7058136E3F4842B785D9971D" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default~ipad.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default~ipad.png";
-				};
-			"E0DD1CCEED4F4EBF8C896382" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon-72.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon-72.png";
-				};
-			"C77C986AE10F48408BFF1163" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon-72@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon-72@2x.png";
-				};
-			"B320B1E2A6194EC29774D695" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon.png";
-				};
-			"492AA80F1D4743F5BA60E65A" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon@2x.png";
-				};
-			"1E44EC478176449B969431DD" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "badlogic.jpg";
-					"lastKnownFileType" = "image.jpeg";
-					"sourceTree" = "<group>";
-					"path" = "badlogic.jpg";
-				};
 			"8859CFFC70BC4E8C9DE6B87C" =
 				{
 					"isa" = "PBXFileReference";
@@ -212,6 +103,106 @@
 					"name" = "Supporting Files";
 					"sourceTree" = "<absolute>";
 					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios";
+				};
+			"0D8673B83F1E421F8BD8B693" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default-375w-667h@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default-375w-667h@2x.png";
+				};
+			"71111063CF2F407D8961FD65" =
+				{
+					"isa" = "PBXGroup";
+					"children" =
+						("0D8673B83F1E421F8BD8B693", "6DDAA2931EDD47A0901876A4", "058F9CE86BBA472C844818FB",
+ "9B0A2718FB1142469C01C80F", "E252F3EE449E47C1BA036530", "7D91D7CAF1364E2083D34EDE",
+ "F8F37A53B0E645E581EA959F", "E5BF7845128C4BED9C3EA07E", "2463D070E9CA4CE08BEDA677",
+ "2E3FFB8F71F04ECC91DB8488", "13100818F25E4F2FAC67B1C5");
+					"name" = "Resources";
+					"sourceTree" = "<absolute>";
+					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/data";
+				};
+			"6DDAA2931EDD47A0901876A4" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default-414w-736h@3x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default-414w-736h@3x.png";
+				};
+			"058F9CE86BBA472C844818FB" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default-568h@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default-568h@2x.png";
+				};
+			"9B0A2718FB1142469C01C80F" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default.png";
+				};
+			"E252F3EE449E47C1BA036530" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default@2x.png";
+				};
+			"7D91D7CAF1364E2083D34EDE" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default@2x~ipad.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default@2x~ipad.png";
+				};
+			"F8F37A53B0E645E581EA959F" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default~ipad.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default~ipad.png";
+				};
+			"E5BF7845128C4BED9C3EA07E" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon-72.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon-72.png";
+				};
+			"2463D070E9CA4CE08BEDA677" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon-72@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon-72@2x.png";
+				};
+			"2E3FFB8F71F04ECC91DB8488" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon.png";
+				};
+			"13100818F25E4F2FAC67B1C5" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon@2x.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";

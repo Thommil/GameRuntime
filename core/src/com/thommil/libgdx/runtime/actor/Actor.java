@@ -17,9 +17,5 @@ package com.thommil.libgdx.runtime.actor;
  */
 public abstract class Actor {
 
-    //Get position
 
-    //Get rotation
-
-    //Get scale
 }
