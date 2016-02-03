@@ -4,12 +4,16 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.Scene;
+import com.thommil.libgdx.runtime.actor.Actor;
+import com.thommil.libgdx.runtime.graphics.Renderable;
 
 /**
  * Test for a Simple Scene display :
  * 	- ...
  */
 public class BasicScene extends Game {
+
+	static int i=0;
 
 	@Override
 	public void create () {

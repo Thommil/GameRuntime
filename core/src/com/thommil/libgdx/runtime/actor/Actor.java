@@ -2,20 +2,17 @@ package com.thommil.libgdx.runtime.actor;
 
 /**
  * Base element of a Scene, represents any entity contained in Scene.
- * <br/><br/>
- * Actors can be of several types :
- * <ul>
- *     <li>static physics</li>
- *     <li>kinematic physics</li>
- *     <li>dynamic physics</li>
- *     <li>renderable only</li>
- *     <li>sensor</li>
- *     <li>...</li>
- * </ul>
  *
  * Created by thommil on 01/02/16.
  */
 public abstract class Actor {
 
-
+    /**
+     * Returns the layer of the actor
+     * <br/><br/>
+     * Try to organize your layer based on rendering routines (SpriteBatch)
+     *
+     * @return The layer of the Renderable
+     */
+    public abstract int getLayer();
 }

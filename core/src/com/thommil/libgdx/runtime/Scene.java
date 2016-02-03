@@ -9,7 +9,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.Actor;
-import com.thommil.libgdx.runtime.actor.Renderable;
+import com.thommil.libgdx.runtime.graphics.Renderable;
+import com.thommil.libgdx.runtime.physics.Physicable;
+import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +44,26 @@ public class Scene implements Screen {
     protected final List<Actor> actors;
 
     /**
-     * Inner renderable list
+     * Inner Renderable actors list
      */
-    protected final List<Renderable> renderables;
+    protected TIntObjectMap<List<Renderable>> renderables;
+
+    /**
+     * Inner Physicable actors list
+     */
+    protected TIntObjectMap<List<Physicable>> physicables;
 
     /**
      * Default constructor using Settings
      *
+     * @param settings The Scene settings
      */
+    @SuppressWarnings("all")
     public Scene(Scene.Settings settings) {
         Gdx.app.debug("Scene","New scene");
         this.actors = new ArrayList<Actor>();
-        this.renderables = new ArrayList<Renderable>();
+        this.renderables = new TIntObjectHashMap<List<Renderable>>();
+        this.physicables = new TIntObjectHashMap<List<Physicable>>();
         this.physicsWorld = new World(new Vector2(settings.gravity.x, settings.gravity.y), true);
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight
                                             ,settings.viewport.maxWorldWidth, settings.viewport.maxWorldHeight
@@ -59,6 +71,66 @@ public class Scene implements Screen {
         this.viewport.apply(settings.viewport.centerCamera);
     }
 
+    /**
+     * Adds an actor to the Scene
+     *
+     * @param actor The Actor to add
+     */
+    public void addActor(final Actor actor){
+        this.actors.add(actor);
+        if(actor instanceof Renderable){
+            List<Renderable> layerRenderables = this.renderables.get(actor.getLayer());
+            if(layerRenderables == null){
+                layerRenderables = new ArrayList<Renderable>();
+                this.renderables.put(actor.getLayer(),layerRenderables);
+            }
+            layerRenderables.add((Renderable)actor);
+        }
+        if(actor instanceof Physicable){
+            List<Physicable> layerPhysicables = this.physicables.get(actor.getLayer());
+            if(layerPhysicables == null){
+                layerPhysicables = new ArrayList<Physicable>();
+                this.physicables.put(actor.getLayer(),layerPhysicables);
+            }
+            layerPhysicables.add((Physicable)actor);
+        }
+    }
+
+    /**
+     * Gets the current list of actors of the scene
+     *
+     * @return The actors list
+     */
+    public List<Actor> getActors(){
+        return this.actors;
+    }
+
+    /**
+     * Removes an actor from the Scene
+     *
+     * @param actor The Actor to remove
+     */
+    public void removeActor(final Actor actor){
+        this.actors.remove(actor);
+        if(actor instanceof Renderable){
+            List<Renderable> layerRenderables = this.renderables.get(actor.getLayer());
+            if(layerRenderables != null){
+                layerRenderables.remove(actor);
+                if(layerRenderables.size() == 0) {
+                    this.renderables.remove(actor.getLayer());
+                }
+            }
+        }
+        if(actor instanceof Physicable){
+            List<Physicable> layerPhysicables = this.physicables.get(actor.getLayer());
+            if(layerPhysicables != null){
+                layerPhysicables.remove(actor);
+                if(layerPhysicables.size() == 0) {
+                    this.physicables.remove(actor.getLayer());
+                }
+            }
+        }
+    }
 
     @Override
     public void show() {
@@ -69,6 +141,15 @@ public class Scene implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        TIntObjectIterator renderablesIterator = this.renderables.iterator();
+        for (int i = this.renderables.size(); i-- > 0; ) {
+            renderablesIterator.advance();
+            for ( final Renderable renderable : (List<Renderable>)renderablesIterator.value()){
+                renderable.render(delta);
+            }
+        }
+
     }
 
     @Override
@@ -96,8 +177,8 @@ public class Scene implements Screen {
     public void dispose() {
         Gdx.app.debug("Scene","dispose()");
         this.physicsWorld.dispose();
-        this.actors.clear();
-        this.renderables.clear();
+        //this.actors.clear();
+        //this.renderables.clear();
     }
 
     /**
