@@ -11,9 +11,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.Actor;
 import com.thommil.libgdx.runtime.graphics.Renderable;
 import com.thommil.libgdx.runtime.physics.Physicable;
-import gnu.trove.iterator.TIntObjectIterator;
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +26,11 @@ import java.util.List;
 public class Scene implements Screen {
 
     /**
+     * Scene settings
+     */
+    private final Scene.Settings settings;
+
+    /**
      * Physics World container
      */
     protected final World physicsWorld;
@@ -36,7 +38,7 @@ public class Scene implements Screen {
     /**
      * Viewport of the scene
      */
-    private Viewport viewport;
+    private final Viewport viewport;
 
     /**
      * Inner actors list
@@ -46,12 +48,12 @@ public class Scene implements Screen {
     /**
      * Inner Renderable actors list
      */
-    protected TIntObjectMap<List<Renderable>> renderables;
+    protected final List<Renderable>[] renderables;
 
     /**
      * Inner Physicable actors list
      */
-    protected TIntObjectMap<List<Physicable>> physicables;
+    protected final List<Physicable>[] physicables;
 
     /**
      * Default constructor using Settings
@@ -59,12 +61,20 @@ public class Scene implements Screen {
      * @param settings The Scene settings
      */
     @SuppressWarnings("all")
-    public Scene(Scene.Settings settings) {
+    public Scene(final Scene.Settings settings) {
         Gdx.app.debug("Scene","New scene");
+        this.settings = settings;
+
         this.actors = new ArrayList<Actor>();
-        this.renderables = new TIntObjectHashMap<List<Renderable>>();
-        this.physicables = new TIntObjectHashMap<List<Physicable>>();
+        this.renderables = new List[settings.renderer.maxLayers];
+        this.physicables = new List[settings.renderer.maxLayers];
+        for(int i=0; i<settings.renderer.maxLayers; i++){
+            this.renderables[i] = new ArrayList<Renderable>();
+            this.physicables[i] = new ArrayList<Physicable>();
+        }
+
         this.physicsWorld = new World(new Vector2(settings.gravity.x, settings.gravity.y), true);
+
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight
                                             ,settings.viewport.maxWorldWidth, settings.viewport.maxWorldHeight
                                             ,new OrthographicCamera());
@@ -79,20 +89,10 @@ public class Scene implements Screen {
     public void addActor(final Actor actor){
         this.actors.add(actor);
         if(actor instanceof Renderable){
-            List<Renderable> layerRenderables = this.renderables.get(actor.getLayer());
-            if(layerRenderables == null){
-                layerRenderables = new ArrayList<Renderable>();
-                this.renderables.put(actor.getLayer(),layerRenderables);
-            }
-            layerRenderables.add((Renderable)actor);
+            this.renderables[actor.getLayer()].add((Renderable)actor);
         }
         if(actor instanceof Physicable){
-            List<Physicable> layerPhysicables = this.physicables.get(actor.getLayer());
-            if(layerPhysicables == null){
-                layerPhysicables = new ArrayList<Physicable>();
-                this.physicables.put(actor.getLayer(),layerPhysicables);
-            }
-            layerPhysicables.add((Physicable)actor);
+            this.physicables[actor.getLayer()].add((Physicable)actor);
         }
     }
 
@@ -113,22 +113,10 @@ public class Scene implements Screen {
     public void removeActor(final Actor actor){
         this.actors.remove(actor);
         if(actor instanceof Renderable){
-            List<Renderable> layerRenderables = this.renderables.get(actor.getLayer());
-            if(layerRenderables != null){
-                layerRenderables.remove(actor);
-                if(layerRenderables.size() == 0) {
-                    this.renderables.remove(actor.getLayer());
-                }
-            }
+            this.renderables[actor.getLayer()].remove(actor);
         }
         if(actor instanceof Physicable){
-            List<Physicable> layerPhysicables = this.physicables.get(actor.getLayer());
-            if(layerPhysicables != null){
-                layerPhysicables.remove(actor);
-                if(layerPhysicables.size() == 0) {
-                    this.physicables.remove(actor.getLayer());
-                }
-            }
+            this.physicables[actor.getLayer()].remove(actor);
         }
     }
 
@@ -139,17 +127,19 @@ public class Scene implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(this.settings.renderer.clearScreen) {
+            Gdx.gl.glClearColor(this.settings.renderer.clearColor[0]
+                                , this.settings.renderer.clearColor[1]
+                                , this.settings.renderer.clearColor[2]
+                                , this.settings.renderer.clearColor[3]);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        }
 
-        TIntObjectIterator renderablesIterator = this.renderables.iterator();
-        for (int i = this.renderables.size(); i-- > 0; ) {
-            renderablesIterator.advance();
-            for ( final Renderable renderable : (List<Renderable>)renderablesIterator.value()){
+        for(final List<Renderable> layerRendables : this.renderables){
+            for(final Renderable renderable : layerRendables){
                 renderable.render(delta);
             }
         }
-
     }
 
     @Override
@@ -177,8 +167,15 @@ public class Scene implements Screen {
     public void dispose() {
         Gdx.app.debug("Scene","dispose()");
         this.physicsWorld.dispose();
-        //this.actors.clear();
-        //this.renderables.clear();
+        this.actors.clear();
+    }
+
+    public World getPhysicsWorld() {
+        return physicsWorld;
+    }
+
+    public Viewport getViewport() {
+        return viewport;
     }
 
     /**
@@ -187,22 +184,19 @@ public class Scene implements Screen {
     public static class Settings{
 
         /**
-         * Gravity settings
-         */
-        public Gravity gravity = new Gravity();
-
-        /**
          * Viewport settings
          */
         public Viewport viewport = new Viewport();
 
         /**
-         * Gravity class for Scene settings
+         * Gravity settings
          */
-        public static class Gravity{
-            public float x = 0.0f;
-            public float y = -9.8f;
-        }
+        public Gravity gravity = new Gravity();
+
+        /**
+         * Gravity settings
+         */
+        public Renderer renderer = new Renderer();
 
         /**
          * Viewport class for Scene settings.<br/>
@@ -215,6 +209,24 @@ public class Scene implements Screen {
             public float maxWorldHeight = 0;
             public boolean centerCamera = true;
         }
+
+        /**
+         * Renderer class for Scene settings
+         */
+        public static class Renderer{
+            public int maxLayers = 10;
+            public boolean clearScreen = true;
+            public float[] clearColor = {0f, 0f, 0f, 1f};
+        }
+
+        /**
+         * Gravity class for Scene settings
+         */
+        public static class Gravity{
+            public float x = 0.0f;
+            public float y = -9.8f;
+        }
+
 
     }
 }

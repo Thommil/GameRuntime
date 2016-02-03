@@ -13,15 +13,20 @@ import com.thommil.libgdx.runtime.graphics.Renderable;
  */
 public class BasicScene extends Game {
 
-	static int i=0;
-
 	@Override
 	public void create () {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
+		//Scene
 		Scene.Settings settings = new Scene.Settings();
 		settings.viewport.minWorldWidth = 10;
 		settings.viewport.minWorldHeight = 5;
 		Scene defaultScene = new Scene(settings);
 		this.setScreen(defaultScene);
+		defaultScene.getViewport().apply(true);
+
+		//Actor
+		SpriteActor actor = new SpriteActor();
+		defaultScene.addActor(actor);
 	}
 }
