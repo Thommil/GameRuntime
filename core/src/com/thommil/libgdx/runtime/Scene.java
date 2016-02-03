@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.Actor;
+import com.thommil.libgdx.runtime.graphics.Moveable;
 import com.thommil.libgdx.runtime.graphics.Renderable;
 import com.thommil.libgdx.runtime.physics.Physicable;
 
@@ -16,10 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Main container for Graphics and Physics actors.
- * <br/><br/>
- * This scene is by default handling physics and should be rewritten to
- * deactivate physics support.
+ * Main container for Actors.
  *
  * Created by thommil on 01/02/16.
  */
@@ -41,9 +39,9 @@ public class Scene implements Screen {
     private final Viewport viewport;
 
     /**
-     * Inner actors list
+     * Inner Moveable actors list
      */
-    protected final List<Actor> actors;
+    protected final List<Moveable> moveables;
 
     /**
      * Inner Renderable actors list
@@ -65,7 +63,7 @@ public class Scene implements Screen {
         Gdx.app.debug("Scene","New scene");
         this.settings = settings;
 
-        this.actors = new ArrayList<Actor>();
+        this.moveables = new ArrayList<Moveable>();
         this.renderables = new List[settings.renderer.maxLayers];
         this.physicables = new List[settings.renderer.maxLayers];
         for(int i=0; i<settings.renderer.maxLayers; i++){
@@ -87,22 +85,17 @@ public class Scene implements Screen {
      * @param actor The Actor to add
      */
     public void addActor(final Actor actor){
-        this.actors.add(actor);
+        final int actorLayer = actor.getLayer();
+        if(actor instanceof  Moveable){
+            this.moveables.add((Moveable)actor);
+        }
         if(actor instanceof Renderable){
-            this.renderables[actor.getLayer()].add((Renderable)actor);
+            this.renderables[actorLayer].add((Renderable)actor);
         }
         if(actor instanceof Physicable){
-            this.physicables[actor.getLayer()].add((Physicable)actor);
+            ((Physicable) actor).getBody().setUserData(actor);
+            this.physicables[actorLayer].add((Physicable)actor);
         }
-    }
-
-    /**
-     * Gets the current list of actors of the scene
-     *
-     * @return The actors list
-     */
-    public List<Actor> getActors(){
-        return this.actors;
     }
 
     /**
@@ -111,12 +104,16 @@ public class Scene implements Screen {
      * @param actor The Actor to remove
      */
     public void removeActor(final Actor actor){
-        this.actors.remove(actor);
+        final int actorLayer = actor.getLayer();
+        if(actor instanceof  Moveable){
+            this.moveables.remove(actor);
+        }
         if(actor instanceof Renderable){
-            this.renderables[actor.getLayer()].remove(actor);
+            this.renderables[actorLayer].remove(actor);
         }
         if(actor instanceof Physicable){
-            this.physicables[actor.getLayer()].remove(actor);
+            this.physicsWorld.destroyBody(((Physicable) actor).getBody());
+            this.physicables[actorLayer].remove(actor);
         }
     }
 
@@ -126,6 +123,7 @@ public class Scene implements Screen {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void render(float delta) {
         if(this.settings.renderer.clearScreen) {
             Gdx.gl.glClearColor(this.settings.renderer.clearColor[0]
@@ -133,6 +131,10 @@ public class Scene implements Screen {
                                 , this.settings.renderer.clearColor[2]
                                 , this.settings.renderer.clearColor[3]);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        }
+
+        for(final Moveable moveable : this.moveables){
+            ((Actor)moveable).switchAffine();
         }
 
         for(final List<Renderable> layerRendables : this.renderables){
@@ -167,7 +169,6 @@ public class Scene implements Screen {
     public void dispose() {
         Gdx.app.debug("Scene","dispose()");
         this.physicsWorld.dispose();
-        this.actors.clear();
     }
 
     public World getPhysicsWorld() {
