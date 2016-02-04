@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.utils.Disposable;
 
 /**
@@ -41,16 +40,4 @@ public abstract class Actor implements Disposable{
      * be then modified in the rendering phase.
      */
     public float[] renderComponents = new float[3];
-
-
-    /**
-     * Commit all components from the step phase to the components of the render phase.
-     * <br/><br/>
-     * This method must be called before rendering when all physics components have been set.
-     */
-    public void commit(){
-        renderComponents[X] = stepComponents[X];
-        renderComponents[Y] = stepComponents[Y];
-        renderComponents[ANGLE] = stepComponents[ANGLE];
-    }
 }

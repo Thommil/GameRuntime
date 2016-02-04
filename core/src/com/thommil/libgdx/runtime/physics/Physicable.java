@@ -2,7 +2,6 @@ package com.thommil.libgdx.runtime.physics;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2D;
 
 /**
  * Defines an element which can interact with physic world
