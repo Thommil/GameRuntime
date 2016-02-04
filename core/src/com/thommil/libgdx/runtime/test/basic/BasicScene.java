@@ -4,9 +4,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Affine2;
-import com.thommil.libgdx.runtime.Scene;
-import com.thommil.libgdx.runtime.actor.Actor;
-import com.thommil.libgdx.runtime.graphics.Renderable;
+import com.thommil.libgdx.runtime.scene.Layer;
+import com.thommil.libgdx.runtime.scene.Scene;
 
 /**
  * Test for a Simple Scene display :
@@ -20,16 +19,20 @@ public class BasicScene extends Game {
 
 		//Scene
 		Scene.Settings settings = new Scene.Settings();
-		settings.viewport.minWorldWidth = 10;
-		settings.viewport.minWorldHeight = 5;
-		settings.renderer.maxLayers = 1;
+		settings.viewport.minWorldWidth = 2;
+		settings.viewport.minWorldHeight = 2;
+
 		Scene defaultScene = new Scene(settings);
 		this.setScreen(defaultScene);
 
-		//Actor
-		final Affine2 affine = new Affine2();
+		//Layers
+		defaultScene.addLayer(new BasicLayer());
 
-		SpriteActor actor = new SpriteActor(affine);
-		defaultScene.addActor(actor);
+		//Actor
+		Affine2 affine = new Affine2();
+		affine.translate(-0.65f,-0.57f);
+
+		defaultScene.addActor(new TextureActor(affine));
+
 	}
 }

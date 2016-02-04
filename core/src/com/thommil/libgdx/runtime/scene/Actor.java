@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.actor;
+package com.thommil.libgdx.runtime.scene;
 
 import com.badlogic.gdx.math.Affine2;
 
@@ -10,12 +10,12 @@ import com.badlogic.gdx.math.Affine2;
 public abstract class Actor {
 
     /**
-     * Write transformation matrix used to modify the actor
+     * Write transformation matrix used to modify the actor (physics only)
      */
     public Affine2 writeAffine = new Affine2();
 
     /**
-     * Read transformation matrix used to render/test the actor
+     * Read transformation matrix used to render/test the actor (render only)
      */
     public Affine2 readAffine = new Affine2();
 
@@ -30,18 +30,9 @@ public abstract class Actor {
      * @param affine The initial transformation matrix
      */
     public Actor(final Affine2 affine){
-        affine.set(this.readAffine);
-        affine.set(this.writeAffine);
+        this.readAffine.set(affine);
+        this.writeAffine.set(affine);
     }
-
-    /**
-     * Returns the layer of the actor
-     * <br/><br/>
-     * Try to organize your layer based on rendering routines (SpriteBatch)
-     *
-     * @return The layer of the Renderable
-     */
-    public abstract int getLayer();
 
     /**
      * Switch between write <-> read Affines
