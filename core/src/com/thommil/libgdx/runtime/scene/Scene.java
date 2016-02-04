@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -82,6 +83,11 @@ public class Scene implements Screen {
     protected boolean paused;
 
     /**
+     * Debug renderer for physics
+     */
+    private Box2DDebugRenderer debugRenderer;
+
+    /**
      * Default constructor using Settings
      *
      * @param settings The Scene settings
@@ -145,6 +151,7 @@ public class Scene implements Screen {
             this.layers[((Renderable)actor).getLayer()].addRenderable((Renderable)actor);
         }
         if(actor instanceof Physicable){
+            ((Physicable) actor).setWorld(this.physicsWorld);
             ((Physicable) actor).getBody().setUserData(actor);
             //Only add to scene if not static
             if(((Physicable) actor).getBodyType() != Physicable.STATIC) {
@@ -174,6 +181,10 @@ public class Scene implements Screen {
     @SuppressWarnings("all")
     public void show() {
         Gdx.app.debug("Scene","show()");
+        if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
+            this.debugRenderer = new Box2DDebugRenderer();
+        }
+
         for(final Layer layer : this.layers) {
             layer.show();
         }
@@ -196,22 +207,24 @@ public class Scene implements Screen {
 
                 @Override
                 public void run() {
-                    final long start = System.currentTimeMillis();
-                    if(!Scene.this.paused){
-                        Scene.this.physicsWorld.step(Scene.this.settings.physics.asyncFrequency
-                                , Scene.this.settings.physics.velocityIterations
-                                , Scene.this.settings.physics.positionIterations
-                                , Scene.this.settings.physics.particleIterations);
+                    while(true) {
+                        final long start = System.currentTimeMillis();
+                        if (!Scene.this.paused) {
+                            Scene.this.physicsWorld.step(Scene.this.settings.physics.asyncFrequency
+                                    , Scene.this.settings.physics.velocityIterations
+                                    , Scene.this.settings.physics.positionIterations
+                                    , Scene.this.settings.physics.particleIterations);
 
-                        Scene.this.updateAndCommit(UPDATE);
-                    }
-                    final long duration = System.currentTimeMillis() - start;
+                            Scene.this.updateAndCommit(UPDATE);
+                        }
+                        final long duration = System.currentTimeMillis() - start;
 
-                    if(duration > 0){
-                        try {
-                            Thread.currentThread().sleep(longAsyncFrequency - duration);
-                        }catch(InterruptedException ie){
-                            Gdx.app.exit();
+                        if (duration < longAsyncFrequency) {
+                            try {
+                                Thread.currentThread().sleep(longAsyncFrequency - duration);
+                            } catch (InterruptedException ie) {
+                                Gdx.app.exit();
+                            }
                         }
                     }
                 }
@@ -259,6 +272,10 @@ public class Scene implements Screen {
             if(layer.isVisible()) {
                 layer.render(delta);
             }
+        }
+
+        if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
+            debugRenderer.render(this.physicsWorld, this.camera.combined);
         }
     }
 

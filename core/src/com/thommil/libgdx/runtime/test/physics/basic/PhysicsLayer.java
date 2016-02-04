@@ -1,5 +1,6 @@
-package com.thommil.libgdx.runtime.test.physics;
+package com.thommil.libgdx.runtime.test.physics.basic;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.thommil.libgdx.runtime.graphics.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
@@ -13,7 +14,7 @@ public class PhysicsLayer extends Layer{
 
     @Override
     public void onShow() {
-        spriteBatch.setProjectionMatrix(this.camera.combined);
+
     }
 
     @Override
@@ -23,12 +24,14 @@ public class PhysicsLayer extends Layer{
 
     @Override
     public void render(float deltaTime) {
+        spriteBatch.setProjectionMatrix(this.camera.combined);
         spriteBatch.begin();
         for(Renderable renderable : this.renderables){
             renderable.render(deltaTime,spriteBatch);
         }
         spriteBatch.end();
-        //Gdx.app.debug("","FPS : " + Gdx.graphics.getFramesPerSecond());
+
+        //Gdx.app.log("","FPS : " + Gdx.graphics.getFramesPerSecond());
     }
 
     @Override
