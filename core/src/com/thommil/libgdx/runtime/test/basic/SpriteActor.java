@@ -12,17 +12,17 @@ import com.thommil.libgdx.runtime.graphics.Renderable;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class TextureActor extends Actor implements Renderable {
+public class SpriteActor extends Actor implements Renderable {
 
+    Sprite sprite;
+    Texture texture;
 
-    TextureRegion textureRegion;
-
-    float[] center={1.3f/2,1.15f/2};
-
-    public TextureActor(Affine2 affine) {
-        super(affine);
-        Texture texture = new Texture(Gdx.files.internal("curiosity.png"));
-        textureRegion = new TextureRegion(texture);
+    public SpriteActor() {
+        this.texture = new Texture(Gdx.files.internal("curiosity.png"));
+        this.sprite = new Sprite(texture);
+        this.sprite.setSize(2.6f,2.3f);
+        this.sprite.setCenter(0f,0f);
+        this.sprite.setOriginCenter();
     }
 
     @Override
@@ -32,10 +32,12 @@ public class TextureActor extends Actor implements Renderable {
 
     @Override
     public void render(float deltaTime, Batch batch) {
-        this.readAffine.translate(center[0],center[1]);
-        this.readAffine.rotate(1);
-        this.readAffine.scale(1.001f,1.001f);
-        this.readAffine.translate(-center[0],-center[1]);
-        batch.draw(textureRegion,1.3f,1.15f, this.readAffine);
+        this.sprite.rotate(2);
+        this.sprite.draw(batch);
+    }
+
+    @Override
+    public void dispose() {
+        this.texture.dispose();
     }
 }

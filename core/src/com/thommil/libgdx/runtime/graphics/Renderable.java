@@ -22,7 +22,7 @@ public interface Renderable {
      * Render the element on current viewport
      *
      * @param deltaTime The delta time since last call
-     * @param renderer The batch renderer ti use
+     * @param renderer The batch renderer to use
      */
     void render(float deltaTime, Batch renderer);
 

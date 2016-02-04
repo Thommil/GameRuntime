@@ -1,48 +1,56 @@
 package com.thommil.libgdx.runtime.scene;
 
 import com.badlogic.gdx.math.Affine2;
+import com.badlogic.gdx.utils.Disposable;
 
 /**
  * Base element of a Scene, represents any entity contained in Scene.
  *
  * Created by thommil on 01/02/16.
  */
-public abstract class Actor {
+public abstract class Actor implements Disposable{
 
     /**
-     * Write transformation matrix used to modify the actor (physics only)
+     * The X coordinates index in components of the actor
      */
-    public Affine2 writeAffine = new Affine2();
+    public static final int X = 0;
 
     /**
-     * Read transformation matrix used to render/test the actor (render only)
+     * The X coordinates index in components of the actor
      */
-    public Affine2 readAffine = new Affine2();
+    public static final int Y = 1;
 
     /**
-     * Inner transformation matrix used for switch
+     * The angle in rads of the rotation component of the actor
      */
-    private Affine2 tmpAffine = new Affine2();
+    public static final int ANGLE = 2;
+
 
     /**
-     * Default constructor using initial transformation matrix
-     *
-     * @param affine The initial transformation matrix
+     * Components of the actor in physics/step phase
+     * <br/><br/>
+     * These components are modified by the physics engine and
+     * should be accessed in write mode only in physics phase.
      */
-    public Actor(final Affine2 affine){
-        this.readAffine.set(affine);
-        this.writeAffine.set(affine);
-    }
+    public float[] stepComponents = new float[3];
 
     /**
-     * Switch between write <-> read Affines
-     * <br/><br/>Call this method before rendering so write affine becomes the
-     * read affine. This technique allows to go on updating write affine while reading
-     * previous update now on read Affine.
+     * Components of the actor in rendering phase
+     * <br/><br/>
+     * These components are first set after the commit() call and can
+     * be then modified in the rendering phase.
      */
-    public void switchAffine(){
-        this.tmpAffine = this.readAffine;
-        this.readAffine = this.writeAffine;
-        this.writeAffine = this.tmpAffine;
+    public float[] renderComponents = new float[3];
+
+
+    /**
+     * Commit all components from the step phase to the components of the render phase.
+     * <br/><br/>
+     * This method must be called before rendering when all physics components have been set.
+     */
+    public void commit(){
+        renderComponents[X] = stepComponents[X];
+        renderComponents[Y] = stepComponents[Y];
+        renderComponents[ANGLE] = stepComponents[ANGLE];
     }
 }

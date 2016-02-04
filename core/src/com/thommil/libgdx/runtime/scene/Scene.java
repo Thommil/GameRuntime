@@ -44,7 +44,12 @@ public class Scene implements Screen {
     /**
      * Inner layers  list
      */
-    protected final List<Layer> layers;
+    protected final Layer[] layers;
+
+    /**
+     * Inner actors list
+     */
+    protected final List<Actor> actors;
 
     /**
      * Inner Physicable actors list
@@ -61,7 +66,8 @@ public class Scene implements Screen {
         Gdx.app.debug("Scene","New scene");
         this.settings = settings;
 
-        this.layers = new ArrayList<Layer>();
+        this.actors = new ArrayList<Actor>();
+        this.layers = new Layer[settings.renderer.layers];
         this.physicables = new ArrayList<Physicable>();
 
         this.physicsWorld = new World(new Vector2(settings.gravity.x, settings.gravity.y), true);
@@ -77,9 +83,28 @@ public class Scene implements Screen {
      *
      * @param layer The layer to add
      */
-    public void addLayer(final Layer layer){
-        this.layers.add(layer);
-        layer.setCamera(this.camera);
+    public void setLayer(final int index, final Layer layer){
+        this.layers[index] = layer;
+        this.showLayer(index);
+    }
+
+    /**
+     * Enables/shows a layer
+     *
+     * @param index The index of the layer
+     */
+    public void showLayer(final int index){
+        this.layers[index].setCamera(this.camera);
+        this.layers[index].show();
+    }
+
+    /**
+     * Disables/hides a layer
+     *
+     * @param index The index of the layer
+     */
+    public void hideLayer(final int index){
+        this.layers[index].hide();
     }
 
     /**
@@ -88,8 +113,9 @@ public class Scene implements Screen {
      * @param actor The Actor to add
      */
     public void addActor(final Actor actor){
+        this.actors.add(actor);
         if(actor instanceof Renderable){
-            this.layers.get(((Renderable)actor).getLayer()).addRenderable((Renderable)actor);
+            this.layers[((Renderable)actor).getLayer()].addRenderable((Renderable)actor);
         }
         if(actor instanceof Physicable){
             ((Physicable) actor).getBody().setUserData(actor);
@@ -103,13 +129,14 @@ public class Scene implements Screen {
      * @param actor The Actor to remove
      */
     public void removeActor(final Actor actor){
+        this.actors.remove(actor);
         if(actor instanceof Renderable){
-            this.layers.get(((Renderable)actor).getLayer()).removeRenderable((Renderable)actor);
+            this.layers[((Renderable)actor).getLayer()].removeRenderable((Renderable)actor);
         }
         if(actor instanceof Physicable){
-            this.physicsWorld.destroyBody(((Physicable) actor).getBody());
             this.physicables.remove(actor);
         }
+        actor.dispose();
     }
 
     @Override
@@ -129,11 +156,15 @@ public class Scene implements Screen {
         }
 
         for(final Physicable actor : this.physicables){
-            ((Actor)actor).switchAffine();
+            if(actor.getBodyType() != Physicable.STATIC) {
+                ((Actor) actor).commit();
+            }
         }
 
         for(final Layer layer : this.layers){
-            layer.render(delta);
+            if(layer.isVisible()) {
+                layer.render(delta);
+            }
         }
     }
 
@@ -159,11 +190,17 @@ public class Scene implements Screen {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void dispose() {
         Gdx.app.debug("Scene","dispose()");
         this.physicsWorld.dispose();
         this.physicables.clear();
-        this.layers.clear();
+        for(final Layer layer : this.layers){
+            layer.dispose();
+        }
+        for(final Actor actor : this.actors){
+            actor.dispose();
+        }
     }
 
     public World getPhysicsWorld() {
@@ -172,6 +209,14 @@ public class Scene implements Screen {
 
     public Viewport getViewport() {
         return viewport;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public Layer[] getLayers() {
+        return layers;
     }
 
     /**
@@ -208,6 +253,7 @@ public class Scene implements Screen {
          * Renderer class for Scene settings
          */
         public static class Renderer{
+            public int layers = 1;
             public boolean clearScreen = true;
             public float[] clearColor = {0f, 0f, 0f, 1f};
         }

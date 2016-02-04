@@ -116,13 +116,14 @@
 				{
 					"isa" = "PBXGroup";
 					"children" =
-						("0D8673B83F1E421F8BD8B693", "6DDAA2931EDD47A0901876A4", "058F9CE86BBA472C844818FB",
- "9B0A2718FB1142469C01C80F", "E252F3EE449E47C1BA036530", "7D91D7CAF1364E2083D34EDE",
- "F8F37A53B0E645E581EA959F", "E5BF7845128C4BED9C3EA07E", "2463D070E9CA4CE08BEDA677",
- "2E3FFB8F71F04ECC91DB8488", "13100818F25E4F2FAC67B1C5");
+						("C172F1A25CC2427083DD344E", "0D8673B83F1E421F8BD8B693", "6DDAA2931EDD47A0901876A4",
+ "058F9CE86BBA472C844818FB", "9B0A2718FB1142469C01C80F", "E252F3EE449E47C1BA036530",
+ "7D91D7CAF1364E2083D34EDE", "F8F37A53B0E645E581EA959F", "E5BF7845128C4BED9C3EA07E",
+ "2463D070E9CA4CE08BEDA677", "2E3FFB8F71F04ECC91DB8488", "13100818F25E4F2FAC67B1C5"
+);
 					"name" = "Resources";
 					"sourceTree" = "<absolute>";
-					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/data";
+					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/../android/assets";
 				};
 			"6DDAA2931EDD47A0901876A4" =
 				{
@@ -203,6 +204,14 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "Icon@2x.png";
+				};
+			"C172F1A25CC2427083DD344E" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "curiosity.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "curiosity.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";
