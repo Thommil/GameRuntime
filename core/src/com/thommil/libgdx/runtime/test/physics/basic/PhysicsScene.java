@@ -5,11 +5,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.thommil.libgdx.runtime.scene.Scene;
+import com.thommil.libgdx.runtime.scene.SceneListener;
 
 /**
  * Created by tomtom on 04/02/16.
  */
-public class PhysicsScene extends Game{
+public class PhysicsScene extends Game implements SceneListener{
 
     Scene defaultScene;
 
@@ -28,10 +29,21 @@ public class PhysicsScene extends Game{
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
-        for(int i=0;i<100;i++)
         defaultScene.addActor(new DynamicPhysicsActor());
 
+        this.defaultScene.setListener(this);
+
         this.setScreen(defaultScene);
+
+    }
+
+    @Override
+    public void onStep(long lastDuration) {
+
+    }
+
+    @Override
+    public void onRender(float deltaTime) {
 
     }
 }

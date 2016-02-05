@@ -108,11 +108,11 @@
 				{
 					"isa" = "PBXGroup";
 					"children" =
-						("C172F1A25CC2427083DD344E", "B57F8D8B50F04AE7AA48C4C9", "6A394EBE455D4EDBB3157151",
- "B192497BBFC84E0E96B17AE8", "5035F1F71CFD491C939ED686", "3F7208297AB44182B8D5B12E",
- "F3091B8417E04D36BD41CDF3", "BA2AFF0D56E94410B5452156", "15D891F4BA904748BE4BB9A9",
- "0B02BAF936A044A0B36D0546", "AE97240705A74E7699118A80", "3F6E75ED0F854DD2805BD5A8"
-);
+						("C172F1A25CC2427083DD344E", "17A49B8107AF4FCE94F7167B", "9332C690231F4269AD3189BB",
+ "5111054AF1F148ADA32945FD", "62E664AC1AB34D179BC22975", "37D83A44F82C4A25AF0BD5FA",
+ "F4B7615289D9491CB03E7529", "1542804D5A2F45D2BE6BD00F", "DD28B9ABB16143B580698555",
+ "AA06D73226864DE0959DB595", "E953F636425C41A1ABA2F43F", "A4F1DEBE90684367AB532718",
+ "2892A7C449E94118BC38044B");
 					"name" = "Resources";
 					"sourceTree" = "<absolute>";
 					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/../android/assets";
@@ -125,7 +125,7 @@
 					"sourceTree" = "<group>";
 					"path" = "curiosity.png";
 				};
-			"B57F8D8B50F04AE7AA48C4C9" =
+			"17A49B8107AF4FCE94F7167B" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default-375w-667h@2x.png";
@@ -133,7 +133,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default-375w-667h@2x.png";
 				};
-			"6A394EBE455D4EDBB3157151" =
+			"9332C690231F4269AD3189BB" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default-414w-736h@3x.png";
@@ -141,7 +141,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default-414w-736h@3x.png";
 				};
-			"B192497BBFC84E0E96B17AE8" =
+			"5111054AF1F148ADA32945FD" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default-568h@2x.png";
@@ -149,7 +149,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default-568h@2x.png";
 				};
-			"5035F1F71CFD491C939ED686" =
+			"62E664AC1AB34D179BC22975" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default.png";
@@ -157,7 +157,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default.png";
 				};
-			"3F7208297AB44182B8D5B12E" =
+			"37D83A44F82C4A25AF0BD5FA" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default@2x.png";
@@ -165,7 +165,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default@2x.png";
 				};
-			"F3091B8417E04D36BD41CDF3" =
+			"F4B7615289D9491CB03E7529" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default@2x~ipad.png";
@@ -173,7 +173,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default@2x~ipad.png";
 				};
-			"BA2AFF0D56E94410B5452156" =
+			"1542804D5A2F45D2BE6BD00F" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Default~ipad.png";
@@ -181,7 +181,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Default~ipad.png";
 				};
-			"15D891F4BA904748BE4BB9A9" =
+			"AA06D73226864DE0959DB595" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Icon-72.png";
@@ -189,7 +189,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Icon-72.png";
 				};
-			"0B02BAF936A044A0B36D0546" =
+			"E953F636425C41A1ABA2F43F" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Icon-72@2x.png";
@@ -197,7 +197,7 @@
 					"sourceTree" = "<group>";
 					"path" = "Icon-72@2x.png";
 				};
-			"AE97240705A74E7699118A80" =
+			"A4F1DEBE90684367AB532718" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Icon.png";
@@ -205,13 +205,21 @@
 					"sourceTree" = "<group>";
 					"path" = "Icon.png";
 				};
-			"3F6E75ED0F854DD2805BD5A8" =
+			"2892A7C449E94118BC38044B" =
 				{
 					"isa" = "PBXFileReference";
 					"name" = "Icon@2x.png";
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "Icon@2x.png";
+				};
+			"DD28B9ABB16143B580698555" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "ground.jpg";
+					"lastKnownFileType" = "image.jpeg";
+					"sourceTree" = "<group>";
+					"path" = "ground.jpg";
 				};
 		};
 	"rootObject" = "100000000000000000000001";

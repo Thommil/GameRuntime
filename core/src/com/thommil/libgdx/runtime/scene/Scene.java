@@ -83,9 +83,19 @@ public class Scene implements Screen {
     protected boolean paused;
 
     /**
+     * The current bound SceneListener
+     */
+    protected SceneListener sceneListener;
+
+    /**
      * Debug renderer for physics
      */
     private Box2DDebugRenderer debugRenderer;
+
+    /**
+     * Duration of last step processing in ms
+     */
+    private long lastStepDuration;
 
     /**
      * Default constructor using Settings
@@ -210,6 +220,11 @@ public class Scene implements Screen {
                     while(true) {
                         final long start = System.currentTimeMillis();
                         if (!Scene.this.paused) {
+
+                            if(Scene.this.sceneListener != null){
+                                Scene.this.sceneListener.onStep(lastStepDuration);
+                            }
+
                             Scene.this.physicsWorld.step(Scene.this.settings.physics.asyncFrequency
                                     , Scene.this.settings.physics.velocityIterations
                                     , Scene.this.settings.physics.positionIterations
@@ -217,11 +232,11 @@ public class Scene implements Screen {
 
                             Scene.this.updateAndCommit(UPDATE);
                         }
-                        final long duration = System.currentTimeMillis() - start;
+                        lastStepDuration = System.currentTimeMillis() - start;
 
-                        if (duration < longAsyncFrequency) {
+                        if (lastStepDuration < longAsyncFrequency) {
                             try {
-                                Thread.currentThread().sleep(longAsyncFrequency - duration);
+                                Thread.currentThread().sleep(longAsyncFrequency - lastStepDuration);
                             } catch (InterruptedException ie) {
                                 Gdx.app.exit();
                             }
@@ -248,6 +263,12 @@ public class Scene implements Screen {
 
         //Sync step
         if(!this.settings.physics.asyncMode) {
+            if(this.sceneListener != null){
+                this.sceneListener.onStep(lastStepDuration);
+            }
+
+            final long start = System.currentTimeMillis();
+
             this.physicsWorld.step(Gdx.graphics.getDeltaTime()
                     , this.settings.physics.velocityIterations
                     , this.settings.physics.positionIterations
@@ -260,6 +281,12 @@ public class Scene implements Screen {
                 actor.renderComponents[Actor.X] = position.x;
                 actor.renderComponents[Actor.Y] = position.y;
                 actor.renderComponents[Actor.ANGLE] = body.getAngle();
+            }
+
+            lastStepDuration = System.currentTimeMillis() - start;
+
+            if(this.sceneListener != null){
+                this.sceneListener.onRender(delta);
             }
         }
         //Async step
@@ -305,6 +332,19 @@ public class Scene implements Screen {
                 }
                 break;
         }
+    }
+
+    /**
+     * The the current listener
+     *
+     * @param sceneListener The listener of the scene
+     */
+    public void setListener(final SceneListener sceneListener){
+        this.sceneListener = sceneListener;
+    }
+
+    public void removeListener(){
+        this.sceneListener = null;
     }
 
     @Override

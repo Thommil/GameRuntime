@@ -24,6 +24,7 @@ public class StaticPhysicsActor extends Actor implements Renderable,Physicable {
     public StaticPhysicsActor() {
         this.texture = new Texture(Gdx.files.internal("ground.jpg"));
         this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+
     }
 
     @Override
@@ -34,7 +35,7 @@ public class StaticPhysicsActor extends Actor implements Renderable,Physicable {
         groundBodyDef.position.set(0, -1.9f);
         this.body = this.world.createBody(groundBodyDef);
         PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(10f,0.1f);
+        groundBodyShape.setAsBox(2f,0.1f);
         this.body.createFixture(groundBodyShape, 0f);
         groundBodyShape.dispose();
     }
@@ -56,7 +57,7 @@ public class StaticPhysicsActor extends Actor implements Renderable,Physicable {
 
     @Override
     public void render(float deltaTime, Batch batch) {
-        batch.draw(texture,-10,-2,20,0.2f);
+        batch.draw(texture,-2f,-2f,4f,1.5f);
     }
 
     @Override

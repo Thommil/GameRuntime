@@ -27,8 +27,7 @@ public class DynamicPhysicsActor extends Actor implements Renderable,Physicable 
     public DynamicPhysicsActor() {
         this.texture = new Texture(Gdx.files.internal("curiosity.png"));
         this.sprite = new Sprite(texture);
-        this.sprite.setSize(0.1f,0.1f);
-        this.sprite.setCenter(MathUtils.random(-1.5f,1.5f),MathUtils.random(-1f,2f));
+        this.sprite.setSize(2.6f,2.3f);
         this.sprite.setOriginCenter();
     }
 
@@ -37,11 +36,11 @@ public class DynamicPhysicsActor extends Actor implements Renderable,Physicable 
         this.world = world;
         BodyDef dynamicBodyDef = new BodyDef();
         dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
-        dynamicBodyDef.position.set(this.sprite.getX(),this.sprite.getY());
+        dynamicBodyDef.position.set(0f,3f);
         dynamicBodyDef.angle = 0.1f;
         this.body = this.world.createBody(dynamicBodyDef);
         PolygonShape dynamicPolygonShape = new PolygonShape();
-        dynamicPolygonShape.setAsBox(0.05f,0.05f);
+        dynamicPolygonShape.setAsBox(1f,1f);
         this.body.createFixture(dynamicPolygonShape,1f).setRestitution(0.5f);
         dynamicPolygonShape.dispose();
     }
