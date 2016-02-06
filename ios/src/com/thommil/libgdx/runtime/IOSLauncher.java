@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime;
 
-import com.thommil.libgdx.runtime.test.basic.BasicScene;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -11,7 +10,12 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new BasicScene(), config);
+        //Basic
+        //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.BasicScene(), config);
+        //Basic Physics
+        return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
+        //Basic stress Physics
+        //return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
     }
 
     public static void main(String[] argv) {

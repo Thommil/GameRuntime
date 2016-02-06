@@ -25,7 +25,7 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable{
     protected Body buildBody(World world) {
         BodyDef dynamicBodyDef = new BodyDef();
         dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
-        dynamicBodyDef.position.set(MathUtils.random(-20f,20f),MathUtils.random(50f,60f));
+        dynamicBodyDef.position.set(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
         dynamicBodyDef.angle = 0.1f;
         this.body = world.createBody(dynamicBodyDef);
         PolygonShape dynamicPolygonShape = new PolygonShape();

@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -127,6 +128,29 @@ public class Scene implements Screen {
     }
 
     /**
+     *  Autotuning method
+     */
+    private void autotune(){
+        switch(Gdx.graphics.getFramesPerSecond()/10) {
+            //50+ FPS - Full Throttle
+            case 6:
+            case 5:
+                this.settings.physics.frequency = 0.01666666666f;
+                break;
+            //Init phase
+            case 0:
+                this.settings.physics.asyncMode = !Gdx.app.getType().equals(Application.ApplicationType.Android);
+                this.settings.physics.frequency = 0.01666666666f;
+                this.settings.physics.velocityIterations = 8;
+                this.settings.physics.positionIterations = 3;
+                this.settings.physics.particleIterations = 1;
+                break;
+            default:
+                this.settings.physics.frequency = 0.03333333333f;
+        }
+    }
+
+    /**
      * Adds a layer to scene (beware of the ascending order !!!)
      *
      * @param layer The layer to add
@@ -224,10 +248,9 @@ public class Scene implements Screen {
     }
 
     @Override
-    @SuppressWarnings("all")
     public void show() {
         Gdx.app.debug("Scene","show()");
-        if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
+        if(settings.physics.debug){
             this.debugRenderer = new Box2DDebugRenderer();
         }
 
@@ -249,11 +272,10 @@ public class Scene implements Screen {
         if(this.settings.physics.asyncMode) {
             this.executor.execute(new Runnable() {
 
-                final long longAsyncFrequency = (long)(Scene.this.settings.physics.asyncFrequency * 1000f);
-
                 @Override
                 public void run() {
                     while(true) {
+                        final long longAsyncFrequency = (long)(Scene.this.settings.physics.frequency * 1000f);
                         final long start = System.currentTimeMillis();
                         if (!Scene.this.paused) {
 
@@ -267,7 +289,7 @@ public class Scene implements Screen {
 
                             Scene.this.physicsLock.lock();
 
-                            Scene.this.physicsWorld.step(Scene.this.settings.physics.asyncFrequency
+                            Scene.this.physicsWorld.step(Scene.this.settings.physics.frequency
                                     , Scene.this.settings.physics.velocityIterations
                                     , Scene.this.settings.physics.positionIterations
                                     , Scene.this.settings.physics.particleIterations);
@@ -321,7 +343,6 @@ public class Scene implements Screen {
     }
 
     @Override
-    @SuppressWarnings("all")
     public void render(float delta) {
         if(this.settings.renderer.clearScreen) {
             Gdx.gl.glClearColor(this.settings.renderer.clearColor[0]
@@ -333,25 +354,28 @@ public class Scene implements Screen {
 
         //Sync step
         if(!this.settings.physics.asyncMode) {
+
             if(this.sceneListener != null){
                 this.sceneListener.onStep(lastPhysicsStepDuration);
             }
 
             final long start = System.currentTimeMillis();
 
-            this.physicsWorld.step(Gdx.graphics.getDeltaTime()
+            this.physicsWorld.step(this.settings.physics.frequency
                     , this.settings.physics.velocityIterations
                     , this.settings.physics.positionIterations
                     , this.settings.physics.particleIterations);
 
-            for(final PhysicsActor actor : this.physicsActors){
-                if(!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
+            for (final PhysicsActor actor : this.physicsActors) {
+                if (!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
                     final Vector2 position = actor.body.getPosition();
                     actor.renderComponents[Actor.X] = position.x;
                     actor.renderComponents[Actor.Y] = position.y;
                     actor.renderComponents[Actor.ANGLE] = actor.body.getAngle();
                 }
             }
+
+            lastPhysicsStepDuration = System.currentTimeMillis() - start;
 
             if(this.sceneListener != null){
                 this.sceneListener.onRender(delta);
@@ -366,9 +390,6 @@ public class Scene implements Screen {
             if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
                 debugRenderer.render(this.physicsWorld, this.camera.combined);
             }
-
-            lastPhysicsStepDuration = System.currentTimeMillis() - start;
-
         }
         //Async step
         else {
@@ -393,7 +414,7 @@ public class Scene implements Screen {
                     layer.render(delta);
                 }
             }
-            if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
+            if(this.settings.physics.debug){
                 debugRenderer.render(this.physicsWorld, this.camera.combined);
             }
             this.renderLock.unlock();
@@ -530,12 +551,13 @@ public class Scene implements Screen {
          * Physics class for Scene settings
          */
         public static class Physics{
-            public boolean asyncMode = false;
-            public float asyncFrequency = 1/60f;
             public float[] gravity = {0.0f,-9.8f};
-            public int velocityIterations = 8;
-            public int positionIterations = 3;
+            public boolean asyncMode = !Gdx.app.getType().equals(Application.ApplicationType.Android);
+            public float frequency = 0.01666666666f;
+            public int velocityIterations = Gdx.app.getType().equals(Application.ApplicationType.Desktop) ? 8:6;
+            public int positionIterations = Gdx.app.getType().equals(Application.ApplicationType.Desktop) ? 3:2;
             public int particleIterations = 1;
+            public boolean debug = false;
         }
 
 

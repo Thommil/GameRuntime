@@ -18,13 +18,12 @@ public class PhysicsScene extends Game{
 
     @Override
     public void create() {
-        //Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(Application.LOG_ERROR);
 
         //Scene
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 4;
         settings.viewport.minWorldHeight = 4;
-        //settings.physics.asyncMode=false;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
         texture = new Texture(Gdx.files.internal("curiosity.png"));

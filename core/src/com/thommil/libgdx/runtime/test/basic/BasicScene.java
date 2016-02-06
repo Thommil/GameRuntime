@@ -13,7 +13,7 @@ public class BasicScene extends Game {
 
 	@Override
 	public void create () {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Gdx.app.setLogLevel(Application.LOG_ERROR);
 
 		//Scene
 		Scene.Settings settings = new Scene.Settings();

@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.test.physics.stress;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -21,13 +22,13 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public void create() {
-        //Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.setLogLevel(Application.LOG_INFO);
 
         //Scene
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
-        settings.physics.asyncMode=false;
+        settings.physics.debug = true;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
         texture = new Texture(Gdx.files.internal("curiosity.png"));

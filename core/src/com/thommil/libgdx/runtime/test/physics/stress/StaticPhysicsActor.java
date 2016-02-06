@@ -28,9 +28,8 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
         groundBodyDef.position.set(0, -45f);
         this.body = world.createBody(groundBodyDef);
         PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(50f,5f);
+        groundBodyShape.setAsBox(1000f,5f);
         this.body.createFixture(groundBodyShape, 0f);
-        groundBodyShape.setAsBox(1f,50f);
         groundBodyShape.dispose();
 
         return this.body;
@@ -43,7 +42,7 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
 
     @Override
     public void render(float deltaTime, Batch batch) {
-        batch.draw(texture,-50f,-50f,100f,10f);
+        batch.draw(texture,-1000f,-50f,2000f,10f);
     }
 
     @Override
