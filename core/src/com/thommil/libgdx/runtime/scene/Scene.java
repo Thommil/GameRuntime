@@ -530,7 +530,7 @@ public class Scene implements Screen {
          * Physics class for Scene settings
          */
         public static class Physics{
-            public boolean asyncMode = true;
+            public boolean asyncMode = false;
             public float asyncFrequency = 1/60f;
             public float[] gravity = {0.0f,-9.8f};
             public int velocityIterations = 8;
