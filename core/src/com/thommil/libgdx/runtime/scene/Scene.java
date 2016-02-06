@@ -75,6 +75,8 @@ public class Scene implements Screen {
     private final Lock physicsLock = new ReentrantLock();
     private final Lock renderLock = new ReentrantLock();
 
+    private final List<PhysicsActor> physicsActors;
+
     /**
      * Duration of last physics step processing in ms
      */
@@ -107,6 +109,7 @@ public class Scene implements Screen {
         this.settings = settings;
 
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
+        this.physicsActors = new ArrayList<PhysicsActor>();
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         this.layers = new Layer[settings.renderer.layers];
@@ -162,6 +165,7 @@ public class Scene implements Screen {
         }
         if(actor instanceof PhysicsActor) {
             ((PhysicsActor) actor)._init(this.physicsWorld);
+            this.physicsActors.add(((PhysicsActor) actor));
         }
         if(this.settings.physics.asyncMode) {
             this.renderLock.unlock();
@@ -181,14 +185,10 @@ public class Scene implements Screen {
             this.renderLock.lock();
         }
         if (actor instanceof Renderable) {
-            this.runOnUIThread(new Runnable() {
-                @Override
-                public void run() {
                     Scene.this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
-                }
-            });
         }
         if (actor instanceof PhysicsActor) {
+            this.physicsActors.remove(actor);
             this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
         }
         actor.dispose();
@@ -224,7 +224,6 @@ public class Scene implements Screen {
         if(this.settings.physics.asyncMode) {
             this.executor.execute(new Runnable() {
 
-                final Array<Body> bodies = new Array<Body>();
                 final long longAsyncFrequency = (long)(Scene.this.settings.physics.asyncFrequency * 1000f);
 
                 @Override
@@ -248,13 +247,12 @@ public class Scene implements Screen {
                                     , Scene.this.settings.physics.positionIterations
                                     , Scene.this.settings.physics.particleIterations);
 
-                            Scene.this.physicsWorld.getBodies(bodies);
-                            for (final Body body : bodies) {
-                                final PhysicsActor actor = (PhysicsActor) body.getUserData();
-                                final Vector2 position = body.getPosition();
+
+                            for (final PhysicsActor actor : Scene.this.physicsActors) {
+                                final Vector2 position = actor.body.getPosition();
                                 actor.physicsComponents[Actor.X] = position.x;
                                 actor.physicsComponents[Actor.Y] = position.y;
-                                actor.physicsComponents[Actor.ANGLE] = body.getAngle();
+                                actor.physicsComponents[Actor.ANGLE] = actor.body.getAngle();
                             }
 
                             Scene.this.physicsLock.unlock();
@@ -322,12 +320,11 @@ public class Scene implements Screen {
                     , this.settings.physics.positionIterations
                     , this.settings.physics.particleIterations);
 
-            for(final Body body : this.physicsWorld.getBodies().values()){
-                final Actor actor = (Actor)body.getUserData();
-                final Vector2 position = body.getPosition();
+            for(final PhysicsActor actor : this.physicsActors){
+                final Vector2 position = actor.body.getPosition();
                 actor.renderComponents[Actor.X] = position.x;
                 actor.renderComponents[Actor.Y] = position.y;
-                actor.renderComponents[Actor.ANGLE] = body.getAngle();
+                actor.renderComponents[Actor.ANGLE] = actor.body.getAngle();
             }
 
             if(this.sceneListener != null){
@@ -346,8 +343,7 @@ public class Scene implements Screen {
         //Async step
         else {
             this.physicsLock.lock();
-            for (final Body body : this.physicsWorld.getBodies().values()) {
-                final PhysicsActor actor = (PhysicsActor) body.getUserData();
+            for (final PhysicsActor actor : this.physicsActors) {
                 actor.renderComponents[Actor.X] = actor.physicsComponents[Actor.X];
                 actor.renderComponents[Actor.Y] = actor.physicsComponents[Actor.Y];
                 actor.renderComponents[Actor.ANGLE] = actor.physicsComponents[Actor.ANGLE];
