@@ -24,15 +24,6 @@ public abstract class Actor implements Disposable{
      */
     public static final int ANGLE = 2;
 
-
-    /**
-     * Components of the actor in physics/step phase
-     * <br/><br/>
-     * These components are modified by the physics engine and
-     * should be accessed in write mode only in physics phase.
-     */
-    public float[] stepComponents = new float[3];
-
     /**
      * Components of the actor in rendering phase
      * <br/><br/>

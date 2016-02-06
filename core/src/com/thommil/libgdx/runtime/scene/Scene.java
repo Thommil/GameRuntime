@@ -8,16 +8,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.graphics.Renderable;
-import com.thommil.libgdx.runtime.physics.Physicable;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Main container for Actors.
@@ -28,14 +32,10 @@ import java.util.concurrent.ThreadFactory;
 public class Scene implements Screen {
 
     /**
-     * Inner constant for async mode update
+     * Inner constants for async mode update
      */
-    private final static int UPDATE = 0;
-
-    /**
-     * Inner constant for async mode commit
-     */
-    private final static int COMMIT = 1;
+    private final static int WORLD_TO_ACTOR = 0;
+    private final static int ACTOR_TO_RENDERER = 1;
 
     /**
      * Scene settings
@@ -63,19 +63,22 @@ public class Scene implements Screen {
     protected final Layer[] layers;
 
     /**
-     * Inner actors list
-     */
-    protected final List<Actor> actors;
-
-    /**
-     * Inner Physicable actors list
-     */
-    protected final List<Physicable> physicables;
-
-    /**
      * Executor bound to this scene
      */
     protected ExecutorService executor;
+
+    /**
+     * Queue for step executor
+     */
+    private final Deque<Runnable> physicsQueue;
+
+    private final Lock physicsLock = new ReentrantLock();
+    private final Lock renderLock = new ReentrantLock();
+
+    /**
+     * Duration of last physics step processing in ms
+     */
+    private long lastPhysicsStepDuration;
 
     /**
      * Pause/resume state
@@ -92,10 +95,6 @@ public class Scene implements Screen {
      */
     private Box2DDebugRenderer debugRenderer;
 
-    /**
-     * Duration of last step processing in ms
-     */
-    private long lastStepDuration;
 
     /**
      * Default constructor using Settings
@@ -107,12 +106,10 @@ public class Scene implements Screen {
         Gdx.app.debug("Scene","New scene");
         this.settings = settings;
 
-        this.actors = new ArrayList<Actor>();
-        this.layers = new Layer[settings.renderer.layers];
-        this.physicables = new ArrayList<Physicable>();
-
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
+        this.physicsQueue = new ArrayDeque<Runnable>();
 
+        this.layers = new Layer[settings.renderer.layers];
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
         this.viewport.apply(settings.viewport.centerCamera);
@@ -154,19 +151,21 @@ public class Scene implements Screen {
      *
      * @param actor The Actor to add
      */
-    public void addActor(final Actor actor){
+    public void addActor(final Actor actor) {
         Gdx.app.debug("Scene","addActor()");
-        this.actors.add(actor);
-        if(actor instanceof Renderable){
-            this.layers[((Renderable)actor).getLayer()].addRenderable((Renderable)actor);
+        if(this.settings.physics.asyncMode) {
+            this.physicsLock.lock();
+            this.renderLock.lock();
         }
-        if(actor instanceof Physicable){
-            ((Physicable) actor).setWorld(this.physicsWorld);
-            ((Physicable) actor).getBody().setUserData(actor);
-            //Only add to scene if not static
-            if(((Physicable) actor).getBodyType() != Physicable.STATIC) {
-                this.physicables.add((Physicable) actor);
-            }
+        if(actor instanceof Renderable) {
+            this.layers[((Renderable) actor).getLayer()].addRenderable((Renderable) actor);
+        }
+        if(actor instanceof PhysicsActor) {
+            ((PhysicsActor) actor)._init(this.physicsWorld);
+        }
+        if(this.settings.physics.asyncMode) {
+            this.renderLock.unlock();
+            this.physicsLock.unlock();
         }
     }
 
@@ -177,14 +176,26 @@ public class Scene implements Screen {
      */
     public void removeActor(final Actor actor){
         Gdx.app.debug("Scene","removeActor()");
-        this.actors.remove(actor);
-        if(actor instanceof Renderable){
-            this.layers[((Renderable)actor).getLayer()].removeRenderable((Renderable)actor);
+        if(this.settings.physics.asyncMode) {
+            this.physicsLock.lock();
+            this.renderLock.lock();
         }
-        if(actor instanceof Physicable){
-            this.physicables.remove(actor);
+        if (actor instanceof Renderable) {
+            this.runOnUIThread(new Runnable() {
+                @Override
+                public void run() {
+                    Scene.this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
+                }
+            });
+        }
+        if (actor instanceof PhysicsActor) {
+            this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
         }
         actor.dispose();
+        if(this.settings.physics.asyncMode) {
+            this.renderLock.unlock();
+            this.physicsLock.unlock();
+        }
     }
 
     @Override
@@ -213,6 +224,7 @@ public class Scene implements Screen {
         if(this.settings.physics.asyncMode) {
             this.executor.execute(new Runnable() {
 
+                final Array<Body> bodies = new Array<Body>();
                 final long longAsyncFrequency = (long)(Scene.this.settings.physics.asyncFrequency * 1000f);
 
                 @Override
@@ -221,22 +233,39 @@ public class Scene implements Screen {
                         final long start = System.currentTimeMillis();
                         if (!Scene.this.paused) {
 
-                            if(Scene.this.sceneListener != null){
-                                Scene.this.sceneListener.onStep(lastStepDuration);
+                            while(!Scene.this.physicsQueue.isEmpty()){
+                                Scene.this.physicsQueue.poll().run();
                             }
+
+                            if(Scene.this.sceneListener != null){
+                                Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
+                            }
+
+                            Scene.this.physicsLock.lock();
 
                             Scene.this.physicsWorld.step(Scene.this.settings.physics.asyncFrequency
                                     , Scene.this.settings.physics.velocityIterations
                                     , Scene.this.settings.physics.positionIterations
                                     , Scene.this.settings.physics.particleIterations);
 
-                            Scene.this.updateAndCommit(UPDATE);
-                        }
-                        lastStepDuration = System.currentTimeMillis() - start;
+                            Scene.this.physicsWorld.getBodies(bodies);
+                            for (final Body body : bodies) {
+                                final PhysicsActor actor = (PhysicsActor) body.getUserData();
+                                final Vector2 position = body.getPosition();
+                                actor.physicsComponents[Actor.X] = position.x;
+                                actor.physicsComponents[Actor.Y] = position.y;
+                                actor.physicsComponents[Actor.ANGLE] = body.getAngle();
+                            }
 
-                        if (lastStepDuration < longAsyncFrequency) {
+                            Scene.this.physicsLock.unlock();
+
+
+                        }
+                        lastPhysicsStepDuration = System.currentTimeMillis() - start;
+
+                        if (lastPhysicsStepDuration < longAsyncFrequency) {
                             try {
-                                Thread.currentThread().sleep(longAsyncFrequency - lastStepDuration);
+                                Thread.currentThread().sleep(longAsyncFrequency - lastPhysicsStepDuration);
                             } catch (InterruptedException ie) {
                                 Gdx.app.exit();
                             }
@@ -244,10 +273,29 @@ public class Scene implements Screen {
                     }
                 }
             });
-
-            this.updateAndCommit(UPDATE);
         }
         this.paused = false;
+    }
+
+    /**
+     * Post a runnable task to be executed at start of physics loop (async mode only)
+     *
+     * @param runnable The task to be executed
+     */
+    public void runOnPhysicsThread(final Runnable runnable){
+        if(this.settings.physics.asyncMode) {
+            this.physicsQueue.add(runnable);
+        }
+        else this.runOnUIThread(runnable);
+    }
+
+    /**
+     * Post a runnable task to be executed at start of UI loop
+     *
+     * @param runnable The task to be executed
+     */
+    public void runOnUIThread(final Runnable runnable){
+        Gdx.app.postRunnable(runnable);
     }
 
     @Override
@@ -264,7 +312,7 @@ public class Scene implements Screen {
         //Sync step
         if(!this.settings.physics.asyncMode) {
             if(this.sceneListener != null){
-                this.sceneListener.onStep(lastStepDuration);
+                this.sceneListener.onStep(lastPhysicsStepDuration);
             }
 
             final long start = System.currentTimeMillis();
@@ -274,65 +322,57 @@ public class Scene implements Screen {
                     , this.settings.physics.positionIterations
                     , this.settings.physics.particleIterations);
 
-            for(final Physicable physicable : this.physicables){
-                final Actor actor = ((Actor) physicable);
-                final Body body = physicable.getBody();
+            for(final Body body : this.physicsWorld.getBodies().values()){
+                final Actor actor = (Actor)body.getUserData();
                 final Vector2 position = body.getPosition();
                 actor.renderComponents[Actor.X] = position.x;
                 actor.renderComponents[Actor.Y] = position.y;
                 actor.renderComponents[Actor.ANGLE] = body.getAngle();
             }
 
-            lastStepDuration = System.currentTimeMillis() - start;
+            if(this.sceneListener != null){
+                this.sceneListener.onRender(delta);
+            }
+
+            for (final Layer layer : this.layers) {
+                if (layer.isVisible()) {
+                    layer.render(delta);
+                }
+            }
+
+            lastPhysicsStepDuration = System.currentTimeMillis() - start;
+
+        }
+        //Async step
+        else {
+            this.physicsLock.lock();
+            for (final Body body : this.physicsWorld.getBodies().values()) {
+                final PhysicsActor actor = (PhysicsActor) body.getUserData();
+                actor.renderComponents[Actor.X] = actor.physicsComponents[Actor.X];
+                actor.renderComponents[Actor.Y] = actor.physicsComponents[Actor.Y];
+                actor.renderComponents[Actor.ANGLE] = actor.physicsComponents[Actor.ANGLE];
+            }
+            this.physicsLock.unlock();
 
             if(this.sceneListener != null){
                 this.sceneListener.onRender(delta);
             }
-        }
-        //Async step
-        else {
-            this.updateAndCommit(COMMIT);
+
+            this.renderLock.lock();
+            for (final Layer layer : this.layers) {
+                if (layer.isVisible()) {
+                    layer.render(delta);
+                }
+            }
+            this.renderLock.unlock();
         }
 
-        //Render
-        for(final Layer layer : this.layers){
-            if(layer.isVisible()) {
-                layer.render(delta);
-            }
-        }
 
         if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
             debugRenderer.render(this.physicsWorld, this.camera.combined);
         }
     }
 
-    /**
-     * Inner methdd to synchronize physics and rendering
-     *
-     *  @param action The synchronization action
-     */
-    private synchronized void updateAndCommit(final int action){
-        switch(action){
-            case UPDATE :
-                for(final Physicable physicable : this.physicables){
-                    final Actor actor = ((Actor) physicable);
-                    final Body body = physicable.getBody();
-                    final Vector2 position = body.getPosition();
-                    actor.stepComponents[Actor.X] = position.x;
-                    actor.stepComponents[Actor.Y] = position.y;
-                    actor.stepComponents[Actor.ANGLE] = body.getAngle();
-                }
-                break;
-            case COMMIT :
-                for (final Physicable physicable : this.physicables) {
-                    final Actor actor = ((Actor) physicable);
-                    actor.renderComponents[Actor.X] = actor.stepComponents[Actor.X];
-                    actor.renderComponents[Actor.Y] = actor.stepComponents[Actor.Y];
-                    actor.renderComponents[Actor.ANGLE] = actor.stepComponents[Actor.ANGLE];
-                }
-                break;
-        }
-    }
 
     /**
      * The the current listener
@@ -368,6 +408,7 @@ public class Scene implements Screen {
     @Override
     public void hide() {
         Gdx.app.debug("Scene","hide()");
+        this.paused = true;
         for(final Layer layer : this.layers) {
             layer.hide();
         }
@@ -378,11 +419,9 @@ public class Scene implements Screen {
     @SuppressWarnings("all")
     public void dispose() {
         Gdx.app.debug("Scene","dispose()");
+        this.paused = true;
+        this.executor.shutdown();
         this.physicsWorld.dispose();
-        this.physicables.clear();
-        for(final Actor actor : this.actors){
-            actor.dispose();
-        }
         for(final Layer layer : this.layers){
             layer.dispose();
         }
@@ -394,10 +433,6 @@ public class Scene implements Screen {
 
     public Viewport getViewport() {
         return viewport;
-    }
-
-    public List<Actor> getActors() {
-        return actors;
     }
 
     public Layer[] getLayers() {

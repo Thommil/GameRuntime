@@ -9,17 +9,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.graphics.Renderable;
-import com.thommil.libgdx.runtime.physics.Physicable;
 import com.thommil.libgdx.runtime.scene.Actor;
+import com.thommil.libgdx.runtime.scene.PhysicsActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class StaticPhysicsActor extends Actor implements Renderable,Physicable {
+public class StaticPhysicsActor extends PhysicsActor implements Renderable {
 
     Texture texture;
-    Body body;
-    World world;
 
     public StaticPhysicsActor() {
         this.texture = new Texture(Gdx.files.internal("ground.jpg"));
@@ -27,26 +25,17 @@ public class StaticPhysicsActor extends Actor implements Renderable,Physicable {
 
     }
 
+
     @Override
-    public void setWorld(World world) {
-        this.world = world;
+    protected Body buildBody(World world) {
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
         groundBodyDef.position.set(0, -1.9f);
-        this.body = this.world.createBody(groundBodyDef);
+        this.body = world.createBody(groundBodyDef);
         PolygonShape groundBodyShape = new PolygonShape();
         groundBodyShape.setAsBox(2f,0.1f);
         this.body.createFixture(groundBodyShape, 0f);
         groundBodyShape.dispose();
-    }
-
-    @Override
-    public int getBodyType() {
-        return STATIC;
-    }
-
-    @Override
-    public Body getBody() {
         return this.body;
     }
 

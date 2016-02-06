@@ -31,7 +31,7 @@ public class PhysicsLayer extends Layer{
         }
         spriteBatch.end();
 
-        //Gdx.app.log("","FPS : " + Gdx.graphics.getFramesPerSecond());
+
     }
 
     @Override
