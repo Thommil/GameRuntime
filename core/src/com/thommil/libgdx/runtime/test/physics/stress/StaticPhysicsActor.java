@@ -1,15 +1,10 @@
-package com.thommil.libgdx.runtime.test.physics.basic;
+package com.thommil.libgdx.runtime.test.physics.stress;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.graphics.Renderable;
-import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.PhysicsActor;
 
 /**
@@ -30,12 +25,14 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
     protected Body buildBody(World world) {
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
-        groundBodyDef.position.set(0, -1.9f);
+        groundBodyDef.position.set(0, -45f);
         this.body = world.createBody(groundBodyDef);
         PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(2f,0.1f);
+        groundBodyShape.setAsBox(50f,5f);
         this.body.createFixture(groundBodyShape, 0f);
+        groundBodyShape.setAsBox(1f,50f);
         groundBodyShape.dispose();
+
         return this.body;
     }
 
@@ -46,7 +43,7 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
 
     @Override
     public void render(float deltaTime, Batch batch) {
-        batch.draw(texture,-10f,-2f,20f,2f);
+        batch.draw(texture,-50f,-50f,100f,10f);
     }
 
     @Override

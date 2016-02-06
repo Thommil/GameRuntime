@@ -3,7 +3,8 @@ package com.thommil.libgdx.runtime.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.thommil.libgdx.runtime.test.basic.BasicScene;
-import com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene;
+//import com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene;
+import com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

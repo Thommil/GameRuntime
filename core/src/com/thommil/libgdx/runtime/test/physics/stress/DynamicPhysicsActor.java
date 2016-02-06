@@ -1,15 +1,11 @@
-package com.thommil.libgdx.runtime.test.physics.basic;
+package com.thommil.libgdx.runtime.test.physics.stress;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.graphics.Renderable;
-
 import com.thommil.libgdx.runtime.scene.PhysicsActor;
 
 /**
@@ -29,12 +25,14 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable{
     protected Body buildBody(World world) {
         BodyDef dynamicBodyDef = new BodyDef();
         dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
-        dynamicBodyDef.position.set(0f,3f);
+        dynamicBodyDef.position.set(MathUtils.random(-20f,20f),MathUtils.random(50f,60f));
         dynamicBodyDef.angle = 0.1f;
         this.body = world.createBody(dynamicBodyDef);
         PolygonShape dynamicPolygonShape = new PolygonShape();
         dynamicPolygonShape.setAsBox(1f,1f);
-        this.body.createFixture(dynamicPolygonShape,1f).setRestitution(0.5f);
+        Fixture fixture = this.body.createFixture(dynamicPolygonShape,1f);
+        fixture.setRestitution(0.0f);
+        fixture.setFriction(1f);
 
         dynamicPolygonShape.dispose();
         return this.body;
