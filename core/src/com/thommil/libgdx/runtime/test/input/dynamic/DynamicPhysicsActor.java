@@ -62,7 +62,15 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable {
     @Override
     public void render(float deltaTime, Batch batch) {
         //Gdx.app.debug("SpriteActor","render()");
-        spriteVec.set(this.components[0],this.components[1]);
+
+        this.sprite.draw(batch);
+    }
+
+    @Override
+    protected void step(long lastStepDuration) {
+        Vector2 bodyPosition = this.body.getPosition();
+        float bodyAngle = this.body.getAngle();
+        spriteVec.set(bodyPosition.x,bodyPosition.y);
         if(right){
             this.body.applyTorque(-STEAR_FORCE, true);
         }
@@ -71,10 +79,10 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable {
         }
 
         if(forward){
-            this.body.applyForceToCenter(STEP_FORCE*-MathUtils.sin(this.components[ANGLE]),STEP_FORCE*MathUtils.cos(this.components[ANGLE]), true);
+            this.body.applyForceToCenter(STEP_FORCE*-MathUtils.sin(bodyAngle),STEP_FORCE*MathUtils.cos(bodyAngle), true);
         }
         else if(backward){
-            this.body.applyForceToCenter(STEP_FORCE*MathUtils.sin(this.components[ANGLE]),STEP_FORCE*-MathUtils.cos(this.components[ANGLE]), true);
+            this.body.applyForceToCenter(STEP_FORCE*MathUtils.sin(bodyAngle),STEP_FORCE*-MathUtils.cos(bodyAngle), true);
         }
         else if(follow){
             if(this.targetVec.dst2(this.spriteVec) > 1) {
@@ -82,14 +90,13 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable {
             }
         }
 
-        this.sprite.setCenter(this.components[X],this.components[Y]);
+        this.sprite.setCenter(bodyPosition.x,bodyPosition.y);
         if(follow) {
             this.sprite.setRotation(angle);
         }
         else{
-            this.sprite.setRotation(this.components[ANGLE] * 57.2957795f);
+            this.sprite.setRotation(bodyAngle * 57.2957795f);
         }
-        this.sprite.draw(batch);
     }
 
     public void forward(boolean enable){

@@ -50,6 +50,11 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
     }
 
     @Override
+    protected void step(long lastStepDuration) {
+
+    }
+
+    @Override
     public void dispose() {
         this.texture.dispose();
     }

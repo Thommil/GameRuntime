@@ -166,20 +166,17 @@ public class Scene implements Screen {
     public void addActor(final Actor actor) {
         Gdx.app.debug("Scene","addActor()");
         if(this.settings.physics.asyncMode) {
-            this.renderLock.lock();
             if(actor instanceof Renderable) {
+                this.renderLock.lock();
                 this.layers[((Renderable) actor).getLayer()].addRenderable((Renderable) actor);
+                this.renderLock.unlock();
             }
             if(actor instanceof PhysicsActor) {
                 this.physicsLock.lock();
                 ((PhysicsActor) actor)._init(this.physicsWorld);
-                ((PhysicsActor) actor)._components[Actor.X] = ((PhysicsActor) actor).body.getPosition().x;
-                ((PhysicsActor) actor)._components[Actor.Y] = ((PhysicsActor) actor).body.getPosition().y;
-                ((PhysicsActor) actor)._components[Actor.ANGLE] = ((PhysicsActor) actor).body.getAngle();
                 this.physicsActors.add(((PhysicsActor) actor));
                 this.physicsLock.unlock();
             }
-            this.renderLock.unlock();
         }
         else{
             if(actor instanceof Renderable) {
@@ -200,10 +197,10 @@ public class Scene implements Screen {
     public void removeActor(final Actor actor){
         Gdx.app.debug("Scene","removeActor()");
         if(this.settings.physics.asyncMode) {
-            this.renderLock.lock();
-
             if (actor instanceof Renderable) {
+                this.renderLock.lock();
                 this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
+                this.renderLock.unlock();
             }
             if (actor instanceof PhysicsActor) {
                 this.physicsLock.lock();
@@ -211,7 +208,6 @@ public class Scene implements Screen {
                 this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
                 this.physicsLock.unlock();
             }
-            this.renderLock.unlock();
         }
         else{
             if (actor instanceof Renderable) {
@@ -254,7 +250,10 @@ public class Scene implements Screen {
                     while(true) {
                         final long longAsyncFrequency = (long)(Scene.this.settings.physics.frequency * 1000f);
                         final long start = System.currentTimeMillis();
+
                         if (!Scene.this.paused) {
+
+                            Scene.this.physicsLock.lock();
 
                             while(!Scene.this.physicsQueue.isEmpty()){
                                 Scene.this.physicsQueue.poll().run();
@@ -264,21 +263,14 @@ public class Scene implements Screen {
                                 Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
                             }
 
-                            Scene.this.physicsLock.lock();
+                            for (final PhysicsActor actor : Scene.this.physicsActors) {
+                                actor.step(lastPhysicsStepDuration);
+                            }
 
                             Scene.this.physicsWorld.step(Scene.this.settings.physics.frequency
                                     , Scene.this.settings.physics.velocityIterations
                                     , Scene.this.settings.physics.positionIterations
                                     , Scene.this.settings.physics.particleIterations);
-
-                            for (final PhysicsActor actor : Scene.this.physicsActors) {
-                                if(!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
-                                    final Vector2 position = actor.body.getPosition();
-                                    actor._components[Actor.X] = position.x;
-                                    actor._components[Actor.Y] = position.y;
-                                    actor._components[Actor.ANGLE] = actor.body.getAngle();
-                                }
-                            }
 
                             Scene.this.physicsLock.unlock();
                         }
@@ -332,25 +324,20 @@ public class Scene implements Screen {
         //Sync step
         if(!this.settings.physics.asyncMode) {
 
+            final long start = System.currentTimeMillis();
+
             if(this.sceneListener != null){
                 this.sceneListener.onStep(lastPhysicsStepDuration);
             }
 
-            final long start = System.currentTimeMillis();
+            for (final PhysicsActor actor : this.physicsActors) {
+                actor.step(lastPhysicsStepDuration);
+            }
 
             this.physicsWorld.step(this.settings.physics.frequency
                     , this.settings.physics.velocityIterations
                     , this.settings.physics.positionIterations
                     , this.settings.physics.particleIterations);
-
-            for (final PhysicsActor actor : this.physicsActors) {
-                if (!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
-                    final Vector2 position = actor.body.getPosition();
-                    actor.components[Actor.X] = actor._components[Actor.X] = position.x;
-                    actor.components[Actor.Y] = actor._components[Actor.Y] = position.y;
-                    actor.components[Actor.ANGLE] = actor._components[Actor.ANGLE] = actor.body.getAngle();
-                }
-            }
 
             lastPhysicsStepDuration = System.currentTimeMillis() - start;
 
@@ -370,22 +357,12 @@ public class Scene implements Screen {
         }
         //Async step
         else {
-            this.physicsLock.lock();
-            for (final PhysicsActor actor : this.physicsActors) {
-                if(!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
-                    actor.components[Actor.X] = actor._components[Actor.X];
-                    actor.components[Actor.Y] = actor._components[Actor.Y];
-                    actor.components[Actor.ANGLE] = actor._components[Actor.ANGLE];
-                }
-            }
-            this.physicsLock.unlock();
+            this.renderLock.lock();
 
             if(this.sceneListener != null){
                 this.sceneListener.onRender(delta);
             }
 
-
-            this.renderLock.lock();
             for (final Layer layer : this.layers) {
                 if (layer.isVisible()) {
                     layer.render(delta);

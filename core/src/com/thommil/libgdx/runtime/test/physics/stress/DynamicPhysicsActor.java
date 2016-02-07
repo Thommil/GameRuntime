@@ -45,9 +45,13 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable{
 
     @Override
     public void render(float deltaTime, Batch batch) {
-        this.sprite.setCenter(this.components[X],this.components[Y]);
-        this.sprite.setRotation(this.components[ANGLE]*57.2957795f);
         this.sprite.draw(batch);
+    }
+
+    @Override
+    protected void step(long lastStepDuration) {
+        this.sprite.setCenter(this.body.getPosition().x,this.body.getPosition().y);
+        this.sprite.setRotation(this.body.getAngle()*57.2957795f);
     }
 
     @Override
