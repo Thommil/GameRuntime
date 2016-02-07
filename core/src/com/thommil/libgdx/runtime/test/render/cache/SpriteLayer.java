@@ -7,7 +7,7 @@ import com.thommil.libgdx.runtime.scene.Layer;
 /**
  * Created by thommil on 03/02/16.
  */
-public class BasicLayer extends Layer{
+public class SpriteLayer extends Layer{
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
