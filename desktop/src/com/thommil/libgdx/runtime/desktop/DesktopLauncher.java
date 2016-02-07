@@ -11,8 +11,12 @@ public class DesktopLauncher {
 		//Basic
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.BasicScene(), config);
 		//Basic Physics
-		new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
+		//new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
 		//Basic stress Physics
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
+		//Kinematic input
+		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);
+		//Physics input
+		new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
 	}
 }

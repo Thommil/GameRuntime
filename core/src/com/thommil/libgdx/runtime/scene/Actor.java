@@ -30,5 +30,5 @@ public abstract class Actor implements Disposable{
      * These components are first set after the commit() call and can
      * be then modified in the rendering phase.
      */
-    public float[] renderComponents = new float[3];
+    public float[] components = new float[3];
 }

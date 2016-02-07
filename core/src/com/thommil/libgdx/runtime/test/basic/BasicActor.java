@@ -10,12 +10,12 @@ import com.thommil.libgdx.runtime.graphics.Renderable;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SpriteActor extends Actor implements Renderable {
+public class BasicActor extends Actor implements Renderable {
 
     Sprite sprite;
     Texture texture;
 
-    public SpriteActor() {
+    public BasicActor() {
         this.texture = new Texture(Gdx.files.internal("curiosity.png"));
         this.sprite = new Sprite(texture);
         this.sprite.setSize(2.6f,2.3f);

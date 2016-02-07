@@ -19,9 +19,10 @@ public abstract class PhysicsActor extends Actor{
      * Components of the actor in physics/step phase
      * <br/><br/>
      * These components are modified by the physics engine and
-     * should be accessed in write mode only in physics phase.
+     * should be accessed in write mode only in physics phase
+     * only if really needed.
      */
-    public float[] physicsComponents = new float[3];
+    public float[] _components = new float[3];
 
     /**
      * System method used by Scene.
@@ -32,8 +33,9 @@ public abstract class PhysicsActor extends Actor{
     }
 
     /**
-     * Subclasses must override this method to build the body
-     * of this instance.
+     * Subclasses must implement this method to build the body
+     * of this instance. The body is automatically associated to
+     * the actor in the _init() method and can't be overriden.
      */
     protected abstract Body buildBody(final World world);
 }

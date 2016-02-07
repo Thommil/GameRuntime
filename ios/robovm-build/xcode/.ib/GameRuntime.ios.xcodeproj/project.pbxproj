@@ -112,7 +112,7 @@
  "14176EF598B94BAA8A121F42", "449E971EA26F4C6E94E90FF5", "6A6D0DEEC16544B8B2EDD50E",
  "CE3E92420A764308999C1DB9", "036BB91EBEFB4653B35AED61", "DD28B9ABB16143B580698555",
  "8178747D8A2C42FA9A575B14", "269407FBD6C54952A3FFD919", "1C3B742E5B6D4CEDBCBE3539",
- "1F1D393EC9DA4FDC9F8396B4");
+ "1F1D393EC9DA4FDC9F8396B4", "D7AD06E286B54BF38AD0B7CB");
 					"name" = "Resources";
 					"sourceTree" = "<absolute>";
 					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/../android/assets";
@@ -220,6 +220,14 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "Icon@2x.png";
+				};
+			"D7AD06E286B54BF38AD0B7CB" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "ship.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "ship.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";

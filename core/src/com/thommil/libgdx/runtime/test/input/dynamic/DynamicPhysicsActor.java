@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.input.kinematic;
+package com.thommil.libgdx.runtime.test.input.dynamic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,16 +6,20 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.graphics.Renderable;
-import com.thommil.libgdx.runtime.scene.Actor;
+import com.thommil.libgdx.runtime.scene.PhysicsActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SpriteActor extends Actor implements Renderable {
+public class DynamicPhysicsActor extends PhysicsActor implements Renderable {
 
     Sprite sprite;
     Texture texture;
+
+    private static final float STEP_FORCE = 1f;
+    private static final float STEAR_FORCE = 0.1f;
 
     boolean backward=false;
     boolean forward=false;
@@ -25,18 +29,29 @@ public class SpriteActor extends Actor implements Renderable {
 
     float angle=0;
 
-    public static final float STEP = 0.2f;
-
     private Vector2 followVec;
     private Vector2 targetVec = new Vector2();
     private Vector2 spriteVec = new Vector2();
 
-    public SpriteActor() {
+    public DynamicPhysicsActor() {
         this.texture = new Texture(Gdx.files.internal("ship.png"));
         this.sprite = new Sprite(texture);
         this.sprite.setSize(1f,1f);
         this.sprite.setOriginCenter();
         this.sprite.setCenter(0f,0f);
+    }
+
+    @Override
+    protected Body buildBody(World world) {
+        BodyDef dynamicBodyDef = new BodyDef();
+        dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
+        dynamicBodyDef.position.set(0f,0f);
+        this.body = world.createBody(dynamicBodyDef);
+        CircleShape shipShape = new CircleShape();
+        shipShape.setRadius(0.4f);
+        this.body.createFixture(shipShape,1f).setRestitution(0.5f);
+        shipShape.dispose();
+        return this.body;
     }
 
     @Override
@@ -47,28 +62,33 @@ public class SpriteActor extends Actor implements Renderable {
     @Override
     public void render(float deltaTime, Batch batch) {
         //Gdx.app.debug("SpriteActor","render()");
-        spriteVec.set(this.sprite.getX(),this.sprite.getY());
-
+        spriteVec.set(this.components[0],this.components[1]);
         if(right){
-            angle -= 3f;
+            this.body.applyTorque(-STEAR_FORCE, true);
         }
         else if(left){
-            angle += 3f;
+            this.body.applyTorque(STEAR_FORCE, true);
         }
 
         if(forward){
-            this.sprite.translate(STEP*-MathUtils.sinDeg(angle),STEP*MathUtils.cosDeg(angle));
+            this.body.applyForceToCenter(STEP_FORCE*-MathUtils.sin(this.components[ANGLE]),STEP_FORCE*MathUtils.cos(this.components[ANGLE]), true);
         }
         else if(backward){
-            this.sprite.translate(STEP*MathUtils.sinDeg(angle),STEP*-MathUtils.cosDeg(angle));
+            this.body.applyForceToCenter(STEP_FORCE*MathUtils.sin(this.components[ANGLE]),STEP_FORCE*-MathUtils.cos(this.components[ANGLE]), true);
         }
         else if(follow){
             if(this.targetVec.dst2(this.spriteVec) > 1) {
-                this.sprite.translate(STEP * followVec.x, STEP * followVec.y);
+                this.body.applyForceToCenter(STEP_FORCE*followVec.x,STEP_FORCE*followVec.y, true);
             }
         }
 
-        this.sprite.setRotation(angle);
+        this.sprite.setCenter(this.components[X],this.components[Y]);
+        if(follow) {
+            this.sprite.setRotation(angle);
+        }
+        else{
+            this.sprite.setRotation(this.components[ANGLE] * 57.2957795f);
+        }
         this.sprite.draw(batch);
     }
 

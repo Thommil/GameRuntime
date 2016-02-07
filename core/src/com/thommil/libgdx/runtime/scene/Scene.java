@@ -128,29 +128,6 @@ public class Scene implements Screen {
     }
 
     /**
-     *  Autotuning method
-     */
-    private void autotune(){
-        switch(Gdx.graphics.getFramesPerSecond()/10) {
-            //50+ FPS - Full Throttle
-            case 6:
-            case 5:
-                this.settings.physics.frequency = 0.01666666666f;
-                break;
-            //Init phase
-            case 0:
-                this.settings.physics.asyncMode = !Gdx.app.getType().equals(Application.ApplicationType.Android);
-                this.settings.physics.frequency = 0.01666666666f;
-                this.settings.physics.velocityIterations = 8;
-                this.settings.physics.positionIterations = 3;
-                this.settings.physics.particleIterations = 1;
-                break;
-            default:
-                this.settings.physics.frequency = 0.03333333333f;
-        }
-    }
-
-    /**
      * Adds a layer to scene (beware of the ascending order !!!)
      *
      * @param layer The layer to add
@@ -196,9 +173,9 @@ public class Scene implements Screen {
             if(actor instanceof PhysicsActor) {
                 this.physicsLock.lock();
                 ((PhysicsActor) actor)._init(this.physicsWorld);
-                ((PhysicsActor) actor).physicsComponents[Actor.X] = ((PhysicsActor) actor).body.getPosition().x;
-                ((PhysicsActor) actor).physicsComponents[Actor.Y] = ((PhysicsActor) actor).body.getPosition().y;
-                ((PhysicsActor) actor).physicsComponents[Actor.ANGLE] = ((PhysicsActor) actor).body.getAngle();
+                ((PhysicsActor) actor)._components[Actor.X] = ((PhysicsActor) actor).body.getPosition().x;
+                ((PhysicsActor) actor)._components[Actor.Y] = ((PhysicsActor) actor).body.getPosition().y;
+                ((PhysicsActor) actor)._components[Actor.ANGLE] = ((PhysicsActor) actor).body.getAngle();
                 this.physicsActors.add(((PhysicsActor) actor));
                 this.physicsLock.unlock();
             }
@@ -297,9 +274,9 @@ public class Scene implements Screen {
                             for (final PhysicsActor actor : Scene.this.physicsActors) {
                                 if(!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
                                     final Vector2 position = actor.body.getPosition();
-                                    actor.physicsComponents[Actor.X] = position.x;
-                                    actor.physicsComponents[Actor.Y] = position.y;
-                                    actor.physicsComponents[Actor.ANGLE] = actor.body.getAngle();
+                                    actor._components[Actor.X] = position.x;
+                                    actor._components[Actor.Y] = position.y;
+                                    actor._components[Actor.ANGLE] = actor.body.getAngle();
                                 }
                             }
 
@@ -369,9 +346,9 @@ public class Scene implements Screen {
             for (final PhysicsActor actor : this.physicsActors) {
                 if (!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
                     final Vector2 position = actor.body.getPosition();
-                    actor.renderComponents[Actor.X] = position.x;
-                    actor.renderComponents[Actor.Y] = position.y;
-                    actor.renderComponents[Actor.ANGLE] = actor.body.getAngle();
+                    actor.components[Actor.X] = actor._components[Actor.X] = position.x;
+                    actor.components[Actor.Y] = actor._components[Actor.Y] = position.y;
+                    actor.components[Actor.ANGLE] = actor._components[Actor.ANGLE] = actor.body.getAngle();
                 }
             }
 
@@ -396,9 +373,9 @@ public class Scene implements Screen {
             this.physicsLock.lock();
             for (final PhysicsActor actor : this.physicsActors) {
                 if(!actor.body.getType().equals(BodyDef.BodyType.StaticBody)) {
-                    actor.renderComponents[Actor.X] = actor.physicsComponents[Actor.X];
-                    actor.renderComponents[Actor.Y] = actor.physicsComponents[Actor.Y];
-                    actor.renderComponents[Actor.ANGLE] = actor.physicsComponents[Actor.ANGLE];
+                    actor.components[Actor.X] = actor._components[Actor.X];
+                    actor.components[Actor.Y] = actor._components[Actor.Y];
+                    actor.components[Actor.ANGLE] = actor._components[Actor.ANGLE];
                 }
             }
             this.physicsLock.unlock();

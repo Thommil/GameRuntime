@@ -25,7 +25,7 @@ public class BasicScene extends Game {
 		defaultScene.setLayer(0,new BasicLayer());
 
 		//Actor
-		defaultScene.addActor(new SpriteActor());
+		defaultScene.addActor(new BasicActor());
 
 		//Start
 		this.setScreen(defaultScene);

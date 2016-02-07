@@ -1,16 +1,17 @@
-package com.thommil.libgdx.runtime.test.input.kinematic;
+package com.thommil.libgdx.runtime.test.input.dynamic;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
+import com.thommil.libgdx.runtime.scene.SceneListener;
 
 /**
  * Test for a Simple Scene display :
  * 	- draw a static srite in middle of scene
  */
-public class BasicScene extends Game implements InputProcessor {
+public class PhysicsScene extends Game implements InputProcessor{
 
-	private SpriteActor shipActor;
+	private DynamicPhysicsActor shipActor;
 	private Scene scene;
 
 	@Override
@@ -21,16 +22,22 @@ public class BasicScene extends Game implements InputProcessor {
 		Scene.Settings settings = new Scene.Settings();
 		settings.viewport.minWorldWidth = 20;
 		settings.viewport.minWorldHeight = 20;
+		settings.physics.gravity = new float[]{0f,0f};
+		//settings.physics.debug=true;
 		scene = new Scene(settings);
 
 		//Layers
-		scene.setLayer(0,new BasicLayer());
+		scene.setLayer(0,new PhysicsLayer());
 
 		//Actor
-		shipActor = new SpriteActor();
+		for(int i=0; i < 10; i++) {
+			scene.addActor(new StaticPhysicsActor());
+		}
+		shipActor = new DynamicPhysicsActor();
 		scene.addActor(shipActor);
 
 		Gdx.input.setInputProcessor(this);
+
 
 		//Start
 		this.setScreen(scene);
