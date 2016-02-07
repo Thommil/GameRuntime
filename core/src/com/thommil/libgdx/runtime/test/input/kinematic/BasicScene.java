@@ -24,7 +24,7 @@ public class BasicScene extends Game implements InputProcessor {
 		scene = new Scene(settings);
 
 		//Layers
-		scene.setLayer(0,new BasicLayer());
+		scene.addLayer(0,new BasicLayer());
 
 		//Actor
 		shipActor = new SpriteActor();

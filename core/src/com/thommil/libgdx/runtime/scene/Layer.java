@@ -32,7 +32,6 @@ public abstract class Layer implements Disposable {
     /**
      * Default constructor
      */
-    @SuppressWarnings("all")
     public Layer() {
         this.renderables = new ArrayList<Renderable>();
     }

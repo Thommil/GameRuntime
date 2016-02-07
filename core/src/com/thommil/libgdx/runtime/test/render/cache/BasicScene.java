@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.basic;
+package com.thommil.libgdx.runtime.test.render.cache;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;

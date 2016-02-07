@@ -1,10 +1,9 @@
-package com.thommil.libgdx.runtime.test.basic;
+package com.thommil.libgdx.runtime.test.render.cache;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.graphics.Renderable;
 
 /**

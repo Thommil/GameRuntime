@@ -1,15 +1,14 @@
 package com.thommil.libgdx.runtime.graphics;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.thommil.libgdx.runtime.scene.Actor;
 
 /**
  * Defines a renderable element
  *
  * Created by thommil on 01/02/16.
  */
-public interface Renderable {
+public interface Renderable extends Actor {
 
     /**
      * Returns the layer of the Renderable

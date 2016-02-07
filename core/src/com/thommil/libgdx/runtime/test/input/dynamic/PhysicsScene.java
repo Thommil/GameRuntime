@@ -27,7 +27,7 @@ public class PhysicsScene extends Game implements InputProcessor{
 		scene = new Scene(settings);
 
 		//Layers
-		scene.setLayer(0,new PhysicsLayer());
+		scene.addLayer(0,new PhysicsLayer());
 
 		//Actor
 		for(int i=0; i < 10; i++) {

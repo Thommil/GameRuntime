@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.graphics.Renderable;
@@ -26,14 +27,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * Created by thommil on 01/02/16.
  */
-@SuppressWarnings("unused")
 public class Scene implements Screen {
-
-    /**
-     * Inner constants for async mode update
-     */
-    private final static int WORLD_TO_ACTOR = 0;
-    private final static int ACTOR_TO_RENDERER = 1;
 
     /**
      * Scene settings
@@ -53,7 +47,7 @@ public class Scene implements Screen {
     /**
      * Inner layers  list
      */
-    protected final Layer[] layers;
+    protected final IntMap<Layer> layers;
 
     /**
      * Executor bound to this scene
@@ -114,21 +108,47 @@ public class Scene implements Screen {
         this.physicsActors = new ArrayList<PhysicsActor>();
         this.physicsQueue = new ArrayDeque<Runnable>();
 
-        this.layers = new Layer[settings.renderer.layers];
+        this.layers = new IntMap<Layer>();
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
         this.viewport.apply(settings.viewport.centerCamera);
     }
 
     /**
-     * Adds a layer to scene (beware of the ascending order !!!)
+     * Adds a layer to scene at the specific index
      *
+     * @param index The index of the layer
      * @param layer The layer to add
      */
-    public void setLayer(final int index, final Layer layer){
-        Gdx.app.debug("Scene","setLayer("+index+")");
+    public void addLayer(final int index, final Layer layer){
+        Gdx.app.debug("Scene","addLayer("+index+")");
         layer.setCamera(this.camera);
-        this.layers[index] = layer;
+        this.renderLock.lock();
+        this.layers.put(index,layer);
+        this.renderLock.unlock();
+    }
+
+    /**
+     * Gets the layer at the specified index
+     *
+     * @param index The index of the layer
+     *
+     * @return The layer at the index, null if not found
+     */
+    public Layer getLayer(final int index){
+        return this.layers.get(index);
+    }
+
+    /**
+     * Removes a layer from the specific index
+     *
+     * @param index The index of the layer
+     */
+    public void removeLayer(final int index){
+        Gdx.app.debug("Scene","removeLayer("+index+")");
+        this.renderLock.lock();
+        this.layers.remove(index);
+        this.renderLock.unlock();
     }
 
     /**
@@ -138,7 +158,7 @@ public class Scene implements Screen {
      */
     public void showLayer(final int index){
         Gdx.app.debug("Scene","showLayer("+index+")");
-        this.layers[index].show();
+        this.layers.get(index).show();
     }
 
     /**
@@ -148,7 +168,7 @@ public class Scene implements Screen {
      */
     public void hideLayer(final int index){
         Gdx.app.debug("Scene","hideLayer("+index+")");
-        this.layers[index].hide();
+        this.layers.get(index).hide();
     }
 
     /**
@@ -164,7 +184,7 @@ public class Scene implements Screen {
                 public void run() {
                     if(actor instanceof Renderable) {
                         Scene.this.renderLock.lock();
-                        Scene.this.layers[((Renderable) actor).getLayer()].addRenderable((Renderable) actor);
+                        Scene.this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
                         Scene.this.renderLock.unlock();
                     }
                     if(actor instanceof PhysicsActor) {
@@ -176,7 +196,7 @@ public class Scene implements Screen {
         }
         else{
             if(actor instanceof Renderable) {
-                this.layers[((Renderable) actor).getLayer()].addRenderable((Renderable) actor);
+                this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
             }
             if(actor instanceof PhysicsActor) {
                 ((PhysicsActor) actor)._init(this.physicsWorld);
@@ -198,7 +218,7 @@ public class Scene implements Screen {
                 public void run() {
                     if (actor instanceof Renderable) {
                         Scene.this.renderLock.lock();
-                        Scene.this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
+                        Scene.this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
                         Scene.this.renderLock.unlock();
                     }
                     if (actor instanceof PhysicsActor) {
@@ -210,7 +230,7 @@ public class Scene implements Screen {
         }
         else{
             if (actor instanceof Renderable) {
-                this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
+                this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
             }
             if (actor instanceof PhysicsActor) {
                 this.physicsActors.remove(actor);
@@ -226,7 +246,7 @@ public class Scene implements Screen {
             this.debugRenderer = new Box2DDebugRenderer();
         }
 
-        for(final Layer layer : this.layers) {
+        for(final Layer layer : this.layers.values()) {
             layer.show();
         }
 
@@ -341,7 +361,7 @@ public class Scene implements Screen {
                 this.sceneListener.onRender(delta);
             }
 
-            for (final Layer layer : this.layers) {
+            for (final Layer layer : this.layers.values()) {
                 if (layer.isVisible()) {
                     layer.render(delta);
                 }
@@ -359,7 +379,7 @@ public class Scene implements Screen {
                 this.sceneListener.onRender(delta);
             }
 
-            for (final Layer layer : this.layers) {
+            for (final Layer layer : this.layers.values()) {
                 if (layer.isVisible()) {
                     layer.render(delta);
                 }
@@ -380,10 +400,6 @@ public class Scene implements Screen {
      */
     public void setListener(final SceneListener sceneListener){
         this.sceneListener = sceneListener;
-    }
-
-    public void removeListener(){
-        this.sceneListener = null;
     }
 
     @Override
@@ -408,7 +424,7 @@ public class Scene implements Screen {
     public void hide() {
         Gdx.app.debug("Scene","hide()");
         this.paused = true;
-        for(final Layer layer : this.layers) {
+        for(final Layer layer : this.layers.values()) {
             layer.hide();
         }
         this.executor.shutdown();
@@ -421,7 +437,7 @@ public class Scene implements Screen {
         this.paused = true;
         this.executor.shutdown();
         this.physicsWorld.dispose();
-        for(final Layer layer : this.layers){
+        for(final Layer layer : this.layers.values()){
             layer.dispose();
         }
     }
@@ -432,10 +448,6 @@ public class Scene implements Screen {
 
     public Viewport getViewport() {
         return viewport;
-    }
-
-    public Layer[] getLayers() {
-        return layers;
     }
 
     public List<PhysicsActor> getPhysicsActors() {
@@ -492,7 +504,6 @@ public class Scene implements Screen {
          * Renderer class for Scene settings
          */
         public static class Renderer{
-            public int layers = 1;
             public boolean clearScreen = true;
             public float[] clearColor = {0f, 0f, 0f, 1f};
         }

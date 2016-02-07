@@ -12,7 +12,7 @@ import com.thommil.libgdx.runtime.scene.Actor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SpriteActor extends Actor implements Renderable {
+public class SpriteActor implements Renderable {
 
     Sprite sprite;
     Texture texture;

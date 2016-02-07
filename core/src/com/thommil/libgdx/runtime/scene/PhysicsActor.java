@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
  *
  * Created by thommil on 03/02/16.
  */
-public abstract class PhysicsActor extends Actor{
+public abstract class PhysicsActor implements Actor{
 
     /**
      * The bound body

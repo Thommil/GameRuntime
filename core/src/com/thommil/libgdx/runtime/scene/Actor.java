@@ -7,6 +7,6 @@ import com.badlogic.gdx.utils.Disposable;
  *
  * Created by thommil on 01/02/16.
  */
-public abstract class Actor implements Disposable{
+public interface Actor extends Disposable{
 
 }
