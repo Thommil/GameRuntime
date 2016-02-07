@@ -19,7 +19,7 @@ public interface Renderable {
     int getLayer();
 
     /**
-     * Render the element on current viewport
+     * Render the element on current viewport (do access physics world here !)
      *
      * @param deltaTime The delta time since last call
      * @param renderer The batch renderer to use

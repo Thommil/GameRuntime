@@ -91,21 +91,38 @@ public class PhysicsScene extends Game implements InputProcessor{
 	private Vector2 mousePointerVec = new Vector2();
 
 	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		this.shipActor.target(this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
-		this.shipActor.follow(true);
+	public boolean touchDown(final int screenX, final int screenY, int pointer, int button) {
+		this.scene.runOnPhysicsThread(new Runnable() {
+			@Override
+			public void run() {
+				PhysicsScene.this.shipActor.target(PhysicsScene.this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
+				PhysicsScene.this.shipActor.follow(true);
+			}
+		});
+
 		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		this.shipActor.follow(false);
+
+		this.scene.runOnPhysicsThread(new Runnable() {
+			@Override
+			public void run() {
+				PhysicsScene.this.shipActor.follow(false);
+			}
+		});
 		return false;
 	}
 
 	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		this.shipActor.target(this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
+	public boolean touchDragged(final int screenX, final int screenY, int pointer) {
+		this.scene.runOnPhysicsThread(new Runnable() {
+			@Override
+			public void run() {
+				PhysicsScene.this.shipActor.target(PhysicsScene.this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
+			}
+		});
 		return false;
 	}
 

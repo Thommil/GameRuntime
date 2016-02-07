@@ -29,7 +29,10 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
-        settings.physics.asyncMode=true;
+        //settings.physics.asyncMode=false;
+        settings.physics.velocityIterations = 8;
+        settings.physics.frequency = 1/60f;
+        settings.physics.positionIterations = 3;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
         texture = new Texture(Gdx.files.internal("curiosity.png"));
@@ -82,7 +85,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.defaultScene.removeActor(this.defaultScene.getPhysicsActors().get(1));
+        PhysicsScene.this.defaultScene.removeActor(PhysicsScene.this.defaultScene.getPhysicsActors().get(1));
         return false;
     }
 

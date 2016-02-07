@@ -95,7 +95,7 @@ public class SpriteActor extends Actor implements Renderable {
     public void target(Vector2 targetVec){
         this.targetVec.set(targetVec);
         followVec = targetVec.sub(this.sprite.getX(),this.sprite.getY()).nor();
-        angle = followVec.angle() + 90f;
+        angle = followVec.angle() - 90f;
     }
 
     @Override

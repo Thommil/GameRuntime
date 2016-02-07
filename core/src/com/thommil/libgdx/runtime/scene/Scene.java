@@ -1,12 +1,10 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -71,11 +69,6 @@ public class Scene implements Screen {
      * Queue for step executor
      */
     private final Deque<Runnable> physicsQueue;
-
-    /**
-     * Lock for physics sync
-     */
-    private final Lock physicsLock = new ReentrantLock();
 
     /**
      * Lock for rendering sync
@@ -166,17 +159,20 @@ public class Scene implements Screen {
     public void addActor(final Actor actor) {
         Gdx.app.debug("Scene","addActor()");
         if(this.settings.physics.asyncMode) {
-            if(actor instanceof Renderable) {
-                this.renderLock.lock();
-                this.layers[((Renderable) actor).getLayer()].addRenderable((Renderable) actor);
-                this.renderLock.unlock();
-            }
-            if(actor instanceof PhysicsActor) {
-                this.physicsLock.lock();
-                ((PhysicsActor) actor)._init(this.physicsWorld);
-                this.physicsActors.add(((PhysicsActor) actor));
-                this.physicsLock.unlock();
-            }
+            this.runOnPhysicsThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(actor instanceof Renderable) {
+                        Scene.this.renderLock.lock();
+                        Scene.this.layers[((Renderable) actor).getLayer()].addRenderable((Renderable) actor);
+                        Scene.this.renderLock.unlock();
+                    }
+                    if(actor instanceof PhysicsActor) {
+                        ((PhysicsActor) actor)._init(Scene.this.physicsWorld);
+                        Scene.this.physicsActors.add(((PhysicsActor) actor));
+                    }
+                }
+            });
         }
         else{
             if(actor instanceof Renderable) {
@@ -197,17 +193,20 @@ public class Scene implements Screen {
     public void removeActor(final Actor actor){
         Gdx.app.debug("Scene","removeActor()");
         if(this.settings.physics.asyncMode) {
-            if (actor instanceof Renderable) {
-                this.renderLock.lock();
-                this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
-                this.renderLock.unlock();
-            }
-            if (actor instanceof PhysicsActor) {
-                this.physicsLock.lock();
-                this.physicsActors.remove(actor);
-                this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
-                this.physicsLock.unlock();
-            }
+            this.runOnPhysicsThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (actor instanceof Renderable) {
+                        Scene.this.renderLock.lock();
+                        Scene.this.layers[((Renderable) actor).getLayer()].removeRenderable((Renderable) actor);
+                        Scene.this.renderLock.unlock();
+                    }
+                    if (actor instanceof PhysicsActor) {
+                        Scene.this.physicsActors.remove(actor);
+                        Scene.this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
+                    }
+                }
+            });
         }
         else{
             if (actor instanceof Renderable) {
@@ -253,8 +252,6 @@ public class Scene implements Screen {
 
                         if (!Scene.this.paused) {
 
-                            Scene.this.physicsLock.lock();
-
                             while(!Scene.this.physicsQueue.isEmpty()){
                                 Scene.this.physicsQueue.poll().run();
                             }
@@ -272,7 +269,6 @@ public class Scene implements Screen {
                                     , Scene.this.settings.physics.positionIterations
                                     , Scene.this.settings.physics.particleIterations);
 
-                            Scene.this.physicsLock.unlock();
                         }
                         lastPhysicsStepDuration = System.currentTimeMillis() - start;
 
@@ -506,10 +502,10 @@ public class Scene implements Screen {
          */
         public static class Physics{
             public float[] gravity = {0.0f,-9.8f};
-            public boolean asyncMode = !Gdx.app.getType().equals(Application.ApplicationType.Android);
+            public boolean asyncMode = true;
             public float frequency = 0.01666666666f;
-            public int velocityIterations = Gdx.app.getType().equals(Application.ApplicationType.Desktop) ? 8:6;
-            public int positionIterations = Gdx.app.getType().equals(Application.ApplicationType.Desktop) ? 3:2;
+            public int velocityIterations = 8;
+            public int positionIterations = 3;
             public int particleIterations = 1;
             public boolean debug = false;
         }

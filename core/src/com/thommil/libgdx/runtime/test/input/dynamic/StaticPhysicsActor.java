@@ -14,6 +14,7 @@ import com.thommil.libgdx.runtime.scene.PhysicsActor;
 public class StaticPhysicsActor extends PhysicsActor implements Renderable {
 
     Texture texture;
+    float[] textureBounds = new float[4];
     float radius;
 
     public StaticPhysicsActor() {
@@ -34,6 +35,10 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
         planetShape.setRadius(radius);
         this.body.createFixture(planetShape, 0f);
         planetShape.dispose();
+        textureBounds[0] = this.body.getPosition().x-radius;
+        textureBounds[1] = this.body.getPosition().y-radius;
+        textureBounds[2] = radius*2;
+        textureBounds[3] = radius*2;
         return this.body;
     }
 
@@ -45,7 +50,7 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
     @Override
     public void render(float deltaTime, Batch batch) {
 
-        batch.draw(texture,this.body.getPosition().x-radius,body.getPosition().y-radius,radius*2,radius*2);
+        batch.draw(texture,textureBounds[0],textureBounds[1],textureBounds[2],textureBounds[3]);
     }
 
     @Override

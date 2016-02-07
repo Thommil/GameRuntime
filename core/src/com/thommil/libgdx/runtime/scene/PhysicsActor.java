@@ -30,5 +30,11 @@ public abstract class PhysicsActor extends Actor{
      */
     protected abstract Body buildBody(final World world);
 
+    /**
+     * Called at each physics step, any physics related task should be
+     * handled here and not in the rendering phase.
+     *
+     * @param lastStepDuration The duration of the last step for QoS purpose
+     */
     protected abstract void step(long lastStepDuration);
 }
