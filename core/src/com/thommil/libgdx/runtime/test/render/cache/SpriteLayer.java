@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.test.render.cache;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.thommil.libgdx.runtime.graphics.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
@@ -22,8 +23,13 @@ public class SpriteLayer extends Layer{
     }
 
     @Override
+    protected void onResize() {
+
+    }
+
+    @Override
     public void render(float deltaTime) {
-        //Gdx.app.debug("BasicLayer","render()");
+        //Gdx.app.log("SpriteLayer","render()");
         spriteBatch.setProjectionMatrix(this.camera.combined);
         spriteBatch.begin();
         for(Renderable renderable : this.renderables){

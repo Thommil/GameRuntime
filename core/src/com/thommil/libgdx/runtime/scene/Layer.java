@@ -69,7 +69,7 @@ public abstract class Layer implements Disposable {
     public abstract void render(float deltaTime);
 
     /**
-     * Shows/enables a layer
+     * Shows a layer
      */
     public void show(){
         this.onShow();
@@ -77,12 +77,12 @@ public abstract class Layer implements Disposable {
     }
 
     /**
-     * Called when render is enabled/showed for subclasses
+     * Called when layer is showed for subclasses
      */
     protected abstract void onShow();
 
     /**
-     * Hides/diables a layer
+     * Hides a layer
      */
     public void hide(){
         this.visible = false;
@@ -90,9 +90,14 @@ public abstract class Layer implements Disposable {
     }
 
     /**
-     * Called when render is disabled/hidden for subclasses
+     * Called when layer is hidden
      */
     protected abstract void onHide();
+
+    /**
+     * Called when layer is resized
+     */
+    protected abstract void onResize();
 
     /**
      * Indicates if layer is currently visible/enabled

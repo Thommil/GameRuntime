@@ -99,7 +99,6 @@ public class Scene implements Screen {
      *
      * @param settings The Scene settings
      */
-    @SuppressWarnings("all")
     public Scene(final Scene.Settings settings) {
         Gdx.app.debug("Scene","New scene");
         this.settings = settings;

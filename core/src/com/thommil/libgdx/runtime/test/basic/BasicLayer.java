@@ -22,6 +22,11 @@ public class BasicLayer extends Layer{
     }
 
     @Override
+    protected void onResize() {
+
+    }
+
+    @Override
     public void render(float deltaTime) {
         //Gdx.app.debug("BasicLayer","render()");
         spriteBatch.setProjectionMatrix(this.camera.combined);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -15,7 +16,7 @@ import com.thommil.libgdx.runtime.scene.PhysicsActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class StaticPhysicsActor extends PhysicsActor implements Renderable {
+public class StaticPhysicsActor extends PhysicsActor implements Renderable<SpriteBatch> {
 
     Texture texture;
 
@@ -45,8 +46,8 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable {
     }
 
     @Override
-    public void render(float deltaTime, Batch batch) {
-        batch.draw(texture,-10f,-2f,20f,2f);
+    public void render(float deltaTime, SpriteBatch batch) {
+        batch.draw(texture,-2f,-2f,4f,1f,0,0,4,1);
     }
 
     @Override

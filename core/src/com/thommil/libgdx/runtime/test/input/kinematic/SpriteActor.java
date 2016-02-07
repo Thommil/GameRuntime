@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.graphics.Renderable;
@@ -12,7 +13,7 @@ import com.thommil.libgdx.runtime.scene.Actor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SpriteActor implements Renderable {
+public class SpriteActor implements Renderable<SpriteBatch> {
 
     Sprite sprite;
     Texture texture;
@@ -45,7 +46,7 @@ public class SpriteActor implements Renderable {
     }
 
     @Override
-    public void render(float deltaTime, Batch batch) {
+    public void render(float deltaTime, SpriteBatch batch) {
         //Gdx.app.debug("SpriteActor","render()");
         spriteVec.set(this.sprite.getX(),this.sprite.getY());
 

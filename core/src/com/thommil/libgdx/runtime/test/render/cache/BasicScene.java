@@ -13,19 +13,20 @@ public class BasicScene extends Game {
 
 	@Override
 	public void create () {
-		Gdx.app.setLogLevel(Application.LOG_ERROR);
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 
 		//Scene
 		Scene.Settings settings = new Scene.Settings();
-		settings.viewport.minWorldWidth = 4;
-		settings.viewport.minWorldHeight = 4;
+		settings.viewport.minWorldWidth = 20;
+		settings.viewport.minWorldHeight = 20;
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new BasicLayer());
+		defaultScene.addLayer(0,new CacheLayer());
+		defaultScene.addLayer(1,new SpriteLayer());
 
 		//Actor
-		defaultScene.addActor(new BasicActor());
+		defaultScene.addActor(new SpriteActor());
 
 		//Start
 		this.setScreen(defaultScene);

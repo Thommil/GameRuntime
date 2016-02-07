@@ -1,14 +1,13 @@
 package com.thommil.libgdx.runtime.graphics;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.thommil.libgdx.runtime.scene.Actor;
 
 /**
- * Defines a renderable element
+ * Defines a renderable element using T as renderer
  *
  * Created by thommil on 01/02/16.
  */
-public interface Renderable extends Actor {
+public interface Renderable<T> extends Actor {
 
     /**
      * Returns the layer of the Renderable
@@ -21,8 +20,8 @@ public interface Renderable extends Actor {
      * Render the element on current viewport (do access physics world here !)
      *
      * @param deltaTime The delta time since last call
-     * @param renderer The batch renderer to use
+     * @param renderer The renderer to use in current layer
      */
-    void render(float deltaTime, Batch renderer);
+    void render(float deltaTime, T renderer);
 
 }

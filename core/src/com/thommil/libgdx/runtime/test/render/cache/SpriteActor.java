@@ -18,14 +18,14 @@ public class SpriteActor implements Renderable<SpriteBatch> {
     public SpriteActor() {
         this.texture = new Texture(Gdx.files.internal("curiosity.png"));
         this.sprite = new Sprite(texture);
-        this.sprite.setSize(2.6f,2.3f);
+        this.sprite.setSize(5.2f,4.6f);
         this.sprite.setCenter(0f,0f);
         this.sprite.setOriginCenter();
     }
 
     @Override
     public int getLayer() {
-        return 0;
+        return 1;
     }
 
     @Override

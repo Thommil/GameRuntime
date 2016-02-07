@@ -23,6 +23,11 @@ public class PhysicsLayer extends Layer{
     }
 
     @Override
+    protected void onResize() {
+
+    }
+
+    @Override
     public void render(float deltaTime) {
         spriteBatch.setProjectionMatrix(this.camera.combined);
         spriteBatch.begin();

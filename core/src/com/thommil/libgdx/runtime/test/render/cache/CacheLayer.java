@@ -1,5 +1,8 @@
 package com.thommil.libgdx.runtime.test.render.cache;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.thommil.libgdx.runtime.graphics.Renderable;
@@ -10,7 +13,26 @@ import com.thommil.libgdx.runtime.scene.Layer;
  */
 public class CacheLayer extends Layer{
 
-    SpriteCache spriteCache = new SpriteCache();
+    SpriteCache spriteCache = new SpriteCache(10,true);
+    Texture texture;
+
+    final int cacheId;
+
+    public CacheLayer(){
+        this.spriteCache.beginCache();
+        this.texture = new Texture(Gdx.files.internal("ground.jpg"));
+        this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        float[] vertices = new float[]
+                {
+                        -10f, -8.2f, Color.toFloatBits(1f,1f,1f,1f), 0 , 2f,
+                        -10f, -10f, Color.toFloatBits(1f,1f,1f,1f), 0 , 0,
+                        10f, -10f, Color.toFloatBits(1f,1f,1f,1f), 2f , 0,
+                        10f, -8.2f, Color.toFloatBits(1f,1f,1f,1f), 2f , 2f
+                };
+
+        this.spriteCache.add(texture, vertices,0,vertices.length);
+        cacheId = this.spriteCache.endCache();
+    }
 
     @Override
     public void onShow() {
@@ -23,13 +45,16 @@ public class CacheLayer extends Layer{
     }
 
     @Override
+    protected void onResize() {
+
+    }
+
+    @Override
     public void render(float deltaTime) {
-        //Gdx.app.debug("BasicLayer","render()");
+        //Gdx.app.debug("CacheLayer","render()");
         spriteCache.setProjectionMatrix(this.camera.combined);
         spriteCache.begin();
-        for(Renderable renderable : this.renderables){
-            //renderable.render(deltaTime,spriteCache);
-        }
+        spriteCache.draw(cacheId);
         spriteCache.end();
         //Gdx.app.debug("","FPS : " + Gdx.graphics.getFramesPerSecond());
     }
@@ -37,5 +62,6 @@ public class CacheLayer extends Layer{
     @Override
     public void dispose() {
         spriteCache.dispose();
+        this.texture.dispose();
     }
 }

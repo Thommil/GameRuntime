@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.test.physics.stress;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.graphics.Renderable;
@@ -11,7 +12,7 @@ import com.thommil.libgdx.runtime.scene.PhysicsActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends PhysicsActor implements Renderable{
+public class DynamicPhysicsActor extends PhysicsActor implements Renderable<SpriteBatch>{
 
     Sprite sprite;
 
@@ -44,7 +45,7 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable{
     }
 
     @Override
-    public void render(float deltaTime, Batch batch) {
+    public void render(float deltaTime, SpriteBatch batch) {
         this.sprite.draw(batch);
     }
 
