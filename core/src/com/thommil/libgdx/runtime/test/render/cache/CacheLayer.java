@@ -9,6 +9,8 @@ import com.thommil.libgdx.runtime.graphics.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
 
 /**
+ * //TODO Extends/rewrite SpriteCache to handle any geometry
+ *
  * Created by thommil on 03/02/16.
  */
 public class CacheLayer extends Layer{
@@ -20,16 +22,25 @@ public class CacheLayer extends Layer{
 
     public CacheLayer(){
         this.spriteCache.beginCache();
-        this.texture = new Texture(Gdx.files.internal("ground.jpg"));
+        this.texture = new Texture(Gdx.files.internal("test.png"));
         this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         float[] vertices = new float[]
                 {
-                        -10f, -8.2f, Color.toFloatBits(1f,1f,1f,1f), 0 , 2f,
-                        -10f, -10f, Color.toFloatBits(1f,1f,1f,1f), 0 , 0,
-                        10f, -10f, Color.toFloatBits(1f,1f,1f,1f), 2f , 0,
-                        10f, -8.2f, Color.toFloatBits(1f,1f,1f,1f), 2f , 2f
+                        -10f, -8f, Color.toFloatBits(1f,1f,1f,1f), 0f , 0f,
+                        -10f, -10f, Color.toFloatBits(1f,1f,1f,1f), 0f , 0.1f,
+                        0f, -10f, Color.toFloatBits(1f,1f,1f,1f), 1f , 0.1f,
+                        0f, -10f, Color.toFloatBits(1f,1f,1f,1f), 1f , 0.1f
                 };
 
+        this.spriteCache.add(texture, vertices,0,vertices.length);
+            vertices = new float[]
+                {
+                        0f, -10f, Color.toFloatBits(1f,1f,1f,1f), 0f , 0.1f,
+                        10f, -10f, Color.toFloatBits(1f,1f,1f,1f), 1f , 0.1f,
+                        10f, -8f, Color.toFloatBits(1f,1f,1f,1f), 1f , 0f,
+                        10f, -8f, Color.toFloatBits(1f,1f,1f,1f), 1f , 0f
+
+                };
         this.spriteCache.add(texture, vertices,0,vertices.length);
         cacheId = this.spriteCache.endCache();
     }

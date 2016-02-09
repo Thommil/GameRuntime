@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		config.width=800;
 		config.height=600;
 		//Basic texture
-		new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.texture.BasicScene(), config);
+		//new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.texture.BasicScene(), config);
 		//Basic sprite
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.sprite.BasicScene(), config);
 
@@ -24,6 +24,6 @@ public class DesktopLauncher {
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
 
 		//Render cache
-		//new LwjglApplication(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
+		new LwjglApplication(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
 	}
 }

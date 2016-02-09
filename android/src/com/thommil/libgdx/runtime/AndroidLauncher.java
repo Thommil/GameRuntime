@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime;
 
+import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
@@ -25,6 +26,6 @@ public class AndroidLauncher extends AndroidApplication {
 		//initialize(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
 
 		//Render cache
-		//initialize(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
+		initialize(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
 	}
 }

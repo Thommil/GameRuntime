@@ -15,8 +15,6 @@ public class BasicActor implements Renderable<SpriteBatch> {
 
     public BasicActor() {
         this.texture = new Texture(Gdx.files.internal("test.png"));
-        this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
     }
 
     @Override
@@ -26,7 +24,24 @@ public class BasicActor implements Renderable<SpriteBatch> {
 
     @Override
     public void render(float deltaTime, SpriteBatch batch) {
-        batch.draw(texture,-5,-2,10,4);
+        //Repeat
+        //this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        //1/2x1/2
+        //batch.draw(texture,-4f,-4f,8f,8f,0f,0.5f,0.5f,0f);
+        //1x1
+        batch.draw(texture,-4f,-4f,8f,8f,0f,1f,1f,0f);
+        //2x2
+        //batch.draw(texture,-4f,-4f,8f,8f,0f,2f,2f,0f);
+        //4x4
+        //batch.draw(texture,-4f,-4f,8f,8f,0f,4f,4f,0f);
+        //2x1
+        //batch.draw(texture,-4f,-4f,8f,8f,0f,1f,2f,0f);
+        //1x2
+        //batch.draw(texture,-4f,-4f,8f,8f,0f,2f,1f,0f);
+
+        //Stretch
+        //this.texture.setWrap(Texture.TextureWrap.ClampToEdge,Texture.TextureWrap.ClampToEdge);
+        //batch.draw(texture,-4f,-4f,8f,8f);
     }
 
     @Override

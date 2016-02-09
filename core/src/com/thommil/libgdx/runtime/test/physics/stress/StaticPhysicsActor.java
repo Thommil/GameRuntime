@@ -43,7 +43,7 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable<Sprit
 
     @Override
     public void render(float deltaTime, SpriteBatch batch) {
-        batch.draw(texture,-1000f,-50f,2000f,10f);
+        batch.draw(texture,-1000f,-50f,2000f,10f,0f,0.05f,10f,0f);
     }
 
     @Override
