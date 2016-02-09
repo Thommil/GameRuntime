@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.scene.Scene;
 
 /**
+ * Simple PhysicsActor test
+ *
  * Created by tomtom on 04/02/16.
  */
 public class PhysicsScene extends Game{

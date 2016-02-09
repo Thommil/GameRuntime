@@ -6,8 +6,7 @@ import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.SceneListener;
 
 /**
- * Test for a Simple Scene display :
- * 	- draw a static srite in middle of scene
+ * Test for a physic actor using inputs
  */
 public class PhysicsScene extends Game implements InputProcessor{
 

@@ -28,14 +28,12 @@ public class BasicLayer extends Layer{
 
     @Override
     public void render(float deltaTime) {
-        //Gdx.app.debug("BasicLayer","render()");
         spriteBatch.setProjectionMatrix(this.camera.combined);
         spriteBatch.begin();
         for(Renderable renderable : this.renderables){
             renderable.render(deltaTime,spriteBatch);
         }
         spriteBatch.end();
-        //Gdx.app.debug("","FPS : " + Gdx.graphics.getFramesPerSecond());
     }
 
     @Override

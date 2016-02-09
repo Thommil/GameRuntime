@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
 
 /**
- * Test for a Simple Scene display :
- * 	- draw a static srite in middle of scene
+ * Test for a kinematic actor using inputs
  */
 public class BasicScene extends Game implements InputProcessor {
 

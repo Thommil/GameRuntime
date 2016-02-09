@@ -1,31 +1,32 @@
-package com.thommil.libgdx.runtime.test.render.cache;
+package com.thommil.libgdx.runtime.test.basic.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.graphics.Renderable;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SpriteActor implements Renderable<SpriteBatch> {
+public class BasicActor implements Renderable<SpriteBatch> {
 
     Sprite sprite;
     Texture texture;
 
-    public SpriteActor() {
+    public BasicActor() {
         this.texture = new Texture(Gdx.files.internal("curiosity.png"));
         this.sprite = new Sprite(texture);
-        this.sprite.setSize(5.2f,4.6f);
-        this.sprite.setCenter(0f,0f);
+        this.sprite.setSize(2.6f,2.3f);
         this.sprite.setOriginCenter();
+        this.sprite.setCenter(0f,0f);
     }
 
     @Override
     public int getLayer() {
-        return 1;
+        return 0;
     }
 
     @Override

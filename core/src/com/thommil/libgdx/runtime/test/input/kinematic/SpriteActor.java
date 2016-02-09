@@ -47,7 +47,6 @@ public class SpriteActor implements Renderable<SpriteBatch> {
 
     @Override
     public void render(float deltaTime, SpriteBatch batch) {
-        //Gdx.app.debug("SpriteActor","render()");
         spriteVec.set(this.sprite.getX(),this.sprite.getY());
 
         if(right){

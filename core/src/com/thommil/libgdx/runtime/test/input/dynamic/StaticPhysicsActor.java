@@ -10,7 +10,7 @@ import com.thommil.libgdx.runtime.graphics.Renderable;
 import com.thommil.libgdx.runtime.scene.PhysicsActor;
 
 /**
- * Created by tomtom on 03/02/16.
+ * Created by thommil on 03/02/16.
  */
 public class StaticPhysicsActor extends PhysicsActor implements Renderable<SpriteBatch> {
 
@@ -21,7 +21,6 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable<Sprit
     public StaticPhysicsActor() {
         this.texture = new Texture(Gdx.files.internal("planet.png"));
         this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
     }
 
 
@@ -50,7 +49,6 @@ public class StaticPhysicsActor extends PhysicsActor implements Renderable<Sprit
 
     @Override
     public void render(float deltaTime, SpriteBatch batch) {
-
         batch.draw(texture,textureBounds[0],textureBounds[1],textureBounds[2],textureBounds[3]);
     }
 

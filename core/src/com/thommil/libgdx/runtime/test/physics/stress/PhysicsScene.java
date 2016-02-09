@@ -10,6 +10,8 @@ import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.SceneListener;
 
 /**
+ * Live benchmark on Physics/Rendering loops
+ *
  * Created by tomtom on 04/02/16.
  */
 public class PhysicsScene extends Game implements SceneListener, InputProcessor{
@@ -30,9 +32,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
         //settings.physics.asyncMode=false;
-        settings.physics.velocityIterations = 8;
-        settings.physics.frequency = 1/60f;
-        settings.physics.positionIterations = 3;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
         texture = new Texture(Gdx.files.internal("curiosity.png"));

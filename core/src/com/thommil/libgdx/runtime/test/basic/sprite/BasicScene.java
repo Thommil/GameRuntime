@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.basic;
+package com.thommil.libgdx.runtime.test.basic.sprite;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -6,14 +6,13 @@ import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.scene.Scene;
 
 /**
- * Test for a Simple Scene display :
- * 	- draw a static srite in middle of scene
+ * Test for a Simple Sprite display
  */
 public class BasicScene extends Game {
 
 	@Override
 	public void create () {
-		Gdx.app.setLogLevel(Application.LOG_ERROR);
+		Gdx.app.setLogLevel(Application.LOG_INFO);
 
 		//Scene
 		Scene.Settings settings = new Scene.Settings();

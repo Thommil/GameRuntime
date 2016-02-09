@@ -62,8 +62,6 @@ public class DynamicPhysicsActor extends PhysicsActor implements Renderable<Spri
 
     @Override
     public void render(float deltaTime, SpriteBatch batch) {
-        //Gdx.app.debug("SpriteActor","render()");
-
         this.sprite.draw(batch);
     }
 

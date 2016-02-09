@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.input.dynamic;
+package com.thommil.libgdx.runtime.test.basic.texture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.thommil.libgdx.runtime.graphics.Renderable;
@@ -7,7 +7,7 @@ import com.thommil.libgdx.runtime.scene.Layer;
 /**
  * Created by thommil on 03/02/16.
  */
-public class PhysicsLayer extends Layer{
+public class BasicLayer extends Layer{
 
     SpriteBatch spriteBatch = new SpriteBatch();
 

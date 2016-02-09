@@ -10,8 +10,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        //Basic
-        //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.BasicScene(), config);
+        //Basic texture
+        //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.texture.BasicScene(), config);
+        //Basic sprite
+        //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.sprite.BasicScene(), config);
 
         //Basic Physics
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
