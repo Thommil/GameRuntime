@@ -24,6 +24,6 @@ public class DesktopLauncher {
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
 
 		//Render cache
-		new LwjglApplication(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
+		//new LwjglApplication(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
 	}
 }
