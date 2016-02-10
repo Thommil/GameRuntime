@@ -10,7 +10,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.graphics.Renderable;
+import com.thommil.libgdx.runtime.scene.actor.PhysicsActor;
+import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

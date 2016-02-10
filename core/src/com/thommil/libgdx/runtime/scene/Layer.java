@@ -2,7 +2,6 @@ package com.thommil.libgdx.runtime.scene;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Disposable;
-import com.thommil.libgdx.runtime.graphics.Renderable;
 
 import java.util.ArrayList;
 import java.util.List;

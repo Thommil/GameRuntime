@@ -2,16 +2,13 @@ package com.thommil.libgdx.runtime.test.physics.basic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.thommil.libgdx.runtime.graphics.Renderable;
-import com.thommil.libgdx.runtime.scene.Actor;
-import com.thommil.libgdx.runtime.scene.PhysicsActor;
+import com.thommil.libgdx.runtime.scene.Renderable;
+import com.thommil.libgdx.runtime.scene.actor.PhysicsActor;
 
 /**
  * Created by tomtom on 03/02/16.

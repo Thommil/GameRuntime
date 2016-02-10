@@ -7,7 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.SceneListener;
+import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 
 /**
  * Live benchmark on Physics/Rendering loops

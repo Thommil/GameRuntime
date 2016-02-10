@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.scene;
+package com.thommil.libgdx.runtime.scene.listener;
 
 /**
  * Created by tomtom on 05/02/16.

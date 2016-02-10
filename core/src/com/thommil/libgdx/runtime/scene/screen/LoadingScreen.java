@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics;
+package com.thommil.libgdx.runtime.scene.screen;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Affine2;

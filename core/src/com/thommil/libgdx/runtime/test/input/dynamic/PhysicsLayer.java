@@ -1,7 +1,7 @@
 package com.thommil.libgdx.runtime.test.input.dynamic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.thommil.libgdx.runtime.graphics.Renderable;
+import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
 
 /**

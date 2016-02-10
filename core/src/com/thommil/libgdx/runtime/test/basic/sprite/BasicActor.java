@@ -2,16 +2,16 @@ package com.thommil.libgdx.runtime.test.basic.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.thommil.libgdx.runtime.scene.Actor;
-import com.thommil.libgdx.runtime.graphics.Renderable;
+import com.thommil.libgdx.runtime.graphics.SpriteActorBatch;
+import com.thommil.libgdx.runtime.scene.Renderable;
+import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class BasicActor implements Renderable<SpriteBatch> {
+public class BasicActor extends SpriteActor {
 
     Sprite sprite;
     Texture texture;
@@ -30,7 +30,7 @@ public class BasicActor implements Renderable<SpriteBatch> {
     }
 
     @Override
-    public void render(float deltaTime, SpriteBatch batch) {
+    public void render(float deltaTime, SpriteActorBatch batch) {
         this.sprite.rotate(2);
         this.sprite.draw(batch);
     }

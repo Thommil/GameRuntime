@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics;
+package com.thommil.libgdx.runtime.scene;
 
 import com.thommil.libgdx.runtime.scene.Actor;
 

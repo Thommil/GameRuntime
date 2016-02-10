@@ -3,7 +3,6 @@ package com.thommil.libgdx.runtime.test.input.dynamic;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.SceneListener;
 
 /**
  * Test for a physic actor using inputs
