@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.scene.actor;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,81 +14,75 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 2/10/16.
  */
-public class SpriteActor extends TextureRegion implements Actor, Renderable<Batch> {
+public class SpriteActor implements Actor, Renderable<Batch> {
 
     static public final int X1 = 0;
     static public final int Y1 = 1;
     static public final int U1 = 2;
     static public final int V1 = 3;
+
     static public final int X2 = 4;
     static public final int Y2 = 5;
     static public final int U2 = 6;
     static public final int V2 = 7;
+
     static public final int X3 = 8;
     static public final int Y3 = 9;
     static public final int U3 = 10;
     static public final int V3 = 11;
+
     static public final int X4 = 12;
     static public final int Y4 = 13;
     static public final int U4 = 14;
     static public final int V4 = 15;
 
     static final int VERTEX_SIZE = 2 + 2;
-    static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
+    public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
-    final float[] vertices = new float[SPRITE_SIZE];
+    public Texture texture;
     public float x, y;
+    public float u, v;
+    public float u2, v2;
     public float width, height;
     public float originX, originY;
     public float rotation;
     public float scaleX = 1, scaleY = 1;
+    public  Rectangle bounds;
+
+    private int regionWidth, regionHeight;
+    private final float[] vertices = new float[SPRITE_SIZE];
     private boolean dirty = true;
-    public Rectangle bounds;
 
-    private int layer;
+    private int layer = 0;
 
-    /** Creates a sprite with width, height, and texture region equal to the size of the texture. */
     public SpriteActor (Texture texture) {
         this(texture, 0, 0, texture.getWidth(), texture.getHeight());
     }
 
-    /** Creates a sprite with width, height, and texture region equal to the specified size. The texture region's upper left corner
-     * will be 0,0.
-     * @param srcWidth The width of the texture region. May be negative to flip the sprite when drawn.
-     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn. */
     public SpriteActor (Texture texture, int srcWidth, int srcHeight) {
         this(texture, 0, 0, srcWidth, srcHeight);
     }
 
-    /** Creates a sprite with width, height, and texture region equal to the specified size.
-     * @param srcWidth The width of the texture region. May be negative to flip the sprite when drawn.
-     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn. */
     public SpriteActor (Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
         if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
-        this.setTexture(texture);
+        this.texture = texture;
         setRegion(srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
         setOrigin(width / 2, height / 2);
     }
 
-    // Note the region is copied.
-    /** Creates a sprite based on a specific TextureRegion, the new sprite's region is a copy of the parameter region - altering one
-     * does not affect the other */
     public SpriteActor (TextureRegion region) {
         setRegion(region);
         setSize(region.getRegionWidth(), region.getRegionHeight());
         setOrigin(width / 2, height / 2);
     }
 
-    /** Creates a sprite with width, height, and texture region equal to the specified size, relative to specified sprite's texture
-     * region.
-     * @param srcWidth The width of the texture region. May be negative to flip the sprite when drawn.
-     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn. */
     public SpriteActor (TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
         setRegion(region, srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
         setOrigin(width / 2, height / 2);
     }
+
 
     /** Sets the position and size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale
      * are changed, it is slightly more efficient to set the bounds after those operations. */
@@ -101,9 +94,9 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
         if (dirty) return;
 
-        float x2 = x + width;
-        float y2 = y + height;
-        float[] vertices = this.vertices;
+        final float x2 = x + width;
+        final float y2 = y + height;
+        final float[] vertices = this.vertices;
         vertices[X1] = x;
         vertices[Y1] = y;
 
@@ -128,9 +121,9 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
         if (dirty) return;
 
-        float x2 = x + width;
-        float y2 = y + height;
-        float[] vertices = this.vertices;
+        final float x2 = x + width;
+        final float y2 = y + height;
+        final float[] vertices = this.vertices;
         vertices[X1] = x;
         vertices[Y1] = y;
 
@@ -190,7 +183,7 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
         if (dirty) return;
 
-        float[] vertices = this.vertices;
+        final float[] vertices = this.vertices;
         vertices[X1] += xAmount;
         vertices[X2] += xAmount;
         vertices[X3] += xAmount;
@@ -204,7 +197,7 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
         if (dirty) return;
 
-        float[] vertices = this.vertices;
+        final float[] vertices = this.vertices;
         vertices[Y1] += yAmount;
         vertices[Y2] += yAmount;
         vertices[Y3] += yAmount;
@@ -219,7 +212,7 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
         if (dirty) return;
 
-        float[] vertices = this.vertices;
+        final float[] vertices = this.vertices;
         vertices[X1] += xAmount;
         vertices[Y1] += yAmount;
 
@@ -231,11 +224,6 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
         vertices[X4] += xAmount;
         vertices[Y4] += yAmount;
-    }
-
-    /** Sets the alpha portion of the color used to tint this sprite. */
-    public void setAlpha (float a) {
-        //TODO
     }
 
     /** Sets the origin in relation to the sprite's position for scaling and rotation. */
@@ -271,46 +259,14 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
         dirty = true;
     }
 
-    /** Rotates this sprite 90 degrees in-place by rotating the texture coordinates. This rotation is unaffected by
-     * {@link #setRotation(float)} and {@link #rotate(float)}. */
-    public void rotate90 (boolean clockwise) {
-        float[] vertices = this.vertices;
-
-        if (clockwise) {
-            float temp = vertices[V1];
-            vertices[V1] = vertices[V4];
-            vertices[V4] = vertices[V3];
-            vertices[V3] = vertices[V2];
-            vertices[V2] = temp;
-
-            temp = vertices[U1];
-            vertices[U1] = vertices[U4];
-            vertices[U4] = vertices[U3];
-            vertices[U3] = vertices[U2];
-            vertices[U2] = temp;
-        } else {
-            float temp = vertices[V1];
-            vertices[V1] = vertices[V2];
-            vertices[V2] = vertices[V3];
-            vertices[V3] = vertices[V4];
-            vertices[V4] = temp;
-
-            temp = vertices[U1];
-            vertices[U1] = vertices[U2];
-            vertices[U2] = vertices[U3];
-            vertices[U3] = vertices[U4];
-            vertices[U4] = temp;
-        }
-    }
-
-    /** Sets the sprite's scale for both X and Y uniformly.*/
+    /** Sets the sprite's scale for both X and Y uniformly. The sprite scales out from the origin. */
     public void setScale (float scaleXY) {
         this.scaleX = scaleXY;
         this.scaleY = scaleXY;
         dirty = true;
     }
 
-    /** Sets the sprite's scale for both X and Y.*/
+    /** Sets the sprite's scale for both X and Y. The sprite scales out from the origin.*/
     public void setScale (float scaleX, float scaleY) {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
@@ -318,7 +274,7 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
     }
 
     /** Sets the sprite's scale relative to the current scale. for example: original scale 2 -> sprite.scale(4) -> final scale 6.
-     * The sprite scales out from the origin.
+     * The sprite scales out from the origin.*/
     public void scale (float amount) {
         this.scaleX += amount;
         this.scaleY += amount;
@@ -330,13 +286,13 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
         if (dirty) {
             dirty = false;
 
-            float[] vertices = this.vertices;
+            final float[] vertices = this.vertices;
             float localX = -originX;
             float localY = -originY;
             float localX2 = localX + width;
             float localY2 = localY + height;
-            float worldOriginX = this.x - localX;
-            float worldOriginY = this.y - localY;
+            final float worldOriginX = this.x - localX;
+            final float worldOriginY = this.y - localY;
             if (scaleX != 1 || scaleY != 1) {
                 localX *= scaleX;
                 localY *= scaleY;
@@ -433,9 +389,25 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
 
     public void setRegion (float u, float v, float u2, float v2) {
-        super.setRegion(u, v, u2, v2);
+        final int texWidth = texture.getWidth(), texHeight = texture.getHeight();
+        regionWidth = Math.round(Math.abs(u2 - u) * texWidth);
+        regionHeight = Math.round(Math.abs(v2 - v) * texHeight);
 
-        float[] vertices = this.vertices;
+        // For a 1x1 region, adjust UVs toward pixel center to avoid filtering artifacts on AMD GPUs when drawing very stretched.
+        if (regionWidth == 1 && regionHeight == 1) {
+            final float adjustX = 0.25f / texWidth;
+            u += adjustX;
+            u2 -= adjustX;
+            final float adjustY = 0.25f / texHeight;
+            v += adjustY;
+            v2 -= adjustY;
+        }
+
+        this.u = u;
+        this.v = v;
+        this.u2 = u2;
+        this.v2 = v2;
+
         vertices[U1] = u;
         vertices[V1] = v2;
 
@@ -450,25 +422,29 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
     }
 
     public void setU (float u) {
-        super.setU(u);
+        this.u = u;
+        regionWidth = Math.round(Math.abs(u2 - u) * texture.getWidth());
         vertices[U1] = u;
         vertices[U2] = u;
     }
 
     public void setV (float v) {
-        super.setV(v);
+        this.v = v;
+        regionHeight = Math.round(Math.abs(v2 - v) * texture.getHeight());
         vertices[V2] = v;
         vertices[V3] = v;
     }
 
     public void setU2 (float u2) {
-        super.setU2(u2);
+        this.u2 = u2;
+        regionWidth = Math.round(Math.abs(u2 - u) * texture.getWidth());
         vertices[U3] = u2;
         vertices[U4] = u2;
     }
 
     public void setV2 (float v2) {
-        super.setV2(v2);
+        this.v2 = v2;
+        regionHeight = Math.round(Math.abs(v2 - v) * texture.getHeight());
         vertices[V1] = v2;
         vertices[V4] = v2;
     }
@@ -477,23 +453,24 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
      * @param x the desired horizontal flip state
      * @param y the desired vertical flip state */
     public void setFlip (boolean x, boolean y) {
-        boolean performX = false;
-        boolean performY = false;
-        if (isFlipX() != x) {
-            performX = true;
-        }
-        if (isFlipY() != y) {
-            performY = true;
-        }
-        flip(performX, performY);
+        flip((isFlipX() != x), (isFlipY() != y));
     }
 
     /** boolean parameters x,y are not setting a state, but performing a flip
      * @param x perform horizontal flip
      * @param y perform vertical flip */
     public void flip (boolean x, boolean y) {
-        super.flip(x, y);
-        float[] vertices = this.vertices;
+        if (x) {
+            float temp = u;
+            u = u2;
+            u2 = temp;
+        }
+        if (y) {
+            float temp = v;
+            v = v2;
+            v2 = temp;
+        }
+
         if (x) {
             float temp = vertices[U1];
             vertices[U1] = vertices[U3];
@@ -513,28 +490,65 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
     }
 
     public void scroll (float xAmount, float yAmount) {
-        float[] vertices = this.vertices;
         if (xAmount != 0) {
-            float u = (vertices[U1] + xAmount) % 1;
-            float u2 = u + width / this.getTexture().getWidth();
-            this.setU(u);
-            this.setU2(u2);
+            final float u = (vertices[U1] + xAmount) % 1;
+            final float u2 = u + width / texture.getWidth();
+            this.u = u;
+            this.u2 = u2;
             vertices[U1] = u;
             vertices[U2] = u;
             vertices[U3] = u2;
             vertices[U4] = u2;
         }
         if (yAmount != 0) {
-            float v = (vertices[V2] + yAmount) % 1;
-            float v2 = v + height / this.getTexture().getHeight();
-            this.setV(v);
-            this.setV2(v2);
+            final float v = (vertices[V2] + yAmount) % 1;
+            final float v2 = v + height / texture.getHeight();
+            this.v = v;
+            this.v2 = v2;
             vertices[V1] = v2;
             vertices[V2] = v;
             vertices[V3] = v;
             vertices[V4] = v2;
         }
     }
+
+
+    /** Sets the texture and sets the coordinates to the size of the specified texture. */
+    public void setRegion (Texture texture) {
+        this.texture = texture;
+        setRegion(0, 0, texture.getWidth(), texture.getHeight());
+    }
+
+    /** @param width The width of the texture region. May be negative to flip the sprite when drawn.
+     * @param height The height of the texture region. May be negative to flip the sprite when drawn. */
+    public void setRegion (int x, int y, int width, int height) {
+        final float invTexWidth = 1f / texture.getWidth();
+        final float invTexHeight = 1f / texture.getHeight();
+        setRegion(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
+        regionWidth = Math.abs(width);
+        regionHeight = Math.abs(height);
+    }
+
+    /** Sets the texture and coordinates to the specified region. */
+    public void setRegion (TextureRegion region) {
+        texture = region.getTexture();
+        setRegion(region.getU(), region.getV(), region.getU2(), region.getV2());
+    }
+
+    /** Sets the texture to that of the specified region and sets the coordinates relative to the specified region. */
+    public void setRegion (TextureRegion region, int x, int y, int width, int height) {
+        texture = region.getTexture();
+        setRegion(region.getRegionX() + x, region.getRegionY() + y, width, height);
+    }
+
+    public boolean isFlipX () {
+        return u > u2;
+    }
+
+    public boolean isFlipY () {
+        return v > v2;
+    }
+
 
     public void setLayer(final int layer){
         this.layer = layer;
@@ -547,11 +561,11 @@ public class SpriteActor extends TextureRegion implements Actor, Renderable<Batc
 
     @Override
     public void render(float deltaTime, Batch renderer) {
-        renderer.draw(this.getTexture(), getVertices(), 0, SPRITE_SIZE);
+        renderer.draw(this.texture, getVertices(), 0, SPRITE_SIZE);
     }
 
     @Override
     public void dispose() {
-        this.getTexture().dispose();
+        this.texture.dispose();
     }
 }
