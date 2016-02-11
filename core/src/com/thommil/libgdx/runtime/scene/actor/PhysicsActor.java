@@ -97,5 +97,8 @@ public abstract class PhysicsActor extends SpriteActor {
      *
      * @param lastStepDuration The duration of the last step for QoS purpose
      */
-    public abstract void step(long lastStepDuration);
+    public void step(long lastStepDuration){
+        this.setCenter(this.body.getPosition().x,this.body.getPosition().y);
+        this.setRotation(this.body.getAngle()*57.2957795f);
+    }
 }

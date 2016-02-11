@@ -33,6 +33,6 @@ public class StaticPhysicsActor extends PhysicsActor{
 
     @Override
     public void step(long lastStepDuration) {
-
+        //NOP
     }
 }

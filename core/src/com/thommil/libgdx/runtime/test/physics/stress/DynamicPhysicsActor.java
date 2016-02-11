@@ -32,10 +32,4 @@ public class DynamicPhysicsActor extends PhysicsActor{
         dynamicPolygonShape.dispose();
         return this.body;
     }
-
-    @Override
-    public void step(long lastStepDuration) {
-        this.setCenter(this.body.getPosition().x,this.body.getPosition().y);
-        this.setRotation(this.body.getAngle()*57.2957795f);
-    }
 }
