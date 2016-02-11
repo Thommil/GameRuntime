@@ -30,9 +30,4 @@ public class StaticPhysicsActor extends PhysicsActor{
         groundBodyShape.dispose();
         return this.body;
     }
-
-    @Override
-    public void step(long lastStepDuration) {
-        //NOP
-    }
 }

@@ -28,9 +28,4 @@ public class StaticPhysicsActor extends PhysicsActor{
 
         return this.body;
     }
-
-    @Override
-    public void step(long lastStepDuration) {
-
-    }
 }

@@ -14,13 +14,13 @@ public class BasicActor extends SpriteActor {
         super(new Texture(Gdx.files.internal("curiosity.png")));
         this.setLayer(0);
         this.setSize(2.6f,2.3f);
-        this.setOriginCenter();
         this.setCenter(0f,0f);
+        this.setOriginCenter();
     }
 
-    /*@Override
+    @Override
     public void render(float deltaTime, Batch renderer) {
         this.rotate(2);
         super.render(deltaTime,renderer);
-    }*/
+    }
 }

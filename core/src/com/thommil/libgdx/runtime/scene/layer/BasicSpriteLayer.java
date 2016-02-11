@@ -13,8 +13,8 @@ public class BasicSpriteLayer extends Layer{
 
     final BasicSpriteBatch renderer;
 
-    public BasicSpriteLayer(final int batchSize) {
-        this.renderer = new BasicSpriteBatch(batchSize);
+    public BasicSpriteLayer(final int maxSprites) {
+        this.renderer = new BasicSpriteBatch(maxSprites);
     }
 
     @Override

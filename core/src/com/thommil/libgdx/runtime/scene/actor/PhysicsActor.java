@@ -99,6 +99,6 @@ public abstract class PhysicsActor extends SpriteActor {
      */
     public void step(long lastStepDuration){
         this.setCenter(this.body.getPosition().x,this.body.getPosition().y);
-        this.setRotation(this.body.getAngle()*57.2957795f);
+        this.setRotationRad(this.body.getAngle());
     }
 }

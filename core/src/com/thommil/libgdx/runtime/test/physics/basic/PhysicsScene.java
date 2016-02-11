@@ -32,7 +32,7 @@ public class PhysicsScene extends Game{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicSpriteLayer(100));
+        defaultScene.addLayer(0, new BasicSpriteLayer(2));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());

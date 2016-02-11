@@ -35,9 +35,4 @@ public class StaticPhysicsActor extends PhysicsActor {
         this.setCenter(this.body.getPosition().x-radius,this.body.getPosition().y-radius);
         return this.body;
     }
-
-    @Override
-    public void step(long lastStepDuration) {
-        //NOP
-    }
 }

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.thommil.libgdx.runtime.graphics.BasicSpriteBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
@@ -15,6 +16,8 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  * Created by thommil on 2/10/16.
  */
 public class SpriteActor implements Actor, Renderable<Batch> {
+
+    public static final float DEG_IN_RAD = 57.2957795f;
 
     static public final int X1 = 0;
     static public final int Y1 = 1;
@@ -96,7 +99,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
         final float x2 = x + width;
         final float y2 = y + height;
-        final float[] vertices = this.vertices;
         vertices[X1] = x;
         vertices[Y1] = y;
 
@@ -123,7 +125,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
         final float x2 = x + width;
         final float y2 = y + height;
-        final float[] vertices = this.vertices;
         vertices[X1] = x;
         vertices[Y1] = y;
 
@@ -183,7 +184,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
         if (dirty) return;
 
-        final float[] vertices = this.vertices;
         vertices[X1] += xAmount;
         vertices[X2] += xAmount;
         vertices[X3] += xAmount;
@@ -197,7 +197,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
         if (dirty) return;
 
-        final float[] vertices = this.vertices;
         vertices[Y1] += yAmount;
         vertices[Y2] += yAmount;
         vertices[Y3] += yAmount;
@@ -212,7 +211,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
         if (dirty) return;
 
-        final float[] vertices = this.vertices;
         vertices[X1] += xAmount;
         vertices[Y1] += yAmount;
 
@@ -246,9 +244,20 @@ public class SpriteActor implements Actor, Renderable<Batch> {
         dirty = true;
     }
 
+    /** Sets the rotation of the sprite in radiants. Rotation is centered on the origin set in {@link #setOrigin(float, float)} */
+    public void setRotationRad (float radiants) {
+        this.rotation = radiants * DEG_IN_RAD;
+        dirty = true;
+    }
+
     /** @return the rotation of the sprite in degrees */
     public float getRotation () {
         return rotation;
+    }
+
+    /** @return the rotation of the sprite in radiants */
+    public float getRotationRad () {
+        return rotation / DEG_IN_RAD;
     }
 
     /** Sets the sprite's rotation in degrees relative to the current rotation. Rotation is centered on the origin set in
@@ -256,6 +265,14 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     public void rotate (float degrees) {
         if (degrees == 0) return;
         rotation += degrees;
+        dirty = true;
+    }
+
+    /** Sets the sprite's rotation in radiants relative to the current rotation. Rotation is centered on the origin set in
+     * {@link #setOrigin(float, float)} */
+    public void rotateRad (float radiants) {
+        if (radiants == 0) return;
+        rotation += radiants * DEG_IN_RAD;
         dirty = true;
     }
 
@@ -286,7 +303,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
         if (dirty) {
             dirty = false;
 
-            final float[] vertices = this.vertices;
             float localX = -originX;
             float localY = -originY;
             float localX2 = localX + width;
