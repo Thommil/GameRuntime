@@ -1,26 +1,40 @@
 package com.thommil.libgdx.runtime.scene.actor;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.NumberUtils;
-import com.thommil.libgdx.runtime.graphics.SpriteActorBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
-import static com.badlogic.gdx.graphics.g2d.Batch.*;
-import static com.badlogic.gdx.graphics.g2d.Batch.V4;
 
 /**
  * Basic SpriteActor using custom SpriteBatch based on Sprite from LibGDX
  *
  * Created by thommil on 2/10/16.
  */
-public abstract class SpriteActor extends TextureRegion implements Actor, Renderable<SpriteActorBatch>{
+public class SpriteActor extends TextureRegion implements Actor, Renderable<Batch> {
 
-    static final int VERTEX_SIZE = 2 + 1 + 2;
+    static public final int X1 = 0;
+    static public final int Y1 = 1;
+    static public final int U1 = 2;
+    static public final int V1 = 3;
+    static public final int X2 = 4;
+    static public final int Y2 = 5;
+    static public final int U2 = 6;
+    static public final int V2 = 7;
+    static public final int X3 = 8;
+    static public final int Y3 = 9;
+    static public final int U3 = 10;
+    static public final int V3 = 11;
+    static public final int X4 = 12;
+    static public final int Y4 = 13;
+    static public final int U4 = 14;
+    static public final int V4 = 15;
+
+    static final int VERTEX_SIZE = 2 + 2;
     static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
     final float[] vertices = new float[SPRITE_SIZE];
@@ -31,6 +45,32 @@ public abstract class SpriteActor extends TextureRegion implements Actor, Render
     public float scaleX = 1, scaleY = 1;
     private boolean dirty = true;
     public Rectangle bounds;
+
+    private int layer;
+
+    /** Creates a sprite with width, height, and texture region equal to the size of the texture. */
+    public SpriteActor (Texture texture) {
+        this(texture, 0, 0, texture.getWidth(), texture.getHeight());
+    }
+
+    /** Creates a sprite with width, height, and texture region equal to the specified size. The texture region's upper left corner
+     * will be 0,0.
+     * @param srcWidth The width of the texture region. May be negative to flip the sprite when drawn.
+     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn. */
+    public SpriteActor (Texture texture, int srcWidth, int srcHeight) {
+        this(texture, 0, 0, srcWidth, srcHeight);
+    }
+
+    /** Creates a sprite with width, height, and texture region equal to the specified size.
+     * @param srcWidth The width of the texture region. May be negative to flip the sprite when drawn.
+     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn. */
+    public SpriteActor (Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+        if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
+        this.setTexture(texture);
+        setRegion(srcX, srcY, srcWidth, srcHeight);
+        setSize(Math.abs(srcWidth), Math.abs(srcHeight));
+        setOrigin(width / 2, height / 2);
+    }
 
     // Note the region is copied.
     /** Creates a sprite based on a specific TextureRegion, the new sprite's region is a copy of the parameter region - altering one
@@ -476,9 +516,9 @@ public abstract class SpriteActor extends TextureRegion implements Actor, Render
         float[] vertices = this.vertices;
         if (xAmount != 0) {
             float u = (vertices[U1] + xAmount) % 1;
-            float u2 = u + width / this.texture.getWidth();
-            this.u = u;
-            this.u2 = u2;
+            float u2 = u + width / this.getTexture().getWidth();
+            this.setU(u);
+            this.setU2(u2);
             vertices[U1] = u;
             vertices[U2] = u;
             vertices[U3] = u2;
@@ -486,9 +526,9 @@ public abstract class SpriteActor extends TextureRegion implements Actor, Render
         }
         if (yAmount != 0) {
             float v = (vertices[V2] + yAmount) % 1;
-            float v2 = v + height / texture.getHeight();
-            this.v = v;
-            this.v2 = v2;
+            float v2 = v + height / this.getTexture().getHeight();
+            this.setV(v);
+            this.setV2(v2);
             vertices[V1] = v2;
             vertices[V2] = v;
             vertices[V3] = v;
@@ -496,16 +536,22 @@ public abstract class SpriteActor extends TextureRegion implements Actor, Render
         }
     }
 
-    @Override
-    public abstract int getLayer();
+    public void setLayer(final int layer){
+        this.layer = layer;
+    }
 
     @Override
-    public void render(float deltaTime, SpriteActorBatch renderer) {
-        //renderer.draw(texture, getVertices(), 0, SPRITE_SIZE);
+    public int getLayer(){
+        return this.layer;
+    }
+
+    @Override
+    public void render(float deltaTime, Batch renderer) {
+        renderer.draw(this.getTexture(), getVertices(), 0, SPRITE_SIZE);
     }
 
     @Override
     public void dispose() {
-
+        this.getTexture().dispose();
     }
 }

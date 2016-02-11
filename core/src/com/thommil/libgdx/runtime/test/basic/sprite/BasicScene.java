@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.scene.Scene;
+import com.thommil.libgdx.runtime.scene.layer.BasicSpriteLayer;
 
 /**
  * Test for a Simple Sprite display
@@ -21,7 +22,7 @@ public class BasicScene extends Game {
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new BasicLayer());
+		defaultScene.addLayer(0,new BasicSpriteLayer(1000));
 
 		//Actor
 		defaultScene.addActor(new BasicActor());

@@ -2,19 +2,18 @@ package com.thommil.libgdx.runtime.test.input.kinematic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Renderable;
+import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SpriteActor implements Renderable<SpriteBatch> {
-
-    Sprite sprite;
-    Texture texture;
+public class KinematicActor extends SpriteActor {
 
     boolean backward=false;
     boolean forward=false;
@@ -30,22 +29,16 @@ public class SpriteActor implements Renderable<SpriteBatch> {
     private Vector2 targetVec = new Vector2();
     private Vector2 spriteVec = new Vector2();
 
-    public SpriteActor() {
-        this.texture = new Texture(Gdx.files.internal("ship.png"));
-        this.sprite = new Sprite(texture);
-        this.sprite.setSize(1f,1f);
-        this.sprite.setOriginCenter();
-        this.sprite.setCenter(0f,0f);
+    public KinematicActor() {
+        super(new Texture(Gdx.files.internal("ship.png")));
+        this.setSize(1f,1f);
+        this.setOriginCenter();
+        this.setCenter(0f,0f);
     }
 
     @Override
-    public int getLayer() {
-        return 0;
-    }
-
-    @Override
-    public void render(float deltaTime, SpriteBatch batch) {
-        spriteVec.set(this.sprite.getX(),this.sprite.getY());
+    public void render(float deltaTime, Batch renderer) {
+        spriteVec.set(this.x,this.y);
 
         if(right){
             angle -= 3f;
@@ -55,19 +48,19 @@ public class SpriteActor implements Renderable<SpriteBatch> {
         }
 
         if(forward){
-            this.sprite.translate(STEP*-MathUtils.sinDeg(angle),STEP*MathUtils.cosDeg(angle));
+            this.translate(STEP*-MathUtils.sinDeg(angle),STEP*MathUtils.cosDeg(angle));
         }
         else if(backward){
-            this.sprite.translate(STEP*MathUtils.sinDeg(angle),STEP*-MathUtils.cosDeg(angle));
+            this.translate(STEP*MathUtils.sinDeg(angle),STEP*-MathUtils.cosDeg(angle));
         }
         else if(follow){
             if(this.targetVec.dst2(this.spriteVec) > 1) {
-                this.sprite.translate(STEP * followVec.x, STEP * followVec.y);
+                this.translate(STEP * followVec.x, STEP * followVec.y);
             }
         }
 
-        this.sprite.setRotation(angle);
-        this.sprite.draw(batch);
+        this.setRotation(angle);
+        super.render(deltaTime,renderer);
     }
 
     public void forward(boolean enable){
@@ -92,12 +85,8 @@ public class SpriteActor implements Renderable<SpriteBatch> {
 
     public void target(Vector2 targetVec){
         this.targetVec.set(targetVec);
-        followVec = targetVec.sub(this.sprite.getX(),this.sprite.getY()).nor();
+        followVec = targetVec.sub(this.x,this.y).nor();
         angle = followVec.angle() - 90f;
     }
 
-    @Override
-    public void dispose() {
-        this.texture.dispose();
-    }
 }

@@ -108,11 +108,11 @@
 				{
 					"isa" = "PBXGroup";
 					"children" =
-						("C172F1A25CC2427083DD344E", "1F33AF92D0164A7BA26044EA", "DD1315577C7641FF8239FBB9",
- "241AF485C1E047AF98DED669", "337CAD28FBC945CC9F865713", "9AEFBF2E1CA841B0BC52E6A8",
- "765165A4DCA34366A0EFBA1E", "CDAC63B4DEDE474B965E93E4", "DD28B9ABB16143B580698555",
- "1DE0D16EBC9A412C91B431CF", "400EE9B683AC4655ADB64F61", "28A758715078456881A3D39E",
- "7286A055C0274114B756AD3B", "71382FAF66C746FC8E400571", "D7AD06E286B54BF38AD0B7CB",
+						("C172F1A25CC2427083DD344E", "EDA3967446B3489D9C4DE5E7", "B44892585E35475E910A7E7E",
+ "6C47D82D723743039F1342B8", "62D3286833E041C9843C61AC", "F7B372ACFE77485E93B769E9",
+ "F22199C4FB30412BABF9A050", "56294D6BC7804B528A1D3A26", "DD28B9ABB16143B580698555",
+ "E78482AB330840929AD1CA5E", "BB315CB5843A4F90A0DA30AD", "1625B527E9C2418595B725A4",
+ "E830019FE1A042228A2CCB4F", "71382FAF66C746FC8E400571", "D7AD06E286B54BF38AD0B7CB",
  "2FFE6B3EBD8B4CE4992A3763");
 					"name" = "Resources";
 					"sourceTree" = "<absolute>";
@@ -150,94 +150,6 @@
 					"sourceTree" = "<group>";
 					"path" = "planet.png";
 				};
-			"1F33AF92D0164A7BA26044EA" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default-375w-667h@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default-375w-667h@2x.png";
-				};
-			"DD1315577C7641FF8239FBB9" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default-414w-736h@3x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default-414w-736h@3x.png";
-				};
-			"241AF485C1E047AF98DED669" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default-568h@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default-568h@2x.png";
-				};
-			"337CAD28FBC945CC9F865713" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default.png";
-				};
-			"9AEFBF2E1CA841B0BC52E6A8" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default@2x.png";
-				};
-			"765165A4DCA34366A0EFBA1E" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default@2x~ipad.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default@2x~ipad.png";
-				};
-			"CDAC63B4DEDE474B965E93E4" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Default~ipad.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Default~ipad.png";
-				};
-			"1DE0D16EBC9A412C91B431CF" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon-72.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon-72.png";
-				};
-			"400EE9B683AC4655ADB64F61" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon-72@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon-72@2x.png";
-				};
-			"28A758715078456881A3D39E" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon.png";
-				};
-			"7286A055C0274114B756AD3B" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "Icon@2x.png";
-					"lastKnownFileType" = "image.png";
-					"sourceTree" = "<group>";
-					"path" = "Icon@2x.png";
-				};
 			"2FFE6B3EBD8B4CE4992A3763" =
 				{
 					"isa" = "PBXFileReference";
@@ -245,6 +157,94 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "test.png";
+				};
+			"EDA3967446B3489D9C4DE5E7" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default-375w-667h@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default-375w-667h@2x.png";
+				};
+			"B44892585E35475E910A7E7E" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default-414w-736h@3x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default-414w-736h@3x.png";
+				};
+			"6C47D82D723743039F1342B8" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default-568h@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default-568h@2x.png";
+				};
+			"62D3286833E041C9843C61AC" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default.png";
+				};
+			"F7B372ACFE77485E93B769E9" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default@2x.png";
+				};
+			"F22199C4FB30412BABF9A050" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default@2x~ipad.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default@2x~ipad.png";
+				};
+			"56294D6BC7804B528A1D3A26" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Default~ipad.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Default~ipad.png";
+				};
+			"E78482AB330840929AD1CA5E" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon-72.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon-72.png";
+				};
+			"BB315CB5843A4F90A0DA30AD" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon-72@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon-72@2x.png";
+				};
+			"1625B527E9C2418595B725A4" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon.png";
+				};
+			"E830019FE1A042228A2CCB4F" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "Icon@2x.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "Icon@2x.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";

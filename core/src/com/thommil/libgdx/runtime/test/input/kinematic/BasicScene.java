@@ -3,13 +3,14 @@ package com.thommil.libgdx.runtime.test.input.kinematic;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
+import com.thommil.libgdx.runtime.scene.layer.BasicSpriteLayer;
 
 /**
  * Test for a kinematic actor using inputs
  */
 public class BasicScene extends Game implements InputProcessor {
 
-	private SpriteActor shipActor;
+	private KinematicActor shipActor;
 	private Scene scene;
 
 	@Override
@@ -23,10 +24,10 @@ public class BasicScene extends Game implements InputProcessor {
 		scene = new Scene(settings);
 
 		//Layers
-		scene.addLayer(0,new BasicLayer());
+		scene.addLayer(0,new BasicSpriteLayer(100));
 
 		//Actor
-		shipActor = new SpriteActor();
+		shipActor = new KinematicActor();
 		scene.addActor(shipActor);
 
 		Gdx.input.setInputProcessor(this);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.scene.Scene;
+import com.thommil.libgdx.runtime.scene.layer.BasicSpriteLayer;
 
 /**
  * Test cache system for rendering
@@ -22,10 +23,6 @@ public class BasicScene extends Game {
 
 		//Layers
 		defaultScene.addLayer(0,new CacheLayer());
-		defaultScene.addLayer(1,new SpriteLayer());
-
-		//Actor
-		defaultScene.addActor(new SpriteActor());
 
 		//Start
 		this.setScreen(defaultScene);
