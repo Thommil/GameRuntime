@@ -76,11 +76,6 @@ public class Scene implements Screen {
     protected final List<Collidable> collidables;
 
     /**
-     * List of physics actors (none static)
-     */
-    protected final List<Collidable> collidablesDynamic;
-
-    /**
      * Duration of last physics step processing in ms
      */
     private long lastPhysicsStepDuration;
@@ -111,7 +106,6 @@ public class Scene implements Screen {
 
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
         this.collidables = new ArrayList<Collidable>();
-        this.collidablesDynamic = new ArrayList<Collidable>();
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         this.layers = new IntMap<Layer>();
@@ -131,29 +125,6 @@ public class Scene implements Screen {
         layer.setCamera(this.camera);
         this.renderLock.lock();
         this.layers.put(index,layer);
-        this.renderLock.unlock();
-    }
-
-    /**
-     * Gets the layer at the specified index
-     *
-     * @param index The index of the layer
-     *
-     * @return The layer at the index, null if not found
-     */
-    public Layer getLayer(final int index){
-        return this.layers.get(index);
-    }
-
-    /**
-     * Removes a layer from the specific index
-     *
-     * @param index The index of the layer
-     */
-    public void removeLayer(final int index){
-        Gdx.app.debug("Scene","removeLayer("+index+")");
-        this.renderLock.lock();
-        this.layers.remove(index);
         this.renderLock.unlock();
     }
 
@@ -196,9 +167,8 @@ public class Scene implements Screen {
                     if(actor instanceof Collidable) {
                         ((Collidable) actor).buildBody(Scene.this.physicsWorld);
                         ((Collidable) actor).getBody().setUserData(actor);
-                        Scene.this.collidables.add(((Collidable) actor));
                         if(((Collidable) actor).getBody().getType() != BodyDef.BodyType.StaticBody) {
-                            Scene.this.collidablesDynamic.add(((Collidable) actor));
+                            Scene.this.collidables.add(((Collidable) actor));
                         }
                     }
                 }
@@ -211,9 +181,8 @@ public class Scene implements Screen {
             if(actor instanceof Collidable) {
                 ((Collidable) actor).buildBody(this.physicsWorld);
                 ((Collidable) actor).getBody().setUserData(actor);
-                this.collidables.add(((Collidable) actor));
                 if(((Collidable) actor).getBody().getType() != BodyDef.BodyType.StaticBody) {
-                    this.collidablesDynamic.add(((Collidable) actor));
+                    this.collidables.add(((Collidable) actor));
                 }
             }
         }
@@ -237,8 +206,7 @@ public class Scene implements Screen {
                     }
                     if (actor instanceof Collidable) {
                         Scene.this.collidables.remove(actor);
-                        Scene.this.collidablesDynamic.remove(actor);
-                        Scene.this.physicsWorld.destroyBody(((Collidable) actor).getBody());
+                        Scene.this.physicsWorld.destroyBody(((Collidable)actor).getBody());
                     }
                 }
             });
@@ -249,8 +217,7 @@ public class Scene implements Screen {
             }
             if (actor instanceof Collidable) {
                 this.collidables.remove(actor);
-                this.collidablesDynamic.remove(actor);
-                this.physicsWorld.destroyBody(((Collidable) actor).getBody());
+                this.physicsWorld.destroyBody(((Collidable)actor).getBody());
             }
         }
     }
@@ -296,7 +263,7 @@ public class Scene implements Screen {
                                 Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
                             }
 
-                            for (final Collidable actor : Scene.this.collidablesDynamic) {
+                            for (final Collidable actor : Scene.this.collidables) {
                                 actor.step(lastPhysicsStepDuration);
                             }
 
@@ -362,7 +329,7 @@ public class Scene implements Screen {
                 this.sceneListener.onStep(lastPhysicsStepDuration);
             }
 
-            for (final Collidable actor : this.collidablesDynamic) {
+            for (final Collidable actor : this.collidables) {
                 actor.step(lastPhysicsStepDuration);
             }
 

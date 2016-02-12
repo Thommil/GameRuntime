@@ -44,6 +44,9 @@ public class BasicBatchLayer extends Layer{
 
     @Override
     public void dispose() {
+        for(Renderable renderable : this.renderables){
+            renderable.dispose();
+        }
         renderer.dispose();
     }
 }

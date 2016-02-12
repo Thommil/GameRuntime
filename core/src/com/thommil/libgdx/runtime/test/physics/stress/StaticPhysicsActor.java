@@ -15,6 +15,7 @@ public class StaticPhysicsActor extends PhysicsStaticActor {
     public StaticPhysicsActor() {
         super(new Texture(Gdx.files.internal("ground.jpg")),-1000f,-50f,2000f,10f,0f,0.05f,10f,0f);
         this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        this.setLayer(0);
     }
 
 

@@ -47,4 +47,10 @@ public abstract class PhysicsStaticActor extends StaticActor implements Collidab
     public void step(long lastStepDuration){
         //NOP
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.body.getWorld().destroyBody(this.body);
+    }
 }

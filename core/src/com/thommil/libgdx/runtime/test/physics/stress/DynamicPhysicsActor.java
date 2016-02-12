@@ -14,6 +14,7 @@ public class DynamicPhysicsActor extends PhysicsSpriteActor {
         super(texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
+        this.setLayer(1);
     }
 
     @Override

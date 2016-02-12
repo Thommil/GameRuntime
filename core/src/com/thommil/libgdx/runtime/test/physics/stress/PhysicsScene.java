@@ -39,7 +39,8 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicBatchLayer(5000));
+        defaultScene.addLayer(0, new BasicBatchLayer(1));
+        defaultScene.addLayer(1, new BasicBatchLayer(5000));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
@@ -86,7 +87,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        PhysicsScene.this.defaultScene.removeActor((Actor) PhysicsScene.this.defaultScene.getCollidables().get(1));
+        this.defaultScene.removeActor((Actor) PhysicsScene.this.defaultScene.getCollidables().get(0));
         return false;
     }
 
