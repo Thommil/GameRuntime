@@ -57,7 +57,7 @@ public class BasicCacheLayer extends Layer{
 
     @Override
     protected void onResize() {
-        renderer.getProjectionMatrix().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //NOP
     }
 
     @Override

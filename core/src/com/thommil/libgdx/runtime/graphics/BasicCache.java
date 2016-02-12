@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
 import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
@@ -196,7 +195,7 @@ public class BasicCache implements Disposable {
     }
 
     /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, int srcWidth, int srcHeight, float u, float v, float u2, float v2) {
+    public void add (Texture texture, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2) {
         final float fx2 = x + srcWidth;
         final float fy2 = y + srcHeight;
 
@@ -223,7 +222,7 @@ public class BasicCache implements Disposable {
     }
 
     /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {
+    public void add (Texture texture, float x, float y, int srcX, int srcY, float srcWidth, float srcHeight) {
         final float invTexWidth = 1.0f / texture.getWidth();
         final float invTexHeight = 1.0f / texture.getHeight();
         final float u = srcX * invTexWidth;
@@ -256,8 +255,8 @@ public class BasicCache implements Disposable {
     }
 
     /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth,
-                     int srcHeight, boolean flipX, boolean flipY) {
+    public void add (Texture texture, float x, float y, float width, float height, float srcX, float srcY, float srcWidth,
+                     float srcHeight, boolean flipX, boolean flipY) {
 
         final float invTexWidth = 1.0f / texture.getWidth();
         final float invTexHeight = 1.0f / texture.getHeight();
@@ -296,125 +295,6 @@ public class BasicCache implements Disposable {
 
         tempVertices[12] = fx2;
         tempVertices[13] = y;
-        tempVertices[14] = u2;
-        tempVertices[15] = v;
-        add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
-    }
-
-    /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX,
-                     float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {
-
-        // bottom left and top right corner points relative to origin
-        final float worldOriginX = x + originX;
-        final float worldOriginY = y + originY;
-        float fx = -originX;
-        float fy = -originY;
-        float fx2 = width - originX;
-        float fy2 = height - originY;
-
-        // scale
-        if (scaleX != 1 || scaleY != 1) {
-            fx *= scaleX;
-            fy *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
-        }
-
-        // construct corner points, start from top left and go counter clockwise
-        final float p1x = fx;
-        final float p1y = fy;
-        final float p2x = fx;
-        final float p2y = fy2;
-        final float p3x = fx2;
-        final float p3y = fy2;
-        final float p4x = fx2;
-        final float p4y = fy;
-
-        float x1;
-        float y1;
-        float x2;
-        float y2;
-        float x3;
-        float y3;
-        float x4;
-        float y4;
-
-        // rotate
-        if (rotation != 0) {
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
-
-            x1 = cos * p1x - sin * p1y;
-            y1 = sin * p1x + cos * p1y;
-
-            x2 = cos * p2x - sin * p2y;
-            y2 = sin * p2x + cos * p2y;
-
-            x3 = cos * p3x - sin * p3y;
-            y3 = sin * p3x + cos * p3y;
-
-            x4 = x1 + (x3 - x2);
-            y4 = y3 - (y2 - y1);
-        } else {
-            x1 = p1x;
-            y1 = p1y;
-
-            x2 = p2x;
-            y2 = p2y;
-
-            x3 = p3x;
-            y3 = p3y;
-
-            x4 = p4x;
-            y4 = p4y;
-        }
-
-        x1 += worldOriginX;
-        y1 += worldOriginY;
-        x2 += worldOriginX;
-        y2 += worldOriginY;
-        x3 += worldOriginX;
-        y3 += worldOriginY;
-        x4 += worldOriginX;
-        y4 += worldOriginY;
-
-        float invTexWidth = 1.0f / texture.getWidth();
-        float invTexHeight = 1.0f / texture.getHeight();
-        float u = srcX * invTexWidth;
-        float v = (srcY + srcHeight) * invTexHeight;
-        float u2 = (srcX + srcWidth) * invTexWidth;
-        float v2 = srcY * invTexHeight;
-
-        if (flipX) {
-            float tmp = u;
-            u = u2;
-            u2 = tmp;
-        }
-
-        if (flipY) {
-            float tmp = v;
-            v = v2;
-            v2 = tmp;
-        }
-
-        tempVertices[0] = x1;
-        tempVertices[1] = y1;
-        tempVertices[2] = u;
-        tempVertices[3] = v;
-
-        tempVertices[4] = x2;
-        tempVertices[5] = y2;
-        tempVertices[6] = u;
-        tempVertices[7] = v2;
-
-        tempVertices[8] = x3;
-        tempVertices[9] = y3;
-        tempVertices[10] = u2;
-        tempVertices[11] = v2;
-
-        tempVertices[12] = x4;
-        tempVertices[13] = y4;
         tempVertices[14] = u2;
         tempVertices[15] = v;
         add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
@@ -456,111 +336,6 @@ public class BasicCache implements Disposable {
         add(region.getTexture(), tempVertices, 0, SpriteActor.SPRITE_SIZE);
     }
 
-    /** Adds the specified region to the cache. */
-    public void add (TextureRegion region, float x, float y, float originX, float originY, float width, float height,
-                     float scaleX, float scaleY, float rotation) {
-
-        // bottom left and top right corner points relative to origin
-        final float worldOriginX = x + originX;
-        final float worldOriginY = y + originY;
-        float fx = -originX;
-        float fy = -originY;
-        float fx2 = width - originX;
-        float fy2 = height - originY;
-
-        // scale
-        if (scaleX != 1 || scaleY != 1) {
-            fx *= scaleX;
-            fy *= scaleY;
-            fx2 *= scaleX;
-            fy2 *= scaleY;
-        }
-
-        // construct corner points, start from top left and go counter clockwise
-        final float p1x = fx;
-        final float p1y = fy;
-        final float p2x = fx;
-        final float p2y = fy2;
-        final float p3x = fx2;
-        final float p3y = fy2;
-        final float p4x = fx2;
-        final float p4y = fy;
-
-        float x1;
-        float y1;
-        float x2;
-        float y2;
-        float x3;
-        float y3;
-        float x4;
-        float y4;
-
-        // rotate
-        if (rotation != 0) {
-            final float cos = MathUtils.cosDeg(rotation);
-            final float sin = MathUtils.sinDeg(rotation);
-
-            x1 = cos * p1x - sin * p1y;
-            y1 = sin * p1x + cos * p1y;
-
-            x2 = cos * p2x - sin * p2y;
-            y2 = sin * p2x + cos * p2y;
-
-            x3 = cos * p3x - sin * p3y;
-            y3 = sin * p3x + cos * p3y;
-
-            x4 = x1 + (x3 - x2);
-            y4 = y3 - (y2 - y1);
-        } else {
-            x1 = p1x;
-            y1 = p1y;
-
-            x2 = p2x;
-            y2 = p2y;
-
-            x3 = p3x;
-            y3 = p3y;
-
-            x4 = p4x;
-            y4 = p4y;
-        }
-
-        x1 += worldOriginX;
-        y1 += worldOriginY;
-        x2 += worldOriginX;
-        y2 += worldOriginY;
-        x3 += worldOriginX;
-        y3 += worldOriginY;
-        x4 += worldOriginX;
-        y4 += worldOriginY;
-
-        final float u = region.getU();
-        final float v = region.getV2();
-        final float u2 = region.getU2();
-        final float v2 = region.getV();
-
-        tempVertices[0] = x1;
-        tempVertices[1] = y1;
-        tempVertices[2] = u;
-        tempVertices[3] = v;
-
-        tempVertices[4] = x2;
-        tempVertices[5] = y2;
-        tempVertices[6] = u;
-        tempVertices[7] = v2;
-
-        tempVertices[8] = x3;
-        tempVertices[9] = y3;
-        tempVertices[10] = u2;
-        tempVertices[11] = v2;
-
-        tempVertices[12] = x4;
-        tempVertices[13] = y4;
-        tempVertices[14] = u2;
-        tempVertices[15] = v;
-        add(region.getTexture(), tempVertices, 0, SpriteActor.SPRITE_SIZE);
-    }
-
     /** Adds the specified SpriteActor to the cache. */
     public void add (SpriteActor spriteActor) {
         add(spriteActor.texture, spriteActor.getVertices(), 0, SpriteActor.SPRITE_SIZE);
@@ -569,7 +344,7 @@ public class BasicCache implements Disposable {
     /** Adds the specified StaticActor to the cache. */
     public void add (StaticActor staticActor) {
         this.add(staticActor.texture, staticActor.x, staticActor.y,
-                (int)staticActor.width, (int)staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2);
+                staticActor.width, staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2);
     }
 
     /** Prepares the OpenGL state for SpriteCache rendering. */
@@ -712,7 +487,7 @@ public class BasicCache implements Disposable {
         return blendDstFunc;
     }
 
-    static ShaderProgram createDefaultShader () {
+    protected ShaderProgram createDefaultShader () {
         String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "uniform mat4 u_projectionViewMatrix;\n" //

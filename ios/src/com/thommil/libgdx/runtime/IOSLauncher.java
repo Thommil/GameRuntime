@@ -14,6 +14,8 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.texture.BasicScene(), config);
         //Basic sprite
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.sprite.BasicScene(), config);
+        //Basic cache
+        return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
 
         //Basic Physics
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
@@ -24,9 +26,6 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);
         //Physics input
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
-
-        //Render cache
-        return new IOSApplication(new com.thommil.libgdx.runtime.test.render.cache.BasicScene(), config);
     }
 
     public static void main(String[] argv) {

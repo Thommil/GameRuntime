@@ -17,27 +17,27 @@ public class BasicScene extends Game {
 
 	@Override
 	public void create () {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Gdx.app.setLogLevel(Application.LOG_INFO);
 
 		//Scene
 		Scene.Settings settings = new Scene.Settings();
 		settings.viewport.minWorldWidth = 10;
 		settings.viewport.minWorldHeight = 10;
-		//settings.physics.asyncMode=false;
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new BasicCacheLayer(6));
+		defaultScene.addLayer(0,new BasicCacheLayer(60));
 
 		//Actor
 		Texture texture = new Texture(Gdx.files.internal("planet_sprite.png"));
-		defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.5f,4f),0));
-		defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.5f,4f),1));
-		defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.5f,4f),2));
-		defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.5f,4f),3));
-		defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.5f,4f),4));
-		defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.5f,4f),5));
-
+		for(int i = 0; i < 10; i++) {
+			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 0));
+			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 1));
+			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 2));
+			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 3));
+			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 4));
+			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 5));
+		}
 		//Start
 		this.setScreen(defaultScene);
 	}

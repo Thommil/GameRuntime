@@ -112,8 +112,8 @@
  "4A3CDC243C114B1882F19FE6", "3664D628138845A6A4AE4477", "DD7F3992F6DD45809EB9414E",
  "9ECD456E68454319802E5485", "5FB8EF27A2A64E0F930CC7FA", "DD28B9ABB16143B580698555",
  "E195475263734BAA8F27B580", "67CB5B3BC7EC4411AA1F82DE", "11D62E6BB51E4066ACC9FC8E",
- "8040ADAAFD284CE2BEBB80C6", "71382FAF66C746FC8E400571", "D7AD06E286B54BF38AD0B7CB",
- "2FFE6B3EBD8B4CE4992A3763");
+ "8040ADAAFD284CE2BEBB80C6", "71382FAF66C746FC8E400571", "7B6F201049174CBFB3500422",
+ "D7AD06E286B54BF38AD0B7CB", "2FFE6B3EBD8B4CE4992A3763");
 					"name" = "Resources";
 					"sourceTree" = "<absolute>";
 					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/../android/assets";
@@ -245,6 +245,14 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "Icon@2x.png";
+				};
+			"7B6F201049174CBFB3500422" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "planet_sprite.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "planet_sprite.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";
