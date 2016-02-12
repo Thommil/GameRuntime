@@ -31,7 +31,6 @@ public class DynamicPhysicsActor extends PhysicsSpriteActor {
         super(new Texture(Gdx.files.internal("ship.png")));
         this.setLayer(0);
         this.setSize(1f,1f);
-        this.setCenter(0f,0f);
         this.setOriginCenter();
     }
 

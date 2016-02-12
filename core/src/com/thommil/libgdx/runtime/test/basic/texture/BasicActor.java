@@ -3,12 +3,13 @@ package com.thommil.libgdx.runtime.test.basic.texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.thommil.libgdx.runtime.graphics.BasicBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class BasicActor implements Renderable<SpriteBatch> {
+public class BasicActor implements Renderable<BasicBatch> {
 
     Texture texture;
 
@@ -22,7 +23,7 @@ public class BasicActor implements Renderable<SpriteBatch> {
     }
 
     @Override
-    public void render(float deltaTime, SpriteBatch batch) {
+    public void render(float deltaTime, BasicBatch batch) {
         //Repeat
         //this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         //1/2x1/2

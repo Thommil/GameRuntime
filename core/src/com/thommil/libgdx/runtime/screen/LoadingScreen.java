@@ -1,7 +1,6 @@
-package com.thommil.libgdx.runtime.scene.screen;
+package com.thommil.libgdx.runtime.screen;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.Affine2;
 
 /**
  * Generic loading screen

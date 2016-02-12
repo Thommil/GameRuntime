@@ -14,6 +14,7 @@ public class StaticPhysicsActor extends PhysicsSpriteActor {
     public StaticPhysicsActor() {
         super(new Texture(Gdx.files.internal("planet.png")));
         this.setOriginCenter();
+        this.setLayer(0);
     }
 
 
@@ -28,9 +29,7 @@ public class StaticPhysicsActor extends PhysicsSpriteActor {
         planetShape.setRadius(radius);
         this.body.createFixture(planetShape, 0f);
         planetShape.dispose();
-        this.setLayer(0);
         this.setSize(radius*2,radius*2);
-        this.setOriginCenter();
-        this.setCenter(this.body.getPosition().x-radius,this.body.getPosition().y-radius);
+        this.setPosition(this.body.getPosition().x-radius,this.body.getPosition().y-radius);
     }
 }

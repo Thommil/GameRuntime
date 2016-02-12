@@ -112,6 +112,8 @@ public class Scene implements Screen {
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
         this.viewport.apply(settings.viewport.centerCamera);
+
+        this.paused = true;
     }
 
     /**
@@ -155,7 +157,7 @@ public class Scene implements Screen {
      */
     public void addActor(final Actor actor) {
         Gdx.app.debug("Scene","addActor()");
-        if(this.settings.physics.asyncMode) {
+        if(this.settings.physics.asyncMode && !this.paused) {
             this.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
@@ -195,7 +197,7 @@ public class Scene implements Screen {
      */
     public void removeActor(final Actor actor){
         Gdx.app.debug("Scene","removeActor()");
-        if(this.settings.physics.asyncMode) {
+        if(this.settings.physics.asyncMode && !this.paused) {
             this.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
@@ -435,6 +437,10 @@ public class Scene implements Screen {
 
     public List<Collidable> getCollidables() {
         return collidables;
+    }
+
+    public IntMap<Layer> getLayers() {
+        return layers;
     }
 
     public boolean isPaused() {

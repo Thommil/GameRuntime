@@ -14,11 +14,11 @@ public class StaticActor implements Actor, Renderable<Batch> {
 
     protected int layer = 0;
 
-    final protected Texture texture;
-    final protected float x, y;
-    final protected float width, height;
-    final protected float u, v;
-    final protected float u2, v2;
+    final public Texture texture;
+    final public float x, y;
+    final public float width, height;
+    final public float u, v;
+    final public float u2, v2;
 
     public StaticActor(final Texture texture,
                        final float x, final float y,
@@ -53,6 +53,6 @@ public class StaticActor implements Actor, Renderable<Batch> {
 
     @Override
     public void dispose() {
-        this.texture.dispose();
+        //NOP Texture can be shared
     }
 }

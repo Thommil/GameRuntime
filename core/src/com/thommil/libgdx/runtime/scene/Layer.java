@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -21,7 +22,7 @@ public abstract class Layer implements Disposable {
     /**
      * Inner Renderable actors list
      */
-    protected final List<Renderable> renderables;
+    protected final List<Renderable> renderables = new ArrayList<Renderable>();
 
     /**
      * Current camera used by this layer
@@ -29,16 +30,10 @@ public abstract class Layer implements Disposable {
     protected OrthographicCamera camera;
 
     /**
-     * Default constructor
-     */
-    public Layer() {
-        this.renderables = new ArrayList<Renderable>();
-    }
-
-    /**
      * Set the current camera
      */
     public void setCamera(OrthographicCamera camera){
+        Gdx.app.debug("Layer","setCamera()");
         this.camera = camera;
     }
 
@@ -48,6 +43,7 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to add
      */
     public void addRenderable(final Renderable renderable){
+        Gdx.app.debug("Layer","addRenderable()");
         this.renderables.add(renderable);
     }
 
@@ -57,6 +53,7 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to remove
      */
     public void removeRenderable(final Renderable renderable){
+        Gdx.app.debug("Layer","removeRenderable()");
         this.renderables.remove(renderable);
     }
 
@@ -71,6 +68,7 @@ public abstract class Layer implements Disposable {
      * Shows a layer
      */
     public void show(){
+        Gdx.app.debug("Layer","show()");
         this.onShow();
         this.visible = true;
     }
@@ -84,6 +82,7 @@ public abstract class Layer implements Disposable {
      * Hides a layer
      */
     public void hide(){
+        Gdx.app.debug("Layer","hide()");
         this.visible = false;
         this.onHide();
     }

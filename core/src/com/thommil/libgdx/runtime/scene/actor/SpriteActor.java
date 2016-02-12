@@ -38,7 +38,7 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     static public final int U4 = 14;
     static public final int V4 = 15;
 
-    static final int VERTEX_SIZE = 2 + 2;
+    public static final int VERTEX_SIZE = 2 + 2;
     public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
     public Texture texture;
@@ -581,6 +581,6 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
     @Override
     public void dispose() {
-        this.texture.dispose();
+        //NOP Texture can be shared
     }
 }
