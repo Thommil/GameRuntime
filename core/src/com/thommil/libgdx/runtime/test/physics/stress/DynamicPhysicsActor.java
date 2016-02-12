@@ -3,12 +3,12 @@ package com.thommil.libgdx.runtime.test.physics.stress;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
-import com.thommil.libgdx.runtime.scene.actor.PhysicsActor;
+import com.thommil.libgdx.runtime.scene.actor.PhysicsSpriteActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends PhysicsActor{
+public class DynamicPhysicsActor extends PhysicsSpriteActor {
 
     public DynamicPhysicsActor(Texture texture) {
         super(texture);
@@ -17,7 +17,7 @@ public class DynamicPhysicsActor extends PhysicsActor{
     }
 
     @Override
-    public Body buildBody(World world) {
+    public void buildBody(World world) {
         BodyDef dynamicBodyDef = new BodyDef();
         dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
         dynamicBodyDef.position.set(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
@@ -30,6 +30,5 @@ public class DynamicPhysicsActor extends PhysicsActor{
         fixture.setFriction(1f);
 
         dynamicPolygonShape.dispose();
-        return this.body;
     }
 }

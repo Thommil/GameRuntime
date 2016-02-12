@@ -6,12 +6,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-import com.thommil.libgdx.runtime.scene.actor.PhysicsActor;
+import com.thommil.libgdx.runtime.scene.actor.PhysicsSpriteActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends PhysicsActor{
+public class DynamicPhysicsActor extends PhysicsSpriteActor {
 
     public DynamicPhysicsActor(Texture texture) {
         super(texture);
@@ -20,7 +20,7 @@ public class DynamicPhysicsActor extends PhysicsActor{
     }
 
     @Override
-    public Body buildBody(World world) {
+    public void buildBody(World world) {
         BodyDef dynamicBodyDef = new BodyDef();
         dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
         dynamicBodyDef.position.set(0f,3f);
@@ -30,7 +30,6 @@ public class DynamicPhysicsActor extends PhysicsActor{
         dynamicPolygonShape.setAsBox(1f,1f);
         this.body.createFixture(dynamicPolygonShape,1f).setRestitution(0.5f);
         dynamicPolygonShape.dispose();
-        return this.body;
     }
 
 }

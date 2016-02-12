@@ -3,7 +3,7 @@ package com.thommil.libgdx.runtime.test.input.dynamic;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicSpriteLayer;
+import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 
 /**
  * Test for a physic actor using inputs
@@ -26,7 +26,7 @@ public class PhysicsScene extends Game implements InputProcessor{
 		scene = new Scene(settings);
 
 		//Layers
-		scene.addLayer(0,new BasicSpriteLayer(11));
+		scene.addLayer(0,new BasicBatchLayer(11));
 
 		//Actor
 		for(int i=0; i < 10; i++) {

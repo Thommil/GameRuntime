@@ -3,13 +3,10 @@ package com.thommil.libgdx.runtime.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.NumberUtils;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
 
@@ -18,7 +15,7 @@ import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
  *
  * Created by thommil on 2/10/16.
  */
-public class BasicSpriteBatch implements Batch {
+public class BasicBatch implements Batch {
 
     private Mesh mesh;
 
@@ -48,11 +45,11 @@ public class BasicSpriteBatch implements Batch {
     /** The maximum number of sprites rendered in one batch so far. **/
     public int maxSpritesInBatch = 0;
 
-    public BasicSpriteBatch () {
+    public BasicBatch() {
         this(1000);
     }
 
-    public BasicSpriteBatch (int size) {
+    public BasicBatch(int size) {
         // 32767 is max index, so 32767 / 6 - (32767 / 6 % 3) = 5460.
         if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
 
@@ -180,7 +177,39 @@ public class BasicSpriteBatch implements Batch {
 
     @Override
     public void draw (Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {
-        throw new GameRuntimeException("Not implemented");
+        if (!drawing) throw new IllegalStateException("SpriteBatch.begin must be called before draw.");
+
+        float[] vertices = this.vertices;
+
+        if (texture != lastTexture)
+            switchTexture(texture);
+        else if (idx == vertices.length) //
+            flush();
+
+        final float fx2 = x + width;
+        final float fy2 = y + height;
+
+        int idx = this.idx;
+        vertices[idx++] = x;
+        vertices[idx++] = y;
+        vertices[idx++] = u;
+        vertices[idx++] = v;
+
+        vertices[idx++] = x;
+        vertices[idx++] = fy2;
+        vertices[idx++] = u;
+        vertices[idx++] = v2;
+
+        vertices[idx++] = fx2;
+        vertices[idx++] = fy2;
+        vertices[idx++] = u2;
+        vertices[idx++] = v2;
+
+        vertices[idx++] = fx2;
+        vertices[idx++] = y;
+        vertices[idx++] = u2;
+        vertices[idx++] = v;
+        this.idx = idx;
     }
 
     @Override

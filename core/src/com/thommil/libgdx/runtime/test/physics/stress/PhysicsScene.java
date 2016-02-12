@@ -6,8 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicSpriteLayer;
+import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 
 /**
@@ -38,7 +39,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicSpriteLayer(5000));
+        defaultScene.addLayer(0, new BasicBatchLayer(5000));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
@@ -85,7 +86,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        PhysicsScene.this.defaultScene.removeActor(PhysicsScene.this.defaultScene.getPhysicsActors().get(1));
+        PhysicsScene.this.defaultScene.removeActor((Actor) PhysicsScene.this.defaultScene.getCollidables().get(1));
         return false;
     }
 

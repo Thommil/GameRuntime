@@ -4,7 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicSpriteLayer;
+import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 
 /**
  * Test for a Simple texture display
@@ -22,7 +22,7 @@ public class BasicScene extends Game {
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new BasicSpriteLayer(1000));
+		defaultScene.addLayer(0,new BasicBatchLayer(1000));
 
 		//Actor
 		defaultScene.addActor(new BasicActor());

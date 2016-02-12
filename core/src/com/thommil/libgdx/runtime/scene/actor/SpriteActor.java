@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.thommil.libgdx.runtime.graphics.BasicSpriteBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 
 /**
- * Basic SpriteActor using custom SpriteBatch based on Sprite from LibGDX
+ * Basic SpriteActor for BasicBatch rendering based on Sprite from LibGDX
  *
  * Created by thommil on 2/10/16.
  */
@@ -52,11 +51,11 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     public float scaleX = 1, scaleY = 1;
     public  Rectangle bounds;
 
-    private int regionWidth, regionHeight;
-    private final float[] vertices = new float[SPRITE_SIZE];
-    private boolean dirty = true;
+    protected int regionWidth, regionHeight;
+    protected final float[] vertices = new float[SPRITE_SIZE];
+    protected boolean dirty = true;
 
-    private int layer = 0;
+    protected int layer = 0;
 
     public SpriteActor (Texture texture) {
         this(texture, 0, 0, texture.getWidth(), texture.getHeight());

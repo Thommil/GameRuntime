@@ -5,12 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.scene.actor.PhysicsActor;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 
 import java.util.ArrayDeque;
@@ -71,9 +71,14 @@ public class Scene implements Screen {
     private final Lock renderLock = new ReentrantLock();
 
     /**
-     * List of physics actors
+     * List of physics actors (all)
      */
-    protected final List<PhysicsActor> physicsActors;
+    protected final List<Collidable> collidables;
+
+    /**
+     * List of physics actors (none static)
+     */
+    protected final List<Collidable> collidablesDynamic;
 
     /**
      * Duration of last physics step processing in ms
@@ -105,7 +110,8 @@ public class Scene implements Screen {
         this.settings = settings;
 
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
-        this.physicsActors = new ArrayList<PhysicsActor>();
+        this.collidables = new ArrayList<Collidable>();
+        this.collidablesDynamic = new ArrayList<Collidable>();
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         this.layers = new IntMap<Layer>();
@@ -187,9 +193,13 @@ public class Scene implements Screen {
                         Scene.this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
                         Scene.this.renderLock.unlock();
                     }
-                    if(actor instanceof PhysicsActor) {
-                        ((PhysicsActor) actor)._init(Scene.this.physicsWorld);
-                        Scene.this.physicsActors.add(((PhysicsActor) actor));
+                    if(actor instanceof Collidable) {
+                        ((Collidable) actor).buildBody(Scene.this.physicsWorld);
+                        ((Collidable) actor).getBody().setUserData(actor);
+                        Scene.this.collidables.add(((Collidable) actor));
+                        if(((Collidable) actor).getBody().getType() != BodyDef.BodyType.StaticBody) {
+                            Scene.this.collidablesDynamic.add(((Collidable) actor));
+                        }
                     }
                 }
             });
@@ -198,9 +208,13 @@ public class Scene implements Screen {
             if(actor instanceof Renderable) {
                 this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
             }
-            if(actor instanceof PhysicsActor) {
-                ((PhysicsActor) actor)._init(this.physicsWorld);
-                this.physicsActors.add(((PhysicsActor) actor));
+            if(actor instanceof Collidable) {
+                ((Collidable) actor).buildBody(this.physicsWorld);
+                ((Collidable) actor).getBody().setUserData(actor);
+                this.collidables.add(((Collidable) actor));
+                if(((Collidable) actor).getBody().getType() != BodyDef.BodyType.StaticBody) {
+                    this.collidablesDynamic.add(((Collidable) actor));
+                }
             }
         }
     }
@@ -221,9 +235,10 @@ public class Scene implements Screen {
                         Scene.this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
                         Scene.this.renderLock.unlock();
                     }
-                    if (actor instanceof PhysicsActor) {
-                        Scene.this.physicsActors.remove(actor);
-                        Scene.this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
+                    if (actor instanceof Collidable) {
+                        Scene.this.collidables.remove(actor);
+                        Scene.this.collidablesDynamic.remove(actor);
+                        Scene.this.physicsWorld.destroyBody(((Collidable) actor).getBody());
                     }
                 }
             });
@@ -232,9 +247,10 @@ public class Scene implements Screen {
             if (actor instanceof Renderable) {
                 this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
             }
-            if (actor instanceof PhysicsActor) {
-                this.physicsActors.remove(actor);
-                this.physicsWorld.destroyBody(((PhysicsActor) actor).body);
+            if (actor instanceof Collidable) {
+                this.collidables.remove(actor);
+                this.collidablesDynamic.remove(actor);
+                this.physicsWorld.destroyBody(((Collidable) actor).getBody());
             }
         }
     }
@@ -280,7 +296,7 @@ public class Scene implements Screen {
                                 Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
                             }
 
-                            for (final PhysicsActor actor : Scene.this.physicsActors) {
+                            for (final Collidable actor : Scene.this.collidablesDynamic) {
                                 actor.step(lastPhysicsStepDuration);
                             }
 
@@ -346,7 +362,7 @@ public class Scene implements Screen {
                 this.sceneListener.onStep(lastPhysicsStepDuration);
             }
 
-            for (final PhysicsActor actor : this.physicsActors) {
+            for (final Collidable actor : this.collidablesDynamic) {
                 actor.step(lastPhysicsStepDuration);
             }
 
@@ -450,8 +466,8 @@ public class Scene implements Screen {
         return viewport;
     }
 
-    public List<PhysicsActor> getPhysicsActors() {
-        return physicsActors;
+    public List<Collidable> getCollidables() {
+        return collidables;
     }
 
     public boolean isPaused() {
