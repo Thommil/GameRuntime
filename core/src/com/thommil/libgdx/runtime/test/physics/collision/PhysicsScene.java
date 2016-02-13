@@ -41,7 +41,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
-        //settings.physics.asyncMode=false;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
         textureCuriosity = new Texture(Gdx.files.internal("curiosity.png"));
@@ -84,7 +83,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
     public void beginContact(Contact contact) {
         final Actor actorA = (Actor) contact.getFixtureA().getUserData();
         final Actor actorB = (Actor) contact.getFixtureB().getUserData();
-
         //Sensor
         if(actorA instanceof DynamicPhysicsActor && actorB instanceof SensorActor){
             ((DynamicPhysicsActor) actorA).texture = textureExplosion;

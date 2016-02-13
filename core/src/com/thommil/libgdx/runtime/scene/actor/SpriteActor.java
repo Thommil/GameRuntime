@@ -55,18 +55,32 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     protected final float[] vertices = new float[SPRITE_SIZE];
     protected boolean dirty = true;
 
+    protected final int id;
     protected int layer = 0;
 
     public SpriteActor (Texture texture) {
         this(texture, 0, 0, texture.getWidth(), texture.getHeight());
     }
 
+    public SpriteActor (final int id, Texture texture) {
+        this(id, texture, 0, 0, texture.getWidth(), texture.getHeight());
+    }
+
     public SpriteActor (Texture texture, int srcWidth, int srcHeight) {
         this(texture, 0, 0, srcWidth, srcHeight);
     }
 
+    public SpriteActor (final int id, Texture texture, int srcWidth, int srcHeight) {
+        this(id, texture, 0, 0, srcWidth, srcHeight);
+    }
+
     public SpriteActor (Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+        this(MathUtils.random(0x7ffffffe),texture,srcX,srcY,srcWidth,srcHeight);
+    }
+
+    public SpriteActor (final int id, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
         if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
+        this.id = id;
         this.texture = texture;
         setRegion(srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
@@ -74,12 +88,22 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     }
 
     public SpriteActor (TextureRegion region) {
+        this(MathUtils.random(0x7ffffffe), region);
+    }
+
+    public SpriteActor (final int id, TextureRegion region) {
+        this.id = id;
         setRegion(region);
         setSize(region.getRegionWidth(), region.getRegionHeight());
         setOrigin(width / 2, height / 2);
     }
 
     public SpriteActor (TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
+        this(MathUtils.random(0x7ffffffe), region, srcX, srcY, srcWidth, srcHeight);
+    }
+
+    public SpriteActor (final int id, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
+        this.id = id;
         setRegion(region, srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
         setOrigin(width / 2, height / 2);
@@ -564,6 +588,13 @@ public class SpriteActor implements Actor, Renderable<Batch> {
         return v > v2;
     }
 
+    /**
+     * Gets the ID of the Actor
+     */
+    @Override
+    public int getId() {
+        return this.id;
+    }
 
     public void setLayer(final int layer){
         this.layer = layer;

@@ -155,7 +155,7 @@ public class Scene implements Screen {
      */
     public void addActor(final Actor actor) {
         Gdx.app.debug("Scene","addActor()");
-        if(this.settings.physics.asyncMode && !this.paused) {
+        if(!this.paused) {
             this.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
@@ -203,7 +203,7 @@ public class Scene implements Screen {
      */
     public void removeActor(final Actor actor){
         Gdx.app.debug("Scene","removeActor()");
-        if(this.settings.physics.asyncMode && !this.paused) {
+        if(!this.paused) {
             this.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
@@ -252,48 +252,47 @@ public class Scene implements Screen {
         });
 
         //Aync loop
-        if(this.settings.physics.asyncMode) {
-            this.executor.execute(new Runnable() {
+        this.executor.execute(new Runnable() {
 
-                @Override
-                public void run() {
-                    while(true) {
-                        final long longAsyncFrequency = (long)(Scene.this.settings.physics.frequency * 1000f);
-                        final long start = System.currentTimeMillis();
+            @Override
+            public void run() {
+                while(true) {
+                    final long longAsyncFrequency = (long)(Scene.this.settings.physics.frequency * 1000f);
+                    final long start = System.currentTimeMillis();
 
-                        if (!Scene.this.paused) {
+                    if (!Scene.this.paused) {
 
-                            while(!Scene.this.physicsQueue.isEmpty()){
-                                Scene.this.physicsQueue.poll().run();
-                            }
-
-                            if(Scene.this.sceneListener != null){
-                                Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
-                            }
-
-                            for (final Collidable actor : Scene.this.collidables) {
-                                actor.step(lastPhysicsStepDuration);
-                            }
-
-                            Scene.this.physicsWorld.step(Scene.this.settings.physics.frequency
-                                    , Scene.this.settings.physics.velocityIterations
-                                    , Scene.this.settings.physics.positionIterations
-                                    , Scene.this.settings.physics.particleIterations);
-
+                        while(!Scene.this.physicsQueue.isEmpty()){
+                            Scene.this.physicsQueue.poll().run();
                         }
-                        lastPhysicsStepDuration = System.currentTimeMillis() - start;
 
-                        if (lastPhysicsStepDuration < longAsyncFrequency) {
-                            try {
-                                Thread.currentThread().sleep(longAsyncFrequency - lastPhysicsStepDuration);
-                            } catch (InterruptedException ie) {
-                                Gdx.app.exit();
-                            }
+                        if(Scene.this.sceneListener != null){
+                            Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
+                        }
+
+                        for (final Collidable actor : Scene.this.collidables) {
+                            actor.step(lastPhysicsStepDuration);
+                        }
+
+                        Scene.this.physicsWorld.step(Scene.this.settings.physics.frequency
+                                , Scene.this.settings.physics.velocityIterations
+                                , Scene.this.settings.physics.positionIterations
+                                , Scene.this.settings.physics.particleIterations);
+
+                    }
+                    lastPhysicsStepDuration = System.currentTimeMillis() - start;
+
+                    if (lastPhysicsStepDuration < longAsyncFrequency) {
+                        try {
+                            Thread.currentThread().sleep(longAsyncFrequency - lastPhysicsStepDuration);
+                        } catch (InterruptedException ie) {
+                            Gdx.app.exit();
                         }
                     }
                 }
-            });
-        }
+            }
+        });
+
         this.paused = false;
     }
 
@@ -303,10 +302,7 @@ public class Scene implements Screen {
      * @param runnable The task to be executed
      */
     public void runOnPhysicsThread(final Runnable runnable){
-        if(this.settings.physics.asyncMode) {
-            this.physicsQueue.add(runnable);
-        }
-        else this.runOnUIThread(runnable);
+        this.physicsQueue.add(runnable);
     }
 
     /**
@@ -328,59 +324,22 @@ public class Scene implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
 
-        //Sync step
-        if(!this.settings.physics.asyncMode) {
+        this.renderLock.lock();
 
-            final long start = System.currentTimeMillis();
+        if(this.sceneListener != null){
+            this.sceneListener.onRender(delta);
+        }
 
-            if(this.sceneListener != null){
-                this.sceneListener.onStep(lastPhysicsStepDuration);
-            }
-
-            for (final Collidable actor : this.collidables) {
-                actor.step(lastPhysicsStepDuration);
-            }
-
-            this.physicsWorld.step(this.settings.physics.frequency
-                    , this.settings.physics.velocityIterations
-                    , this.settings.physics.positionIterations
-                    , this.settings.physics.particleIterations);
-
-            lastPhysicsStepDuration = System.currentTimeMillis() - start;
-
-            if(this.sceneListener != null){
-                this.sceneListener.onRender(delta);
-            }
-
-            for (final Layer layer : this.layers.values()) {
-                if (layer.isVisible()) {
-                    layer.render(delta);
-                }
-            }
-
-            if(Gdx.app.getLogLevel() == Gdx.app.LOG_DEBUG){
-                debugRenderer.render(this.physicsWorld, this.camera.combined);
+        for (final Layer layer : this.layers.values()) {
+            if (layer.isVisible()) {
+                layer.render(delta);
             }
         }
-        //Async step
-        else {
-            this.renderLock.lock();
-
-            if(this.sceneListener != null){
-                this.sceneListener.onRender(delta);
-            }
-
-            for (final Layer layer : this.layers.values()) {
-                if (layer.isVisible()) {
-                    layer.render(delta);
-                }
-            }
-            if(this.settings.physics.debug){
-                debugRenderer.render(this.physicsWorld, this.camera.combined);
-            }
-            this.renderLock.unlock();
-
+        if(this.settings.physics.debug){
+            debugRenderer.render(this.physicsWorld, this.camera.combined);
         }
+        this.renderLock.unlock();
+
     }
 
     /**
@@ -508,7 +467,6 @@ public class Scene implements Screen {
          */
         public static class Physics{
             public float[] gravity = {0.0f,-9.8f};
-            public boolean asyncMode = true;
             public float frequency = 0.01666666666f;
             public int velocityIterations = 8;
             public int positionIterations = 3;

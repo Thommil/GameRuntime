@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene.actor;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Collidable;
 
@@ -9,6 +10,8 @@ import com.thommil.libgdx.runtime.scene.Collidable;
  * Created by thommil on 13/02/16.
  */
 public class SensorActor implements Collidable {
+
+    protected final int id;
 
     /**
      * The bound body
@@ -20,13 +23,21 @@ public class SensorActor implements Collidable {
      */
     protected final Shape shape;
 
-    /**
-     * Default constructor
-     *
-     * @param shape The Shape of the sensor
-     */
     public SensorActor(final Shape shape){
+        this(MathUtils.random(0x7ffffffe), shape);
+    }
+
+    public SensorActor(final int id, final Shape shape){
+        this.id = id;
         this.shape = shape;
+    }
+
+    /**
+     * Gets the ID of the Actor
+     */
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     /**

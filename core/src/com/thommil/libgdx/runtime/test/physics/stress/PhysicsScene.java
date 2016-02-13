@@ -37,7 +37,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
-        //settings.physics.asyncMode=false;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
         texture = new Texture(Gdx.files.internal("curiosity.png"));

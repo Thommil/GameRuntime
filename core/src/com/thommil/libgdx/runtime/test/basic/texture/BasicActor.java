@@ -17,6 +17,14 @@ public class BasicActor implements Renderable<BasicBatch> {
         this.texture = new Texture(Gdx.files.internal("test.png"));
     }
 
+    /**
+     * Gets the ID of the Actor
+     */
+    @Override
+    public int getId() {
+        return 0;
+    }
+
     @Override
     public int getLayer() {
         return 0;

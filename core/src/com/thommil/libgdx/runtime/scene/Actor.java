@@ -9,4 +9,9 @@ import com.badlogic.gdx.utils.Disposable;
  */
 public interface Actor extends Disposable{
 
+    /**
+     *  Gets the ID of the Actor
+     */
+    int getId();
+
 }

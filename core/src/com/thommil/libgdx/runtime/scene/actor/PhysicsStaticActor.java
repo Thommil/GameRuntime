@@ -16,10 +16,13 @@ public abstract class PhysicsStaticActor extends StaticActor implements Collidab
      */
     public Body body;
 
+    public PhysicsStaticActor(final int id, Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {
+        super(id, texture, x, y, width, height, u, v, u2, v2);
+    }
+
     public PhysicsStaticActor(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {
         super(texture, x, y, width, height, u, v, u2, v2);
     }
-
 
     /**
      * Subclasses must implement this method to build the body

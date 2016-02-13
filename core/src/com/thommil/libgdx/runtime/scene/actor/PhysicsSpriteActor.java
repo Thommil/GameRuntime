@@ -19,62 +19,44 @@ public abstract class PhysicsSpriteActor extends SpriteActor implements Collidab
      */
     public Body body;
 
-    /**
-     * Creates a sprite with width, height, and texture region equal to the size of the texture.
-     *
-     * @param texture
-     */
     public PhysicsSpriteActor(Texture texture) {
         super(texture);
     }
 
-    /**
-     * Creates a sprite with width, height, and texture region equal to the specified size. The texture region's upper left corner
-     * will be 0,0.
-     *
-     * @param texture
-     * @param srcWidth  The width of the texture region. May be negative to flip the sprite when drawn.
-     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn.
-     */
+    public PhysicsSpriteActor(final int id, Texture texture) {
+        super(id, texture);
+    }
+
     public PhysicsSpriteActor(Texture texture, int srcWidth, int srcHeight) {
         super(texture, srcWidth, srcHeight);
     }
 
-    /**
-     * Creates a sprite with width, height, and texture region equal to the specified size.
-     *
-     * @param texture
-     * @param srcX
-     * @param srcY
-     * @param srcWidth  The width of the texture region. May be negative to flip the sprite when drawn.
-     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn.
-     */
+    public PhysicsSpriteActor(final int id, Texture texture, int srcWidth, int srcHeight) {
+        super(id, texture, srcWidth, srcHeight);
+    }
+
     public PhysicsSpriteActor(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
         super(texture, srcX, srcY, srcWidth, srcHeight);
     }
 
-    /**
-     * Creates a sprite based on a specific TextureRegion, the new sprite's region is a copy of the parameter region - altering one
-     * does not affect the other
-     *
-     * @param region
-     */
+    public PhysicsSpriteActor(final int id, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id, texture, srcX, srcY, srcWidth, srcHeight);
+    }
+
     public PhysicsSpriteActor(TextureRegion region) {
         super(region);
     }
 
-    /**
-     * Creates a sprite with width, height, and texture region equal to the specified size, relative to specified sprite's texture
-     * region.
-     *
-     * @param region
-     * @param srcX
-     * @param srcY
-     * @param srcWidth  The width of the texture region. May be negative to flip the sprite when drawn.
-     * @param srcHeight The height of the texture region. May be negative to flip the sprite when drawn.
-     */
+    public PhysicsSpriteActor(final int id, TextureRegion region) {
+        super(id, region);
+    }
+
     public PhysicsSpriteActor(TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
         super(region, srcX, srcY, srcWidth, srcHeight);
+    }
+
+    public PhysicsSpriteActor(final int id, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id, region, srcX, srcY, srcWidth, srcHeight);
     }
 
     /**
