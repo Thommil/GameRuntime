@@ -11,6 +11,7 @@ import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
+import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
 import finnstr.libgdx.liquidfun.ParticleContact;
 import finnstr.libgdx.liquidfun.ParticleSystem;
@@ -25,7 +26,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
     Scene defaultScene;
     Texture texture;
     World world;
-    final FPSLogger fpsLogger = new FPSLogger();
     int inc = 0;
 
     @Override
@@ -48,12 +48,13 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
 
-        this.defaultScene.setListener(this);
+        this.defaultScene.setSceneListener(this);
+
+        SceneProfiler.profile(this.defaultScene);
 
         Gdx.input.setInputProcessor(this);
 
         this.setScreen(defaultScene);
-
     }
 
 
@@ -61,7 +62,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
     @Override
     public void onStep(long lastDuration) {
         if(Gdx.graphics.getFramesPerSecond() > 30) {
-            if (inc % 30 == 0) {
+            if (inc % 10 == 0) {
                 defaultScene.addActor(new DynamicPhysicsActor(texture));
             }
         }
@@ -70,46 +71,36 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public void onRender(float deltaTime) {
-        fpsLogger.log();
-    }
-
-    @Override
-    public void beginContact(Contact contact) {
 
     }
 
     @Override
-    public void endContact(Contact contact) {
+    public void onResize() {
 
     }
 
     @Override
-    public void beginParticleBodyContact(ParticleSystem particleSystem, ParticleBodyContact particleBodyContact) {
+    public void onShow() {
 
     }
 
     @Override
-    public void endParticleBodyContact(Fixture fixture, ParticleSystem particleSystem, int i) {
+    public void onHide() {
 
     }
 
     @Override
-    public void beginParticleContact(ParticleSystem particleSystem, ParticleContact particleContact) {
+    public void onResume() {
 
     }
 
     @Override
-    public void endParticleContact(ParticleSystem particleSystem, int i, int i1) {
+    public void onPause() {
 
     }
 
     @Override
-    public void preSolve(Contact contact, Manifold manifold) {
-
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+    public void onDispose() {
 
     }
 

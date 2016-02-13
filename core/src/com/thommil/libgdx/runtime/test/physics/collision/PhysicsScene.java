@@ -12,6 +12,7 @@ import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.SensorActor;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
+import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
 import finnstr.libgdx.liquidfun.ParticleContact;
 import finnstr.libgdx.liquidfun.ParticleSystem;
@@ -23,13 +24,13 @@ import finnstr.libgdx.liquidfun.ParticleSystem;
  *
  * Created by tomtom on 04/02/16.
  */
-public class PhysicsScene extends Game implements SceneListener, InputProcessor{
+public class PhysicsScene extends Game implements SceneListener, InputProcessor, ContactListener{
 
     Scene defaultScene;
     Texture textureCuriosity;
     Texture textureExplosion;
     World world;
-    final FPSLogger fpsLogger = new FPSLogger();
+
     int inc = 0;
 
     @Override
@@ -51,6 +52,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         defaultScene.addLayer(1, new BasicBatchLayer(1000));
 
         //Actors
+
         defaultScene.addActor(new StaticPhysicsActor());
 
         PolygonShape shape = new PolygonShape();
@@ -59,7 +61,10 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         defaultScene.addActor(burnSensor);
         burnSensor.body.setTransform(0f,-20f,0);
 
-        this.defaultScene.setListener(this);
+        this.defaultScene.setSceneListener(this);
+        this.defaultScene.setContactListener(this);
+
+        SceneProfiler.profile(this.defaultScene);
 
         Gdx.input.setInputProcessor(this);
 
@@ -76,7 +81,37 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public void onRender(float deltaTime) {
-        fpsLogger.log();
+
+    }
+
+    @Override
+    public void onResize() {
+
+    }
+
+    @Override
+    public void onShow() {
+
+    }
+
+    @Override
+    public void onHide() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
+    @Override
+    public void onDispose() {
+
     }
 
     @Override

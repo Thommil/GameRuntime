@@ -9,6 +9,7 @@ import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.BasicCacheLayer;
+import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
  * Test for a Simple Sprite display
@@ -38,6 +39,9 @@ public class BasicScene extends Game {
 			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 4));
 			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 5));
 		}
+
+		SceneProfiler.profile(defaultScene);
+
 		//Start
 		this.setScreen(defaultScene);
 	}

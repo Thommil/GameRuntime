@@ -347,15 +347,35 @@ public class Scene implements Screen {
      *
      * @param sceneListener The listener of the scene
      */
-    public void setListener(final SceneListener sceneListener){
+    public void setSceneListener(final SceneListener sceneListener){
         this.sceneListener = sceneListener;
-        this.physicsWorld.setContactListener(sceneListener);
+    }
+
+    /**
+     * Gets the current listener
+     *
+     * @return The current listener
+     */
+    public SceneListener getSceneListener(){
+        return this.sceneListener;
+    }
+
+    /**
+     * Set the current contact listener
+     *
+     * @param contactListener The current ContactListener
+     */
+    public void setContactListener(final ContactListener contactListener){
+        this.physicsWorld.setContactListener(contactListener);
     }
 
     @Override
     public void resize(int width, int height) {
         Gdx.app.debug("Scene","resize("+width+", "+height+")");
         this.viewport.update(width,height);
+        if(this.sceneListener != null){
+            this.sceneListener.onResize();
+        }
     }
 
     @Override

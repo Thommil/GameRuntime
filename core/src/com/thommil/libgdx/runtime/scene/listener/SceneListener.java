@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 /**
  * Created by tomtom on 05/02/16.
  */
-public interface SceneListener extends ContactListener{
+public interface SceneListener{
 
     /**
      * Called before each worl step with the duration of the last step processing
@@ -20,4 +20,34 @@ public interface SceneListener extends ContactListener{
      * @param deltaTime The time ellapsed since last rendering
      */
     void onRender(final float deltaTime);
+
+    /**
+     * Called on resize()
+     */
+    void onResize();
+
+    /**
+     * Called on show()
+     */
+    void onShow();
+
+    /**
+     * Called on hide()
+     */
+    void onHide();
+
+    /**
+     * Called on resume()
+     */
+    void onResume();
+
+    /**
+     * Called on pause()
+     */
+    void onPause();
+
+    /**
+     * called on dispose()
+     */
+    void onDispose();
 }
