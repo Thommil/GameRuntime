@@ -2,8 +2,10 @@ package com.thommil.libgdx.runtime.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.sun.glass.ui.SystemClipboard;
+import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 
@@ -116,7 +118,8 @@ public class SceneProfiler{
                     outStr.delete(0, outStr.length);
                     if((this.profiler.flags & SceneProfiler.RENDERER) != 0){
                         outStr.append("[RENDERER:")
-                                .append((int)(renderCalls * frequencyFactor))
+                                .append("fps=").append((int)(renderCalls * frequencyFactor)).append(",")
+                                .append("objets=").append(this.profiler.scene.getRenderablesCount())
                                 .append("]");
                     }
                     if((this.profiler.flags & SceneProfiler.PHYSICS) != 0){
@@ -126,12 +129,12 @@ public class SceneProfiler{
                                 .append("contacts=").append(this.profiler.scene.getPhysicsWorld().getContactCount())
                                 .append("]");
                     }
-                    if((this.profiler.flags & SceneProfiler.GL) != 0){
+                    if((this.profiler.flags & SceneProfiler.GL) != 0 && renderCalls > 0){
                         outStr.append("[GL:")
-                                .append("calls=").append((int)(GLProfiler.calls * frequencyFactor)).append(", ")
-                                .append("drawCalls=").append((int)(GLProfiler.drawCalls * frequencyFactor)).append(", ")
-                                .append("shaderSwitches=").append((int)(GLProfiler.shaderSwitches * frequencyFactor)).append(", ")
-                                .append("textureBindings=").append((int)(GLProfiler.textureBindings * frequencyFactor)).append(", ")
+                                .append("calls=").append((int)(GLProfiler.calls / renderCalls)).append(", ")
+                                .append("drawCalls=").append((int)(GLProfiler.drawCalls / renderCalls)).append(", ")
+                                .append("shaderSwitches=").append((int)(GLProfiler.shaderSwitches / renderCalls)).append(", ")
+                                .append("textureBindings=").append((int)(GLProfiler.textureBindings / renderCalls)).append(", ")
                                 .append("vertexCount=").append((int)(GLProfiler.vertexCount.average))
                                 .append("]");
                         GLProfiler.calls=0;
@@ -141,7 +144,10 @@ public class SceneProfiler{
 
                     }
                     if((this.profiler.flags & SceneProfiler.MEMORY) != 0){
-
+                        outStr.append("[MEMORY:")
+                                .append("java=").append((int)(Gdx.app.getJavaHeap()/1048576)).append("MB, ")
+                                .append("native=").append((int)(Gdx.app.getNativeHeap()/1048576)).append("MB")
+                                .append("]");
                     }
                     Gdx.app.log("PROFILER", outStr.toString());
                     renderCalls=0;

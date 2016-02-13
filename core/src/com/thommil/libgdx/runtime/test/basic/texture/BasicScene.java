@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
  * Test for a Simple texture display
@@ -26,6 +27,9 @@ public class BasicScene extends Game {
 
 		//Actor
 		defaultScene.addActor(new BasicActor());
+
+		//Profiler
+		SceneProfiler.profile(defaultScene);
 
 		//Start
 		this.setScreen(defaultScene);

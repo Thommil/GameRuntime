@@ -40,6 +40,7 @@ public class BasicScene extends Game {
 			defaultScene.addActor(new BasicActor(texture, MathUtils.random(0.1f, 2f), 5));
 		}
 
+		//Profiler
 		SceneProfiler.profile(defaultScene);
 
 		//Start

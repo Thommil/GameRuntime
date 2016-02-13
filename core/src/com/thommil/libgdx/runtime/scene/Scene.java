@@ -49,6 +49,11 @@ public class Scene implements Screen {
     protected final IntMap<Layer> layers;
 
     /**
+     * The current number of renderable in the scene
+     */
+    protected int renderablesCount;
+
+    /**
      * Executor bound to this scene
      */
     protected ExecutorService executor;
@@ -99,7 +104,7 @@ public class Scene implements Screen {
      * @param settings The Scene settings
      */
     public Scene(final Scene.Settings settings) {
-        Gdx.app.debug("Scene","New scene");
+        //Gdx.app.debug("Scene","New scene");
         this.settings = settings;
 
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
@@ -107,6 +112,7 @@ public class Scene implements Screen {
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         this.layers = new IntMap<Layer>();
+        this.renderablesCount = 0;
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
         this.viewport.apply(settings.viewport.centerCamera);
@@ -121,7 +127,7 @@ public class Scene implements Screen {
      * @param layer The layer to add
      */
     public void addLayer(final int index, final Layer layer){
-        Gdx.app.debug("Scene","addLayer("+index+")");
+        //Gdx.app.debug("Scene","addLayer("+index+")");
         layer.setCamera(this.camera);
         this.renderLock.lock();
         this.layers.put(index,layer);
@@ -134,7 +140,7 @@ public class Scene implements Screen {
      * @param index The index of the layer
      */
     public void showLayer(final int index){
-        Gdx.app.debug("Scene","showLayer("+index+")");
+        //Gdx.app.debug("Scene","showLayer("+index+")");
         this.layers.get(index).show();
     }
 
@@ -144,7 +150,7 @@ public class Scene implements Screen {
      * @param index The index of the layer
      */
     public void hideLayer(final int index){
-        Gdx.app.debug("Scene","hideLayer("+index+")");
+        //Gdx.app.debug("Scene","hideLayer("+index+")");
         this.layers.get(index).hide();
     }
 
@@ -154,7 +160,7 @@ public class Scene implements Screen {
      * @param actor The Actor to add
      */
     public void addActor(final Actor actor) {
-        Gdx.app.debug("Scene","addActor()");
+        //Gdx.app.debug("Scene","addActor()");
         if(!this.paused) {
             this.runOnPhysicsThread(new Runnable() {
                 @Override
@@ -162,6 +168,7 @@ public class Scene implements Screen {
                     if(actor instanceof Renderable) {
                         Scene.this.renderLock.lock();
                         Scene.this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
+                        Scene.this.renderablesCount++;
                         Scene.this.renderLock.unlock();
                     }
                     if(actor instanceof Collidable) {
@@ -181,6 +188,7 @@ public class Scene implements Screen {
         else{
             if(actor instanceof Renderable) {
                 this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
+                this.renderablesCount++;
             }
             if(actor instanceof Collidable) {
                 ((Collidable) actor).buildBody(this.physicsWorld);
@@ -202,7 +210,7 @@ public class Scene implements Screen {
      * @param actor The Actor to remove
      */
     public void removeActor(final Actor actor){
-        Gdx.app.debug("Scene","removeActor()");
+        //Gdx.app.debug("Scene","removeActor()");
         if(!this.paused) {
             this.runOnPhysicsThread(new Runnable() {
                 @Override
@@ -210,6 +218,7 @@ public class Scene implements Screen {
                     if (actor instanceof Renderable) {
                         Scene.this.renderLock.lock();
                         Scene.this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
+                        Scene.this.renderablesCount--;
                         Scene.this.renderLock.unlock();
                     }
                     if (actor instanceof Collidable) {
@@ -222,6 +231,7 @@ public class Scene implements Screen {
         else{
             if (actor instanceof Renderable) {
                 this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
+                this.renderablesCount--;
             }
             if (actor instanceof Collidable) {
                 this.collidables.remove(actor);
@@ -232,7 +242,7 @@ public class Scene implements Screen {
 
     @Override
     public void show() {
-        Gdx.app.debug("Scene","show()");
+        //Gdx.app.debug("Scene","show()");
         if(settings.physics.debug){
             this.debugRenderer = new Box2DDebugRenderer();
         }
@@ -371,7 +381,7 @@ public class Scene implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.debug("Scene","resize("+width+", "+height+")");
+        //Gdx.app.debug("Scene","resize("+width+", "+height+")");
         this.viewport.update(width,height);
         if(this.sceneListener != null){
             this.sceneListener.onResize();
@@ -380,19 +390,19 @@ public class Scene implements Screen {
 
     @Override
     public void pause() {
-        Gdx.app.debug("Scene","pause()");
+        //Gdx.app.debug("Scene","pause()");
         this.paused = true;
     }
 
     @Override
     public void resume() {
-        Gdx.app.debug("Scene","resume()");
+        //Gdx.app.debug("Scene","resume()");
         this.paused = false;
     }
 
     @Override
     public void hide() {
-        Gdx.app.debug("Scene","hide()");
+        //Gdx.app.debug("Scene","hide()");
         this.paused = true;
         for(final Layer layer : this.layers.values()) {
             layer.hide();
@@ -403,7 +413,7 @@ public class Scene implements Screen {
     @Override
     @SuppressWarnings("all")
     public void dispose() {
-        Gdx.app.debug("Scene","dispose()");
+        //Gdx.app.debug("Scene","dispose()");
         this.paused = true;
         this.executor.shutdown();
         this.physicsWorld.dispose();
@@ -430,6 +440,10 @@ public class Scene implements Screen {
 
     public boolean isPaused() {
         return paused;
+    }
+
+    public int getRenderablesCount() {
+        return renderablesCount;
     }
 
     /**

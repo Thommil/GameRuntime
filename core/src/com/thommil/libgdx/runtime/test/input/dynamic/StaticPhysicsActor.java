@@ -11,8 +11,10 @@ import com.thommil.libgdx.runtime.scene.actor.PhysicsSpriteActor;
  */
 public class StaticPhysicsActor extends PhysicsSpriteActor {
 
+    static Texture texture = new Texture(Gdx.files.internal("planet.png"));
+
     public StaticPhysicsActor() {
-        super(new Texture(Gdx.files.internal("planet.png")));
+        super(texture);
         this.setOriginCenter();
         this.setLayer(0);
     }

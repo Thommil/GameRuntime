@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
  * Simple PhysicsActor test
@@ -21,7 +22,7 @@ public class PhysicsScene extends Game{
 
     @Override
     public void create() {
-        Gdx.app.setLogLevel(Application.LOG_ERROR);
+        Gdx.app.setLogLevel(Application.LOG_INFO);
 
         //Scene
         Scene.Settings settings = new Scene.Settings();
@@ -37,6 +38,9 @@ public class PhysicsScene extends Game{
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
         defaultScene.addActor(new DynamicPhysicsActor(texture));
+
+        //Profiler
+        SceneProfiler.profile(defaultScene);
 
         this.setScreen(defaultScene);
 

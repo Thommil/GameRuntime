@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
  * Test for a physic actor using inputs
@@ -37,6 +38,8 @@ public class PhysicsScene extends Game implements InputProcessor{
 
 		Gdx.input.setInputProcessor(this);
 
+		//Profiler
+		SceneProfiler.profile(scene);
 
 		//Start
 		this.setScreen(scene);

@@ -33,7 +33,7 @@ public abstract class Layer implements Disposable {
      * Set the current camera
      */
     public void setCamera(OrthographicCamera camera){
-        Gdx.app.debug("Layer","setCamera()");
+        //Gdx.app.debug("Layer","setCamera()");
         this.camera = camera;
     }
 
@@ -43,8 +43,18 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to add
      */
     public void addRenderable(final Renderable renderable){
-        Gdx.app.debug("Layer","addRenderable()");
+        //Gdx.app.debug("Layer","addRenderable()");
         this.renderables.add(renderable);
+    }
+
+    /**
+     * Gets the list of renderables
+     *
+     * @return The list of renderables
+     */
+    public List<Renderable> getRenderables(){
+        // Gdx.app.debug("Layer","getRenderables()");
+        return this.renderables;
     }
 
     /**
@@ -53,7 +63,7 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to remove
      */
     public void removeRenderable(final Renderable renderable){
-        Gdx.app.debug("Layer","removeRenderable()");
+        //Gdx.app.debug("Layer","removeRenderable()");
         this.renderables.remove(renderable);
     }
 
@@ -68,7 +78,7 @@ public abstract class Layer implements Disposable {
      * Shows a layer
      */
     public void show(){
-        Gdx.app.debug("Layer","show()");
+        //Gdx.app.debug("Layer","show()");
         this.onShow();
         this.visible = true;
     }
@@ -82,7 +92,7 @@ public abstract class Layer implements Disposable {
      * Hides a layer
      */
     public void hide(){
-        Gdx.app.debug("Layer","hide()");
+        //Gdx.app.debug("Layer","hide()");
         this.visible = false;
         this.onHide();
     }
