@@ -15,12 +15,14 @@ public class AndroidLauncher extends AndroidApplication {
 		//Basic sprite
 		//initialize(new com.thommil.libgdx.runtime.test.basic.sprite.BasicScene(), config);
 		//Basic cache
-		initialize(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
+		//initialize(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
 
 		//Basic Physics
 		//initialize(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
-		//Basic stress Physics
+		//Stress Physics
 		//initialize(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
+		//Collision Physics
+		initialize(new com.thommil.libgdx.runtime.test.physics.collision.PhysicsScene(), config);
 
 		//Kinematic input
 		//initialize(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);

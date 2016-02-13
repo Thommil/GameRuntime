@@ -5,9 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -168,8 +166,12 @@ public class Scene implements Screen {
                     }
                     if(actor instanceof Collidable) {
                         ((Collidable) actor).buildBody(Scene.this.physicsWorld);
-                        ((Collidable) actor).getBody().setUserData(actor);
-                        if(((Collidable) actor).getBody().getType() != BodyDef.BodyType.StaticBody) {
+                        final Body body =  ((Collidable) actor).getBody();
+                        body.setUserData(actor);
+                        for(final Fixture fixture : body.getFixtureList()){
+                            fixture.setUserData(actor);
+                        }
+                        if(body.getType() != BodyDef.BodyType.StaticBody) {
                             Scene.this.collidables.add(((Collidable) actor));
                         }
                     }
@@ -182,9 +184,13 @@ public class Scene implements Screen {
             }
             if(actor instanceof Collidable) {
                 ((Collidable) actor).buildBody(this.physicsWorld);
-                ((Collidable) actor).getBody().setUserData(actor);
-                if(((Collidable) actor).getBody().getType() != BodyDef.BodyType.StaticBody) {
-                    this.collidables.add(((Collidable) actor));
+                final Body body =  ((Collidable) actor).getBody();
+                body.setUserData(actor);
+                for(final Fixture fixture : body.getFixtureList()){
+                    fixture.setUserData(actor);
+                }
+                if(body.getType() != BodyDef.BodyType.StaticBody) {
+                    Scene.this.collidables.add(((Collidable) actor));
                 }
             }
         }
@@ -377,7 +383,6 @@ public class Scene implements Screen {
         }
     }
 
-
     /**
      * The the current listener
      *
@@ -385,6 +390,7 @@ public class Scene implements Screen {
      */
     public void setListener(final SceneListener sceneListener){
         this.sceneListener = sceneListener;
+        this.physicsWorld.setContactListener(sceneListener);
     }
 
     @Override

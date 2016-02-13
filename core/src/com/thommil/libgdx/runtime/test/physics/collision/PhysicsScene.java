@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.physics.stress;
+package com.thommil.libgdx.runtime.test.physics.collision;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
+import com.thommil.libgdx.runtime.scene.actor.SensorActor;
 import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
@@ -16,14 +17,17 @@ import finnstr.libgdx.liquidfun.ParticleContact;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 
 /**
- * Live benchmark on Physics/Rendering loops
+ * Contacts listener tests (code not optimized to stay simple !!!)
+ *
+ * //TODO Buggy collison on sync mode, LibGDX bug ???
  *
  * Created by tomtom on 04/02/16.
  */
 public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     Scene defaultScene;
-    Texture texture;
+    Texture textureCuriosity;
+    Texture textureExplosion;
     World world;
     final FPSLogger fpsLogger = new FPSLogger();
     int inc = 0;
@@ -40,31 +44,33 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         //settings.physics.asyncMode=false;
         defaultScene = new Scene(settings);
         world = defaultScene.getPhysicsWorld();
-        texture = new Texture(Gdx.files.internal("curiosity.png"));
+        textureCuriosity = new Texture(Gdx.files.internal("curiosity.png"));
+        textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicBatchLayer(1));
-        defaultScene.addLayer(1, new BasicBatchLayer(5000));
+        defaultScene.addLayer(0, new BasicBatchLayer(2));
+        defaultScene.addLayer(1, new BasicBatchLayer(1000));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(50f,20f);
+        SensorActor burnSensor = new SensorActor(shape);
+        defaultScene.addActor(burnSensor);
+        burnSensor.body.setTransform(0f,-20f,0);
 
         this.defaultScene.setListener(this);
 
         Gdx.input.setInputProcessor(this);
 
         this.setScreen(defaultScene);
-
     }
-
-
 
     @Override
     public void onStep(long lastDuration) {
-        if(Gdx.graphics.getFramesPerSecond() > 30) {
-            if (inc % 30 == 0) {
-                defaultScene.addActor(new DynamicPhysicsActor(texture));
-            }
+        if (inc % 10 == 0) {
+            defaultScene.addActor(new DynamicPhysicsActor(textureCuriosity));
         }
         inc+=1;
     }
@@ -76,7 +82,30 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public void beginContact(Contact contact) {
+        final Actor actorA = (Actor) contact.getFixtureA().getUserData();
+        final Actor actorB = (Actor) contact.getFixtureB().getUserData();
 
+        //Sensor
+        if(actorA instanceof DynamicPhysicsActor && actorB instanceof SensorActor){
+            ((DynamicPhysicsActor) actorA).texture = textureExplosion;
+        }
+        else if(actorB instanceof DynamicPhysicsActor && actorA instanceof SensorActor){
+            ((DynamicPhysicsActor) actorB).texture = textureExplosion;
+        }
+
+        //Collision
+        else if(actorA instanceof DynamicPhysicsActor && actorB instanceof StaticPhysicsActor){
+            final ExplosionActor explosionActor = new ExplosionActor(textureExplosion);
+            explosionActor.setPosition(((DynamicPhysicsActor) actorA).x,((DynamicPhysicsActor) actorA).y-2f);
+            this.defaultScene.addActor(explosionActor);
+            this.defaultScene.removeActor(actorA);
+        }
+        else if(actorB instanceof DynamicPhysicsActor && actorA instanceof StaticPhysicsActor){
+            final ExplosionActor explosionActor = new ExplosionActor(textureExplosion);
+            explosionActor.setPosition(((DynamicPhysicsActor) actorB).x,((DynamicPhysicsActor) actorB).y-2f);
+            this.defaultScene.addActor(explosionActor);
+            this.defaultScene.removeActor(actorB);
+        }
     }
 
     @Override
@@ -131,7 +160,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.defaultScene.removeActor((Actor) PhysicsScene.this.defaultScene.getCollidables().get(0));
         return false;
     }
 
