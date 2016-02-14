@@ -1,10 +1,13 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.NumberUtils;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
@@ -14,31 +17,35 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 2/10/16.
  */
-public class SpriteActor implements Actor, Renderable<Batch> {
+public class SpriteActor implements Actor, Renderable<SpriteBatch> {
 
     public static final float DEG_IN_RAD = 57.2957795f;
 
     static public final int X1 = 0;
     static public final int Y1 = 1;
-    static public final int U1 = 2;
-    static public final int V1 = 3;
+    static public final int C1 = 2;
+    static public final int U1 = 3;
+    static public final int V1 = 4;
 
-    static public final int X2 = 4;
-    static public final int Y2 = 5;
-    static public final int U2 = 6;
-    static public final int V2 = 7;
+    static public final int X2 = 5;
+    static public final int Y2 = 6;
+    static public final int C2 = 7;
+    static public final int U2 = 8;
+    static public final int V2 = 9;
 
-    static public final int X3 = 8;
-    static public final int Y3 = 9;
-    static public final int U3 = 10;
-    static public final int V3 = 11;
+    static public final int X3 = 10;
+    static public final int Y3 = 11;
+    static public final int C3 = 12;
+    static public final int U3 = 13;
+    static public final int V3 = 14;
 
-    static public final int X4 = 12;
-    static public final int Y4 = 13;
-    static public final int U4 = 14;
-    static public final int V4 = 15;
+    static public final int X4 = 15;
+    static public final int Y4 = 16;
+    static public final int C4 = 17;
+    static public final int U4 = 18;
+    static public final int V4 = 19;
 
-    public static final int VERTEX_SIZE = 2 + 2;
+    public static final int VERTEX_SIZE = 2 + 1 + 2;
     public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
     public Texture texture;
@@ -49,6 +56,7 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     public float originX, originY;
     public float rotation;
     public float scaleX = 1, scaleY = 1;
+    public float color;
     public  Rectangle bounds;
 
     protected int regionWidth, regionHeight;
@@ -82,6 +90,7 @@ public class SpriteActor implements Actor, Renderable<Batch> {
         if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
         this.id = id;
         this.texture = texture;
+        this.setColor(Color.WHITE.toFloatBits());
         setRegion(srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
         setOrigin(width / 2, height / 2);
@@ -93,6 +102,7 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
     public SpriteActor (final int id, TextureRegion region) {
         this.id = id;
+        this.setColor(Color.WHITE.toFloatBits());
         setRegion(region);
         setSize(region.getRegionWidth(), region.getRegionHeight());
         setOrigin(width / 2, height / 2);
@@ -104,6 +114,7 @@ public class SpriteActor implements Actor, Renderable<Batch> {
 
     public SpriteActor (final int id, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
         this.id = id;
+        this.setColor(Color.WHITE.toFloatBits());
         setRegion(region, srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
         setOrigin(width / 2, height / 2);
@@ -588,6 +599,33 @@ public class SpriteActor implements Actor, Renderable<Batch> {
         return v > v2;
     }
 
+    public void setColor (Color color) {
+        this.setColor(color.toFloatBits());
+    }
+
+    public void setColor (float r, float g, float b, float a) {
+        int intBits = (int)(255 * a) << 24 | (int)(255 * b) << 16 | (int)(255 * g) << 8 | (int)(255 * r);
+        this.setColor(NumberUtils.intToFloatColor(intBits));
+    }
+
+    public void setColor (float color) {
+        this.color = color;
+        vertices[C1] = color;
+        vertices[C2] = color;
+        vertices[C3] = color;
+        vertices[C4] = color;
+    }
+
+    public Color getColor () {
+        int intBits = NumberUtils.floatToIntColor(color);
+        Color color = new Color();
+        color.r = (intBits & 0xff) / 255f;
+        color.g = ((intBits >>> 8) & 0xff) / 255f;
+        color.b = ((intBits >>> 16) & 0xff) / 255f;
+        color.a = ((intBits >>> 24) & 0xff) / 255f;
+        return color;
+    }
+
     /**
      * Gets the ID of the Actor
      */
@@ -606,7 +644,7 @@ public class SpriteActor implements Actor, Renderable<Batch> {
     }
 
     @Override
-    public void render(float deltaTime, Batch renderer) {
+    public void render(float deltaTime, SpriteBatch renderer) {
         renderer.draw(this.texture, getVertices(), 0, SPRITE_SIZE);
     }
 

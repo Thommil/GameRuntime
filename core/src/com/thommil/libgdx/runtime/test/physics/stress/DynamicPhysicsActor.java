@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.test.physics.stress;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;

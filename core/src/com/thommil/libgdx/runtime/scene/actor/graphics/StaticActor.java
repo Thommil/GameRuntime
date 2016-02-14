@@ -1,8 +1,8 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 12/02/16.
  */
-public class StaticActor implements Actor, Renderable<Batch> {
+public class StaticActor implements Actor, Renderable<SpriteBatch> {
 
     protected final int id;
     protected int layer = 0;
@@ -21,13 +21,15 @@ public class StaticActor implements Actor, Renderable<Batch> {
     final public float width, height;
     final public float u, v;
     final public float u2, v2;
+    final public float color;
 
     public StaticActor(final Texture texture,
                        final float x, final float y,
                        final float width, final float height,
                        final float u, final float v,
-                       final float u2, final float v2){
-        this(MathUtils.random(0x7ffffffe),texture,x,y,width,height,u,v,u2,v2);
+                       final float u2, final float v2,
+                       final float color){
+        this(MathUtils.random(0x7ffffffe),texture,x,y,width,height,u,v,u2,v2,color);
     }
 
     public StaticActor(final int id,
@@ -35,7 +37,8 @@ public class StaticActor implements Actor, Renderable<Batch> {
                         final float x, final float y,
                         final float width, final float height,
                         final float u, final float v,
-                        final float u2, final float v2){
+                        final float u2, final float v2,
+                        final float color){
         this.id =id;
         this.texture = texture;
         this.x = x;
@@ -46,7 +49,7 @@ public class StaticActor implements Actor, Renderable<Batch> {
         this.v = v;
         this.u2 = u2;
         this.v2 = v2;
-
+        this.color = color;
     }
 
     /**
@@ -67,8 +70,8 @@ public class StaticActor implements Actor, Renderable<Batch> {
     }
 
     @Override
-    public void render(float deltaTime, Batch renderer) {
-        renderer.draw(texture, x, y, width, height, u, v, u2, v2);
+    public void render(float deltaTime, SpriteBatch renderer) {
+        renderer.draw(texture, x, y, width, height, u, v, u2, v2, color);
     }
 
     @Override

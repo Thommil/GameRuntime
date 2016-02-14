@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
@@ -33,7 +33,7 @@ public class PhysicsScene extends Game{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicBatchLayer(2));
+        defaultScene.addLayer(0, new SpriteBatchLayer(2));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());

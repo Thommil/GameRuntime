@@ -5,10 +5,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
-import com.thommil.libgdx.runtime.scene.layer.BasicCacheLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
@@ -27,7 +25,7 @@ public class BasicScene extends Game {
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new BasicCacheLayer(60));
+		defaultScene.addLayer(0,new SpriteCacheLayer(60));
 
 		//Actor
 		Texture texture = new Texture(Gdx.files.internal("planet_sprite.png"));

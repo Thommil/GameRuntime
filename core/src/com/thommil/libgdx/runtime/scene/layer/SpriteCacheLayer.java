@@ -1,7 +1,7 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
 import com.thommil.libgdx.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.graphics.cache.BasicCache;
+import com.thommil.libgdx.runtime.graphics.cache.SpriteCache;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
@@ -12,14 +12,14 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
  *
  * Created by thommil on 03/02/16.
  */
-public class BasicCacheLayer extends Layer{
+public class SpriteCacheLayer extends Layer{
 
-    final BasicCache renderer;
+    final SpriteCache renderer;
     boolean cacheEnded = false;
     int cacheId;
 
-    public BasicCacheLayer(final int maxSprites) {
-        this.renderer = new BasicCache(maxSprites);
+    public SpriteCacheLayer(final int maxSprites) {
+        this.renderer = new SpriteCache(maxSprites);
         this.renderer.beginCache();
     }
 

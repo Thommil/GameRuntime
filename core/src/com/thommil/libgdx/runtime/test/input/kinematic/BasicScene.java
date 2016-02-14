@@ -3,7 +3,7 @@ package com.thommil.libgdx.runtime.test.input.kinematic;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
@@ -25,7 +25,7 @@ public class BasicScene extends Game implements InputProcessor {
 		scene = new Scene(settings);
 
 		//Layers
-		scene.addLayer(0,new BasicBatchLayer(1));
+		scene.addLayer(0,new SpriteBatchLayer(1));
 
 		//Actor
 		shipActor = new KinematicActor();

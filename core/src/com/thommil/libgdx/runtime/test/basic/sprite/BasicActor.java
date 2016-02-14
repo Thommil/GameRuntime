@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.test.basic.sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
@@ -19,7 +20,7 @@ public class BasicActor extends SpriteActor {
     }
 
     @Override
-    public void render(float deltaTime, Batch renderer) {
+    public void render(float deltaTime, SpriteBatch renderer) {
         this.rotate(2);
         super.render(deltaTime,renderer);
     }

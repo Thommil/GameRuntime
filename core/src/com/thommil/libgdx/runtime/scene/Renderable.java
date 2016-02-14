@@ -1,7 +1,5 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.thommil.libgdx.runtime.scene.Actor;
-
 /**
  * Defines a renderable element using T as renderer
  *

@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.physics.collision;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -13,7 +14,7 @@ import com.thommil.libgdx.runtime.scene.actor.physics.PhysicsStaticActor;
 public class StaticPhysicsActor extends PhysicsStaticActor {
 
     public StaticPhysicsActor() {
-        super(new Texture(Gdx.files.internal("ground.jpg")),-1000f,-50f,2000f,10f,0f,0.05f,10f,0f);
+        super(new Texture(Gdx.files.internal("ground.jpg")),-1000f,-50f,2000f,10f,0f,0.05f,10f,0f, Color.WHITE.toFloatBits());
         this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         this.setLayer(0);
     }

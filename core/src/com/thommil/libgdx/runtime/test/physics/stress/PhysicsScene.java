@@ -4,17 +4,13 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
-import finnstr.libgdx.liquidfun.ParticleBodyContact;
-import finnstr.libgdx.liquidfun.ParticleContact;
-import finnstr.libgdx.liquidfun.ParticleSystem;
 
 /**
  * Live benchmark on Physics/Rendering loops
@@ -42,8 +38,8 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicBatchLayer(1));
-        defaultScene.addLayer(1, new BasicBatchLayer(5000));
+        defaultScene.addLayer(0, new SpriteBatchLayer(1));
+        defaultScene.addLayer(1, new SpriteBatchLayer(5000));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());

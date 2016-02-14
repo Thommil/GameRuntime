@@ -16,8 +16,8 @@ import java.nio.FloatBuffer;
  *
  * Created by thommil on 12/02/16.
  */
-public class BasicCache implements Disposable {
-    static private final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
+public class SpriteCache implements Disposable {
+    private final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
 
     private final Mesh mesh;
     private boolean drawing;
@@ -43,7 +43,7 @@ public class BasicCache implements Disposable {
     private int blendDstFunc = GL20.GL_ONE_MINUS_SRC_ALPHA;
 
     /** Creates a cache that uses indexed geometry and can contain up to 1000 images. */
-    public BasicCache () {
+    public SpriteCache() {
         this(1000);
     }
 
@@ -51,11 +51,12 @@ public class BasicCache implements Disposable {
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      *           Max of 5460 if indices are used.
      */
-    public BasicCache (int size) {
+    public SpriteCache(int size) {
         if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
 
-        mesh = new Mesh(true, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
-                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+        mesh = new Mesh(true, size * 4,  size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
         mesh.setAutoBind(false);
 
         int length = size * 6;
@@ -167,173 +168,34 @@ public class BasicCache implements Disposable {
     }
 
     /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y) {
-        final float fx2 = x + texture.getWidth();
-        final float fy2 = y + texture.getHeight();
-
-        tempVertices[0] = x;
-        tempVertices[1] = y;
-        tempVertices[2] = 0;
-        tempVertices[3] = 1;
-
-        tempVertices[4] = x;
-        tempVertices[5] = fy2;
-        tempVertices[6] = 0;
-        tempVertices[7] = 0;
-
-        tempVertices[8] = fx2;
-        tempVertices[9] = fy2;
-        tempVertices[10] = 1;
-        tempVertices[11] = 0;
-
-        tempVertices[12] = fx2;
-        tempVertices[13] = y;
-        tempVertices[14] = 1;
-        tempVertices[15] = 1;
-        add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
-
-    }
-
-    /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2) {
+    public void add (Texture texture, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2, float color) {
         final float fx2 = x + srcWidth;
         final float fy2 = y + srcHeight;
 
         tempVertices[0] = x;
         tempVertices[1] = y;
-        tempVertices[2] = u;
-        tempVertices[3] = v;
+        tempVertices[2] = color;
+        tempVertices[3] = u;
+        tempVertices[4] = v;
 
-        tempVertices[4] = x;
-        tempVertices[5] = fy2;
-        tempVertices[6] = u;
-        tempVertices[7] = v2;
+        tempVertices[5] = x;
+        tempVertices[6] = fy2;
+        tempVertices[7] = color;
+        tempVertices[8] = u;
+        tempVertices[9] = v2;
 
-        tempVertices[8] = fx2;
-        tempVertices[9] = fy2;
-        tempVertices[10] = u2;
-        tempVertices[11] = v2;
+        tempVertices[10] = fx2;
+        tempVertices[11] = fy2;
+        tempVertices[12] = color;
+        tempVertices[13] = u2;
+        tempVertices[14] = v2;
 
-        tempVertices[12] = fx2;
-        tempVertices[13] = y;
-        tempVertices[14] = u2;
-        tempVertices[15] = v;
-        add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
-    }
-
-    /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, int srcX, int srcY, float srcWidth, float srcHeight) {
-        final float invTexWidth = 1.0f / texture.getWidth();
-        final float invTexHeight = 1.0f / texture.getHeight();
-        final float u = srcX * invTexWidth;
-        final float v = (srcY + srcHeight) * invTexHeight;
-        final float u2 = (srcX + srcWidth) * invTexWidth;
-        final float v2 = srcY * invTexHeight;
-        final float fx2 = x + srcWidth;
-        final float fy2 = y + srcHeight;
-
-        tempVertices[0] = x;
-        tempVertices[1] = y;
-        tempVertices[2] = u;
-        tempVertices[3] = v;
-
-        tempVertices[4] = x;
-        tempVertices[5] = fy2;
-        tempVertices[6] = u;
-        tempVertices[7] = v2;
-
-        tempVertices[8] = fx2;
-        tempVertices[9] = fy2;
-        tempVertices[10] = u2;
-        tempVertices[11] = v2;
-
-        tempVertices[12] = fx2;
-        tempVertices[13] = y;
-        tempVertices[14] = u2;
-        tempVertices[15] = v;
-        add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
-    }
-
-    /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, float width, float height, float srcX, float srcY, float srcWidth,
-                     float srcHeight, boolean flipX, boolean flipY) {
-
-        final float invTexWidth = 1.0f / texture.getWidth();
-        final float invTexHeight = 1.0f / texture.getHeight();
-        float u = srcX * invTexWidth;
-        float v = (srcY + srcHeight) * invTexHeight;
-        float u2 = (srcX + srcWidth) * invTexWidth;
-        float v2 = srcY * invTexHeight;
-        final float fx2 = x + width;
-        final float fy2 = y + height;
-
-        if (flipX) {
-            float tmp = u;
-            u = u2;
-            u2 = tmp;
-        }
-        if (flipY) {
-            float tmp = v;
-            v = v2;
-            v2 = tmp;
-        }
-
-        tempVertices[0] = x;
-        tempVertices[1] = y;
-        tempVertices[2] = u;
-        tempVertices[3] = v;
-
-        tempVertices[4] = x;
-        tempVertices[5] = fy2;
-        tempVertices[6] = u;
-        tempVertices[7] = v2;
-
-        tempVertices[8] = fx2;
-        tempVertices[9] = fy2;
-        tempVertices[10] = u2;
-        tempVertices[11] = v2;
-
-        tempVertices[12] = fx2;
-        tempVertices[13] = y;
-        tempVertices[14] = u2;
-        tempVertices[15] = v;
-        add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
-    }
-
-    /** Adds the specified region to the cache. */
-    public void add (TextureRegion region, float x, float y) {
-        add(region, x, y, region.getRegionWidth(), region.getRegionHeight());
-    }
-
-    /** Adds the specified region to the cache. */
-    public void add (TextureRegion region, float x, float y, float width, float height) {
-        final float fx2 = x + width;
-        final float fy2 = y + height;
-        final float u = region.getU();
-        final float v = region.getV2();
-        final float u2 = region.getU2();
-        final float v2 = region.getV();
-
-        tempVertices[0] = x;
-        tempVertices[1] = y;
-        tempVertices[2] = u;
-        tempVertices[3] = v;
-
-        tempVertices[4] = x;
-        tempVertices[5] = fy2;
-        tempVertices[6] = u;
-        tempVertices[7] = v2;
-
-        tempVertices[8] = fx2;
-        tempVertices[9] = fy2;
-        tempVertices[10] = u2;
-        tempVertices[11] = v2;
-
-        tempVertices[12] = fx2;
-        tempVertices[13] = y;
-        tempVertices[14] = u2;
-        tempVertices[15] = v;
-        add(region.getTexture(), tempVertices, 0, SpriteActor.SPRITE_SIZE);
+        tempVertices[15] = fx2;
+        tempVertices[16] = y;
+        tempVertices[17] = color;
+        tempVertices[18] = u2;
+        tempVertices[19] = v;
+        add(texture, tempVertices, 0, 20);
     }
 
     /** Adds the specified SpriteActor to the cache. */
@@ -344,7 +206,7 @@ public class BasicCache implements Disposable {
     /** Adds the specified StaticActor to the cache. */
     public void add (StaticActor staticActor) {
         this.add(staticActor.texture, staticActor.x, staticActor.y,
-                staticActor.width, staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2);
+                staticActor.width, staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2, staticActor.color);
     }
 
     /** Prepares the OpenGL state for SpriteCache rendering. */
@@ -490,11 +352,14 @@ public class BasicCache implements Disposable {
     protected ShaderProgram createDefaultShader () {
         String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
+                + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
                 + "uniform mat4 u_projectionViewMatrix;\n" //
+                + "varying vec4 v_color;\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "\n" //
                 + "void main()\n" //
                 + "{\n" //
+                + "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
                 + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "}\n";
@@ -502,10 +367,11 @@ public class BasicCache implements Disposable {
                 + "precision mediump float;\n" //
                 + "#endif\n" //
                 + "varying vec2 v_texCoords;\n" //
+                + "varying vec4 v_color;\n" //
                 + "uniform sampler2D u_texture;\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + "  gl_FragColor = texture2D(u_texture, v_texCoords);\n" //
+                + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
                 + "}";
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
         if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());

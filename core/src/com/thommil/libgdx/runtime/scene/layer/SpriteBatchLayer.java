@@ -1,6 +1,6 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
-import com.thommil.libgdx.runtime.graphics.batch.BasicBatch;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
 
@@ -9,12 +9,12 @@ import com.thommil.libgdx.runtime.scene.Layer;
  *
  * Created by thommil on 03/02/16.
  */
-public class BasicBatchLayer extends Layer{
+public class SpriteBatchLayer extends Layer{
 
-    final BasicBatch renderer;
+    final SpriteBatch renderer;
 
-    public BasicBatchLayer(final int maxSprites) {
-        this.renderer = new BasicBatch(maxSprites);
+    public SpriteBatchLayer(final int maxSprites) {
+        this.renderer = new SpriteBatch(maxSprites);
     }
 
     @Override

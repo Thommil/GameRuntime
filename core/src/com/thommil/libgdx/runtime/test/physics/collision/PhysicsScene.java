@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
-import com.thommil.libgdx.runtime.scene.layer.BasicBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
@@ -47,8 +47,8 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
         //Layer
-        defaultScene.addLayer(0, new BasicBatchLayer(2));
-        defaultScene.addLayer(1, new BasicBatchLayer(1000));
+        defaultScene.addLayer(0, new SpriteBatchLayer(2));
+        defaultScene.addLayer(1, new SpriteBatchLayer(1000));
 
         //Actors
 

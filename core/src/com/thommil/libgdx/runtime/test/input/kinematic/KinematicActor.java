@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
@@ -34,7 +35,7 @@ public class KinematicActor extends SpriteActor {
     }
 
     @Override
-    public void render(float deltaTime, Batch renderer) {
+    public void render(float deltaTime, SpriteBatch renderer) {
         spriteVec.set(this.x,this.y);
 
         if(right){
