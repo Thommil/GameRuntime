@@ -23,7 +23,7 @@ public class BasicScene extends Game {
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new SpriteBatchLayer(1000));
+		defaultScene.addLayer(new SpriteBatchLayer(1000));
 
 		//Actor
 		defaultScene.addActor(new BasicActor());

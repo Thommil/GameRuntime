@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
@@ -46,7 +45,7 @@ public class Scene implements Screen {
     /**
      * Inner layers  list
      */
-    protected final IntMap<Layer> layers;
+    protected final List<Layer> layers;
 
     /**
      * The current number of renderable in the scene
@@ -114,7 +113,7 @@ public class Scene implements Screen {
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         //Graphics
-        this.layers = new IntMap<Layer>();
+        this.layers = new ArrayList<Layer>();
         this.renderablesCount = 0;
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
@@ -137,17 +136,19 @@ public class Scene implements Screen {
     }
 
     /**
-     * Adds a layer to scene at the specific index
+     * Adds a layer to scene
      *
-     * @param index The index of the layer
      * @param layer The layer to add
+     *
+     * @return The layer index
      */
-    public void addLayer(final int index, final Layer layer){
+    public int addLayer(final Layer layer){
         //Gdx.app.debug("Scene","addLayer("+index+")");
         layer.setCamera(this.camera);
         this.renderLock.lock();
-        this.layers.put(index,layer);
+        this.layers.add(layer);
         this.renderLock.unlock();
+        return (this.layers.size()-1);
     }
 
     /**
@@ -263,7 +264,7 @@ public class Scene implements Screen {
             this.debugRenderer = new Box2DDebugRenderer();
         }
 
-        for(final Layer layer : this.layers.values()) {
+        for(final Layer layer : this.layers) {
             layer.show();
         }
 
@@ -352,7 +353,7 @@ public class Scene implements Screen {
             this.sceneListener.onRender(delta);
         }
 
-        for (final Layer layer : this.layers.values()) {
+        for (final Layer layer : this.layers) {
             if (layer.isVisible()) {
                 layer.render(delta);
             }
@@ -416,7 +417,7 @@ public class Scene implements Screen {
     public void hide() {
         //Gdx.app.debug("Scene","hide()");
         this.paused = true;
-        for(final Layer layer : this.layers.values()) {
+        for(final Layer layer : this.layers) {
             layer.hide();
         }
         this.executor.shutdown();
@@ -429,7 +430,7 @@ public class Scene implements Screen {
         this.paused = true;
         this.executor.shutdown();
         this.physicsWorld.dispose();
-        for(final Layer layer : this.layers.values()){
+        for(final Layer layer : this.layers){
             layer.dispose();
         }
     }
@@ -444,10 +445,6 @@ public class Scene implements Screen {
 
     public List<Collidable> getCollidables() {
         return collidables;
-    }
-
-    public IntMap<Layer> getLayers() {
-        return layers;
     }
 
     public boolean isPaused() {

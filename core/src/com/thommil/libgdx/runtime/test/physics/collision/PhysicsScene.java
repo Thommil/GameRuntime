@@ -47,8 +47,8 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
         //Layer
-        defaultScene.addLayer(0, new SpriteBatchLayer(2));
-        defaultScene.addLayer(1, new SpriteBatchLayer(1000));
+        defaultScene.addLayer(new SpriteBatchLayer(2));
+        defaultScene.addLayer(new SpriteBatchLayer(1000));
 
         //Actors
 

@@ -38,15 +38,15 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(0, new SpriteBatchLayer(1));
-        defaultScene.addLayer(1, new SpriteBatchLayer(5000));
+        defaultScene.addLayer(new SpriteBatchLayer(1));
+        defaultScene.addLayer(new SpriteBatchLayer(5000));
 
         //Actors
         defaultScene.addActor(new StaticPhysicsActor());
 
         this.defaultScene.setSceneListener(this);
 
-        SceneProfiler.profile(this.defaultScene);
+        SceneProfiler.profile(this.defaultScene, SceneProfiler.PHYSICS, 5000);
 
         Gdx.input.setInputProcessor(this);
 

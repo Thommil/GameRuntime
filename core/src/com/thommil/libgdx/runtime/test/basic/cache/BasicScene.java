@@ -25,7 +25,7 @@ public class BasicScene extends Game {
 		Scene defaultScene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(0,new SpriteCacheLayer(60));
+		defaultScene.addLayer(new SpriteCacheLayer(60));
 
 		//Actor
 		Texture texture = new Texture(Gdx.files.internal("planet_sprite.png"));
