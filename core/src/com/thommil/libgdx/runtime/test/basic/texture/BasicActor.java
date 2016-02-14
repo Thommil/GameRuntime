@@ -2,8 +2,7 @@ package com.thommil.libgdx.runtime.test.basic.texture;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.thommil.libgdx.runtime.graphics.BasicBatch;
+import com.thommil.libgdx.runtime.graphics.batch.BasicBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
@@ -33,7 +32,7 @@ public class BasicActor implements Renderable<BasicBatch> {
     @Override
     public void render(float deltaTime, BasicBatch batch) {
         //Repeat
-        //this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         //1/2x1/2
         //batch.draw(texture,-4f,-4f,8f,8f,0f,0.5f,0.5f,0f);
         //1x1

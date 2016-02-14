@@ -1,7 +1,7 @@
 package com.thommil.libgdx.runtime.test.physics.collision;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
  * Created by tomtom on 13/02/16.

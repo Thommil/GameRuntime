@@ -1,11 +1,11 @@
-package com.thommil.libgdx.runtime.scene.actor;
+package com.thommil.libgdx.runtime.scene.actor.physics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Collidable;
+import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
  * Defines a dynamic SpriteActor actor which can interact with physic world

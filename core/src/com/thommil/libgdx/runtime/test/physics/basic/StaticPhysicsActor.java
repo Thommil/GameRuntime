@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.thommil.libgdx.runtime.scene.actor.PhysicsStaticActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.PhysicsStaticActor;
 
 /**
  * Created by tomtom on 03/02/16.
@@ -13,7 +13,7 @@ import com.thommil.libgdx.runtime.scene.actor.PhysicsStaticActor;
 public class StaticPhysicsActor extends PhysicsStaticActor {
 
     public StaticPhysicsActor() {
-        super(new Texture(Gdx.files.internal("ground.jpg")),-2f,-2f,4f,1f,0f,1f,1f,0f);
+        super(new Texture(Gdx.files.internal("test.png")),-2f,-2f,4f,1f,0f,1f,1f,0f);
         this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
     }
 

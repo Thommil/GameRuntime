@@ -18,11 +18,11 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
 
         //Basic Physics
-        //return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
+        return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
         //Stress Physics
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
         //Collision Physics
-        return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.collision.PhysicsScene(), config);
+        //return new IOSApplication(new com.thommil.libgdx.runtime.test.physics.collision.PhysicsScene(), config);
 
         //Kinematic input
         //return new IOSApplication(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);

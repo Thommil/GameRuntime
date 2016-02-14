@@ -1,6 +1,6 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
-import com.thommil.libgdx.runtime.graphics.BasicBatch;
+import com.thommil.libgdx.runtime.graphics.batch.BasicBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
 

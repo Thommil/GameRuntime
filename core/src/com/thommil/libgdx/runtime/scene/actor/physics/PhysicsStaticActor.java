@@ -1,10 +1,10 @@
-package com.thommil.libgdx.runtime.scene.actor;
+package com.thommil.libgdx.runtime.scene.actor.physics;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.scene.Collidable;
+import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 /**
  * Created by tomtom on 12/02/16.

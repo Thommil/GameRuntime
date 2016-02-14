@@ -3,7 +3,7 @@ package com.thommil.libgdx.runtime.test.basic.sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
  * Created by tomtom on 03/02/16.

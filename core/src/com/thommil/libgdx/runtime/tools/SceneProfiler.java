@@ -252,6 +252,11 @@ public class SceneProfiler{
             if(this.sourceListener != null) {
                 this.sourceListener.onDispose();
             }
+            try {
+                this.join();
+            }catch(InterruptedException ie){
+
+            }
         }
     }
 }

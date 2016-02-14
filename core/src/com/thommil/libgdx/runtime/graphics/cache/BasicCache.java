@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics;
+package com.thommil.libgdx.runtime.graphics.cache;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
-import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
-import com.thommil.libgdx.runtime.scene.actor.StaticActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 import java.nio.FloatBuffer;
 

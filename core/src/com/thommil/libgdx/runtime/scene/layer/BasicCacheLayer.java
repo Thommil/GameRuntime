@@ -1,13 +1,11 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
-import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.graphics.BasicBatch;
-import com.thommil.libgdx.runtime.graphics.BasicCache;
+import com.thommil.libgdx.runtime.graphics.cache.BasicCache;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
-import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
-import com.thommil.libgdx.runtime.scene.actor.StaticActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 /**
  * Basic Sprite layer using BasicSpriteBatch as renderer

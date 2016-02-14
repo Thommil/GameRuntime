@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.thommil.libgdx.runtime.scene.actor.PhysicsSpriteActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.PhysicsSpriteActor;
 
 /**
  * Created by tomtom on 03/02/16.

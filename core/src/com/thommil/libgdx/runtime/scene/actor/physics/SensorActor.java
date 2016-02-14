@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.scene.actor;
+package com.thommil.libgdx.runtime.scene.actor.physics;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;

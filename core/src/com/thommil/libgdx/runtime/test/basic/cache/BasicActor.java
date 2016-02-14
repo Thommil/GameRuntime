@@ -1,11 +1,8 @@
 package com.thommil.libgdx.runtime.test.basic.cache;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.scene.actor.SpriteActor;
-import com.thommil.libgdx.runtime.scene.actor.StaticActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 /**
  * Created by tomtom on 03/02/16.
