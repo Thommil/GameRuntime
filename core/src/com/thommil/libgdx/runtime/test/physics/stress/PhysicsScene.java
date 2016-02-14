@@ -46,7 +46,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
         this.defaultScene.setSceneListener(this);
 
-        SceneProfiler.profile(this.defaultScene, SceneProfiler.PHYSICS, 5000);
+        SceneProfiler.profile(this.defaultScene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
 
         Gdx.input.setInputProcessor(this);
 

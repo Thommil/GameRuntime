@@ -53,12 +53,20 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         //Actors
 
         defaultScene.addActor(new StaticPhysicsActor());
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(50f,20f);
-        SensorActor burnSensor = new SensorActor(shape);
+        SensorActor burnSensor = new SensorActor() {
+            @Override
+            public Shape getShape() {
+                PolygonShape shape = new PolygonShape();
+                shape.setAsBox(50f,20f);
+                return shape;
+            }
+            @Override
+            public void setBody(Body body) {
+                super.setBody(body);
+                body.setTransform(0f,-20f,0);
+            }
+        };
         defaultScene.addActor(burnSensor);
-        burnSensor.body.setTransform(0f,-20f,0);
 
         this.defaultScene.setSceneListener(this);
         this.defaultScene.setContactListener(this);
@@ -115,8 +123,8 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
 
     @Override
     public void beginContact(Contact contact) {
-        final Actor actorA = (Actor) contact.getFixtureA().getUserData();
-        final Actor actorB = (Actor) contact.getFixtureB().getUserData();
+        final Actor actorA = (Actor) contact.getFixtureA().getBody().getUserData();
+        final Actor actorB = (Actor) contact.getFixtureB().getBody().getUserData();
         //Sensor
         if(actorA instanceof DynamicPhysicsActor && actorB instanceof SensorActor){
             ((DynamicPhysicsActor) actorA).texture = textureExplosion;

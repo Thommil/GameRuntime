@@ -1,23 +1,21 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.Shape;
 
 /**
- * Created by tomtom on 12/02/16.
+ * Created by tomtom on 14/02/16.
  */
-public interface Collidable extends Actor{
+public interface Collidable<Definition, Body> extends Actor{
 
     /**
-     * Subclasses must implement this method to build the body
-     * of this instance.
+     * Gets the definition of Collidable
      */
-    void buildBody(final World world);
+    Definition getDefinition();
 
     /**
-     * @return The body of this instance
+     * Set body instance of the Collidable
      */
-    Body getBody();
+    void setBody(Body body);
 
     /**
      * Called at each physics step, any physics related task should be

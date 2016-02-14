@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.thommil.libgdx.runtime.scene.actor.physics.PhysicsStaticActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class StaticPhysicsActor extends PhysicsStaticActor {
+public class StaticPhysicsActor extends StaticBodyActor {
 
     public StaticPhysicsActor() {
         super(new Texture(Gdx.files.internal("ground.jpg")),-1000f,-50f,2000f,10f,0f,0.05f,10f,0f, Color.WHITE.toFloatBits());
@@ -19,16 +20,25 @@ public class StaticPhysicsActor extends PhysicsStaticActor {
         this.setLayer(0);
     }
 
-
+    /**
+     * Gets the Shape of the Collidable
+     */
     @Override
-    public void buildBody(World world) {
+    public Shape getShape() {
+        PolygonShape groundBodyShape = new PolygonShape();
+        groundBodyShape.setAsBox(1000f,5f);
+        return groundBodyShape;
+    }
+
+    /**
+     * Gets the definition of Collidable
+     */
+    @Override
+    public BodyDef getDefinition() {
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
         groundBodyDef.position.set(0, -45f);
-        this.body = world.createBody(groundBodyDef);
-        PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(1000f,5f);
-        this.body.createFixture(groundBodyShape, 0f);
-        groundBodyShape.dispose();
+        return groundBodyDef;
     }
+
 }

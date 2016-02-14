@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.thommil.libgdx.runtime.scene.actor.physics.PhysicsSpriteActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends PhysicsSpriteActor {
+public class DynamicPhysicsActor extends SpriteBodyActor {
 
     private static final float STEP_FORCE = 1f;
     private static final float STEAR_FORCE = 0.1f;
@@ -34,16 +34,25 @@ public class DynamicPhysicsActor extends PhysicsSpriteActor {
         this.setOriginCenter();
     }
 
+    /**
+     * Gets the Shape of the Collidable
+     */
     @Override
-    public void buildBody(World world) {
+    public Shape getShape() {
+        CircleShape shipShape = new CircleShape();
+        shipShape.setRadius(0.4f);
+        return shipShape;
+    }
+
+    /**
+     * Gets the definition of Collidable
+     */
+    @Override
+    public BodyDef getDefinition() {
         BodyDef dynamicBodyDef = new BodyDef();
         dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
         dynamicBodyDef.position.set(0f,0f);
-        this.body = world.createBody(dynamicBodyDef);
-        CircleShape shipShape = new CircleShape();
-        shipShape.setRadius(0.4f);
-        this.body.createFixture(shipShape,1f).setRestitution(0.5f);
-        shipShape.dispose();
+        return dynamicBodyDef;
     }
 
     @Override

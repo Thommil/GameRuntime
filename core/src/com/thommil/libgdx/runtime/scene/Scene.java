@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
+import finnstr.libgdx.liquidfun.ParticleSystem;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -43,6 +45,11 @@ public class Scene implements Screen {
     private final OrthographicCamera camera;
 
     /**
+     * Map of all actors of the scene
+     */
+    protected final IntMap<Actor> actorsMap;
+
+    /**
      * Inner layers  list
      */
     protected final List<Layer> layers;
@@ -73,7 +80,7 @@ public class Scene implements Screen {
     private final Lock renderLock = new ReentrantLock();
 
     /**
-     * List of physics actors (all)
+     * List of physics actors
      */
     protected final List<Collidable> collidables;
 
@@ -106,6 +113,7 @@ public class Scene implements Screen {
         //Gdx.app.debug("Scene","New scene");
         this.settings = settings;
         this.paused = true;
+        this.actorsMap = new IntMap<Actor>();
 
         //Physics
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
@@ -188,17 +196,25 @@ public class Scene implements Screen {
                         Scene.this.renderablesCount++;
                         Scene.this.renderLock.unlock();
                     }
-                    if(actor instanceof Collidable) {
-                        ((Collidable) actor).buildBody(Scene.this.physicsWorld);
-                        final Body body =  ((Collidable) actor).getBody();
-                        body.setUserData(actor);
-                        for(final Fixture fixture : body.getFixtureList()){
-                            fixture.setUserData(actor);
-                        }
+                    if(actor instanceof RigidBody) {
+                        final RigidBody rigidBody = (RigidBody)actor;
+                        final Body body = Scene.this.physicsWorld.createBody(rigidBody.getDefinition());
+                        final Fixture fixture = body.createFixture(rigidBody.getShape(),rigidBody.getDensity());
+                        fixture.setFriction(rigidBody.getFriction());
+                        fixture.setRestitution(rigidBody.getRestitution());
+                        rigidBody.getShape().dispose();
+                        rigidBody.setBody(body);
                         if(body.getType() != BodyDef.BodyType.StaticBody) {
-                            Scene.this.collidables.add(((Collidable) actor));
+                            Scene.this.collidables.add(rigidBody);
+                        }
+                        else if(actor instanceof SoftBody) {
+                            final SoftBody softBody = (SoftBody)actor;
+                            final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,softBody.getDefinition());
+                            softBody.setBody(particleSystem);
+                            Scene.this.collidables.add(softBody);
                         }
                     }
+                    Scene.this.actorsMap.put(actor.getId(),actor);
                 }
             });
         }
@@ -207,18 +223,36 @@ public class Scene implements Screen {
                 this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
                 this.renderablesCount++;
             }
-            if(actor instanceof Collidable) {
-                ((Collidable) actor).buildBody(this.physicsWorld);
-                final Body body =  ((Collidable) actor).getBody();
-                body.setUserData(actor);
-                for(final Fixture fixture : body.getFixtureList()){
-                    fixture.setUserData(actor);
-                }
+            if(actor instanceof RigidBody) {
+                final RigidBody rigidBody = (RigidBody)actor;
+                final Body body = this.physicsWorld.createBody(rigidBody.getDefinition());
+                final Fixture fixture = body.createFixture(rigidBody.getShape(),rigidBody.getDensity());
+                fixture.setFriction(rigidBody.getFriction());
+                fixture.setRestitution(rigidBody.getRestitution());
+                rigidBody.getShape().dispose();
+                rigidBody.setBody(body);
                 if(body.getType() != BodyDef.BodyType.StaticBody) {
-                    Scene.this.collidables.add(((Collidable) actor));
+                    Scene.this.collidables.add(rigidBody);
                 }
             }
+            else if(actor instanceof SoftBody) {
+                final SoftBody softBody = (SoftBody)actor;
+                final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,softBody.getDefinition());
+                softBody.setBody(particleSystem);
+                Scene.this.collidables.add(softBody);
+            }
+            this.actorsMap.put(actor.getId(),actor);
         }
+    }
+
+    /**
+     * Gets ans actor from its ID
+     *
+     * @param id The ID of the Actor
+     * @return The actor if found, null otherwise
+     */
+    public Actor getActor(final int id){
+        return this.actorsMap.get(id);
     }
 
     /**
@@ -240,8 +274,9 @@ public class Scene implements Screen {
                     }
                     if (actor instanceof Collidable) {
                         Scene.this.collidables.remove(actor);
-                        Scene.this.physicsWorld.destroyBody(((Collidable)actor).getBody());
                     }
+                    Scene.this.actorsMap.remove(actor.getId());
+                    actor.dispose();
                 }
             });
         }
@@ -252,8 +287,9 @@ public class Scene implements Screen {
             }
             if (actor instanceof Collidable) {
                 this.collidables.remove(actor);
-                this.physicsWorld.destroyBody(((Collidable)actor).getBody());
             }
+            this.actorsMap.remove(actor.getId());
+            actor.dispose();
         }
     }
 
@@ -430,6 +466,9 @@ public class Scene implements Screen {
         this.paused = true;
         this.executor.shutdown();
         this.physicsWorld.dispose();
+        for(final Actor actor : this.actorsMap.values()){
+            actor.dispose();
+        }
         for(final Layer layer : this.layers){
             layer.dispose();
         }

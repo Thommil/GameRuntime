@@ -2,14 +2,14 @@ package com.thommil.libgdx.runtime.scene.actor.physics;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
-import com.thommil.libgdx.runtime.scene.Collidable;
+import com.thommil.libgdx.runtime.scene.RigidBody;
 
 /**
  * Simple sensor implementation
  *
  * Created by thommil on 13/02/16.
  */
-public class SensorActor implements Collidable {
+public abstract class SensorActor implements RigidBody {
 
     protected final int id;
 
@@ -18,18 +18,13 @@ public class SensorActor implements Collidable {
      */
     public Body body;
 
-    /**
-     * The Shape of the sensor
-     */
-    protected final Shape shape;
 
-    public SensorActor(final Shape shape){
-        this(MathUtils.random(0x7ffffffe), shape);
+    public SensorActor(){
+        this(MathUtils.random(0x7ffffffe));
     }
 
-    public SensorActor(final int id, final Shape shape){
+    public SensorActor(final int id){
         this.id = id;
-        this.shape = shape;
     }
 
     /**
@@ -41,26 +36,55 @@ public class SensorActor implements Collidable {
     }
 
     /**
-     * Subclasses must implement this method to build the body
-     * of this instance.
-     *
-     * @param world
+     * Gets the Shape of the Collidable
      */
     @Override
-    public void buildBody(World world){
-        final BodyDef dynamicBodyDef = new BodyDef();
-        dynamicBodyDef.type = BodyDef.BodyType.KinematicBody;
-        this.body = world.createBody(dynamicBodyDef);
-        this.body.createFixture(shape,1f).setSensor(true);
-        shape.dispose();
+    public abstract Shape getShape();
+
+    /**
+     * Gets the density to the RigidBody
+     */
+    @Override
+    public float getDensity() {
+        return 1.0f;
     }
 
     /**
-     * @return The body of this instance
+     * Gets the friction to the RigidBody
      */
     @Override
-    public Body getBody(){
-        return this.body;
+    public float getFriction() {
+        return 0.0f;
+    }
+
+    /**
+     * Gets the restitution to the RigidBody
+     */
+    @Override
+    public float getRestitution() {
+        return 0.0f;
+    }
+
+    /**
+     * Gets the definition of Collidable
+     */
+    @Override
+    public BodyDef getDefinition() {
+        final BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        return bodyDef;
+    }
+
+    /**
+     * Set body instance of the Collidable
+     *
+     * @param body
+     */
+    @Override
+    public void setBody(Body body) {
+        this.body = body;
+        this.body.getFixtureList().get(0).setSensor(true);
+        this.body.setUserData(this);
     }
 
     /**
@@ -79,6 +103,6 @@ public class SensorActor implements Collidable {
      */
     @Override
     public void dispose(){
-        //NOP
+        this.body.getWorld().destroyBody(this.body);
     }
 }

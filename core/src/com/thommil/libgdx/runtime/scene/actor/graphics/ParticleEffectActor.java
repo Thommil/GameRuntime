@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 14/02/16.
  */
-public class ParticleActor implements Actor, Renderable<ParticleBatch> {
+public class ParticleEffectActor implements Actor, Renderable<ParticleBatch> {
 
     /**
      * Gets the ID of the Actor
