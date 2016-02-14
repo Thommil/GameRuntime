@@ -20,7 +20,6 @@ public class SpriteCache implements Disposable {
     private final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
 
     private final Mesh mesh;
-    private boolean drawing;
     private final Matrix4 transformMatrix = new Matrix4();
     private final Matrix4 projectionMatrix = new Matrix4();
     private Array<Cache> caches = new Array();
@@ -54,7 +53,11 @@ public class SpriteCache implements Disposable {
     public SpriteCache(int size) {
         if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
 
-        mesh = new Mesh(true, size * 4,  size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexBufferObject;
+        if (Gdx.gl30 != null) {
+            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        }
+        mesh = new Mesh(vertexDataType, false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
                 ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
                 new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
         mesh.setAutoBind(false);
@@ -169,6 +172,8 @@ public class SpriteCache implements Disposable {
 
     /** Adds the specified texture to the cache. */
     public void add (Texture texture, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2, float color) {
+        if (currentCache == null) throw new IllegalStateException("beginCache must be called before add.");
+
         final float fx2 = x + srcWidth;
         final float fy2 = y + srcHeight;
 
@@ -200,7 +205,7 @@ public class SpriteCache implements Disposable {
 
     /** Adds the specified SpriteActor to the cache. */
     public void add (SpriteActor spriteActor) {
-        add(spriteActor.texture, spriteActor.getVertices(), 0, SpriteActor.SPRITE_SIZE);
+        this.add(spriteActor.texture, spriteActor.getVertices(), 0, SpriteActor.SPRITE_SIZE);
     }
 
     /** Adds the specified StaticActor to the cache. */
@@ -211,8 +216,6 @@ public class SpriteCache implements Disposable {
 
     /** Prepares the OpenGL state for SpriteCache rendering. */
     public void begin () {
-        if (drawing) throw new IllegalStateException("end must be called before begin.");
-        drawing = true;
         renderCalls = 0;
         combinedMatrix.set(projectionMatrix).mul(transformMatrix);
 
@@ -234,20 +237,12 @@ public class SpriteCache implements Disposable {
 
     /** Completes rendering for this SpriteCache. */
     public void end () {
-        if (!drawing) throw new IllegalStateException("begin must be called before end.");
-        drawing = false;
-
         shader.end();
-        GL20 gl = Gdx.gl20;
-        gl.glDepthMask(true);
-
         mesh.unbind(shader);
     }
 
     /** Draws all the images defined for the specified cache ID. */
     public void draw (int cacheID) {
-        if (!drawing) throw new IllegalStateException("SpriteCache.begin must be called before draw.");
-
         final Cache cache = caches.get(cacheID);
         int offset = cache.offset / (4 * SpriteActor.VERTEX_SIZE) * 6;
         final Texture[] textures = cache.textures;
@@ -267,8 +262,6 @@ public class SpriteCache implements Disposable {
      * @param offset The first image to render.
      * @param length The number of images from the first image (inclusive) to render. */
     public void draw (int cacheID, int offset, int length) {
-        if (!drawing) throw new IllegalStateException("SpriteCache.begin must be called before draw.");
-
         final Cache cache = caches.get(cacheID);
         offset = offset * 6 + cache.offset;
         length *= 6;
@@ -301,7 +294,6 @@ public class SpriteCache implements Disposable {
     }
 
     public void setProjectionMatrix (Matrix4 projection) {
-        if (drawing) throw new IllegalStateException("Can't set the matrix within begin/end.");
         projectionMatrix.set(projection);
     }
 
@@ -310,7 +302,6 @@ public class SpriteCache implements Disposable {
     }
 
     public void setTransformMatrix (Matrix4 transform) {
-        if (drawing) throw new IllegalStateException("Can't set the matrix within begin/end.");
         transformMatrix.set(transform);
     }
 

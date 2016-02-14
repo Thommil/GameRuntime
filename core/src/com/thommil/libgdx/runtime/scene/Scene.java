@@ -106,18 +106,26 @@ public class Scene implements Screen {
     public Scene(final Scene.Settings settings) {
         //Gdx.app.debug("Scene","New scene");
         this.settings = settings;
+        this.paused = true;
 
+        //Physics
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
         this.collidables = new ArrayList<Collidable>();
         this.physicsQueue = new ArrayDeque<Runnable>();
 
+        //Graphics
         this.layers = new IntMap<Layer>();
         this.renderablesCount = 0;
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
         this.viewport.apply(settings.viewport.centerCamera);
 
-        this.paused = true;
+        //GL Settings
+        Gdx.gl.glDepthMask(false);
+        Gdx.gl.glClearColor(this.settings.renderer.clearColor[0]
+                , this.settings.renderer.clearColor[1]
+                , this.settings.renderer.clearColor[2]
+                , this.settings.renderer.clearColor[3]);
     }
 
     /**
@@ -327,10 +335,6 @@ public class Scene implements Screen {
     @Override
     public void render(float delta) {
         if(this.settings.renderer.clearScreen) {
-            Gdx.gl.glClearColor(this.settings.renderer.clearColor[0]
-                                , this.settings.renderer.clearColor[1]
-                                , this.settings.renderer.clearColor[2]
-                                , this.settings.renderer.clearColor[3]);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
 

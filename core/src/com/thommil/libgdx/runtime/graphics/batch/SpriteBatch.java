@@ -55,7 +55,7 @@ public class SpriteBatch{
         if (Gdx.gl30 != null) {
             vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
         }
-        mesh = new Mesh(true, size * 4,  size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+        mesh = new Mesh(vertexDataType, false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
                 ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
                 new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
 
@@ -79,7 +79,6 @@ public class SpriteBatch{
 
     public void begin () {
         renderCalls = 0;
-        Gdx.gl.glDepthMask(false);
         shader.begin();
         setupMatrices();
     }
@@ -91,8 +90,6 @@ public class SpriteBatch{
     }
 
     public void draw (Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2, final float color) {
-        float[] vertices = this.vertices;
-
         if (texture != lastTexture)
             switchTexture(texture);
         else if (idx == vertices.length) //
@@ -101,7 +98,6 @@ public class SpriteBatch{
         final float fx2 = x + width;
         final float fy2 = y + height;
 
-        int idx = this.idx;
         vertices[idx++] = x;
         vertices[idx++] = y;
         vertices[idx++] = color;
@@ -129,15 +125,14 @@ public class SpriteBatch{
     }
 
     public void draw (Texture texture, float[] spriteVertices, int offset, int count) {
-        int verticesLength = vertices.length;
-        int remainingVertices = verticesLength;
+        int remainingVertices = vertices.length;
         if (texture != lastTexture)
             switchTexture(texture);
         else {
             remainingVertices -= idx;
             if (remainingVertices == 0) {
                 flush();
-                remainingVertices = verticesLength;
+                remainingVertices = vertices.length;
             }
         }
         int copyCount = Math.min(remainingVertices, count);
@@ -148,7 +143,7 @@ public class SpriteBatch{
         while (count > 0) {
             offset += copyCount;
             flush();
-            copyCount = Math.min(verticesLength, count);
+            copyCount = Math.min(vertices.length, count);
             System.arraycopy(spriteVertices, offset, vertices, 0, copyCount);
             idx += copyCount;
             count -= copyCount;
