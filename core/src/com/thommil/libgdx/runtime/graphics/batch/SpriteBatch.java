@@ -2,12 +2,8 @@ package com.thommil.libgdx.runtime.graphics.batch;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
-import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
@@ -17,31 +13,13 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
  */
 public class SpriteBatch{
 
-    private Mesh mesh;
+    final private Mesh mesh;
 
     final float[] vertices;
     int idx = 0;
     Texture lastTexture = null;
-    float invTexWidth = 0, invTexHeight = 0;
-
-    private final Matrix4 transformMatrix = new Matrix4();
-    private final Matrix4 projectionMatrix = new Matrix4();
-    private final Matrix4 combinedMatrix = new Matrix4();
-
-    private boolean blendingDisabled = false;
-    private int blendSrcFunc = GL20.GL_SRC_ALPHA;
-    private int blendDstFunc = GL20.GL_ONE_MINUS_SRC_ALPHA;
 
     private final ShaderProgram shader;
-
-    /** Number of render calls since the last {@link #begin()}. **/
-    public int renderCalls = 0;
-
-    /** Number of rendering calls, ever. Will not be reset unless set manually. **/
-    public int totalRenderCalls = 0;
-
-    /** The maximum number of sprites rendered in one batch so far. **/
-    public int maxSpritesInBatch = 0;
 
     public SpriteBatch() {
         this(1000);
@@ -77,10 +55,10 @@ public class SpriteBatch{
         shader = createDefaultShader();
     }
 
-    public void begin () {
-        renderCalls = 0;
+    public void begin (final Matrix4 combinedMatrix) {
         shader.begin();
-        setupMatrices();
+        shader.setUniformMatrix("u_projTrans", combinedMatrix);
+        shader.setUniformi("u_texture", 0);
     }
 
     public void end () {
@@ -121,7 +99,6 @@ public class SpriteBatch{
         vertices[idx++] = color;
         vertices[idx++] = u2;
         vertices[idx++] = v;
-        this.idx = idx;
     }
 
     public void draw (Texture texture, float[] spriteVertices, int offset, int count) {
@@ -153,11 +130,7 @@ public class SpriteBatch{
     public void flush () {
         if (idx == 0) return;
 
-        renderCalls++;
-        totalRenderCalls++;
-        int spritesInBatch = idx / SpriteActor.SPRITE_SIZE;
-        if (spritesInBatch > maxSpritesInBatch) maxSpritesInBatch = spritesInBatch;
-        int count = spritesInBatch * 6;
+        final int count = idx / SpriteActor.SPRITE_SIZE * 6;
 
         lastTexture.bind();
         Mesh mesh = this.mesh;
@@ -165,43 +138,9 @@ public class SpriteBatch{
         mesh.getIndicesBuffer().position(0);
         mesh.getIndicesBuffer().limit(count);
 
-        if (blendingDisabled) {
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-        } else {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            if (blendSrcFunc != -1) Gdx.gl.glBlendFunc(blendSrcFunc, blendDstFunc);
-        }
-
         mesh.render(shader, GL20.GL_TRIANGLES, 0, count);
 
         idx = 0;
-    }
-
-    public void disableBlending () {
-        if (blendingDisabled) return;
-        flush();
-        blendingDisabled = true;
-    }
-
-    public void enableBlending () {
-        if (!blendingDisabled) return;
-        flush();
-        blendingDisabled = false;
-    }
-
-    public void setBlendFunction (int srcFunc, int dstFunc) {
-        if (blendSrcFunc == srcFunc && blendDstFunc == dstFunc) return;
-        flush();
-        blendSrcFunc = srcFunc;
-        blendDstFunc = dstFunc;
-    }
-
-    public int getBlendSrcFunc () {
-        return blendSrcFunc;
-    }
-
-    public int getBlendDstFunc () {
-        return blendDstFunc;
     }
 
     public void dispose () {
@@ -209,37 +148,9 @@ public class SpriteBatch{
         shader.dispose();
     }
 
-    public Matrix4 getProjectionMatrix () {
-        return projectionMatrix;
-    }
-
-    public Matrix4 getTransformMatrix () {
-        return transformMatrix;
-    }
-
-    public void setProjectionMatrix (Matrix4 projection) {
-        projectionMatrix.set(projection);
-    }
-
-    public void setTransformMatrix (Matrix4 transform) {
-        transformMatrix.set(transform);
-    }
-
-    private void setupMatrices () {
-        combinedMatrix.set(projectionMatrix).mul(transformMatrix);
-        shader.setUniformMatrix("u_projTrans", combinedMatrix);
-        shader.setUniformi("u_texture", 0);
-    }
-
     protected void switchTexture (Texture texture) {
         flush();
         lastTexture = texture;
-        invTexWidth = 1.0f / texture.getWidth();
-        invTexHeight = 1.0f / texture.getHeight();
-    }
-
-    public boolean isBlendingEnabled () {
-        return !blendingDisabled;
     }
 
     /** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */

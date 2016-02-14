@@ -617,7 +617,7 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
     }
 
     public Color getColor () {
-        int intBits = NumberUtils.floatToIntColor(color);
+        final int intBits = NumberUtils.floatToIntColor(color);
         Color color = new Color();
         color.r = (intBits & 0xff) / 255f;
         color.g = ((intBits >>> 8) & 0xff) / 255f;

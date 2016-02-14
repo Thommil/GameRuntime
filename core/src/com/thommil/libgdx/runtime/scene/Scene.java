@@ -121,11 +121,19 @@ public class Scene implements Screen {
         this.viewport.apply(settings.viewport.centerCamera);
 
         //GL Settings
-        Gdx.gl.glDepthMask(false);
         Gdx.gl.glClearColor(this.settings.renderer.clearColor[0]
                 , this.settings.renderer.clearColor[1]
                 , this.settings.renderer.clearColor[2]
                 , this.settings.renderer.clearColor[3]);
+
+        Gdx.gl.glDepthMask(this.settings.renderer.depthMaskEnabled);
+
+        if (this.settings.renderer.blendEnabled) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(this.settings.renderer.blendSrcFunc, this.settings.renderer.blendDstFunc);
+        } else {
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
     }
 
     /**
@@ -498,6 +506,10 @@ public class Scene implements Screen {
         public static class Renderer{
             public boolean clearScreen = true;
             public float[] clearColor = {0f, 0f, 0f, 1f};
+            public boolean depthMaskEnabled = false;
+            public boolean blendEnabled = true;
+            public int blendSrcFunc = GL20.GL_SRC_ALPHA;
+            public int blendDstFunc = GL20.GL_ONE_MINUS_SRC_ALPHA;
         }
 
         /**

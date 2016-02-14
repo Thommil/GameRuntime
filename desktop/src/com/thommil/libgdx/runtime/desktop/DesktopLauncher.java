@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		//Basic sprite
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.sprite.BasicScene(), config);
 		//Basic cache
-		new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
+		//new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
 
 		//Basic Physics
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
@@ -25,7 +25,7 @@ public class DesktopLauncher {
 		//Kinematic input
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);
 		//Physics input
-		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
+		new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
 
 	}
 }

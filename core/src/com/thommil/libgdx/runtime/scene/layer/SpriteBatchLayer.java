@@ -34,8 +34,7 @@ public class SpriteBatchLayer extends Layer{
 
     @Override
     public void render(float deltaTime) {
-        renderer.setProjectionMatrix(this.camera.combined);
-        renderer.begin();
+        renderer.begin(this.camera.combined);
         for(Renderable renderable : this.renderables){
             renderable.render(deltaTime,renderer);
         }

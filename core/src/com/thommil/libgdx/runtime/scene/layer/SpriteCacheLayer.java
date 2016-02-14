@@ -60,8 +60,7 @@ public class SpriteCacheLayer extends Layer{
 
     @Override
     public void render(float deltaTime) {
-        renderer.setProjectionMatrix(this.camera.combined);
-        renderer.begin();
+        renderer.begin(this.camera.combined);
         renderer.draw(cacheId);
         renderer.end();
     }
