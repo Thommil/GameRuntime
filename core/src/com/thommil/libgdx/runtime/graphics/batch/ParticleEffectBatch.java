@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Matrix4;
 /**
  * Created by tomtom on 14/02/16.
  */
-public class ParticleBatch implements Batch {
+public class ParticleEffectBatch implements Batch {
 
     /**
      * Sets up the Batch for drawing. This will disable depth buffer writing. It enables blending and texturing. If you have more

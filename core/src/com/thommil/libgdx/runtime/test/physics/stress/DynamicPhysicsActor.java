@@ -10,6 +10,14 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
  */
 public class DynamicPhysicsActor extends SpriteBodyActor {
 
+    public DynamicPhysicsActor(int id, Texture texture) {
+        super(id, texture);
+        this.setSize(2.6f,2.3f);
+        this.setOriginCenter();
+        this.setPosition(-100f,-100f);
+        this.setLayer(1);
+    }
+
     public DynamicPhysicsActor(Texture texture) {
         super(texture);
         this.setSize(2.6f,2.3f);

@@ -153,7 +153,6 @@ public class SpriteBatch{
         lastTexture = texture;
     }
 
-    /** Returns a new instance of the default shader used by SpriteBatch for GL2 when no shader is specified. */
     protected ShaderProgram createDefaultShader () {
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //

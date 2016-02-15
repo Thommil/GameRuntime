@@ -144,6 +144,23 @@ public class Scene implements Screen {
     }
 
     /**
+     * Adds a layer to scene at the specified index
+     *
+     * @oaram index The layer index
+     * @param layer The layer to add
+     *
+     * @return The layer index
+     */
+    public int setLayer(final int index, final Layer layer){
+        //Gdx.app.debug("Scene","addLayer("+index+")");
+        layer.setCamera(this.camera);
+        this.renderLock.lock();
+        this.layers.set(index, layer);
+        this.renderLock.unlock();
+        return (this.layers.size()-1);
+    }
+
+    /**
      * Adds a layer to scene
      *
      * @param layer The layer to add
@@ -304,6 +321,10 @@ public class Scene implements Screen {
             layer.show();
         }
 
+        if(this.sceneListener != null){
+            this.sceneListener.onShow();
+        }
+
         //Start executor
         this.executor = Executors.newFixedThreadPool(this.settings.core.executors, new ThreadFactory() {
             @Override
@@ -355,7 +376,6 @@ public class Scene implements Screen {
                 }
             }
         });
-
         this.paused = false;
     }
 
@@ -433,7 +453,10 @@ public class Scene implements Screen {
         //Gdx.app.debug("Scene","resize("+width+", "+height+")");
         this.viewport.update(width,height);
         if(this.sceneListener != null){
-            this.sceneListener.onResize();
+            this.sceneListener.onResize(width, height);
+        }
+        for(final Layer layer : this.layers) {
+            layer.onResize(width,height);
         }
     }
 
@@ -441,11 +464,17 @@ public class Scene implements Screen {
     public void pause() {
         //Gdx.app.debug("Scene","pause()");
         this.paused = true;
+        if(Scene.this.sceneListener != null){
+            Scene.this.sceneListener.onPause();
+        }
     }
 
     @Override
     public void resume() {
         //Gdx.app.debug("Scene","resume()");
+        if(Scene.this.sceneListener != null){
+            Scene.this.sceneListener.onResume();
+        }
         this.paused = false;
     }
 
@@ -453,6 +482,9 @@ public class Scene implements Screen {
     public void hide() {
         //Gdx.app.debug("Scene","hide()");
         this.paused = true;
+        if(Scene.this.sceneListener != null){
+            Scene.this.sceneListener.onHide();
+        }
         for(final Layer layer : this.layers) {
             layer.hide();
         }
@@ -465,13 +497,16 @@ public class Scene implements Screen {
         //Gdx.app.debug("Scene","dispose()");
         this.paused = true;
         this.executor.shutdown();
-        this.physicsWorld.dispose();
-        for(final Actor actor : this.actorsMap.values()){
-            actor.dispose();
+        if(Scene.this.sceneListener != null){
+            Scene.this.sceneListener.onDispose();
         }
         for(final Layer layer : this.layers){
             layer.dispose();
         }
+        for(final Actor actor : this.actorsMap.values()){
+            actor.dispose();
+        }
+        this.physicsWorld.dispose();
     }
 
     public World getPhysicsWorld() {
@@ -552,7 +587,7 @@ public class Scene implements Screen {
             public float frequency = 0.01666666666f;
             public int velocityIterations = 8;
             public int positionIterations = 3;
-            public int particleIterations = 1;
+            public int particleIterations = 3;
             public boolean debug = false;
         }
 

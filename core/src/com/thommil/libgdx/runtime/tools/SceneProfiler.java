@@ -8,6 +8,7 @@ import com.sun.glass.ui.SystemClipboard;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
+import finnstr.libgdx.liquidfun.ParticleSystem;
 
 /**
  * Global Profiler of Scenes
@@ -123,9 +124,14 @@ public class SceneProfiler{
                                 .append("]");
                     }
                     if((this.profiler.flags & SceneProfiler.PHYSICS) != 0){
+                        int particlesCount = 0;
+                        for(final ParticleSystem particleSystem : this.profiler.scene.getPhysicsWorld().particleSystems.values()){
+                            particlesCount += particleSystem.getParticleCount();
+                        }
                         outStr.append("[PHYSICS:")
                                 .append("sps=").append((int)(stepCalls * frequencyFactor)).append(",")
                                 .append("bodies=").append(this.profiler.scene.getPhysicsWorld().getBodyCount()).append(",")
+                                .append("particles=").append(particlesCount).append(",")
                                 .append("contacts=").append(this.profiler.scene.getPhysicsWorld().getContactCount())
                                 .append("]");
                     }
@@ -191,9 +197,9 @@ public class SceneProfiler{
          * Called on resize()
          */
         @Override
-        public void onResize() {
+        public void onResize(int width, int height) {
             if(this.sourceListener != null) {
-                this.sourceListener.onResize();
+                this.sourceListener.onResize(width, height);
             }
         }
 

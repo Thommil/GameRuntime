@@ -24,7 +24,7 @@ public interface SceneListener{
     /**
      * Called on resize()
      */
-    void onResize();
+    void onResize(int width, int height);
 
     /**
      * Called on show()

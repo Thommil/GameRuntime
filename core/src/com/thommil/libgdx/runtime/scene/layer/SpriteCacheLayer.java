@@ -54,7 +54,7 @@ public class SpriteCacheLayer extends Layer{
     }
 
     @Override
-    protected void onResize() {
+    protected void onResize(int width, int height) {
         //NOP
     }
 

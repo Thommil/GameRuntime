@@ -17,6 +17,7 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
         super(texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
+        this.setPosition(0f,3f);
     }
 
     /**
@@ -30,13 +31,20 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
     }
 
     /**
+     * Gets the restitution to the RigidBody
+     */
+    @Override
+    public float getRestitution() {
+        return 0.7f;
+    }
+
+    /**
      * Gets the definition of Collidable
      */
     @Override
     public BodyDef getDefinition() {
         BodyDef dynamicBodyDef = super.getDefinition();
         dynamicBodyDef.position.set(0f,3f);
-        dynamicBodyDef.angle = 0.1f;
         return dynamicBodyDef;
     }
 }

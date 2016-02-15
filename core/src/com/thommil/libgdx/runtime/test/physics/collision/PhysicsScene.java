@@ -28,7 +28,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
     Scene defaultScene;
     Texture textureCuriosity;
     Texture textureExplosion;
-    World world;
 
     int inc = 0;
 
@@ -42,7 +41,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
         defaultScene = new Scene(settings);
-        world = defaultScene.getPhysicsWorld();
         textureCuriosity = new Texture(Gdx.files.internal("curiosity.png"));
         textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
@@ -52,7 +50,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
 
         //Actors
 
-        defaultScene.addActor(new StaticPhysicsActor());
+        defaultScene.addActor(new StaticPhysicsActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
         SensorActor burnSensor = new SensorActor() {
             @Override
             public Shape getShape() {
@@ -92,7 +90,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
     }
 
     @Override
-    public void onResize() {
+    public void onResize(int width, int height) {
 
     }
 

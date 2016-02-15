@@ -17,11 +17,11 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
  *
  * Created by tomtom on 04/02/16.
  */
-public class PhysicsScene extends Game implements SceneListener, InputProcessor{
+public class PhysicsScene extends Game implements SceneListener{
 
     Scene defaultScene;
     Texture texture;
-    World world;
+
     int inc = 0;
 
     @Override
@@ -34,7 +34,6 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
         defaultScene = new Scene(settings);
-        world = defaultScene.getPhysicsWorld();
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
@@ -42,13 +41,11 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
         defaultScene.addLayer(new SpriteBatchLayer(5000));
 
         //Actors
-        defaultScene.addActor(new StaticPhysicsActor());
+        defaultScene.addActor(new StaticPhysicsActor(new Texture(Gdx.files.internal("metal.png")),-100f,-50f,200f,10f));
 
         this.defaultScene.setSceneListener(this);
 
         SceneProfiler.profile(this.defaultScene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
-
-        Gdx.input.setInputProcessor(this);
 
         this.setScreen(defaultScene);
     }
@@ -71,7 +68,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
     }
 
     @Override
-    public void onResize() {
+    public void onResize(int width, int height) {
 
     }
 
@@ -98,46 +95,5 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
     @Override
     public void onDispose() {
 
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }

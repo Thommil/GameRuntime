@@ -1,21 +1,24 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
-import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
-import com.thommil.libgdx.runtime.scene.Renderable;
+import com.badlogic.gdx.Gdx;
+import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
 import com.thommil.libgdx.runtime.scene.Layer;
+import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
- * Basic Sprite layer using BasicSpriteBatch as renderer
+ * SoftBody layer using SoftBodyBatch as renderer
  *
  * Created by thommil on 03/02/16.
  */
-public class SpriteBatchLayer extends Layer{
+public class SoftBodyBatchLayer extends Layer{
 
-    final SpriteBatch renderer;
+    final SoftBodyBatch renderer;
 
-    public SpriteBatchLayer(final int maxSprites) {
-        this.renderer = new SpriteBatch(maxSprites);
+    public SoftBodyBatchLayer(final int maxSprites) {
+        this.renderer = new SoftBodyBatch(maxSprites);
     }
+
+    protected float particlesScale;
 
     @Override
     public void onShow() {
@@ -29,12 +32,12 @@ public class SpriteBatchLayer extends Layer{
 
     @Override
     protected void onResize(int width, int height) {
-        //NOP
+        this.particlesScale = Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight);
     }
 
     @Override
     public void render(float deltaTime) {
-        renderer.begin(this.camera.combined);
+        renderer.begin(this.camera.combined, this.particlesScale);
         for(Renderable renderable : this.renderables){
             renderable.render(deltaTime,renderer);
         }

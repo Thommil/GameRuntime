@@ -20,9 +20,11 @@ public class AndroidLauncher extends AndroidApplication {
 		//Basic Physics
 		//initialize(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
 		//Stress Physics
-		initialize(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
+		//initialize(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
 		//Collision Physics
 		//initialize(new com.thommil.libgdx.runtime.test.physics.collision.PhysicsScene(), config);
+		//Particles Physics
+		initialize(new com.thommil.libgdx.runtime.test.physics.particles.PhysicsScene(), config);
 
 		//Kinematic input
 		//initialize(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);

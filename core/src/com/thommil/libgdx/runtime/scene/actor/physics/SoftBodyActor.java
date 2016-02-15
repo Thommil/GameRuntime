@@ -1,9 +1,7 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.graphics.batch.ParticleSystemBatch;
+import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.SoftBody;
 import finnstr.libgdx.liquidfun.ParticleSystem;
@@ -14,7 +12,9 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  *
  * Created by thommil on 14/02/16.
  */
-public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSystemBatch> {
+public abstract class SoftBodyActor implements SoftBody, Renderable<SoftBodyBatch> {
+
+    public static final int VERTEX_SIZE = 2;
 
     public ParticleSystem particleSystem;
 
@@ -22,24 +22,12 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
 
     protected final int id;
 
-    protected final Texture texture;
-
-    public SoftBodyActor(Texture texture) {
-        this(MathUtils.random(0x7ffffffe),texture);
+    public SoftBodyActor() {
+        this(MathUtils.random(0x7ffffffe));
     }
 
-    public SoftBodyActor(final int id, Texture texture) {
+    public SoftBodyActor(final int id) {
         this.id = id;
-        this.texture = texture;
-    }
-
-    public SoftBodyActor(TextureRegion region) {
-        this(MathUtils.random(0x7ffffffe),region);
-    }
-
-    public SoftBodyActor(final int id, TextureRegion region) {
-        this.id = id;
-        this.texture = region.getTexture();
     }
 
     /**
@@ -48,6 +36,15 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
     @Override
     public int getId() {
         return this.id;
+    }
+
+    /**
+     * Sets the layer index
+     *
+     * @param layer The layer index
+     */
+    public void setLayer(final int layer){
+        this.layer = layer;
     }
 
     /**
@@ -67,9 +64,8 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, ParticleSystemBatch renderer) {
-        this.particleSystem.getParticlePositionBuffer();
-        //renderer.draw(this.texture, getVertices(), 0, SPRITE_SIZE);
+    public void render(float deltaTime, SoftBodyBatch renderer) {
+        renderer.draw(this.particleSystem.getParticlePositionBufferArray(true), this.particleSystem.getParticleRadius());
     }
 
     /**

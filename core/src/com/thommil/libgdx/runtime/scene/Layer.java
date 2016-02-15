@@ -105,7 +105,7 @@ public abstract class Layer implements Disposable {
     /**
      * Called when layer is resized
      */
-    protected abstract void onResize();
+    protected abstract void onResize(int width, int height);
 
     /**
      * Indicates if layer is currently visible/enabled

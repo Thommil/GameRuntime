@@ -111,8 +111,8 @@
 						("C172F1A25CC2427083DD344E", "10A2203FF23A43518596818D", "171E7F3FE0244F73BA57A45D",
  "4A3CDC243C114B1882F19FE6", "3664D628138845A6A4AE4477", "DD7F3992F6DD45809EB9414E",
  "9ECD456E68454319802E5485", "5FB8EF27A2A64E0F930CC7FA", "06D16E86AEF4466180419215",
- "DD28B9ABB16143B580698555", "E195475263734BAA8F27B580", "67CB5B3BC7EC4411AA1F82DE",
- "11D62E6BB51E4066ACC9FC8E", "8040ADAAFD284CE2BEBB80C6", "71382FAF66C746FC8E400571",
+ "E195475263734BAA8F27B580", "67CB5B3BC7EC4411AA1F82DE", "11D62E6BB51E4066ACC9FC8E",
+ "8040ADAAFD284CE2BEBB80C6", "62EAFBFE89C34D1B81E9833C", "71382FAF66C746FC8E400571",
  "7B6F201049174CBFB3500422", "D7AD06E286B54BF38AD0B7CB", "2FFE6B3EBD8B4CE4992A3763"
 );
 					"name" = "Resources";
@@ -126,14 +126,6 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "curiosity.png";
-				};
-			"DD28B9ABB16143B580698555" =
-				{
-					"isa" = "PBXFileReference";
-					"name" = "ground.jpg";
-					"lastKnownFileType" = "image.jpeg";
-					"sourceTree" = "<group>";
-					"path" = "ground.jpg";
 				};
 			"D7AD06E286B54BF38AD0B7CB" =
 				{
@@ -262,6 +254,14 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "explosion.png";
+				};
+			"62EAFBFE89C34D1B81E9833C" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "metal.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "metal.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";

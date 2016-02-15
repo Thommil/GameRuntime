@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width=800;
+		config.width=600;
 		config.height=600;
 		//Basic texture
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.basic.texture.BasicScene(), config);
@@ -21,11 +21,13 @@ public class DesktopLauncher {
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
 		//Collision Physics
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.collision.PhysicsScene(), config);
+		//Particles Physics
+		new LwjglApplication(new com.thommil.libgdx.runtime.test.physics.particles.PhysicsScene(), config);
 
 		//Kinematic input
 		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);
 		//Physics input
-		new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
+		//new LwjglApplication(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
 
 	}
 }
