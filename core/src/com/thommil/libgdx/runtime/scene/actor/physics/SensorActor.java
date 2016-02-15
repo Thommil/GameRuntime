@@ -46,7 +46,7 @@ public abstract class SensorActor implements RigidBody {
      */
     @Override
     public float getDensity() {
-        return 1.0f;
+        return 0.0f;
     }
 
     /**

@@ -16,9 +16,6 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
  */
 public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
-    /**
-     * The bound body
-     */
     public Body body;
 
     public SpriteBodyActor(Texture texture) {
@@ -80,7 +77,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      */
     @Override
     public float getFriction() {
-        return 0.7f;
+        return 0.2f;
     }
 
     /**
@@ -88,14 +85,18 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      */
     @Override
     public float getRestitution() {
-        return 0.1f;
+        return 0.0f;
     }
 
     /**
      * Gets the definition of Collidable
      */
     @Override
-    public abstract BodyDef getDefinition();
+    public BodyDef getDefinition() {
+        BodyDef groundBodyDef = new BodyDef();
+        groundBodyDef.type = BodyDef.BodyType.DynamicBody;
+        return groundBodyDef;
+    }
 
     /**
      * Sets the density to the RigidBody

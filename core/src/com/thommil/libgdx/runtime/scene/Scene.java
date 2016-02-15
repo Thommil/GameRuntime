@@ -199,20 +199,21 @@ public class Scene implements Screen {
                     if(actor instanceof RigidBody) {
                         final RigidBody rigidBody = (RigidBody)actor;
                         final Body body = Scene.this.physicsWorld.createBody(rigidBody.getDefinition());
-                        final Fixture fixture = body.createFixture(rigidBody.getShape(),rigidBody.getDensity());
+                        final Shape shape = rigidBody.getShape();
+                        final Fixture fixture = body.createFixture(shape,rigidBody.getDensity());
                         fixture.setFriction(rigidBody.getFriction());
                         fixture.setRestitution(rigidBody.getRestitution());
-                        rigidBody.getShape().dispose();
                         rigidBody.setBody(body);
                         if(body.getType() != BodyDef.BodyType.StaticBody) {
                             Scene.this.collidables.add(rigidBody);
                         }
-                        else if(actor instanceof SoftBody) {
-                            final SoftBody softBody = (SoftBody)actor;
-                            final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,softBody.getDefinition());
-                            softBody.setBody(particleSystem);
-                            Scene.this.collidables.add(softBody);
-                        }
+                        shape.dispose();
+                    }
+                    else if(actor instanceof SoftBody) {
+                        final SoftBody softBody = (SoftBody)actor;
+                        final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,softBody.getDefinition());
+                        softBody.setBody(particleSystem);
+                        Scene.this.collidables.add(softBody);
                     }
                     Scene.this.actorsMap.put(actor.getId(),actor);
                 }
@@ -226,14 +227,15 @@ public class Scene implements Screen {
             if(actor instanceof RigidBody) {
                 final RigidBody rigidBody = (RigidBody)actor;
                 final Body body = this.physicsWorld.createBody(rigidBody.getDefinition());
-                final Fixture fixture = body.createFixture(rigidBody.getShape(),rigidBody.getDensity());
+                final Shape shape = rigidBody.getShape();
+                final Fixture fixture = body.createFixture(shape,rigidBody.getDensity());
                 fixture.setFriction(rigidBody.getFriction());
                 fixture.setRestitution(rigidBody.getRestitution());
-                rigidBody.getShape().dispose();
                 rigidBody.setBody(body);
                 if(body.getType() != BodyDef.BodyType.StaticBody) {
                     Scene.this.collidables.add(rigidBody);
                 }
+                shape.dispose();
             }
             else if(actor instanceof SoftBody) {
                 final SoftBody softBody = (SoftBody)actor;

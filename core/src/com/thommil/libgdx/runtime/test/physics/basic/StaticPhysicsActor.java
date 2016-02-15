@@ -3,10 +3,7 @@ package com.thommil.libgdx.runtime.test.physics.basic;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 
 /**
@@ -34,8 +31,7 @@ public class StaticPhysicsActor extends StaticBodyActor {
      */
     @Override
     public BodyDef getDefinition() {
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.type = BodyDef.BodyType.StaticBody;
+        BodyDef groundBodyDef = super.getDefinition();
         groundBodyDef.position.set(0, -1.9f);
         return groundBodyDef;
     }

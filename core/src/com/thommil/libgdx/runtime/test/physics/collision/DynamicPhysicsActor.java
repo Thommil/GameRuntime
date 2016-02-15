@@ -32,8 +32,7 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
      */
     @Override
     public BodyDef getDefinition() {
-        BodyDef dynamicBodyDef = new BodyDef();
-        dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
+        BodyDef dynamicBodyDef = super.getDefinition();
         dynamicBodyDef.position.set(MathUtils.random(-20f,20f),100f);
         dynamicBodyDef.angle = 0.1f;
         return dynamicBodyDef;

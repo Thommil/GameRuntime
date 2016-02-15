@@ -12,14 +12,12 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 public class StaticPhysicsActor extends SpriteBodyActor {
 
     static Texture texture = new Texture(Gdx.files.internal("planet.png"));
-
     float radius;
 
     public StaticPhysicsActor() {
         super(texture);
         this.setOriginCenter();
         this.setLayer(0);
-        //this.setPosition(this.body.getPosition().x-radius,this.body.getPosition().y-radius);
     }
 
     /**
@@ -30,6 +28,7 @@ public class StaticPhysicsActor extends SpriteBodyActor {
         CircleShape planetShape = new CircleShape();
         radius = MathUtils.random(1f,3f);
         planetShape.setRadius(radius);
+        this.setSize(radius*2,radius*2);
         return planetShape;
     }
 
@@ -38,7 +37,7 @@ public class StaticPhysicsActor extends SpriteBodyActor {
      */
     @Override
     public BodyDef getDefinition() {
-        BodyDef groundBodyDef = new BodyDef();
+        BodyDef groundBodyDef = super.getDefinition();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
         groundBodyDef.position.set(MathUtils.random(-10f,10f),MathUtils.random(-10f,10f));
         return groundBodyDef;
@@ -52,6 +51,6 @@ public class StaticPhysicsActor extends SpriteBodyActor {
     @Override
     public void setBody(Body body) {
         super.setBody(body);
-        this.setPosition(this.body.getPosition().x-radius,this.body.getPosition().y-radius);
+        this.setPosition(body.getPosition().x - radius,body.getPosition().y - radius);
     }
 }

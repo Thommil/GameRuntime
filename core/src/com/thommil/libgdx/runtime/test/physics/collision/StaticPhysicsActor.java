@@ -35,8 +35,7 @@ public class StaticPhysicsActor extends StaticBodyActor {
      */
     @Override
     public BodyDef getDefinition() {
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.type = BodyDef.BodyType.StaticBody;
+        BodyDef groundBodyDef = super.getDefinition();
         groundBodyDef.position.set(0, -45f);
         return groundBodyDef;
     }

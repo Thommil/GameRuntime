@@ -45,7 +45,7 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      */
     @Override
     public float getFriction() {
-        return 0.7f;
+        return 0.2f;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      */
     @Override
     public float getRestitution() {
-        return 0.1f;
+        return 0.0f;
     }
 
     /**
@@ -81,7 +81,11 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      * Gets the definition of Collidable
      */
     @Override
-    public abstract BodyDef getDefinition();
+    public BodyDef getDefinition() {
+        BodyDef groundBodyDef = new BodyDef();
+        groundBodyDef.type = BodyDef.BodyType.StaticBody;
+        return groundBodyDef;
+    }
 
     /**
      * Set body instance of the Collidable

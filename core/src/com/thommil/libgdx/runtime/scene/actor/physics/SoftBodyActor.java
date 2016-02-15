@@ -1,8 +1,9 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.graphics.batch.ParticleSystemBatch;
-import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.SoftBody;
 import finnstr.libgdx.liquidfun.ParticleSystem;
@@ -15,18 +16,38 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  */
 public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSystemBatch> {
 
+    public ParticleSystem particleSystem;
+
     protected int layer = 0;
 
-    protected int id;
+    protected final int id;
 
-    protected ParticleSystem particleSystem;
+    protected final Texture texture;
+
+    public SoftBodyActor(Texture texture) {
+        this(MathUtils.random(0x7ffffffe),texture);
+    }
+
+    public SoftBodyActor(final int id, Texture texture) {
+        this.id = id;
+        this.texture = texture;
+    }
+
+    public SoftBodyActor(TextureRegion region) {
+        this(MathUtils.random(0x7ffffffe),region);
+    }
+
+    public SoftBodyActor(final int id, TextureRegion region) {
+        this.id = id;
+        this.texture = region.getTexture();
+    }
 
     /**
      * Gets the ID of the Actor
      */
     @Override
     public int getId() {
-        return 0;
+        return this.id;
     }
 
     /**
@@ -36,7 +57,7 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
      */
     @Override
     public int getLayer() {
-        return 0;
+        return this.layer;
     }
 
     /**
@@ -47,7 +68,29 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
      */
     @Override
     public void render(float deltaTime, ParticleSystemBatch renderer) {
+        this.particleSystem.getParticlePositionBuffer();
+        //renderer.draw(this.texture, getVertices(), 0, SPRITE_SIZE);
+    }
 
+    /**
+     * Set body instance of the Collidable
+     *
+     * @param particleSystem
+     */
+    @Override
+    public void setBody(ParticleSystem particleSystem) {
+        this.particleSystem = particleSystem;
+    }
+
+    /**
+     * Called at each physics step, any physics related task should be
+     * handled here and not in the rendering phase.
+     *
+     * @param lastStepDuration The duration of the last step for QoS purpose
+     */
+    @Override
+    public void step(long lastStepDuration) {
+        //TODO Align vertices
     }
 
     /**
@@ -63,6 +106,6 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
      */
     @Override
     public void dispose() {
-
+        this.particleSystem.destroyParticleSystem();
     }
 }
