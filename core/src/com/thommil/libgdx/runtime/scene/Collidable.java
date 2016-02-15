@@ -16,12 +16,4 @@ public interface Collidable<Definition, Body> extends Actor{
      * Set body instance of the Collidable
      */
     void setBody(Body body);
-
-    /**
-     * Called at each physics step, any physics related task should be
-     * handled here and not in the rendering phase.
-     *
-     * @param lastStepDuration The duration of the last step for QoS purpose
-     */
-    void step(long lastStepDuration);
 }

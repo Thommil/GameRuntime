@@ -2,10 +2,12 @@ package com.thommil.libgdx.runtime.scene.actor.physics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
@@ -130,19 +132,15 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
         this.body.setUserData(this);
     }
 
-    /**
-     * Called at each physics step, any physics related task should be
-     * handled here and not in the rendering phase.
-     *
-     * @param lastStepDuration The duration of the last step for QoS purpose
-     */
     @Override
-    public void step(long lastStepDuration){
-        final float xAmount = this.body.getPosition().x - width / 2 - this.x;
-        final float yAmount = this.body.getPosition().y - height / 2 - this.y;
+    public void render(float deltaTime, SpriteBatch renderer) {
+        final Vector2 position = this.body.getPosition();
+        final float angle = this.body.getAngle();
+        final float xAmount = position.x - width / 2 - this.x;
+        final float yAmount = position.y - height / 2 - this.y;
         this.x += xAmount;
         this.y += yAmount;
-        this.rotation = this.body.getAngle() * DEG_IN_RAD;
+        this.rotation = angle * DEG_IN_RAD;
         dirty = true;
 
         vertices[X1] += xAmount;
@@ -153,6 +151,8 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
         vertices[Y2] += yAmount;
         vertices[Y3] += yAmount;
         vertices[Y4] += yAmount;
+
+        super.render(deltaTime, renderer);
     }
 
     @Override

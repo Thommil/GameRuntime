@@ -117,7 +117,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.defaultScene.removeActor((Actor) PhysicsScene.this.defaultScene.getCollidables().get(0));
+
         return false;
     }
 

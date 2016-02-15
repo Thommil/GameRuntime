@@ -88,17 +88,6 @@ public abstract class SensorActor implements RigidBody {
     }
 
     /**
-     * Called at each physics step, any physics related task should be
-     * handled here and not in the rendering phase.
-     *
-     * @param lastStepDuration The duration of the last step for QoS purpose
-     */
-    @Override
-    public void step(long lastStepDuration){
-        //NOP
-    }
-
-    /**
      * Releases all resources of this object.
      */
     @Override

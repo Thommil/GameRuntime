@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.scene.Stepable;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends SpriteBodyActor {
+public class DynamicPhysicsActor extends SpriteBodyActor implements Stepable {
 
     private static final float STEP_FORCE = 1f;
     private static final float STEAR_FORCE = 0.1f;
@@ -57,9 +58,9 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
 
     @Override
     public void step(long lastStepDuration) {
-        Vector2 bodyPosition = this.body.getPosition();
+
         float bodyAngle = this.body.getAngle();
-        spriteVec.set(bodyPosition.x,bodyPosition.y);
+
         if(right){
             this.body.applyTorque(-STEAR_FORCE, true);
         }
@@ -77,14 +78,6 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
             if(this.targetVec.dst2(this.spriteVec) > 1) {
                 this.body.applyForceToCenter(STEP_FORCE*followVec.x,STEP_FORCE*followVec.y, true);
             }
-        }
-
-        this.setCenter(bodyPosition.x,bodyPosition.y);
-        if(follow) {
-            this.setRotation(angle);
-        }
-        else{
-            this.setRotation(bodyAngle * 57.2957795f);
         }
     }
 

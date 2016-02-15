@@ -83,17 +83,6 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<ParticleSyst
     }
 
     /**
-     * Called at each physics step, any physics related task should be
-     * handled here and not in the rendering phase.
-     *
-     * @param lastStepDuration The duration of the last step for QoS purpose
-     */
-    @Override
-    public void step(long lastStepDuration) {
-        //TODO Align vertices
-    }
-
-    /**
      * Gets the definition of SoftBody
      *
      * @return The definition of the soft body in a particle system

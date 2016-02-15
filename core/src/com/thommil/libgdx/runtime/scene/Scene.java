@@ -80,9 +80,9 @@ public class Scene implements Screen {
     private final Lock renderLock = new ReentrantLock();
 
     /**
-     * List of physics actors
+     * List of stepable actors
      */
-    protected final List<Collidable> collidables;
+    protected final List<Stepable> stepables;
 
     /**
      * Duration of last physics step processing in ms
@@ -117,7 +117,7 @@ public class Scene implements Screen {
 
         //Physics
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
-        this.collidables = new ArrayList<Collidable>();
+        this.stepables = new ArrayList<Stepable>();
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         //Graphics
@@ -204,16 +204,15 @@ public class Scene implements Screen {
                         fixture.setFriction(rigidBody.getFriction());
                         fixture.setRestitution(rigidBody.getRestitution());
                         rigidBody.setBody(body);
-                        if(body.getType() != BodyDef.BodyType.StaticBody) {
-                            Scene.this.collidables.add(rigidBody);
-                        }
                         shape.dispose();
                     }
                     else if(actor instanceof SoftBody) {
                         final SoftBody softBody = (SoftBody)actor;
                         final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,softBody.getDefinition());
                         softBody.setBody(particleSystem);
-                        Scene.this.collidables.add(softBody);
+                    }
+                    if(actor instanceof Stepable){
+                        Scene.this.stepables.add((Stepable)actor);
                     }
                     Scene.this.actorsMap.put(actor.getId(),actor);
                 }
@@ -232,16 +231,15 @@ public class Scene implements Screen {
                 fixture.setFriction(rigidBody.getFriction());
                 fixture.setRestitution(rigidBody.getRestitution());
                 rigidBody.setBody(body);
-                if(body.getType() != BodyDef.BodyType.StaticBody) {
-                    Scene.this.collidables.add(rigidBody);
-                }
                 shape.dispose();
             }
             else if(actor instanceof SoftBody) {
                 final SoftBody softBody = (SoftBody)actor;
                 final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,softBody.getDefinition());
                 softBody.setBody(particleSystem);
-                Scene.this.collidables.add(softBody);
+            }
+            if(actor instanceof Stepable){
+                this.stepables.add((Stepable)actor);
             }
             this.actorsMap.put(actor.getId(),actor);
         }
@@ -274,8 +272,8 @@ public class Scene implements Screen {
                         Scene.this.renderablesCount--;
                         Scene.this.renderLock.unlock();
                     }
-                    if (actor instanceof Collidable) {
-                        Scene.this.collidables.remove(actor);
+                    if (actor instanceof Stepable) {
+                        Scene.this.stepables.remove(actor);
                     }
                     Scene.this.actorsMap.remove(actor.getId());
                     actor.dispose();
@@ -287,8 +285,8 @@ public class Scene implements Screen {
                 this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
                 this.renderablesCount--;
             }
-            if (actor instanceof Collidable) {
-                this.collidables.remove(actor);
+            if (actor instanceof Stepable) {
+                this.stepables.remove(actor);
             }
             this.actorsMap.remove(actor.getId());
             actor.dispose();
@@ -335,7 +333,7 @@ public class Scene implements Screen {
                             Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
                         }
 
-                        for (final Collidable actor : Scene.this.collidables) {
+                        for (final Stepable actor : Scene.this.stepables) {
                             actor.step(lastPhysicsStepDuration);
                         }
 
@@ -482,10 +480,6 @@ public class Scene implements Screen {
 
     public Viewport getViewport() {
         return viewport;
-    }
-
-    public List<Collidable> getCollidables() {
-        return collidables;
     }
 
     public boolean isPaused() {
