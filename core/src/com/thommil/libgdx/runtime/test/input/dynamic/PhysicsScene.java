@@ -39,7 +39,7 @@ public class PhysicsScene extends Game implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 
 		//Profiler
-		SceneProfiler.profile(scene);
+		//SceneProfiler.profile(scene);
 
 		//Start
 		this.setScreen(scene);

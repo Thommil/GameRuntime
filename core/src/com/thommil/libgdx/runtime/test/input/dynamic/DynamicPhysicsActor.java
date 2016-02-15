@@ -56,6 +56,7 @@ public class DynamicPhysicsActor extends SpriteBodyActor implements Stepable {
         return dynamicBodyDef;
     }
 
+
     @Override
     public void step(long lastStepDuration) {
 
@@ -79,6 +80,7 @@ public class DynamicPhysicsActor extends SpriteBodyActor implements Stepable {
                 this.body.applyForceToCenter(STEP_FORCE*followVec.x,STEP_FORCE*followVec.y, true);
             }
         }
+
     }
 
     public void forward(boolean enable){

@@ -134,23 +134,28 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
     @Override
     public void render(float deltaTime, SpriteBatch renderer) {
-        final Vector2 position = this.body.getPosition();
-        final float angle = this.body.getAngle();
-        final float xAmount = position.x - width / 2 - this.x;
-        final float yAmount = position.y - height / 2 - this.y;
-        this.x += xAmount;
-        this.y += yAmount;
-        this.rotation = angle * DEG_IN_RAD;
-        dirty = true;
+        if(!dirty) {
+            final Vector2 position = this.body.getPosition();
+            final float angle = this.body.getAngle();
+            final float xAmount = position.x - width / 2 - this.x;
+            final float yAmount = position.y - height / 2 - this.y;
+            this.x += xAmount;
+            this.y += yAmount;
+            this.rotation = angle * DEG_IN_RAD;
 
-        vertices[X1] += xAmount;
-        vertices[X2] += xAmount;
-        vertices[X3] += xAmount;
-        vertices[X4] += xAmount;
-        vertices[Y1] += yAmount;
-        vertices[Y2] += yAmount;
-        vertices[Y3] += yAmount;
-        vertices[Y4] += yAmount;
+            if(dirty) return;
+
+            vertices[X1] += xAmount;
+            vertices[X2] += xAmount;
+            vertices[X3] += xAmount;
+            vertices[X4] += xAmount;
+            vertices[Y1] += yAmount;
+            vertices[Y2] += yAmount;
+            vertices[Y3] += yAmount;
+            vertices[Y4] += yAmount;
+
+            dirty = true;
+        }
 
         super.render(deltaTime, renderer);
     }
