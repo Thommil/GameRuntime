@@ -10,7 +10,7 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
 /**
  * Test for a Simple Sprite display
  */
-public class BasicScene extends Game {
+public class SpriteTestScene extends Game {
 
 	@Override
 	public void create () {
@@ -20,18 +20,18 @@ public class BasicScene extends Game {
 		Scene.Settings settings = new Scene.Settings();
 		settings.viewport.minWorldWidth = 4;
 		settings.viewport.minWorldHeight = 4;
-		Scene defaultScene = new Scene(settings);
+		Scene scene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(new SpriteBatchLayer(1));
+		scene.addLayer(new SpriteBatchLayer(1));
 
 		//Actor
-		defaultScene.addActor(new BasicActor());
+		scene.addActor(new CuriosityActor());
 
 		//Profiler
-		SceneProfiler.profile(defaultScene);
+		SceneProfiler.profile(scene);
 
 		//Start
-		this.setScreen(defaultScene);
+		this.setScreen(scene);
 	}
 }

@@ -1,6 +1,5 @@
-package com.thommil.libgdx.runtime.test.physics.particles;
+package com.thommil.libgdx.runtime.test.physics.collision;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,9 +10,9 @@ import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class StaticPhysicsActor extends StaticBodyActor {
+public class GroundActor extends StaticBodyActor {
 
-    public StaticPhysicsActor(final Texture texture, final float x, final float y, final float width, final float height) {
+    public GroundActor(final Texture texture, final float x, final float y, final float width, final float height) {
         super(texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
         this.setLayer(0);
     }

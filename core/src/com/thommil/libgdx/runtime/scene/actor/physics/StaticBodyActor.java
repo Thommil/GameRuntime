@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 

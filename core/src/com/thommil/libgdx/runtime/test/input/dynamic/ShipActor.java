@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends SpriteBodyActor implements Stepable {
+public class ShipActor extends SpriteBodyActor implements Stepable {
 
     private static final float STEP_FORCE = 1f;
     private static final float STEAR_FORCE = 0.1f;
@@ -28,7 +28,7 @@ public class DynamicPhysicsActor extends SpriteBodyActor implements Stepable {
     private Vector2 targetVec = new Vector2();
     private Vector2 spriteVec = new Vector2();
 
-    public DynamicPhysicsActor() {
+    public ShipActor() {
         super(new Texture(Gdx.files.internal("ship.png")));
         this.setLayer(0);
         this.setSize(1f,1f);

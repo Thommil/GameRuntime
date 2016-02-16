@@ -3,10 +3,7 @@ package com.thommil.libgdx.runtime.test.physics.stress;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.*;
-import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
@@ -18,10 +15,10 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
  *
  * Created by tomtom on 04/02/16.
  */
-public class PhysicsScene extends Game implements SceneListener{
+public class PhysicsStressTestScene extends Game implements SceneListener{
 
-    Scene defaultScene;
-    Texture texture;
+    Scene scene;
+    Texture curiosityTexture;
 
     int inc = 0;
 
@@ -34,21 +31,21 @@ public class PhysicsScene extends Game implements SceneListener{
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
-        defaultScene = new Scene(settings);
-        texture = new Texture(Gdx.files.internal("curiosity.png"));
+        scene = new Scene(settings);
+        curiosityTexture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(new SpriteCacheLayer(1));
-        defaultScene.addLayer(new SpriteBatchLayer(5000));
+        scene.addLayer(new SpriteCacheLayer(1));
+        scene.addLayer(new SpriteBatchLayer(5000));
 
         //Actors
-        defaultScene.addActor(new StaticPhysicsActor(new Texture(Gdx.files.internal("metal.png")),-100f,-50f,200f,10f));
+        scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-100f,-50f,200f,10f));
 
-        this.defaultScene.setSceneListener(this);
+        this.scene.setSceneListener(this);
 
-        SceneProfiler.profile(this.defaultScene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
+        SceneProfiler.profile(this.scene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
 
-        this.setScreen(defaultScene);
+        this.setScreen(scene);
     }
 
 
@@ -57,7 +54,7 @@ public class PhysicsScene extends Game implements SceneListener{
     public void onStep(long lastDuration) {
         if(Gdx.graphics.getFramesPerSecond() > 30) {
             if (inc % 10 == 0) {
-                defaultScene.addActor(new DynamicPhysicsActor(texture));
+                scene.addActor(new CuriosityActor(curiosityTexture));
             }
         }
         inc+=1;

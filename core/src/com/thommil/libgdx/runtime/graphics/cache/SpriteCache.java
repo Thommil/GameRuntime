@@ -16,17 +16,15 @@ import java.nio.FloatBuffer;
  * Created by thommil on 12/02/16.
  */
 public class SpriteCache implements Disposable {
-    protected final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
 
     protected final Mesh mesh;
-
-    protected final Array<Cache> caches = new Array();
-
     protected final ShaderProgram shader;
 
-    protected Cache currentCache;
+    protected final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
+    protected final Array<Cache> caches = new Array();
     protected final Array<Texture> textures = new Array(8);
     protected final IntArray counts = new IntArray(8);
+    protected Cache currentCache;
 
     /** Creates a cache that uses indexed geometry and can contain up to 1000 images. */
     public SpriteCache() {
@@ -37,32 +35,9 @@ public class SpriteCache implements Disposable {
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      *           Max of 5460 if indices are used.
      */
-    public SpriteCache(int size) {
-        if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
-
-        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexBufferObject;
-        if (Gdx.gl30 != null) {
-            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
-        }
-        mesh = new Mesh(vertexDataType, false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
-                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-        mesh.setAutoBind(false);
-
-        int length = size * 6;
-        short[] indices = new short[length];
-        short j = 0;
-        for (int i = 0; i < length; i += 6, j += 4) {
-            indices[i + 0] = j;
-            indices[i + 1] = (short)(j + 1);
-            indices[i + 2] = (short)(j + 2);
-            indices[i + 3] = (short)(j + 2);
-            indices[i + 4] = (short)(j + 3);
-            indices[i + 5] = j;
-        }
-        mesh.setIndices(indices);
-
-        this.shader = createDefaultShader();
+    public SpriteCache(final int size) {
+        this.mesh = createMesh(size);
+        this.shader = createShader();
     }
 
     /** Starts the definition of a new cache, allowing the add and {@link #endCache()} methods to be called. */
@@ -246,7 +221,6 @@ public class SpriteCache implements Disposable {
         }
     }
 
-    /** Releases all resources held by this SpriteCache. */
     public void dispose () {
         mesh.dispose();
         if (shader != null) shader.dispose();
@@ -266,7 +240,35 @@ public class SpriteCache implements Disposable {
         }
     }
 
-    protected ShaderProgram createDefaultShader () {
+    protected Mesh createMesh(final int size){
+        if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
+
+        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexBufferObject;
+        if (Gdx.gl30 != null) {
+            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        }
+        final Mesh mesh = new Mesh(vertexDataType, false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+        mesh.setAutoBind(false);
+
+        int length = size * 6;
+        short[] indices = new short[length];
+        short j = 0;
+        for (int i = 0; i < length; i += 6, j += 4) {
+            indices[i + 0] = j;
+            indices[i + 1] = (short)(j + 1);
+            indices[i + 2] = (short)(j + 2);
+            indices[i + 3] = (short)(j + 2);
+            indices[i + 4] = (short)(j + 3);
+            indices[i + 5] = j;
+        }
+        mesh.setIndices(indices);
+
+        return mesh;
+    }
+
+    protected ShaderProgram createShader () {
         String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //

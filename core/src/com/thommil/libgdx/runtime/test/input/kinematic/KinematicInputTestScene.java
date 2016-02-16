@@ -9,9 +9,9 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
 /**
  * Test for a kinematic actor using inputs
  */
-public class BasicScene extends Game implements InputProcessor {
+public class KinematicInputTestScene extends Game implements InputProcessor {
 
-	private KinematicActor shipActor;
+	private ShipActor shipActor;
 	private Scene scene;
 
 	@Override
@@ -28,7 +28,7 @@ public class BasicScene extends Game implements InputProcessor {
 		scene.addLayer(new SpriteBatchLayer(1));
 
 		//Actor
-		shipActor = new KinematicActor();
+		shipActor = new ShipActor();
 		scene.addActor(shipActor);
 
 		Gdx.input.setInputProcessor(this);

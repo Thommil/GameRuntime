@@ -9,9 +9,9 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
 /**
  * Test for a physic actor using inputs
  */
-public class PhysicsScene extends Game implements InputProcessor{
+public class PhysicsInputTestScene extends Game implements InputProcessor{
 
-	private DynamicPhysicsActor shipActor;
+	private ShipActor shipActor;
 	private Scene scene;
 
 	@Override
@@ -31,15 +31,15 @@ public class PhysicsScene extends Game implements InputProcessor{
 
 		//Actor
 		for(int i=0; i < 10; i++) {
-			scene.addActor(new StaticPhysicsActor());
+			scene.addActor(new PlanetActor());
 		}
-		shipActor = new DynamicPhysicsActor();
+		shipActor = new ShipActor();
 		scene.addActor(shipActor);
 
 		Gdx.input.setInputProcessor(this);
 
 		//Profiler
-		//SceneProfiler.profile(scene);
+		SceneProfiler.profile(scene);
 
 		//Start
 		this.setScreen(scene);
@@ -97,8 +97,8 @@ public class PhysicsScene extends Game implements InputProcessor{
 		this.scene.runOnPhysicsThread(new Runnable() {
 			@Override
 			public void run() {
-				PhysicsScene.this.shipActor.target(PhysicsScene.this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
-				PhysicsScene.this.shipActor.follow(true);
+				PhysicsInputTestScene.this.shipActor.target(PhysicsInputTestScene.this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
+				PhysicsInputTestScene.this.shipActor.follow(true);
 			}
 		});
 
@@ -111,7 +111,7 @@ public class PhysicsScene extends Game implements InputProcessor{
 		this.scene.runOnPhysicsThread(new Runnable() {
 			@Override
 			public void run() {
-				PhysicsScene.this.shipActor.follow(false);
+				PhysicsInputTestScene.this.shipActor.follow(false);
 			}
 		});
 		return false;
@@ -122,7 +122,7 @@ public class PhysicsScene extends Game implements InputProcessor{
 		this.scene.runOnPhysicsThread(new Runnable() {
 			@Override
 			public void run() {
-				PhysicsScene.this.shipActor.target(PhysicsScene.this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
+				PhysicsInputTestScene.this.shipActor.target(PhysicsInputTestScene.this.scene.getViewport().unproject(mousePointerVec.set(screenX,screenY)));
 			}
 		});
 		return false;

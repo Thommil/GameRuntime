@@ -9,12 +9,12 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 /**
  * Created by thommil on 03/02/16.
  */
-public class StaticPhysicsActor extends SpriteBodyActor {
+public class PlanetActor extends SpriteBodyActor {
 
     static Texture texture = new Texture(Gdx.files.internal("planet.png"));
     float radius;
 
-    public StaticPhysicsActor() {
+    public PlanetActor() {
         super(texture);
         this.setOriginCenter();
         this.setLayer(0);

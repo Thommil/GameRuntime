@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Disposable;
 

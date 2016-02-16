@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class KinematicActor extends SpriteActor {
+public class ShipActor extends SpriteActor {
 
     boolean backward=false;
     boolean forward=false;
@@ -27,7 +27,7 @@ public class KinematicActor extends SpriteActor {
     private Vector2 targetVec = new Vector2();
     private Vector2 spriteVec = new Vector2();
 
-    public KinematicActor() {
+    public ShipActor() {
         super(new Texture(Gdx.files.internal("ship.png")));
         this.setSize(1f,1f);
         this.setOriginCenter();

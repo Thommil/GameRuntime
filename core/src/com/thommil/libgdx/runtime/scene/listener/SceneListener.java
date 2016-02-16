@@ -1,7 +1,5 @@
 package com.thommil.libgdx.runtime.scene.listener;
 
-import com.badlogic.gdx.physics.box2d.ContactListener;
-
 /**
  * Created by tomtom on 05/02/16.
  */

@@ -14,11 +14,7 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
  *
  * Created by tomtom on 04/02/16.
  */
-public class PhysicsScene extends Game{
-
-    Scene defaultScene;
-    Texture texture;
-    World world;
+public class BasicPhysicsTestScene extends Game{
 
     @Override
     public void create() {
@@ -28,21 +24,19 @@ public class PhysicsScene extends Game{
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 4;
         settings.viewport.minWorldHeight = 4;
-        defaultScene = new Scene(settings);
-        world = defaultScene.getPhysicsWorld();
-        texture = new Texture(Gdx.files.internal("curiosity.png"));
+        Scene scene = new Scene(settings);
 
         //Layer
-        defaultScene.addLayer(new SpriteBatchLayer(2));
+        scene.addLayer(new SpriteBatchLayer(2));
 
         //Actors
-        defaultScene.addActor(new StaticPhysicsActor());
-        defaultScene.addActor(new DynamicPhysicsActor(texture));
+        scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-2f,-2f,4f,1f));
+        scene.addActor(new CuriosityActor(new Texture(Gdx.files.internal("curiosity.png"))));
 
         //Profiler
-        SceneProfiler.profile(defaultScene);
+        SceneProfiler.profile(scene);
 
-        this.setScreen(defaultScene);
+        this.setScreen(scene);
 
     }
 

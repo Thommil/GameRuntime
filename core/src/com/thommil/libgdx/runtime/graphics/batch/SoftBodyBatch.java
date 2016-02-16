@@ -17,7 +17,6 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
 public class SoftBodyBatch {
 
     protected final Mesh mesh;
-
     protected final ShaderProgram shader;
 
     protected float particlesScale = 1f;
@@ -26,13 +25,9 @@ public class SoftBodyBatch {
         this(10000);
     }
 
-    public SoftBodyBatch(int size) {
-        if (size > 32767) throw new IllegalArgumentException("Can't have more than 32767 particles per batch (are you serious?): " + size);
-
-        mesh = new Mesh(Mesh.VertexDataType.VertexArray, false, size , 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
-                ShaderProgram.POSITION_ATTRIBUTE));
-
-        shader = createDefaultShader();
+    public SoftBodyBatch(final int size) {
+        mesh = createMesh(size);
+        shader = createShader();
     }
 
     public void begin (final Matrix4 combined, final float particlesScale) {
@@ -60,7 +55,14 @@ public class SoftBodyBatch {
         shader.dispose();
     }
 
-    protected ShaderProgram createDefaultShader () {
+    protected Mesh createMesh(final int size){
+        if (size > 32767) throw new IllegalArgumentException("Can't have more than 32767 particles per batch (are you serious?): " + size);
+
+        return new Mesh(Mesh.VertexDataType.VertexArray, false, size , 0,
+                            new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE));
+    }
+
+    protected ShaderProgram createShader () {
         String prefix = "";
         if(Gdx.app.getType() == Application.ApplicationType.Desktop)
             prefix +="#version 120\n";

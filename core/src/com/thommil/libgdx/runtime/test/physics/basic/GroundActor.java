@@ -1,20 +1,20 @@
 package com.thommil.libgdx.runtime.test.physics.basic;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class StaticPhysicsActor extends StaticBodyActor {
+public class GroundActor extends StaticBodyActor {
 
-    public StaticPhysicsActor() {
-        super(new Texture(Gdx.files.internal("metal.png")),-2f,-2f,4f,1f,0f,1f,1f,0f, Color.WHITE.toFloatBits());
-        this.texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-
+    public GroundActor(final Texture texture, final float x, final float y, final float width, final float height) {
+        super(texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
+        this.setLayer(0);
     }
 
     /**
@@ -23,7 +23,7 @@ public class StaticPhysicsActor extends StaticBodyActor {
     @Override
     public Shape getShape() {
         PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(2f,0.1f);
+        groundBodyShape.setAsBox(this.width/2,this.height/2);
         return groundBodyShape;
     }
 
@@ -33,7 +33,7 @@ public class StaticPhysicsActor extends StaticBodyActor {
     @Override
     public BodyDef getDefinition() {
         BodyDef groundBodyDef = super.getDefinition();
-        groundBodyDef.position.set(0, -1.9f);
+        groundBodyDef.position.set(this.x + this.width/2, this.y - this.height/2);
         return groundBodyDef;
     }
 

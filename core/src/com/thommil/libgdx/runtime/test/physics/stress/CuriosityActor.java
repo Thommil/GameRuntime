@@ -1,23 +1,29 @@
-package com.thommil.libgdx.runtime.test.physics.basic;
+package com.thommil.libgdx.runtime.test.physics.stress;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.physics.box2d.World;
-
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class DynamicPhysicsActor extends SpriteBodyActor {
+public class CuriosityActor extends SpriteBodyActor {
 
-    public DynamicPhysicsActor(Texture texture) {
+    public CuriosityActor(int id, Texture texture) {
+        super(id, texture);
+        this.setSize(2.6f,2.3f);
+        this.setOriginCenter();
+        this.setPosition(-100f,-100f);
+        this.setLayer(1);
+    }
+
+    public CuriosityActor(Texture texture) {
         super(texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
-        this.setPosition(0f,3f);
+        this.setPosition(-100f,-100f);
+        this.setLayer(1);
     }
 
     /**
@@ -31,20 +37,13 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
     }
 
     /**
-     * Gets the restitution to the RigidBody
-     */
-    @Override
-    public float getRestitution() {
-        return 0.7f;
-    }
-
-    /**
      * Gets the definition of Collidable
      */
     @Override
     public BodyDef getDefinition() {
         BodyDef dynamicBodyDef = super.getDefinition();
-        dynamicBodyDef.position.set(0f,3f);
+        dynamicBodyDef.position.set(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
+        dynamicBodyDef.angle = 0.1f;
         return dynamicBodyDef;
     }
 }

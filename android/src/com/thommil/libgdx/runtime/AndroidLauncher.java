@@ -4,6 +4,17 @@ import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
+import com.thommil.libgdx.runtime.test.basic.cache.CacheTestScene;
+import com.thommil.libgdx.runtime.test.basic.sprite.SpriteTestScene;
+import com.thommil.libgdx.runtime.test.basic.texture.TextureTestScene;
+import com.thommil.libgdx.runtime.test.input.dynamic.PhysicsInputTestScene;
+import com.thommil.libgdx.runtime.test.input.kinematic.KinematicInputTestScene;
+import com.thommil.libgdx.runtime.test.physics.basic.BasicPhysicsTestScene;
+import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
+import com.thommil.libgdx.runtime.test.physics.particles.SoftBodyTestScene;
+import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
+import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
+
 public class AndroidLauncher extends AndroidApplication {
 
 	@Override
@@ -11,24 +22,29 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		//Basic texture
-		//initialize(new com.thommil.libgdx.runtime.test.basic.texture.BasicScene(), config);
+		initialize(new TextureTestScene(), config);
 		//Basic sprite
-		//initialize(new com.thommil.libgdx.runtime.test.basic.sprite.BasicScene(), config);
+		//initialize(new SpriteTestScene(), config);
 		//Basic cache
-		//initialize(new com.thommil.libgdx.runtime.test.basic.cache.BasicScene(), config);
+		//initialize(new CacheTestScene(), config);
 
 		//Basic Physics
-		//initialize(new com.thommil.libgdx.runtime.test.physics.basic.PhysicsScene(), config);
+		//initialize(new BasicPhysicsTestScene(), config);
 		//Stress Physics
-		//initialize(new com.thommil.libgdx.runtime.test.physics.stress.PhysicsScene(), config);
+		//initialize(new PhysicsStressTestScene(), config);
 		//Collision Physics
-		//initialize(new com.thommil.libgdx.runtime.test.physics.collision.PhysicsScene(), config);
+		//initialize(new CollisionTestScene(), config);
 		//Particles Physics
-		initialize(new com.thommil.libgdx.runtime.test.physics.particles.PhysicsScene(), config);
+		//initialize(new SoftBodyTestScene(), config);
 
 		//Kinematic input
-		//initialize(new com.thommil.libgdx.runtime.test.input.kinematic.BasicScene(), config);
+		//initialize(new KinematicInputTestScene(), config);
 		//Physics input
-		//initialize(new com.thommil.libgdx.runtime.test.input.dynamic.PhysicsScene(), config);
+		//initialize(new PhysicsInputTestScene(), config);
+
+		//Water rendering
+		//initialize(new WaterTestScene(), config);
+
+
 	}
 }

@@ -10,7 +10,7 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
 /**
  * Test for a Simple texture display
  */
-public class BasicScene extends Game {
+public class TextureTestScene extends Game {
 
 	@Override
 	public void create () {
@@ -20,18 +20,18 @@ public class BasicScene extends Game {
 		Scene.Settings settings = new Scene.Settings();
 		settings.viewport.minWorldWidth = 10;
 		settings.viewport.minWorldHeight = 10;
-		Scene defaultScene = new Scene(settings);
+		Scene scene = new Scene(settings);
 
 		//Layers
-		defaultScene.addLayer(new SpriteBatchLayer(1000));
+		scene.addLayer(new SpriteBatchLayer(1000));
 
 		//Actor
-		defaultScene.addActor(new BasicActor());
+		scene.addActor(new TextureActor());
 
 		//Profiler
-		SceneProfiler.profile(defaultScene);
+		SceneProfiler.profile(scene);
 
 		//Start
-		this.setScreen(defaultScene);
+		this.setScreen(scene);
 	}
 }

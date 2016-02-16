@@ -9,11 +9,11 @@ import com.thommil.libgdx.runtime.scene.Renderable;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class BasicActor implements Renderable<SpriteBatch> {
+public class TextureActor implements Renderable<SpriteBatch> {
 
     Texture texture;
 
-    public BasicActor() {
+    public TextureActor() {
         this.texture = new Texture(Gdx.files.internal("test.png"));
     }
 

@@ -24,9 +24,9 @@ import finnstr.libgdx.liquidfun.ParticleSystem;
  *
  * Created by tomtom on 04/02/16.
  */
-public class PhysicsScene extends Game implements SceneListener, InputProcessor, ContactListener{
+public class CollisionTestScene extends Game implements SceneListener, InputProcessor, ContactListener{
 
-    Scene defaultScene;
+    Scene scene;
     Texture textureCuriosity;
     Texture textureExplosion;
 
@@ -41,17 +41,17 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
-        defaultScene = new Scene(settings);
+        scene = new Scene(settings);
         textureCuriosity = new Texture(Gdx.files.internal("curiosity.png"));
         textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
         //Layer
-        defaultScene.addLayer(new SpriteCacheLayer(1));
-        defaultScene.addLayer(new SpriteBatchLayer(1000));
+        scene.addLayer(new SpriteCacheLayer(1));
+        scene.addLayer(new SpriteBatchLayer(1000));
 
         //Actors
 
-        defaultScene.addActor(new StaticPhysicsActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
+        scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
         SensorActor burnSensor = new SensorActor() {
             @Override
             public Shape getShape() {
@@ -65,22 +65,22 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
                 body.setTransform(0f,-20f,0);
             }
         };
-        defaultScene.addActor(burnSensor);
+        scene.addActor(burnSensor);
 
-        this.defaultScene.setSceneListener(this);
-        this.defaultScene.setContactListener(this);
+        this.scene.setSceneListener(this);
+        this.scene.setContactListener(this);
 
-        SceneProfiler.profile(this.defaultScene);
+        SceneProfiler.profile(this.scene);
 
         Gdx.input.setInputProcessor(this);
 
-        this.setScreen(defaultScene);
+        this.setScreen(scene);
     }
 
     @Override
     public void onStep(long lastDuration) {
         if (inc % 10 == 0) {
-            defaultScene.addActor(new DynamicPhysicsActor(textureCuriosity));
+            scene.addActor(new CuriosityActor(textureCuriosity));
         }
         inc+=1;
     }
@@ -125,25 +125,25 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         final Actor actorA = (Actor) contact.getFixtureA().getBody().getUserData();
         final Actor actorB = (Actor) contact.getFixtureB().getBody().getUserData();
         //Sensor
-        if(actorA instanceof DynamicPhysicsActor && actorB instanceof SensorActor){
-            ((DynamicPhysicsActor) actorA).texture = textureExplosion;
+        if(actorA instanceof CuriosityActor && actorB instanceof SensorActor){
+            ((CuriosityActor) actorA).texture = textureExplosion;
         }
-        else if(actorB instanceof DynamicPhysicsActor && actorA instanceof SensorActor){
-            ((DynamicPhysicsActor) actorB).texture = textureExplosion;
+        else if(actorB instanceof CuriosityActor && actorA instanceof SensorActor){
+            ((CuriosityActor) actorB).texture = textureExplosion;
         }
 
         //Collision
-        else if(actorA instanceof DynamicPhysicsActor && actorB instanceof StaticPhysicsActor){
+        else if(actorA instanceof CuriosityActor && actorB instanceof GroundActor){
             final ExplosionActor explosionActor = new ExplosionActor(textureExplosion);
-            explosionActor.setPosition(((DynamicPhysicsActor) actorA).x,((DynamicPhysicsActor) actorA).y-2f);
-            this.defaultScene.addActor(explosionActor);
-            this.defaultScene.removeActor(actorA);
+            explosionActor.setPosition(((CuriosityActor) actorA).x,((CuriosityActor) actorA).y-2f);
+            this.scene.addActor(explosionActor);
+            this.scene.removeActor(actorA);
         }
-        else if(actorB instanceof DynamicPhysicsActor && actorA instanceof StaticPhysicsActor){
+        else if(actorB instanceof CuriosityActor && actorA instanceof GroundActor){
             final ExplosionActor explosionActor = new ExplosionActor(textureExplosion);
-            explosionActor.setPosition(((DynamicPhysicsActor) actorB).x,((DynamicPhysicsActor) actorB).y-2f);
-            this.defaultScene.addActor(explosionActor);
-            this.defaultScene.removeActor(actorB);
+            explosionActor.setPosition(((CuriosityActor) actorB).x,((CuriosityActor) actorB).y-2f);
+            this.scene.addActor(explosionActor);
+            this.scene.removeActor(actorB);
         }
     }
 

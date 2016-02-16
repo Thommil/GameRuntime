@@ -1,7 +1,5 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.badlogic.gdx.physics.box2d.Shape;
-
 /**
  * Created by tomtom on 14/02/16.
  */

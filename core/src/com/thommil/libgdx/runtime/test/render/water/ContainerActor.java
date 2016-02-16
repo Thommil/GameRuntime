@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.physics.collision;
+package com.thommil.libgdx.runtime.test.render.water;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,11 +10,11 @@ import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class StaticPhysicsActor extends StaticBodyActor {
+public class ContainerActor extends StaticBodyActor {
 
-    public StaticPhysicsActor(final Texture texture, final float x, final float y, final float width, final float height) {
+    public ContainerActor(final Texture texture, final float x, final float y, final float width, final float height) {
         super(texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
-        this.setLayer(0);
+        this.setLayer(1);
     }
 
     /**
@@ -23,7 +23,7 @@ public class StaticPhysicsActor extends StaticBodyActor {
     @Override
     public Shape getShape() {
         PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(this.width/2,this.height/2);
+        groundBodyShape.setAsBox(this.width/2 - 0.1f,this.height/2 - 0.1f);
         return groundBodyShape;
     }
 

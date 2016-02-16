@@ -9,9 +9,9 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 /**
  * Created by tomtom on 03/02/16.
  */
-public class BasicActor extends SpriteActor {
+public class CuriosityActor extends SpriteActor {
 
-    public BasicActor() {
+    public CuriosityActor() {
         super(new Texture(Gdx.files.internal("curiosity.png")));
         this.setLayer(0);
         this.setSize(2.6f,2.3f);

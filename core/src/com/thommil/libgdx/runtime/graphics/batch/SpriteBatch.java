@@ -13,46 +13,21 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
  */
 public class SpriteBatch{
 
-    protected Mesh mesh;
+    protected final Mesh mesh;
+    protected final float[] vertices;
+    protected final ShaderProgram shader;
 
-    protected float[] vertices;
     protected int idx = 0;
     protected Texture lastTexture = null;
-
-    protected final ShaderProgram shader;
 
     public SpriteBatch() {
         this(1000);
     }
 
-    public SpriteBatch(int size) {
-        // 32767 is max index, so 32767 / 6 - (32767 / 6 % 3) = 5460.
-        if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
-
-        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexArray;
-        if (Gdx.gl30 != null) {
-            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
-        }
-        mesh = new Mesh(vertexDataType, false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
-                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
-                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-
-        vertices = new float[size * SpriteActor.SPRITE_SIZE];
-
-        final int len = size * 6;
-        final short[] indices = new short[len];
-        short j = 0;
-        for (int i = 0; i < len; i += 6, j += 4) {
-            indices[i] = j;
-            indices[i + 1] = (short)(j + 1);
-            indices[i + 2] = (short)(j + 2);
-            indices[i + 3] = (short)(j + 2);
-            indices[i + 4] = (short)(j + 3);
-            indices[i + 5] = j;
-        }
-        mesh.setIndices(indices);
-
-        shader = createDefaultShader();
+    public SpriteBatch(final int size) {
+        mesh = createMesh(size);
+        vertices = createVertices(size);
+        shader = createShader();
     }
 
     public void begin (final Matrix4 combinedMatrix) {
@@ -153,7 +128,39 @@ public class SpriteBatch{
         lastTexture = texture;
     }
 
-    protected ShaderProgram createDefaultShader () {
+    protected  Mesh createMesh(final int size){
+        // 32767 is max index, so 32767 / 6 - (32767 / 6 % 3) = 5460.
+        if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
+
+        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexArray;
+        if (Gdx.gl30 != null) {
+            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        }
+        final Mesh mesh = new Mesh(vertexDataType, false, size * 4, size * 6, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorPacked, 4, ShaderProgram.COLOR_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+
+        final int len = size * 6;
+        final short[] indices = new short[len];
+        short j = 0;
+        for (int i = 0; i < len; i += 6, j += 4) {
+            indices[i] = j;
+            indices[i + 1] = (short)(j + 1);
+            indices[i + 2] = (short)(j + 2);
+            indices[i + 3] = (short)(j + 2);
+            indices[i + 4] = (short)(j + 3);
+            indices[i + 5] = j;
+        }
+        mesh.setIndices(indices);
+
+        return mesh;
+    }
+
+    protected  float[] createVertices(final int size){
+        return new float[size * SpriteActor.SPRITE_SIZE];
+    }
+
+    protected ShaderProgram createShader () {
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
