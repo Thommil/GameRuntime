@@ -27,7 +27,7 @@ public class ParticlesActor extends SoftBodyActor {
     public ParticleSystemDef getDefinition() {
         ParticleSystemDef particleSystemDef = new ParticleSystemDef();
         particleSystemDef.radius = 0.05f;
-        particleSystemDef.density = 1.3f;
+        particleSystemDef.density = 2f;
         return particleSystemDef;
     }
 }

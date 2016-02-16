@@ -16,17 +16,17 @@ import java.nio.FloatBuffer;
  * Created by thommil on 12/02/16.
  */
 public class SpriteCache implements Disposable {
-    private final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
+    protected final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
 
-    private final Mesh mesh;
+    protected final Mesh mesh;
 
-    private final Array<Cache> caches = new Array();
+    protected final Array<Cache> caches = new Array();
 
-    private final ShaderProgram shader;
+    protected final ShaderProgram shader;
 
-    private Cache currentCache;
-    private final Array<Texture> textures = new Array(8);
-    private final IntArray counts = new IntArray(8);
+    protected Cache currentCache;
+    protected final Array<Texture> textures = new Array(8);
+    protected final IntArray counts = new IntArray(8);
 
     /** Creates a cache that uses indexed geometry and can contain up to 1000 images. */
     public SpriteCache() {

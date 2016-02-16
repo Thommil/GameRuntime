@@ -16,17 +16,19 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
  */
 public class SoftBodyBatch {
 
-    final private Mesh mesh;
+    protected final Mesh mesh;
 
-    private final ShaderProgram shader;
+    protected final ShaderProgram shader;
 
-    private float particlesScale = 1f;
+    protected float particlesScale = 1f;
 
     public SoftBodyBatch() {
-        this(1000);
+        this(10000);
     }
 
     public SoftBodyBatch(int size) {
+        if (size > 32767) throw new IllegalArgumentException("Can't have more than 32767 particles per batch (are you serious?): " + size);
+
         mesh = new Mesh(Mesh.VertexDataType.VertexArray, false, size , 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
                 ShaderProgram.POSITION_ATTRIBUTE));
 
@@ -69,13 +71,10 @@ public class SoftBodyBatch {
                         + "uniform mat4 u_projTrans;\n" //
                         + "uniform float radius;\n" //
                         + "\n" //
-                        + "varying vec4 v_color;\n" //
-                        + "\n" //
                         + "void main()\n" //
                         + "{\n" //
                         + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                         + "   gl_PointSize = radius;\n" //
-                        + "   v_color = vec4(0.0, 0.0, 1.0, 1.0);\n" //
                         + "}\n";
         final String fragmentShader = "#ifdef GL_ES\n" //
                         + "#define LOWP lowp\n" //
@@ -88,7 +87,7 @@ public class SoftBodyBatch {
                         + "{\n" //
                         + " float len = length(vec2(gl_PointCoord.x - 0.5, gl_PointCoord.y - 0.5));\n" //
                         + " if(len <= 0.5) {\n" //
-                        + " 	gl_FragColor = v_color;\n" //
+                        + " 	gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);\n" //
                         + " } else {\n" //
                         + " 	gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);\n" //
                         + " }\n" //

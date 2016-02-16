@@ -18,8 +18,14 @@ public class SpriteCacheLayer extends Layer{
     boolean cacheEnded = false;
     int cacheId;
 
+
     public SpriteCacheLayer(final int maxSprites) {
         this.renderer = new SpriteCache(maxSprites);
+        this.renderer.beginCache();
+    }
+
+    public SpriteCacheLayer(final SpriteCache customRenderer) {
+        this.renderer = customRenderer;
         this.renderer.beginCache();
     }
 

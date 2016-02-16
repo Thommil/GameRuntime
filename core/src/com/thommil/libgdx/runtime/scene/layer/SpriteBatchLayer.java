@@ -17,6 +17,10 @@ public class SpriteBatchLayer extends Layer{
         this.renderer = new SpriteBatch(maxSprites);
     }
 
+    public SpriteBatchLayer(final SpriteBatch customRenderer) {
+        this.renderer = customRenderer;
+    }
+
     @Override
     public void onShow() {
         //NOP

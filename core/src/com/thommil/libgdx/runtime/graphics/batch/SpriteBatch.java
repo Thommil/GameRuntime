@@ -13,13 +13,13 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
  */
 public class SpriteBatch{
 
-    final private Mesh mesh;
+    protected Mesh mesh;
 
-    final float[] vertices;
-    int idx = 0;
-    Texture lastTexture = null;
+    protected float[] vertices;
+    protected int idx = 0;
+    protected Texture lastTexture = null;
 
-    private final ShaderProgram shader;
+    protected final ShaderProgram shader;
 
     public SpriteBatch() {
         this(1000);

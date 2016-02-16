@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
@@ -37,7 +38,7 @@ public class PhysicsScene extends Game implements SceneListener{
         texture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        defaultScene.addLayer(new SpriteBatchLayer(1));
+        defaultScene.addLayer(new SpriteCacheLayer(1));
         defaultScene.addLayer(new SpriteBatchLayer(5000));
 
         //Actors

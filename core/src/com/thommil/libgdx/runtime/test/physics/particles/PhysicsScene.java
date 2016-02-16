@@ -45,7 +45,7 @@ public class PhysicsScene extends Game implements InputProcessor{
         defaultScene = new Scene(settings);
 
         //Layer
-        defaultScene.addLayer(new SpriteCacheLayer(10));
+        defaultScene.addLayer(new SpriteCacheLayer(3));
         defaultScene.addLayer(new SoftBodyBatchLayer(30000));
 
         //Actors
@@ -59,7 +59,7 @@ public class PhysicsScene extends Game implements InputProcessor{
 
         Gdx.input.setInputProcessor(this);
 
-        //SceneProfiler.profile(this.defaultScene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
+        SceneProfiler.profile(this.defaultScene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
 
         this.setScreen(defaultScene);
     }

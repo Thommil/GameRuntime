@@ -10,6 +10,7 @@ import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
@@ -45,7 +46,7 @@ public class PhysicsScene extends Game implements SceneListener, InputProcessor,
         textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
         //Layer
-        defaultScene.addLayer(new SpriteBatchLayer(2));
+        defaultScene.addLayer(new SpriteCacheLayer(1));
         defaultScene.addLayer(new SpriteBatchLayer(1000));
 
         //Actors

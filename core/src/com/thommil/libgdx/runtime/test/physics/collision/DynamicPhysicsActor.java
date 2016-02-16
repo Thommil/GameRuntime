@@ -15,6 +15,7 @@ public class DynamicPhysicsActor extends SpriteBodyActor {
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setLayer(1);
+        this.setPosition(-100f,-100f);
     }
 
     /**
