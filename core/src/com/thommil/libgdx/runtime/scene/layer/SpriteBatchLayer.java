@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.Layer;
  */
 public class SpriteBatchLayer extends Layer{
 
-    final SpriteBatch renderer;
+    final protected SpriteBatch renderer;
 
     public SpriteBatchLayer(final int maxSprites) {
         this.renderer = new SpriteBatch(maxSprites);

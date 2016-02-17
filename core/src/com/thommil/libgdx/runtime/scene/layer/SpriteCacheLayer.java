@@ -14,7 +14,7 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
  */
 public class SpriteCacheLayer extends Layer{
 
-    final SpriteCache renderer;
+    final protected SpriteCache renderer;
     boolean cacheEnded = false;
     int cacheId;
 

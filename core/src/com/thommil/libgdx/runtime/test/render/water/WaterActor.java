@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.render.water;
 
 import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
+import finnstr.libgdx.liquidfun.ParticleSystem;
 import finnstr.libgdx.liquidfun.ParticleSystemDef;
 
 /**
@@ -20,8 +21,8 @@ public class WaterActor extends SoftBodyActor {
     @Override
     public ParticleSystemDef getDefinition() {
         ParticleSystemDef particleSystemDef = new ParticleSystemDef();
-        particleSystemDef.radius = 0.05f;
-        particleSystemDef.density = 2f;
+        particleSystemDef.radius = 0.1f;
         return particleSystemDef;
     }
+
 }

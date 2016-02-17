@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  */
 public class SoftBodyBatchLayer extends Layer{
 
-    final SoftBodyBatch renderer;
+    final protected SoftBodyBatch renderer;
 
     public SoftBodyBatchLayer(final int maxParticles) {
         this.renderer = new SoftBodyBatch(maxParticles);
@@ -35,7 +35,7 @@ public class SoftBodyBatchLayer extends Layer{
 
     @Override
     protected void onResize(int width, int height) {
-        this.particlesScale = Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight);
+        this.particlesScale = Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight) * 1.5f;
     }
 
     @Override

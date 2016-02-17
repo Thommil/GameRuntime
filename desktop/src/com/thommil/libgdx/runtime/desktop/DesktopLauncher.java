@@ -27,7 +27,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new CacheTestScene(), config);
 
 		//Basic Physics
-		new LwjglApplication(new BasicPhysicsTestScene(), config);
+		//new LwjglApplication(new BasicPhysicsTestScene(), config);
 		//Stress Physics
 		//new LwjglApplication(new PhysicsStressTestScene(), config);
 		//Collision Physics
@@ -41,7 +41,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new PhysicsInputTestScene(), config);
 
 		//Water rendering
-		//new LwjglApplication(new WaterTestScene(), config);
+		new LwjglApplication(new WaterTestScene(), config);
 
 	}
 }

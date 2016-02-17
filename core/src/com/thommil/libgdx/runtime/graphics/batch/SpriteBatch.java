@@ -108,12 +108,11 @@ public class SpriteBatch{
         final int count = idx / SpriteActor.SPRITE_SIZE * 6;
 
         lastTexture.bind();
-        Mesh mesh = this.mesh;
-        mesh.setVertices(vertices, 0, idx);
-        mesh.getIndicesBuffer().position(0);
-        mesh.getIndicesBuffer().limit(count);
+        this.mesh.setVertices(vertices, 0, idx);
+        this.mesh.getIndicesBuffer().position(0);
+        this.mesh.getIndicesBuffer().limit(count);
 
-        mesh.render(shader, GL20.GL_TRIANGLES, 0, count);
+        this.mesh.render(shader, GL20.GL_TRIANGLES, 0, count);
 
         idx = 0;
     }

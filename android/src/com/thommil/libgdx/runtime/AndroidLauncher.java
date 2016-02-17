@@ -22,7 +22,7 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		//Basic texture
-		initialize(new TextureTestScene(), config);
+		//initialize(new TextureTestScene(), config);
 		//Basic sprite
 		//initialize(new SpriteTestScene(), config);
 		//Basic cache
@@ -43,7 +43,7 @@ public class AndroidLauncher extends AndroidApplication {
 		//initialize(new PhysicsInputTestScene(), config);
 
 		//Water rendering
-		//initialize(new WaterTestScene(), config);
+		initialize(new WaterTestScene(), config);
 
 
 	}
