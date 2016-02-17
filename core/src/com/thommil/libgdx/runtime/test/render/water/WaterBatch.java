@@ -27,7 +27,7 @@ public class WaterBatch extends SoftBodyBatch {
 
     public WaterBatch() {
         //super(new Texture(Gdx.files.internal("water.png")), 30000);
-        super(30000);
+        super(5000);
         this.waterMesh = this.createWaterMesh();
         this.waterShader = this.createWaterShader();
     }
@@ -146,10 +146,10 @@ public class WaterBatch extends SoftBodyBatch {
                 + "     color = vec4(0,0,0,0);\n" //
                 + "  }\n" //
                 + "  else if( color.r < 0.25){\n" //
-                + "     color = vec4(1.0,1.0,1.0,0.2);\n" //
+                + "     color = vec4(0.5,0.5,1.0,0.5);\n" //
                 + "  }\n" //
                 + "  else{\n" //
-                + "     color = vec4(1.0,1.0,1.0,0.1);\n" //
+                + "     color = vec4(0.0,0.0,1.0,0.3);\n" //
                 + "  }\n" //
                 + "  gl_FragColor = color;\n" //
                 + "}";

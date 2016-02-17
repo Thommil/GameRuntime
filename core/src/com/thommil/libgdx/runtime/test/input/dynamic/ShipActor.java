@@ -8,6 +8,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Stepable;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tomtom on 03/02/16.
  */
@@ -36,24 +39,15 @@ public class ShipActor extends SpriteBodyActor implements Stepable {
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public Shape getShape() {
+    public List<Shape> getShapes() {
+        List<Shape> shapes = new ArrayList<Shape>();
         CircleShape shipShape = new CircleShape();
         shipShape.setRadius(0.4f);
-        return shipShape;
-    }
-
-    /**
-     * Gets the definition of Collidable
-     */
-    @Override
-    public BodyDef getDefinition() {
-        BodyDef dynamicBodyDef = new BodyDef();
-        dynamicBodyDef.type = BodyDef.BodyType.DynamicBody;
-        dynamicBodyDef.position.set(0f,0f);
-        return dynamicBodyDef;
+        shapes.add(shipShape);
+        return shapes;
     }
 
 

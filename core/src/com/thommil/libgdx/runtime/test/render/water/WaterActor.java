@@ -9,8 +9,8 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  */
 public class WaterActor extends SoftBodyActor {
 
-    public WaterActor() {
-        this.setLayer(0);
+    public WaterActor(int layer) {
+        this.setLayer(layer);
     }
 
     /**
@@ -21,7 +21,9 @@ public class WaterActor extends SoftBodyActor {
     @Override
     public ParticleSystemDef getDefinition() {
         ParticleSystemDef particleSystemDef = new ParticleSystemDef();
-        particleSystemDef.radius = 0.1f;
+        particleSystemDef.radius = 0.05f;
+        particleSystemDef.density = 1f;
+        particleSystemDef.dampingStrength = 1.5f;
         return particleSystemDef;
     }
 

@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 
+import java.util.List;
+
 /**
  * Simple sensor implementation
  *
@@ -36,10 +38,10 @@ public abstract class SensorActor implements RigidBody {
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public abstract Shape getShape();
+    public abstract List<Shape> getShapes();
 
     /**
      * Gets the density to the RigidBody
@@ -83,7 +85,9 @@ public abstract class SensorActor implements RigidBody {
     @Override
     public void setBody(Body body) {
         this.body = body;
-        this.body.getFixtureList().get(0).setSensor(true);
+        for(final Fixture fixture : this.body.getFixtureList()){
+            fixture.setSensor(true);
+        }
         this.body.setUserData(this);
     }
 

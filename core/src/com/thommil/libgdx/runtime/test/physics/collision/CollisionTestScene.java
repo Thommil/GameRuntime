@@ -17,6 +17,9 @@ import finnstr.libgdx.liquidfun.ParticleBodyContact;
 import finnstr.libgdx.liquidfun.ParticleContact;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Contacts listener tests (code not optimized to stay simple !!!)
  *
@@ -54,10 +57,12 @@ public class CollisionTestScene extends Game implements SceneListener, InputProc
         scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
         SensorActor burnSensor = new SensorActor() {
             @Override
-            public Shape getShape() {
+            public List<Shape> getShapes() {
+                List<Shape> shapes = new ArrayList<Shape>();
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(50f,20f);
-                return shape;
+                shapes.add(shape);
+                return shapes;
             }
             @Override
             public void setBody(Body body) {

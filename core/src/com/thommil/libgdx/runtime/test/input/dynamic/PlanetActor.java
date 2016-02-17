@@ -6,6 +6,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by thommil on 03/02/16.
  */
@@ -18,18 +21,21 @@ public class PlanetActor extends SpriteBodyActor {
         super(texture);
         this.setOriginCenter();
         this.setLayer(0);
+        this.setPosition(MathUtils.random(-10f,10f),MathUtils.random(-10f,10f));
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public Shape getShape() {
+    public List<Shape> getShapes() {
+        List<Shape> shapes = new ArrayList<Shape>();
         CircleShape planetShape = new CircleShape();
         radius = MathUtils.random(1f,3f);
         planetShape.setRadius(radius);
         this.setSize(radius*2,radius*2);
-        return planetShape;
+        shapes.add(planetShape);
+        return shapes;
     }
 
     /**
@@ -39,18 +45,6 @@ public class PlanetActor extends SpriteBodyActor {
     public BodyDef getDefinition() {
         BodyDef groundBodyDef = super.getDefinition();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
-        groundBodyDef.position.set(MathUtils.random(-10f,10f),MathUtils.random(-10f,10f));
         return groundBodyDef;
-    }
-
-    /**
-     * Set body instance of the Collidable
-     *
-     * @param body
-     */
-    @Override
-    public void setBody(Body body) {
-        super.setBody(body);
-        this.setPosition(body.getPosition().x - radius,body.getPosition().y - radius);
     }
 }

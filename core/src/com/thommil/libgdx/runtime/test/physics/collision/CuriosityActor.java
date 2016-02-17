@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tomtom on 03/02/16.
  */
@@ -15,27 +18,21 @@ public class CuriosityActor extends SpriteBodyActor {
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setLayer(1);
-        this.setPosition(-100f,-100f);
+        this.setPosition(MathUtils.random(-20f,20f),100f);
+        this.setRotation(MathUtils.random(0f,90f));
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public Shape getShape() {
+    public List<Shape> getShapes() {
+        List<Shape> shapes = new ArrayList<Shape>();
         PolygonShape dynamicPolygonShape = new PolygonShape();
         dynamicPolygonShape.setAsBox(1f,1f);
-        return dynamicPolygonShape;
+        shapes.add(dynamicPolygonShape);
+        return shapes;
     }
 
-    /**
-     * Gets the definition of Collidable
-     */
-    @Override
-    public BodyDef getDefinition() {
-        BodyDef dynamicBodyDef = super.getDefinition();
-        dynamicBodyDef.position.set(MathUtils.random(-20f,20f),100f);
-        dynamicBodyDef.angle = 0.1f;
-        return dynamicBodyDef;
-    }
+
 }

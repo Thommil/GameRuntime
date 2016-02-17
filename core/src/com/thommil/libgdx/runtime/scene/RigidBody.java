@@ -4,6 +4,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 
+import java.util.List;
+
 /**
  * Defines a physics actor with a rigid body
  *
@@ -12,9 +14,9 @@ import com.badlogic.gdx.physics.box2d.Shape;
 public interface RigidBody extends Collidable<BodyDef,Body>{
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
-    Shape getShape();
+    List<Shape> getShapes();
 
     /**
      * Gets the density to the RigidBody

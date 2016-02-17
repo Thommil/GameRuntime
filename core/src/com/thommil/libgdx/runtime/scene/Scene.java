@@ -216,12 +216,13 @@ public class Scene implements Screen {
                     if(actor instanceof RigidBody) {
                         final RigidBody rigidBody = (RigidBody)actor;
                         final Body body = Scene.this.physicsWorld.createBody(rigidBody.getDefinition());
-                        final Shape shape = rigidBody.getShape();
-                        final Fixture fixture = body.createFixture(shape,rigidBody.getDensity());
-                        fixture.setFriction(rigidBody.getFriction());
-                        fixture.setRestitution(rigidBody.getRestitution());
+                        for(final Shape shape : rigidBody.getShapes()){
+                            final Fixture fixture = body.createFixture(shape, rigidBody.getDensity());
+                            fixture.setFriction(rigidBody.getFriction());
+                            fixture.setRestitution(rigidBody.getRestitution());
+                            shape.dispose();
+                        }
                         rigidBody.setBody(body);
-                        shape.dispose();
                     }
                     else if(actor instanceof SoftBody) {
                         final SoftBody softBody = (SoftBody)actor;
@@ -243,12 +244,13 @@ public class Scene implements Screen {
             if(actor instanceof RigidBody) {
                 final RigidBody rigidBody = (RigidBody)actor;
                 final Body body = this.physicsWorld.createBody(rigidBody.getDefinition());
-                final Shape shape = rigidBody.getShape();
-                final Fixture fixture = body.createFixture(shape,rigidBody.getDensity());
-                fixture.setFriction(rigidBody.getFriction());
-                fixture.setRestitution(rigidBody.getRestitution());
+                for(final Shape shape : rigidBody.getShapes()){
+                    final Fixture fixture = body.createFixture(shape, rigidBody.getDensity());
+                    fixture.setFriction(rigidBody.getFriction());
+                    fixture.setRestitution(rigidBody.getRestitution());
+                    shape.dispose();
+                }
                 rigidBody.setBody(body);
-                shape.dispose();
             }
             else if(actor instanceof SoftBody) {
                 final SoftBody softBody = (SoftBody)actor;

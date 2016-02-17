@@ -30,7 +30,7 @@ public class PhysicsStressTestScene extends Game implements SceneListener{
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
-        //settings.physics.debug = true;
+        settings.physics.debug = true;
         scene = new Scene(settings);
         curiosityTexture = new Texture(Gdx.files.internal("curiosity.png"));
 

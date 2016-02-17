@@ -8,6 +8,9 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tomtom on 03/02/16.
  */
@@ -21,13 +24,15 @@ public class CuriosityActor extends SpriteBodyActor {
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public Shape getShape() {
+    public List<Shape> getShapes() {
+        List<Shape> shapes = new ArrayList<Shape>();
         PolygonShape dynamicPolygonShape = new PolygonShape();
         dynamicPolygonShape.setAsBox(1f,1f);
-        return dynamicPolygonShape;
+        shapes.add(dynamicPolygonShape);
+        return shapes;
     }
 
     /**
@@ -38,13 +43,4 @@ public class CuriosityActor extends SpriteBodyActor {
         return 0.7f;
     }
 
-    /**
-     * Gets the definition of Collidable
-     */
-    @Override
-    public BodyDef getDefinition() {
-        BodyDef dynamicBodyDef = super.getDefinition();
-        dynamicBodyDef.position.set(0f,3f);
-        return dynamicBodyDef;
-    }
 }

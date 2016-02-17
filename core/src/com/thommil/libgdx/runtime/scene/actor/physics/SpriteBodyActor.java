@@ -10,6 +10,8 @@ import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
+import java.util.List;
+
 /**
  * Defines a dynamic SpriteActor actor which can interact with physic world
  *
@@ -60,10 +62,10 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public abstract Shape getShape();
+    public abstract List<Shape> getShapes();
 
     /**
      * Gets the density to the RigidBody
@@ -94,9 +96,11 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      */
     @Override
     public BodyDef getDefinition() {
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.type = BodyDef.BodyType.DynamicBody;
-        return groundBodyDef;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(this.x, this.y);
+        bodyDef.angle = this.rotation / DEG_IN_RAD;
+        return bodyDef;
     }
 
     /**

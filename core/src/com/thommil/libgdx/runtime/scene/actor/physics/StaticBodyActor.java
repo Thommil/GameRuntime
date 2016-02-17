@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
+import java.util.List;
+
 /**
  * Created by tomtom on 12/02/16.
  */
@@ -26,10 +28,10 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
     }
 
     /**
-     * Gets the Shape of the Collidable
+     * Gets the Shapes of the Collidable
      */
     @Override
-    public abstract Shape getShape();
+    public abstract List<Shape> getShapes();
 
     /**
      * Gets the density to the RigidBody
@@ -81,9 +83,10 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      */
     @Override
     public BodyDef getDefinition() {
-        BodyDef groundBodyDef = new BodyDef();
-        groundBodyDef.type = BodyDef.BodyType.StaticBody;
-        return groundBodyDef;
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(this.x, this.y);
+        return bodyDef;
     }
 
     /**
