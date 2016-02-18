@@ -87,4 +87,9 @@ public class ShipActor extends SpriteActor {
         angle = followVec.angle() - 90f;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

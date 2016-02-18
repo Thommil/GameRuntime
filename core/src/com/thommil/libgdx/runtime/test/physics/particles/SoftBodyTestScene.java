@@ -34,7 +34,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         settings.viewport.minWorldWidth = 10;
         settings.viewport.minWorldHeight = 10;
         //settings.physics.particleIterations = 5;
-        settings.physics.debug = true;
+        //settings.physics.debug = true;
         scene = new Scene(settings);
 
         //Layer

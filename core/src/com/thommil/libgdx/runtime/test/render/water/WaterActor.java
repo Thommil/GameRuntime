@@ -22,8 +22,7 @@ public class WaterActor extends SoftBodyActor {
     public ParticleSystemDef getDefinition() {
         ParticleSystemDef particleSystemDef = new ParticleSystemDef();
         particleSystemDef.radius = 0.05f;
-        particleSystemDef.density = 1f;
-        particleSystemDef.dampingStrength = 1.5f;
+        particleSystemDef.density = 5f;
         return particleSystemDef;
     }
 

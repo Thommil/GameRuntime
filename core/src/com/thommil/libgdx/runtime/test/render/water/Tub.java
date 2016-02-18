@@ -43,4 +43,9 @@ public class Tub extends StaticBodyActor {
         return groundBodyDef;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

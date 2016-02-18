@@ -24,4 +24,10 @@ public class CuriosityActor extends SpriteActor {
         this.rotate(2);
         super.render(deltaTime,renderer);
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

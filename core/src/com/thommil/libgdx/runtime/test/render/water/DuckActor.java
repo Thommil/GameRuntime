@@ -14,9 +14,8 @@ import java.util.List;
  */
 public class DuckActor extends SpriteBodyActor {
 
-    static Texture texture = new Texture(Gdx.files.internal("duck.png"));
 
-    public DuckActor(final int layer, float x, float y) {
+    public DuckActor(final Texture texture, final int layer, float x, float y) {
         super(texture);
         this.setSize(0.5f,0.5f);
         this.setOriginCenter();
@@ -31,11 +30,8 @@ public class DuckActor extends SpriteBodyActor {
     public List<Shape> getShapes() {
         List<Shape> shapes = new ArrayList<Shape>();
         CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(0.22f);
+        circleShape.setRadius(0.25f);
         shapes.add(circleShape);
-        PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(0.1f,0.1f,new Vector2(0,-0.1f),0);
-        shapes.add(polygonShape);
         return shapes;
     }
 
@@ -47,10 +43,10 @@ public class DuckActor extends SpriteBodyActor {
     @Override
     public void setBody(Body body) {
         super.setBody(body);
-        MassData massData = this.body.getMassData();
-        massData.mass = 0.02f;
-        this.body.setMassData(massData);
-        //Override user data strategy as Duck is based on several fixtures
+        this.setDensity(0.5f);
+        MassData massData = body.getMassData();
+        massData.center.set(0,-0.1f);
+        body.setMassData(massData);
         this.body.getFixtureList().get(0).setUserData(this);
     }
 }

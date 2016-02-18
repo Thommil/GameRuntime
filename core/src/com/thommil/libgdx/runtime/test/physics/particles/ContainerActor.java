@@ -33,4 +33,10 @@ public class ContainerActor extends StaticBodyActor {
         shapes.add(groundBodyShape);
         return shapes;
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

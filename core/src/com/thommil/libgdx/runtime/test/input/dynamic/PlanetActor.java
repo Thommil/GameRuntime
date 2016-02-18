@@ -47,4 +47,10 @@ public class PlanetActor extends SpriteBodyActor {
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
         return groundBodyDef;
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        PlanetActor.texture.dispose();
+    }
 }

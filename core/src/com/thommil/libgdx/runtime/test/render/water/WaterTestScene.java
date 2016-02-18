@@ -8,18 +8,16 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.cache.SpriteCache;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.LogicActor;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
-import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
-import finnstr.libgdx.liquidfun.ParticleBodyContact;
-import finnstr.libgdx.liquidfun.ParticleContact;
-import finnstr.libgdx.liquidfun.ParticleDef;
-import finnstr.libgdx.liquidfun.ParticleSystem;
+import finnstr.libgdx.liquidfun.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ import java.util.List;
  *
  * Created by tomtom on 04/02/16.
  */
-public class WaterTestScene extends Game implements InputProcessor, SceneListener,ContactListener{
+public class WaterTestScene extends Game implements InputProcessor,ContactListener{
 
     Scene scene;
     WaterActor particlesActor;
@@ -40,6 +38,8 @@ public class WaterTestScene extends Game implements InputProcessor, SceneListene
     boolean pouring = false;
     int stepCounter = 0;
     int dropFrequency = 5;
+
+    private Texture duckTexture;
 
     @Override
     public void create() {
@@ -54,32 +54,46 @@ public class WaterTestScene extends Game implements InputProcessor, SceneListene
         //settings.physics.debug = true;
         scene = new Scene(settings);
 
-        //Background
+        //Shared Cache
+        //final SpriteCache spriteCache = new SpriteCache(5);
+
+        //Background - 0
         scene.addLayer(new SpriteCacheLayer(1));
         Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
         backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         scene.addActor(new StaticActor(backgroundTexture,-5,-5,10,10,0,4,4,0, Color.WHITE.toFloatBits()));
 
-        //Water
-        scene.addLayer(new WaterLayer());
-        particlesActor = new WaterActor(1);
-        scene.addActor(particlesActor);
+        //Ducks - 1
+        duckTexture = new Texture(Gdx.files.internal("duck.png"));
+        scene.addLayer(new SpriteBatchLayer(100));
 
+        //Water - 2
+        scene.addLayer(new WaterLayer());
+        this.particlesActor = new WaterActor(2);
         this.particleDef = new ParticleDef();
         this.particleDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);
         this.particleDef.position.set(2.5f,0f);
         this.particleDef.velocity.set(0.01f,-0.1f);
-        this.particlesActor.particleSystem.setParticleMaxCount(4000);
+        ParticleGroupDef particleGroupDef = new ParticleGroupDef();
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);
+        PolygonShape waterShape = new PolygonShape();
+        waterShape.setAsBox(2.5f,0.5f);
+        particleGroupDef.position.set(0,-1f);
+        particleGroupDef.shape = waterShape;
+        scene.addActor(particlesActor);
 
-        //Tub
-        scene.addLayer(new SpriteBatchLayer(100));
+        this.particlesActor.particleSystem.setParticleMaxCount(4000);
+        this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+
+        //Tub - 3
+        scene.addLayer(new SpriteCacheLayer(4));
         Texture tubTexture = new Texture(Gdx.files.internal("tub.jpg"));
         Texture tabTexture = new Texture(Gdx.files.internal("metal.png"));
         tubTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        scene.addActor(new Tub(2, tubTexture,-4,-4,8,1,0,0.5f,4,0, Color.WHITE.toFloatBits()));
-        scene.addActor(new Tub(2, tubTexture,-4,-3,1,2,0,1,0.5f,0, Color.WHITE.toFloatBits()));
-        scene.addActor(new Tub(2, tubTexture,3,-3,1,4,0,2,0.5f,0, Color.WHITE.toFloatBits()));
-        scene.addActor(new Tub(2, tabTexture,2.25f,0f,0.75f,0.2f,0,1,1,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tubTexture,-4,-4,8,1,0,0.5f,4,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tubTexture,-4,-3,1,2,0,1,0.5f,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tubTexture,3,-3,1,4,0,2,0.5f,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tabTexture,2.25f,0f,0.75f,0.2f,0,1,1,0, Color.WHITE.toFloatBits()));
 
         //Sensor for GC
         this.gcSensor = new SensorActor() {
@@ -101,7 +115,20 @@ public class WaterTestScene extends Game implements InputProcessor, SceneListene
         };
         scene.addActor(this.gcSensor);
 
-        scene.setSceneListener(this);
+        //Step listener
+        scene.addActor(new LogicActor(){
+            @Override
+            public void step(long lastStepDuration) {
+                if(pouring) {
+                    if (stepCounter % dropFrequency == 0) {
+                        WaterTestScene.this.particlesActor.particleSystem.createParticle(WaterTestScene.this.particleDef);
+                        stepCounter = 0;
+                    }
+                    stepCounter++;
+                }
+            }
+        });
+
         scene.setContactListener(this);
 
         Gdx.input.setInputProcessor(this);
@@ -111,36 +138,20 @@ public class WaterTestScene extends Game implements InputProcessor, SceneListene
         this.setScreen(scene);
     }
 
-    /**
-     * Called before each worl step with the duration of the last step processing
-     *
-     * @param lastDuration The duration of the last processing for QoS purpose
-     */
-    @Override
-    public void onStep(long lastDuration) {
-        if(pouring) {
-            if (stepCounter % dropFrequency == 0) {
-                this.particlesActor.particleSystem.createParticle(this.particleDef);
-                stepCounter = 0;
-            }
-            stepCounter++;
-        }
-    }
-
     final Vector2 tmpScreenVector = new Vector2();
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         tmpScreenVector.set(screenX,screenY);
         final Vector2 worldVector =  this.scene.getViewport().unproject(tmpScreenVector);
-        if(worldVector.x > -10f && worldVector.x < 3f
+        if(worldVector.x > -3f && worldVector.x < 3f
                 && worldVector.y > -1){
             if(worldVector.x > 2.25f && worldVector.x < 3f
                     && worldVector.y > 0 &&  worldVector.y < 0.5f){
                 this.pouring =! this.pouring;
             }
             else {
-                this.scene.addActor(new DuckActor(2, worldVector.x, worldVector.y));
+                this.scene.addActor(new DuckActor(duckTexture,1, worldVector.x, worldVector.y));
             }
         }
         return false;
@@ -160,73 +171,18 @@ public class WaterTestScene extends Game implements InputProcessor, SceneListene
     }
 
     @Override
+    public void dispose() {
+        super.dispose();
+        this.duckTexture.dispose();
+    }
+
+    @Override
     public void beginParticleBodyContact(ParticleSystem particleSystem, ParticleBodyContact particleBodyContact) {
 
     }
 
     @Override
     public void endContact(Contact contact) {
-
-    }
-
-    /**
-     * Called before each rendering
-     *
-     * @param deltaTime The time ellapsed since last rendering
-     */
-    @Override
-    public void onRender(float deltaTime) {
-
-    }
-
-    /**
-     * Called on resize()
-     *
-     * @param width
-     * @param height
-     */
-    @Override
-    public void onResize(int width, int height) {
-
-    }
-
-    /**
-     * Called on show()
-     */
-    @Override
-    public void onShow() {
-
-    }
-
-    /**
-     * Called on hide()
-     */
-    @Override
-    public void onHide() {
-
-    }
-
-    /**
-     * Called on resume()
-     */
-    @Override
-    public void onResume() {
-
-    }
-
-    /**
-     * Called on pause()
-     */
-    @Override
-    public void onPause() {
-
-    }
-
-    /**
-     * called on dispose()
-     */
-    @Override
-    public void onDispose() {
 
     }
 

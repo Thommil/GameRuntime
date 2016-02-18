@@ -43,4 +43,9 @@ public class CuriosityActor extends SpriteBodyActor {
         return 0.7f;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 
 import java.util.ArrayDeque;
@@ -98,11 +97,6 @@ public class Scene implements Screen {
      * Pause/resume state
      */
     protected boolean paused;
-
-    /**
-     * The current bound SceneListener
-     */
-    protected SceneListener sceneListener;
 
     /**
      * Default constructor using Settings
@@ -323,10 +317,6 @@ public class Scene implements Screen {
             layer.show();
         }
 
-        if(this.sceneListener != null){
-            this.sceneListener.onShow();
-        }
-
         //Start executor
         this.executor = Executors.newFixedThreadPool(this.settings.core.executors, new ThreadFactory() {
             @Override
@@ -350,10 +340,6 @@ public class Scene implements Screen {
 
                         while(!Scene.this.physicsQueue.isEmpty()){
                             Scene.this.physicsQueue.poll().run();
-                        }
-
-                        if(Scene.this.sceneListener != null){
-                            Scene.this.sceneListener.onStep(lastPhysicsStepDuration);
                         }
 
                         for (final Stepable actor : Scene.this.stepables) {
@@ -407,10 +393,6 @@ public class Scene implements Screen {
 
         this.renderLock.lock();
 
-        if(this.sceneListener != null){
-            this.sceneListener.onRender(delta);
-        }
-
         for (final Layer layer : this.layers) {
             if (layer.isVisible()) {
                 layer.render(delta);
@@ -421,24 +403,6 @@ public class Scene implements Screen {
         }
         this.renderLock.unlock();
 
-    }
-
-    /**
-     * The the current listener
-     *
-     * @param sceneListener The listener of the scene
-     */
-    public void setSceneListener(final SceneListener sceneListener){
-        this.sceneListener = sceneListener;
-    }
-
-    /**
-     * Gets the current listener
-     *
-     * @return The current listener
-     */
-    public SceneListener getSceneListener(){
-        return this.sceneListener;
     }
 
     /**
@@ -454,9 +418,6 @@ public class Scene implements Screen {
     public void resize(int width, int height) {
         //Gdx.app.debug("Scene","resize("+width+", "+height+")");
         this.viewport.update(width,height);
-        if(this.sceneListener != null){
-            this.sceneListener.onResize(width, height);
-        }
         for(final Layer layer : this.layers) {
             layer.onResize(width,height);
         }
@@ -466,17 +427,11 @@ public class Scene implements Screen {
     public void pause() {
         //Gdx.app.debug("Scene","pause()");
         this.paused = true;
-        if(Scene.this.sceneListener != null){
-            Scene.this.sceneListener.onPause();
-        }
     }
 
     @Override
     public void resume() {
         //Gdx.app.debug("Scene","resume()");
-        if(Scene.this.sceneListener != null){
-            Scene.this.sceneListener.onResume();
-        }
         this.paused = false;
     }
 
@@ -484,9 +439,6 @@ public class Scene implements Screen {
     public void hide() {
         //Gdx.app.debug("Scene","hide()");
         this.paused = true;
-        if(Scene.this.sceneListener != null){
-            Scene.this.sceneListener.onHide();
-        }
         for(final Layer layer : this.layers) {
             layer.hide();
         }
@@ -496,18 +448,15 @@ public class Scene implements Screen {
     @Override
     @SuppressWarnings("all")
     public void dispose() {
-        //Gdx.app.debug("Scene","dispose()");
+        Gdx.app.debug("Scene","dispose()");
         this.paused = true;
-        this.executor.shutdown();
-        if(Scene.this.sceneListener != null){
-            Scene.this.sceneListener.onDispose();
-        }
         for(final Layer layer : this.layers){
             layer.dispose();
         }
         for(final Actor actor : this.actorsMap.values()){
             actor.dispose();
         }
+        this.executor.shutdown();
         this.physicsWorld.dispose();
     }
 

@@ -16,4 +16,10 @@ public class PlanetActor extends StaticActor {
         super(texture,MathUtils.random(-4.5f,3.5f),MathUtils.random(-4.5f,3.5f),radius,radius,xOffset*offset,1f,(1+offset)*xOffset,0f, new Color(1,1,1,0.8f).toFloatBits());
         this.setLayer(0);
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

@@ -103,4 +103,9 @@ public class ShipActor extends SpriteBodyActor implements Stepable {
         angle = followVec.angle() - 90f;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }

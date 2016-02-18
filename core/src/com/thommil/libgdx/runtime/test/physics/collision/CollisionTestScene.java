@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.LogicActor;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
-import com.thommil.libgdx.runtime.scene.listener.SceneListener;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
 import finnstr.libgdx.liquidfun.ParticleContact;
@@ -27,7 +27,7 @@ import java.util.List;
  *
  * Created by tomtom on 04/02/16.
  */
-public class CollisionTestScene extends Game implements SceneListener, InputProcessor, ContactListener{
+public class CollisionTestScene extends Game implements InputProcessor, ContactListener{
 
     Scene scene;
     Texture textureCuriosity;
@@ -72,7 +72,18 @@ public class CollisionTestScene extends Game implements SceneListener, InputProc
         };
         scene.addActor(burnSensor);
 
-        this.scene.setSceneListener(this);
+        scene.addActor(new LogicActor() {
+            @Override
+            public void step(long lastStepDuration) {
+                if(Gdx.graphics.getFramesPerSecond() > 30) {
+                    if (inc % 10 == 0) {
+                        scene.addActor(new CuriosityActor(textureCuriosity));
+                    }
+                }
+                inc+=1;
+            }
+        });
+
         this.scene.setContactListener(this);
 
         SceneProfiler.profile(this.scene);
@@ -82,48 +93,6 @@ public class CollisionTestScene extends Game implements SceneListener, InputProc
         this.setScreen(scene);
     }
 
-    @Override
-    public void onStep(long lastDuration) {
-        if (inc % 10 == 0) {
-            scene.addActor(new CuriosityActor(textureCuriosity));
-        }
-        inc+=1;
-    }
-
-    @Override
-    public void onRender(float deltaTime) {
-
-    }
-
-    @Override
-    public void onResize(int width, int height) {
-
-    }
-
-    @Override
-    public void onShow() {
-
-    }
-
-    @Override
-    public void onHide() {
-
-    }
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onPause() {
-
-    }
-
-    @Override
-    public void onDispose() {
-
-    }
 
     @Override
     public void beginContact(Contact contact) {
@@ -150,6 +119,13 @@ public class CollisionTestScene extends Game implements SceneListener, InputProc
             this.scene.addActor(explosionActor);
             this.scene.removeActor(actorB);
         }
+    }
+
+    @Override
+    public void dispose() {
+        this.textureCuriosity.dispose();
+        this.textureExplosion.dispose();
+        super.dispose();
     }
 
     @Override

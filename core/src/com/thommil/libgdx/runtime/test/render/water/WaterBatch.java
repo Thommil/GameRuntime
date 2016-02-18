@@ -145,8 +145,8 @@ public class WaterBatch extends SoftBodyBatch {
                 + "  if( color.r < 0.15){\n" //
                 + "     color = vec4(0,0,0,0);\n" //
                 + "  }\n" //
-                + "  else if( color.r < 0.25){\n" //
-                + "     color = vec4(0.5,0.5,1.0,0.5);\n" //
+                + "  else if( color.r < 0.3){\n" //
+                + "     color = vec4(0.7,0.7,1.0,0.5);\n" //
                 + "  }\n" //
                 + "  else{\n" //
                 + "     color = vec4(0.0,0.0,1.0,0.3);\n" //

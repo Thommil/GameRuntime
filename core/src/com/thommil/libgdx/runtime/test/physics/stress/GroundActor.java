@@ -33,4 +33,9 @@ public class GroundActor extends StaticBodyActor {
         return shapes;
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        this.texture.dispose();
+    }
 }
