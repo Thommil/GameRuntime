@@ -25,10 +25,13 @@ public class CacheTestScene extends Game {
 		Scene scene = new Scene(settings);
 
 		//Layers
-		scene.addLayer(new SpriteCacheLayer(60));
+		SpriteCacheLayer.setMaxSprites(60);
+		SpriteCacheLayer planetCacheLayer = new SpriteCacheLayer();
+		scene.addLayer(planetCacheLayer);
 
 		//Actor
 		Texture texture = new Texture(Gdx.files.internal("planet_sprite.png"));
+		planetCacheLayer.beginCache();
 		for(int i = 0; i < 10; i++) {
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 0));
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 1));
@@ -37,6 +40,7 @@ public class CacheTestScene extends Game {
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 4));
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 5));
 		}
+		planetCacheLayer.endCache();
 
 		//Profiler
 		SceneProfiler.profile(scene);

@@ -50,11 +50,9 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
         textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
 
         //Layer
-        scene.addLayer(new SpriteCacheLayer(1));
         scene.addLayer(new SpriteBatchLayer(1000));
 
         //Actors
-
         scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
         SensorActor burnSensor = new SensorActor(MathUtils.random(0x7ffffffe)) {
             @Override

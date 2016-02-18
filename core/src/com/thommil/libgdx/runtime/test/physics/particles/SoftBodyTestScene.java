@@ -37,18 +37,23 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         //settings.physics.debug = true;
         scene = new Scene(settings);
 
-        //Layer
+        //Particles
         scene.addLayer(new SoftBodyBatchLayer(30000));
-        scene.addLayer(new SpriteCacheLayer(3));
+        particlesActor = new ParticlesActor();
+        scene.addActor(particlesActor);
 
-        //Actors
+        //Container
+        SpriteCacheLayer.setMaxSprites(3);
+        SpriteCacheLayer containerLayer = new SpriteCacheLayer();
+        scene.addLayer(containerLayer);
+
         Texture texture = new Texture(Gdx.files.internal("metal.png"));
         texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        containerLayer.beginCache();
         scene.addActor(new ContainerActor(texture,-5f,-5f,10f,1f));
         scene.addActor(new ContainerActor(texture,-5f,-5f,0.5f,8f));
         scene.addActor(new ContainerActor(texture,4.5f,-5f,0.5f,8f));
-        particlesActor = new ParticlesActor();
-        scene.addActor(particlesActor);
+        containerLayer.endCache();
 
         Gdx.input.setInputProcessor(this);
 

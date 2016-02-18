@@ -35,7 +35,6 @@ public class PhysicsStressTestScene extends Game{
         curiosityTexture = new Texture(Gdx.files.internal("curiosity.png"));
 
         //Layer
-        scene.addLayer(new SpriteCacheLayer(1));
         scene.addLayer(new SpriteBatchLayer(5000));
 
         //Actors

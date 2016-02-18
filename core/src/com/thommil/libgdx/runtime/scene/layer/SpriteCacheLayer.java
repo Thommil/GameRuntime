@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.cache.SpriteCache;
 import com.thommil.libgdx.runtime.scene.Layer;
@@ -14,23 +15,30 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
  */
 public class SpriteCacheLayer extends Layer{
 
-    final protected SpriteCache renderer;
-    boolean cacheEnded = false;
-    int cacheId;
+    private static int maxSprites = 1000;
+    private static int currentCacheId = 0;
+    private static SpriteCache renderer;
+    private int cacheId;
 
-
-    public SpriteCacheLayer(final int maxSprites) {
-        this.renderer = new SpriteCache(maxSprites);
-        if(!cacheEnded) {
-            this.renderer.beginCache();
+    public static void setMaxSprites(final int maxSprites){
+        if(SpriteCacheLayer.renderer != null){
+            throw new GameRuntimeException("Maximum Sprites size must be set before creating a new SpriteCacheLayer");
         }
+        SpriteCacheLayer.maxSprites = maxSprites;
     }
 
-    public SpriteCacheLayer(final SpriteCache customRenderer) {
-        this.renderer = customRenderer;
-        if(!cacheEnded) {
-            this.renderer.beginCache();
+    public SpriteCacheLayer() {
+        if(SpriteCacheLayer.renderer == null){
+            SpriteCacheLayer.renderer = new SpriteCache(SpriteCacheLayer.maxSprites);
         }
+        this.cacheId = currentCacheId++;
+    }
+
+    /**
+     *  Cals this method to begin cache for underlying SpriteCache
+     */
+    public void beginCache(){
+        SpriteCacheLayer.renderer.beginCache();
     }
 
     /**
@@ -40,22 +48,24 @@ public class SpriteCacheLayer extends Layer{
      */
     @Override
     public void addRenderable(Renderable renderable) {
-        if(cacheEnded) throw new GameRuntimeException("Cache is closed, can add renderables after show()");
-
         if(renderable instanceof StaticActor){
-            this.renderer.add((StaticActor)renderable);
+            SpriteCacheLayer.renderer.add((StaticActor)renderable);
         }
         else if(renderable instanceof SpriteActor){
-            this.renderer.add((SpriteActor)renderable);
+            SpriteCacheLayer.renderer.add((SpriteActor)renderable);
         }
+    }
+
+    /**
+     *  Cals this method to begin cache for underlying SpriteCache
+     */
+    public void endCache(){
+        SpriteCacheLayer.renderer.endCache();
     }
 
     @Override
     public void onShow() {
-        if(!cacheEnded){
-            cacheId = this.renderer.endCache();
-            cacheEnded = true;
-        }
+        //NOP
     }
 
     @Override
@@ -70,9 +80,9 @@ public class SpriteCacheLayer extends Layer{
 
     @Override
     public void render(float deltaTime) {
-        renderer.begin(this.camera.combined);
-        renderer.draw(cacheId);
-        renderer.end();
+        SpriteCacheLayer.renderer.begin(this.camera.combined);
+        SpriteCacheLayer.renderer.draw(this.cacheId);
+        SpriteCacheLayer.renderer.end();
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
 public class CuriosityActor extends SpriteBodyActor {
 
     public CuriosityActor(Texture texture) {
-        super(MathUtils.random(0x7ffffffe), 1, texture);
+        super(MathUtils.random(0x7ffffffe), 0, texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setPosition(MathUtils.random(-20f,20f),100f);

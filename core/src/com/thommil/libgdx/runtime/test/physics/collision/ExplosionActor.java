@@ -10,7 +10,7 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 public class ExplosionActor extends SpriteActor {
 
     public ExplosionActor(Texture texture) {
-        super(MathUtils.random(0x7ffffffe), 1, texture);
+        super(MathUtils.random(0x7ffffffe), 0, texture);
         this.setSize(3f,3f);
         this.setOriginCenter();
     }
