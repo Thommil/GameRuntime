@@ -20,11 +20,6 @@ public abstract class SensorActor implements RigidBody {
      */
     public Body body;
 
-
-    public SensorActor(){
-        this(MathUtils.random(0x7ffffffe));
-    }
-
     public SensorActor(final int id){
         this.id = id;
     }

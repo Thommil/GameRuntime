@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime.test.physics.basic;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -17,8 +18,7 @@ import java.util.List;
 public class GroundActor extends StaticBodyActor {
 
     public GroundActor(final Texture texture, final float x, final float y, final float width, final float height) {
-        super(texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
-        this.setLayer(0);
+        super(MathUtils.random(0x7ffffffe), 0, texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
     }
 
 

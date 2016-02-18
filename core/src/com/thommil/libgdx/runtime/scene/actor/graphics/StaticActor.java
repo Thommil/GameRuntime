@@ -23,16 +23,8 @@ public class StaticActor implements Actor, Renderable<SpriteBatch> {
     final public float u2, v2;
     final public float color;
 
-    public StaticActor(final Texture texture,
-                       final float x, final float y,
-                       final float width, final float height,
-                       final float u, final float v,
-                       final float u2, final float v2,
-                       final float color){
-        this(MathUtils.random(0x7ffffffe),texture,x,y,width,height,u,v,u2,v2,color);
-    }
-
     public StaticActor(final int id,
+                        final int layer,
                         final Texture texture,
                         final float x, final float y,
                         final float width, final float height,
@@ -40,6 +32,7 @@ public class StaticActor implements Actor, Renderable<SpriteBatch> {
                         final float u2, final float v2,
                         final float color){
         this.id =id;
+        this.layer = layer;
         this.texture = texture;
         this.x = x;
         this.y = y;

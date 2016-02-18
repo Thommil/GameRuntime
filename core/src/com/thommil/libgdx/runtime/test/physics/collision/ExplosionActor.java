@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.physics.collision;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
@@ -9,9 +10,8 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 public class ExplosionActor extends SpriteActor {
 
     public ExplosionActor(Texture texture) {
-        super(texture);
+        super(MathUtils.random(0x7ffffffe), 1, texture);
         this.setSize(3f,3f);
         this.setOriginCenter();
-        this.setLayer(1);
     }
 }

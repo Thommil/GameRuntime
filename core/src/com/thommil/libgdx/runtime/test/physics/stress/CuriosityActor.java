@@ -14,21 +14,19 @@ import java.util.List;
 public class CuriosityActor extends SpriteBodyActor {
 
     public CuriosityActor(int id, Texture texture) {
-        super(id, texture);
+        super(id, 1, texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setPosition(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
         this.setRotation(MathUtils.random(0f,90f));
-        this.setLayer(1);
     }
 
     public CuriosityActor(Texture texture) {
-        super(texture);
+        super(MathUtils.random(0x7ffffffe), 1, texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setPosition(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
         this.setRotation(MathUtils.random(0f,90f));
-        this.setLayer(1);
     }
 
     /**

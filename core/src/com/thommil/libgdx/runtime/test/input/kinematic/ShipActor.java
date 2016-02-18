@@ -28,7 +28,7 @@ public class ShipActor extends SpriteActor {
     private Vector2 spriteVec = new Vector2();
 
     public ShipActor() {
-        super(new Texture(Gdx.files.internal("ship.png")));
+        super(MathUtils.random(0x7ffffffe), 0, new Texture(Gdx.files.internal("ship.png")));
         this.setSize(1f,1f);
         this.setOriginCenter();
         this.setCenter(0f,0f);

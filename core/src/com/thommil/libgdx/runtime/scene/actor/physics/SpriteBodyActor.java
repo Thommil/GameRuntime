@@ -21,44 +21,24 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
     public Body body;
 
-    public SpriteBodyActor(Texture texture) {
-        super(texture);
+    public SpriteBodyActor(final int id, final int layer, Texture texture) {
+        super(id, layer, texture);
     }
 
-    public SpriteBodyActor(final int id, Texture texture) {
-        super(id, texture);
+    public SpriteBodyActor(final int id, final int layer, Texture texture, int srcWidth, int srcHeight) {
+        super(id, layer, texture, srcWidth, srcHeight);
     }
 
-    public SpriteBodyActor(Texture texture, int srcWidth, int srcHeight) {
-        super(texture, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, final int layer, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id, layer, texture, srcX, srcY, srcWidth, srcHeight);
     }
 
-    public SpriteBodyActor(final int id, Texture texture, int srcWidth, int srcHeight) {
-        super(id, texture, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, final int layer, TextureRegion region) {
+        super(id, layer, region);
     }
 
-    public SpriteBodyActor(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(texture, srcX, srcY, srcWidth, srcHeight);
-    }
-
-    public SpriteBodyActor(final int id, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(id, texture, srcX, srcY, srcWidth, srcHeight);
-    }
-
-    public SpriteBodyActor(TextureRegion region) {
-        super(region);
-    }
-
-    public SpriteBodyActor(final int id, TextureRegion region) {
-        super(id, region);
-    }
-
-    public SpriteBodyActor(TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(region, srcX, srcY, srcWidth, srcHeight);
-    }
-
-    public SpriteBodyActor(final int id, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(id, region, srcX, srcY, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, final int layer, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id, layer, region, srcX, srcY, srcWidth, srcHeight);
     }
 
     /**

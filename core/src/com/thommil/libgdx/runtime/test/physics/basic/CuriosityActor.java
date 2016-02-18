@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.physics.basic;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -17,7 +18,7 @@ import java.util.List;
 public class CuriosityActor extends SpriteBodyActor {
 
     public CuriosityActor(Texture texture) {
-        super(texture);
+        super(MathUtils.random(0x7ffffffe), 0, texture);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setPosition(0f,3f);

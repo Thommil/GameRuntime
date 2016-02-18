@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
@@ -55,7 +56,7 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
         //Actors
 
         scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
-        SensorActor burnSensor = new SensorActor() {
+        SensorActor burnSensor = new SensorActor(MathUtils.random(0x7ffffffe)) {
             @Override
             public List<Shape> getShapes() {
                 List<Shape> shapes = new ArrayList<Shape>();

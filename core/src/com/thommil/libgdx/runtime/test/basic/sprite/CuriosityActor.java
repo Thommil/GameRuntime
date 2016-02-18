@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.test.basic.sprite;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
@@ -12,8 +13,7 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 public class CuriosityActor extends SpriteActor {
 
     public CuriosityActor() {
-        super(new Texture(Gdx.files.internal("curiosity.png")));
-        this.setLayer(0);
+        super(0, 0, new Texture(Gdx.files.internal("curiosity.png")));
         this.setSize(2.6f,2.3f);
         this.setCenter(0f,0f);
         this.setOriginCenter();

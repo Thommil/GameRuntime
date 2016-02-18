@@ -18,9 +18,8 @@ public class PlanetActor extends SpriteBodyActor {
     float radius;
 
     public PlanetActor() {
-        super(texture);
+        super(MathUtils.random(0x7ffffffe), 0, texture);
         this.setOriginCenter();
-        this.setLayer(0);
         this.setPosition(MathUtils.random(-10f,10f),MathUtils.random(-10f,10f));
     }
 

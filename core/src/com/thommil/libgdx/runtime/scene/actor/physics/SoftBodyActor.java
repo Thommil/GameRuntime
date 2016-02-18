@@ -22,12 +22,9 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<SoftBodyBatc
 
     protected final int id;
 
-    public SoftBodyActor() {
-        this(MathUtils.random(0x7ffffffe));
-    }
-
-    public SoftBodyActor(final int id) {
+    public SoftBodyActor(final int id, final int layer) {
         this.id = id;
+        this.layer = layer;
     }
 
     /**

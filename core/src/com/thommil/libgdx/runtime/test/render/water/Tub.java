@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime.test.render.water;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -17,8 +18,7 @@ import java.util.List;
 public class Tub extends StaticBodyActor {
 
     public Tub(final int layer, Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2, float color) {
-        super(texture, x, y, width, height, u, v, u2, v2, color);
-        this.setLayer(layer);
+        super(MathUtils.random(0x7ffffffe), layer, texture, x, y, width, height, u, v, u2, v2, color);
     }
 
     /**

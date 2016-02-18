@@ -32,8 +32,7 @@ public class ShipActor extends SpriteBodyActor implements Stepable {
     private Vector2 spriteVec = new Vector2();
 
     public ShipActor() {
-        super(new Texture(Gdx.files.internal("ship.png")));
-        this.setLayer(0);
+        super(MathUtils.random(0x7ffffffe), 0, new Texture(Gdx.files.internal("ship.png")));
         this.setSize(1f,1f);
         this.setOriginCenter();
     }

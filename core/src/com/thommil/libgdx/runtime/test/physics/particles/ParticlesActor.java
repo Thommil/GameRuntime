@@ -15,7 +15,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 public class ParticlesActor extends SoftBodyActor {
 
     public ParticlesActor() {
-        this.setLayer(0);
+        super(MathUtils.random(0x7ffffffe), 0);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.test.render.water;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 import finnstr.libgdx.liquidfun.ParticleSystemDef;
@@ -10,7 +11,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 public class WaterActor extends SoftBodyActor {
 
     public WaterActor(int layer) {
-        this.setLayer(layer);
+        super(MathUtils.random(0x7ffffffe), layer);
     }
 
     /**

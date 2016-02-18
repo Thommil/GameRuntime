@@ -21,12 +21,16 @@ public class SpriteCacheLayer extends Layer{
 
     public SpriteCacheLayer(final int maxSprites) {
         this.renderer = new SpriteCache(maxSprites);
-        this.renderer.beginCache();
+        if(!cacheEnded) {
+            this.renderer.beginCache();
+        }
     }
 
     public SpriteCacheLayer(final SpriteCache customRenderer) {
         this.renderer = customRenderer;
-        this.renderer.beginCache();
+        if(!cacheEnded) {
+            this.renderer.beginCache();
+        }
     }
 
     /**

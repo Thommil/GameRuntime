@@ -66,29 +66,18 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
     protected final int id;
     protected int layer = 0;
 
-    public SpriteActor (Texture texture) {
-        this(texture, 0, 0, texture.getWidth(), texture.getHeight());
+    public SpriteActor (final int id, final int layer, Texture texture) {
+        this(id, layer, texture, 0, 0, texture.getWidth(), texture.getHeight());
     }
 
-    public SpriteActor (final int id, Texture texture) {
-        this(id, texture, 0, 0, texture.getWidth(), texture.getHeight());
+    public SpriteActor (final int id, final int layer, Texture texture, int srcWidth, int srcHeight) {
+        this(id, layer, texture, 0, 0, srcWidth, srcHeight);
     }
 
-    public SpriteActor (Texture texture, int srcWidth, int srcHeight) {
-        this(texture, 0, 0, srcWidth, srcHeight);
-    }
-
-    public SpriteActor (final int id, Texture texture, int srcWidth, int srcHeight) {
-        this(id, texture, 0, 0, srcWidth, srcHeight);
-    }
-
-    public SpriteActor (Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
-        this(MathUtils.random(0x7ffffffe),texture,srcX,srcY,srcWidth,srcHeight);
-    }
-
-    public SpriteActor (final int id, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+    public SpriteActor (final int id, final int layer, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
         if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
         this.id = id;
+        this.layer = layer;
         this.texture = texture;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(srcX, srcY, srcWidth, srcHeight);
@@ -96,24 +85,18 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
         setOrigin(width / 2, height / 2);
     }
 
-    public SpriteActor (TextureRegion region) {
-        this(MathUtils.random(0x7ffffffe), region);
-    }
-
-    public SpriteActor (final int id, TextureRegion region) {
+    public SpriteActor (final int id, final int layer, TextureRegion region) {
         this.id = id;
+        this.layer = layer;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(region);
         setSize(region.getRegionWidth(), region.getRegionHeight());
         setOrigin(width / 2, height / 2);
     }
 
-    public SpriteActor (TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-        this(MathUtils.random(0x7ffffffe), region, srcX, srcY, srcWidth, srcHeight);
-    }
-
-    public SpriteActor (final int id, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
+    public SpriteActor (final int id, final int layer, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
         this.id = id;
+        this.layer = layer;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(region, srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));

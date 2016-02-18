@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.graphics.cache.SpriteCache;
@@ -61,7 +62,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene.addLayer(new SpriteCacheLayer(1));
         Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
         backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        scene.addActor(new StaticActor(backgroundTexture,-5,-5,10,10,0,4,4,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new StaticActor(MathUtils.random(0x7ffffffe), 0, backgroundTexture,-5,-5,10,10,0,4,4,0, Color.WHITE.toFloatBits()));
 
         //Ducks - 1
         duckTexture = new Texture(Gdx.files.internal("duck.png"));
@@ -96,7 +97,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene.addActor(new Tub(3, tabTexture,2.25f,0f,0.75f,0.2f,0,1,1,0, Color.WHITE.toFloatBits()));
 
         //Sensor for GC
-        this.gcSensor = new SensorActor() {
+        this.gcSensor = new SensorActor(MathUtils.random(0x7ffffffe)) {
             @Override
             public List<Shape> getShapes() {
                 List<Shape> shapes = new ArrayList<Shape>();
@@ -159,8 +160,8 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
 
     @Override
     public void beginContact(Contact contact) {
-        final Actor actorA = (Actor) contact.getFixtureA().getUserData();
-        final Actor actorB = (Actor) contact.getFixtureB().getUserData();
+        final Actor actorA = (Actor) contact.getFixtureA().getBody().getUserData();
+        final Actor actorB = (Actor) contact.getFixtureB().getBody().getUserData();
         if(actorA != null && actorB != null) {
             if (actorB != null && actorA.getId() == this.gcSensor.getId()) {
                 this.scene.removeActor(actorB);
