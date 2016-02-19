@@ -44,12 +44,12 @@ public class ParticlesTestScene extends Game  implements InputProcessor{
 		scene.addActor(new StaticActor(MathUtils.random(0x7ffffffe), 0, backgroundTexture,-5,-5,10,10,0,1,1,0, Color.WHITE.toFloatBits()));
 		backgroundLayer.endCache();
 
-		scene.addLayer(new SpriteBatchLayer(1000));
+		scene.addLayer(new SpriteBatchLayer(100));
 
 		//Actor
 		ParticleEffect effect = new ParticleEffect();
 		effect.load(Gdx.files.internal("effects/particles.p"), Gdx.files.internal("effects"));
-		actor = new ParticleActor(0, 1, effect, 100);
+		actor = new ParticleActor(0, 1, effect, 10);
 		scene.addActor(actor);
 
 		Gdx.input.setInputProcessor(this);
@@ -97,8 +97,13 @@ public class ParticlesTestScene extends Game  implements InputProcessor{
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		tmpScreenVector.set(screenX,screenY);
 		final Vector2 worldVector =  this.scene.getViewport().unproject(tmpScreenVector);
-		if(effect != null) effect.allowCompletion();
-		effect = actor.spawn(true,worldVector.x,worldVector.y,false,false,0.005f);
+		if(effect != null) {
+			effect.getEmitters().get(0).setPosition(worldVector.x, worldVector.y);
+			effect.getEmitters().get(1).allowCompletion();
+			effect.getEmitters().get(2).setPosition(worldVector.x, worldVector.y);
+			effect.getEmitters().get(3).allowCompletion();
+		}
+
 		return false;
 	}
 
