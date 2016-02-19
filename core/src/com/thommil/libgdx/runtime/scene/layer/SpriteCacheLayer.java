@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.cache.SpriteCache;
@@ -87,6 +88,11 @@ public class SpriteCacheLayer extends Layer{
 
     @Override
     public void dispose() {
-        renderer.dispose();
+        if(SpriteCacheLayer.renderer != null) {
+            SpriteCacheLayer.renderer.dispose();
+            SpriteCacheLayer.renderer = null;
+        }
+        SpriteCacheLayer.maxSprites = 1000;
+        SpriteCacheLayer.currentCacheId = 0;
     }
 }

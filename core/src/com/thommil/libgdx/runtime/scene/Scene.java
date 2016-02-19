@@ -438,17 +438,13 @@ public class Scene implements Screen {
     @Override
     public void hide() {
         //Gdx.app.debug("Scene","hide()");
-        this.paused = true;
-        for(final Layer layer : this.layers) {
-            layer.hide();
-        }
-        this.executor.shutdown();
+        this.dispose();
     }
 
     @Override
     @SuppressWarnings("all")
     public void dispose() {
-        Gdx.app.debug("Scene","dispose()");
+        //Gdx.app.debug("Scene","dispose()");
         this.paused = true;
         for(final Layer layer : this.layers){
             layer.dispose();
