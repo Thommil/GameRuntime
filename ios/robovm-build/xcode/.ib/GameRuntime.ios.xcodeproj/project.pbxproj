@@ -110,11 +110,12 @@
 					"children" =
 						("C172F1A25CC2427083DD344E", "10A2203FF23A43518596818D", "171E7F3FE0244F73BA57A45D",
  "4A3CDC243C114B1882F19FE6", "3664D628138845A6A4AE4477", "DD7F3992F6DD45809EB9414E",
- "9ECD456E68454319802E5485", "5FB8EF27A2A64E0F930CC7FA", "06D16E86AEF4466180419215",
- "E195475263734BAA8F27B580", "67CB5B3BC7EC4411AA1F82DE", "11D62E6BB51E4066ACC9FC8E",
- "8040ADAAFD284CE2BEBB80C6", "62EAFBFE89C34D1B81E9833C", "71382FAF66C746FC8E400571",
- "7B6F201049174CBFB3500422", "D7AD06E286B54BF38AD0B7CB", "2FFE6B3EBD8B4CE4992A3763"
-);
+ "9ECD456E68454319802E5485", "5FB8EF27A2A64E0F930CC7FA", "85C81B3ADDDC4DF5826CC82A",
+ "06D16E86AEF4466180419215", "240B442F45E14BAAAC1EEF32", "E195475263734BAA8F27B580",
+ "67CB5B3BC7EC4411AA1F82DE", "11D62E6BB51E4066ACC9FC8E", "8040ADAAFD284CE2BEBB80C6",
+ "62EAFBFE89C34D1B81E9833C", "71382FAF66C746FC8E400571", "7B6F201049174CBFB3500422",
+ "D7AD06E286B54BF38AD0B7CB", "6BC6A7BDBF9345639D67B724", "2FFE6B3EBD8B4CE4992A3763",
+ "12DB3DC02E984CAEAD43F972", "4519B728A6344A0388A9EB22");
 					"name" = "Resources";
 					"sourceTree" = "<absolute>";
 					"path" = "/Volumes/DEV/Workspace/Libgdx/GameRuntime/ios/../android/assets";
@@ -262,6 +263,46 @@
 					"lastKnownFileType" = "image.png";
 					"sourceTree" = "<group>";
 					"path" = "metal.png";
+				};
+			"85C81B3ADDDC4DF5826CC82A" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "duck.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "duck.png";
+				};
+			"240B442F45E14BAAAC1EEF32" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "floor_tiles.jpg";
+					"lastKnownFileType" = "image.jpeg";
+					"sourceTree" = "<group>";
+					"path" = "floor_tiles.jpg";
+				};
+			"6BC6A7BDBF9345639D67B724" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "tap.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "tap.png";
+				};
+			"12DB3DC02E984CAEAD43F972" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "tub.jpg";
+					"lastKnownFileType" = "image.jpeg";
+					"sourceTree" = "<group>";
+					"path" = "tub.jpg";
+				};
+			"4519B728A6344A0388A9EB22" =
+				{
+					"isa" = "PBXFileReference";
+					"name" = "water.png";
+					"lastKnownFileType" = "image.png";
+					"sourceTree" = "<group>";
+					"path" = "water.png";
 				};
 		};
 	"rootObject" = "100000000000000000000001";

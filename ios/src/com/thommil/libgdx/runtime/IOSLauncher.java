@@ -22,7 +22,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         //Basic texture
-        return new IOSApplication(new TextureTestScene(), config);
+        //return new IOSApplication(new TextureTestScene(), config);
         //Basic sprite
         //return new IOSApplication(new SpriteTestScene(), config);
         //Basic cache
@@ -43,7 +43,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //return new IOSApplication(new PhysicsInputTestScene(), config);
 
         //Water rendering
-        //return new IOSApplication(new WaterTestScene(), config);
+        return new IOSApplication(new WaterTestScene(), config);
 
     }
 

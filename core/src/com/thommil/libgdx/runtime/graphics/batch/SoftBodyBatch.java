@@ -39,8 +39,11 @@ public class SoftBodyBatch {
     }
 
     public void begin (final Matrix4 combined, final float particlesScale) {
-        Gdx.gl.glEnable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
-        Gdx.gl.glEnable(0x8861); //GL11.GL_POINT_SPRITE_OES
+        if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            Gdx.gl.glEnable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
+            Gdx.gl.glEnable(0x8861); //GL11.GL_POINT_SPRITE_OES
+        }
+
         this.particlesScale = particlesScale;
         shader.begin();
         shader.setUniformMatrix("u_projTrans", combined);
@@ -52,8 +55,10 @@ public class SoftBodyBatch {
 
     public void end () {
         shader.end();
-        Gdx.gl.glDisable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
-        Gdx.gl20.glDisable(0x8861);
+        if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            Gdx.gl.glDisable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
+            Gdx.gl.glDisable(0x8861); //GL11.GL_POINT_SPRITE_OES
+        }
     }
 
     public void draw (float[] vertices, float radius) {
@@ -77,10 +82,12 @@ public class SoftBodyBatch {
 
     protected ShaderProgram createShader () {
         String prefix = "";
-        if(Gdx.app.getType() == Application.ApplicationType.Desktop)
-            prefix +="#version 120\n";
-        else
-            prefix +="#version 100\n";
+        if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            prefix += "#version 120\n";
+        }
+        else {
+            prefix += "#version 100\n";
+        }
 
         String vertexShader, fragmentShader;
 
