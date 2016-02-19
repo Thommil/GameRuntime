@@ -20,11 +20,11 @@ public class ParticleActor implements Actor, Renderable<SpriteBatch> {
     protected final ParticleEffectPool particleEffectPool;
     protected final Array<ParticleEffectPool.PooledEffect> particleEffects;
 
-    public ParticleActor(int id, int layer, ParticleEffect particleEffect, final int maxParticles) {
+    public ParticleActor(int id, int layer, ParticleEffect particleEffect, final int maxParticlesEffects) {
         this.id = id;
         this.layer = layer;
-        this.particleEffectPool = new ParticleEffectPool(particleEffect, maxParticles, maxParticles);
-        this.particleEffects = new Array<ParticleEffectPool.PooledEffect>(false, maxParticles);
+        this.particleEffectPool = new ParticleEffectPool(particleEffect, maxParticlesEffects, maxParticlesEffects);
+        this.particleEffects = new Array<ParticleEffectPool.PooledEffect>(false, maxParticlesEffects);
     }
 
     /**

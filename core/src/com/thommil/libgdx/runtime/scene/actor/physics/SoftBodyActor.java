@@ -8,31 +8,19 @@ import finnstr.libgdx.liquidfun.ParticleSystem;
 import finnstr.libgdx.liquidfun.ParticleSystemDef;
 
 /**
- * Physics particle system ator container
+ * SoftBody actor (renderable using a SoftBodyBatch)
  *
  * Created by thommil on 14/02/16.
  */
-public abstract class SoftBodyActor implements SoftBody, Renderable<SoftBodyBatch> {
+public abstract class SoftBodyActor extends ParticleSystemActor implements Renderable<SoftBodyBatch> {
 
     public static final int VERTEX_SIZE = 2;
 
-    public ParticleSystem particleSystem;
-
     protected int layer = 0;
 
-    protected final int id;
-
     public SoftBodyActor(final int id, final int layer) {
-        this.id = id;
+        super(id);
         this.layer = layer;
-    }
-
-    /**
-     * Gets the ID of the Actor
-     */
-    @Override
-    public int getId() {
-        return this.id;
     }
 
     /**
@@ -63,31 +51,5 @@ public abstract class SoftBodyActor implements SoftBody, Renderable<SoftBodyBatc
     @Override
     public void render(float deltaTime, SoftBodyBatch renderer) {
         renderer.draw(this.particleSystem.getParticlePositionBufferArray(true), this.particleSystem.getParticleRadius());
-    }
-
-    /**
-     * Set body instance of the Collidable
-     *
-     * @param particleSystem
-     */
-    @Override
-    public void setBody(ParticleSystem particleSystem) {
-        this.particleSystem = particleSystem;
-    }
-
-    /**
-     * Gets the definition of SoftBody
-     *
-     * @return The definition of the soft body in a particle system
-     */
-    @Override
-    public abstract ParticleSystemDef getDefinition();
-
-    /**
-     * Releases all resources of this object.
-     */
-    @Override
-    public void dispose() {
-        this.particleSystem.destroyParticleSystem();
     }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
@@ -33,12 +34,12 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 10;
         settings.viewport.minWorldHeight = 10;
-        //settings.physics.particleIterations = 5;
+        settings.physics.particleIterations = 6;
         //settings.physics.debug = true;
         scene = new Scene(settings);
 
         //Particles
-        scene.addLayer(new SoftBodyBatchLayer(30000));
+        scene.addLayer(new SoftBodyBatchLayer(10000));
         particlesActor = new SoftbodyActor();
         scene.addActor(particlesActor);
 
@@ -84,11 +85,10 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
             @Override
             public void run() {
                 ParticleGroupDef particleGroupDef = new ParticleGroupDef();
-                particleGroupDef.color.set(0f, 0f, 1f, 1f);
-                particleGroupDef.flags.add(ParticleDef.ParticleType.b2_tensileParticle);
+                particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
                 particleGroupDef.position.set(0f,5f);
-                CircleShape shape = new CircleShape();
-                shape.setRadius(1f);
+                PolygonShape shape = new PolygonShape();
+                shape.setAsBox(0.2f,2f);
                 particleGroupDef.shape = shape;
                 SoftBodyTestScene.this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
                 shape.dispose();

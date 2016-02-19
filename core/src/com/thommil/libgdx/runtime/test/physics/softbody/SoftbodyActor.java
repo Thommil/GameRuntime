@@ -21,7 +21,9 @@ public class SoftbodyActor extends SoftBodyActor {
     @Override
     public ParticleSystemDef getDefinition() {
         ParticleSystemDef particleSystemDef = new ParticleSystemDef();
-        particleSystemDef.radius = 0.025f;
+        particleSystemDef.radius = 0.1f;
+
+
         return particleSystemDef;
     }
 }
