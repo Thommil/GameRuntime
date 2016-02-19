@@ -10,8 +10,9 @@ import com.thommil.libgdx.runtime.test.input.dynamic.PhysicsInputTestScene;
 import com.thommil.libgdx.runtime.test.input.kinematic.KinematicInputTestScene;
 import com.thommil.libgdx.runtime.test.physics.basic.BasicPhysicsTestScene;
 import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
-import com.thommil.libgdx.runtime.test.physics.particles.SoftBodyTestScene;
+import com.thommil.libgdx.runtime.test.physics.softbody.SoftBodyTestScene;
 import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
+import com.thommil.libgdx.runtime.test.render.particles.ParticlesTestScene;
 import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
 
 public class DesktopLauncher {
@@ -21,27 +22,37 @@ public class DesktopLauncher {
 		config.height=600;
 		//Basic texture
 		//new LwjglApplication(new TextureTestScene(), config);
+
 		//Basic sprite
 		//new LwjglApplication(new SpriteTestScene(), config);
+
 		//Basic cache
 		//new LwjglApplication(new CacheTestScene(), config);
 
 		//Basic Physics
 		//new LwjglApplication(new BasicPhysicsTestScene(), config);
+
 		//Stress Physics
-		new LwjglApplication(new PhysicsStressTestScene(), config);
+		//new LwjglApplication(new PhysicsStressTestScene(), config);
+
 		//Collision Physics
 		//new LwjglApplication(new CollisionTestScene(), config);
-		//Particles Physics
+
+		//Particles Sprite
+		new LwjglApplication(new ParticlesTestScene(), config);
+
+		//Softbody Physics
 		//new LwjglApplication(new SoftBodyTestScene(), config);
 
 		//Kinematic input
 		//new LwjglApplication(new KinematicInputTestScene(), config);
+
 		//Physics input
 		//new LwjglApplication(new PhysicsInputTestScene(), config);
 
 		//Water rendering
 		//new LwjglApplication(new WaterTestScene(), config);
+
 
 	}
 }

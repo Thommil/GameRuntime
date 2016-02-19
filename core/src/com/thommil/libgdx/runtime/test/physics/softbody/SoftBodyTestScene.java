@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.physics.particles;
+package com.thommil.libgdx.runtime.test.physics.softbody;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
@@ -21,7 +21,7 @@ import finnstr.libgdx.liquidfun.ParticleGroupDef;
 public class SoftBodyTestScene extends Game implements InputProcessor{
 
     Scene scene;
-    ParticlesActor particlesActor;
+    SoftbodyActor particlesActor;
 
     int inc = 0;
 
@@ -39,7 +39,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
 
         //Particles
         scene.addLayer(new SoftBodyBatchLayer(30000));
-        particlesActor = new ParticlesActor();
+        particlesActor = new SoftbodyActor();
         scene.addActor(particlesActor);
 
         //Container
