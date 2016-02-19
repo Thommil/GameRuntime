@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.scene;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.util.ArrayList;
@@ -14,6 +15,11 @@ import java.util.List;
 public abstract class Layer implements Disposable {
 
     /**
+     * Default initial capacity
+     */
+    public static final int DEFAULT_INITIAL_CAPACITY = 16;
+
+    /**
      * Indicates visible/enabled state
      */
     private boolean visible = false;
@@ -21,7 +27,16 @@ public abstract class Layer implements Disposable {
     /**
      * Inner Renderable actors list
      */
-    protected final List<Renderable> renderables = new ArrayList<Renderable>();
+    protected final Array<Renderable> renderables;
+
+    /**
+     * Default constructor
+     *
+     * @param initialCapacity The initial capacity of the layer
+     */
+    public Layer(final int initialCapacity) {
+        this.renderables = new Array<Renderable>(false, initialCapacity);
+    }
 
     /**
      * Current camera used by this layer
@@ -41,8 +56,8 @@ public abstract class Layer implements Disposable {
      *
      * @param renderable The renderable to add
      */
-    public void addRenderable(final Renderable renderable){
-        //Gdx.app.debug("Layer","addRenderable()");
+    public void add(final Renderable renderable){
+        //Gdx.app.debug("Layer","add()");
         this.renderables.add(renderable);
     }
 
@@ -51,9 +66,9 @@ public abstract class Layer implements Disposable {
      *
      * @return The list of renderables
      */
-    public List<Renderable> getRenderables(){
+    public Renderable[] getRenderables(){
         // Gdx.app.debug("Layer","getRenderables()");
-        return this.renderables;
+        return this.renderables.items;
     }
 
     /**
@@ -61,9 +76,9 @@ public abstract class Layer implements Disposable {
      *
      * @param renderable The renderable to remove
      */
-    public void removeRenderable(final Renderable renderable){
-        //Gdx.app.debug("Layer","removeRenderable()");
-        this.renderables.remove(renderable);
+    public void remove(final Renderable renderable){
+        //Gdx.app.debug("Layer","remove()");
+        this.renderables.removeValue(renderable, false);
     }
 
     /**

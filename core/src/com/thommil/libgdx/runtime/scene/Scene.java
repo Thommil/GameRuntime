@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -81,7 +82,7 @@ public class Scene implements Screen {
     /**
      * List of stepable actors
      */
-    protected final List<Stepable> stepables;
+    protected final Array<Stepable> stepables;
 
     /**
      * Duration of last physics step processing in ms
@@ -107,11 +108,11 @@ public class Scene implements Screen {
         //Gdx.app.debug("Scene","New scene");
         this.settings = settings;
         this.paused = true;
-        this.actorsMap = new IntMap<Actor>();
+        this.actorsMap = new IntMap<Actor>(this.settings.core.initialCapacity);
 
         //Physics
         this.physicsWorld = new World(new Vector2(settings.physics.gravity[0], settings.physics.gravity[1]), true);
-        this.stepables = new ArrayList<Stepable>();
+        this.stepables = new Array<Stepable>(false, this.settings.core.initialCapacity);
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         //Graphics
@@ -145,13 +146,15 @@ public class Scene implements Screen {
      *
      * @return The layer index
      */
-    public int setLayer(final int index, final Layer layer){
+    public void addLayer(final int index, final Layer layer){
         //Gdx.app.debug("Scene","addLayer("+index+")");
         layer.setCamera(this.camera);
         this.renderLock.lock();
+        while(index > (this.layers.size()-1)){
+            this.layers.add(null);
+        }
         this.layers.set(index, layer);
         this.renderLock.unlock();
-        return (this.layers.size()-1);
     }
 
     /**
@@ -162,12 +165,23 @@ public class Scene implements Screen {
      * @return The layer index
      */
     public int addLayer(final Layer layer){
-        //Gdx.app.debug("Scene","addLayer("+index+")");
+        //Gdx.app.debug("Scene","addLayer()");
         layer.setCamera(this.camera);
         this.renderLock.lock();
         this.layers.add(layer);
         this.renderLock.unlock();
         return (this.layers.size()-1);
+    }
+
+    /**
+     * Removes a Layer from the Scene
+     *
+     * @param index The Layer index to remove
+     */
+    public void removeLayer(final int index){
+        this.renderLock.lock();
+        this.layers.set(index, null);
+        this.renderLock.unlock();
     }
 
     /**
@@ -203,7 +217,7 @@ public class Scene implements Screen {
                 public void run() {
                     if(actor instanceof Renderable) {
                         Scene.this.renderLock.lock();
-                        Scene.this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
+                        Scene.this.layers.get(((Renderable) actor).getLayer()).add((Renderable) actor);
                         Scene.this.renderablesCount++;
                         Scene.this.renderLock.unlock();
                     }
@@ -232,7 +246,7 @@ public class Scene implements Screen {
         }
         else{
             if(actor instanceof Renderable) {
-                this.layers.get(((Renderable) actor).getLayer()).addRenderable((Renderable) actor);
+                this.layers.get(((Renderable) actor).getLayer()).add((Renderable) actor);
                 this.renderablesCount++;
             }
             if(actor instanceof RigidBody) {
@@ -281,12 +295,12 @@ public class Scene implements Screen {
                 public void run() {
                     if (actor instanceof Renderable) {
                         Scene.this.renderLock.lock();
-                        Scene.this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
+                        Scene.this.layers.get(((Renderable) actor).getLayer()).remove((Renderable) actor);
                         Scene.this.renderablesCount--;
                         Scene.this.renderLock.unlock();
                     }
                     if (actor instanceof Stepable) {
-                        Scene.this.stepables.remove(actor);
+                        Scene.this.stepables.removeValue((Stepable)actor, false);
                     }
                     Scene.this.actorsMap.remove(actor.getId());
                     actor.dispose();
@@ -295,11 +309,11 @@ public class Scene implements Screen {
         }
         else{
             if (actor instanceof Renderable) {
-                this.layers.get(((Renderable) actor).getLayer()).removeRenderable((Renderable) actor);
+                this.layers.get(((Renderable) actor).getLayer()).remove((Renderable) actor);
                 this.renderablesCount--;
             }
             if (actor instanceof Stepable) {
-                this.stepables.remove(actor);
+                this.stepables.removeValue((Stepable)actor, false);
             }
             this.actorsMap.remove(actor.getId());
             actor.dispose();
@@ -314,7 +328,9 @@ public class Scene implements Screen {
         }
 
         for(final Layer layer : this.layers) {
-            layer.show();
+            if(layer != null) {
+                layer.show();
+            }
         }
 
         //Start executor
@@ -394,7 +410,7 @@ public class Scene implements Screen {
         this.renderLock.lock();
 
         for (final Layer layer : this.layers) {
-            if (layer.isVisible()) {
+            if (layer != null && layer.isVisible()) {
                 layer.render(delta);
             }
         }
@@ -419,7 +435,9 @@ public class Scene implements Screen {
         //Gdx.app.debug("Scene","resize("+width+", "+height+")");
         this.viewport.update(width,height);
         for(final Layer layer : this.layers) {
-            layer.onResize(width,height);
+            if(layer != null) {
+                layer.onResize(width, height);
+            }
         }
     }
 
@@ -446,12 +464,15 @@ public class Scene implements Screen {
     public void dispose() {
         //Gdx.app.debug("Scene","dispose()");
         this.paused = true;
-        for(final Layer layer : this.layers){
-            layer.dispose();
-        }
         for(final Actor actor : this.actorsMap.values()){
             actor.dispose();
         }
+        for(final Layer layer : this.layers){
+            if(layer != null) {
+                layer.dispose();
+            }
+        }
+
         this.executor.shutdown();
         this.physicsWorld.dispose();
     }
@@ -502,6 +523,7 @@ public class Scene implements Screen {
          */
         public static class Core{
             public int executors = 1;
+            public int initialCapacity = 100;
         }
 
         /**

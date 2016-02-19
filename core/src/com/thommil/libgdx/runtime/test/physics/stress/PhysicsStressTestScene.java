@@ -44,7 +44,7 @@ public class PhysicsStressTestScene extends Game{
             @Override
             public void step(long lastStepDuration) {
                 if(Gdx.graphics.getFramesPerSecond() > 30) {
-                    if (inc % 10 == 0) {
+                    if (inc % 1 == 0) {
                         scene.addActor(new CuriosityActor(curiosityTexture));
                     }
                 }

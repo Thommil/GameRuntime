@@ -29,6 +29,11 @@ public class SpriteCacheLayer extends Layer{
     }
 
     public SpriteCacheLayer() {
+        this(DEFAULT_INITIAL_CAPACITY);
+    }
+
+    public SpriteCacheLayer(final int initialCapacity) {
+        super(initialCapacity);
         if(SpriteCacheLayer.renderer == null){
             SpriteCacheLayer.renderer = new SpriteCache(SpriteCacheLayer.maxSprites);
         }
@@ -48,7 +53,7 @@ public class SpriteCacheLayer extends Layer{
      * @param renderable The renderable to add
      */
     @Override
-    public void addRenderable(Renderable renderable) {
+    public void add(Renderable renderable) {
         if(renderable instanceof StaticActor){
             SpriteCacheLayer.renderer.add((StaticActor)renderable);
         }

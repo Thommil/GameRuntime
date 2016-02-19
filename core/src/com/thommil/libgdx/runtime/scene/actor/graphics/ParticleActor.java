@@ -1,5 +1,8 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.utils.Array;
 import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
@@ -11,8 +14,16 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  */
 public class ParticleActor implements Actor, Renderable<SpriteBatch> {
 
-    protected int id;
+    protected final int id;
     protected int layer = 0;
+    protected final ParticleEffectPool particleEffectPool;
+    protected Array ParticleEffects = new Array();
+
+    public ParticleActor(int id, int layer, ParticleEffect particleEffect, final int maxParticles) {
+        this.id = id;
+        this.layer = layer;
+        this.particleEffectPool = new ParticleEffectPool(particleEffect, maxParticles, maxParticles);
+    }
 
     /**
      * Gets the ID of the Actor

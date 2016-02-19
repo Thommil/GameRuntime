@@ -10,6 +10,22 @@ import com.thommil.libgdx.runtime.scene.Layer;
 public abstract class LogicLayer extends Layer {
 
     /**
+     * Default constructor
+     */
+    public LogicLayer() {
+        super(DEFAULT_INITIAL_CAPACITY);
+    }
+
+    /**
+     * Constructor with specific capacity
+     *
+     * @param initialCapacity The initial capacity of the layer
+     */
+    public LogicLayer(int initialCapacity) {
+        super(initialCapacity);
+    }
+
+    /**
      * Render complete layer
      *
      * @param deltaTime Time since last call

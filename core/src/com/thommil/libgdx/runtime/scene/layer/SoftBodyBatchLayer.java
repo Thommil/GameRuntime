@@ -14,10 +14,17 @@ public class SoftBodyBatchLayer extends Layer{
     final protected SoftBodyBatch renderer;
 
     public SoftBodyBatchLayer(final int maxParticles) {
+        super(maxParticles);
         this.renderer = new SoftBodyBatch(maxParticles);
     }
 
+    public SoftBodyBatchLayer(final int maxParticles, final SoftBodyBatch customRenderer) {
+        super(maxParticles);
+        this.renderer = customRenderer;
+    }
+
     public SoftBodyBatchLayer(final SoftBodyBatch customRenderer) {
+        super(DEFAULT_INITIAL_CAPACITY);
         this.renderer = customRenderer;
     }
 
