@@ -11,6 +11,8 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  */
 public class SoftBodyBatchLayer extends Layer{
 
+    protected float scaleFactor = 1f;
+
     final protected SoftBodyBatch renderer;
 
     public SoftBodyBatchLayer(final int maxParticles) {
@@ -28,19 +30,10 @@ public class SoftBodyBatchLayer extends Layer{
         this.renderer = customRenderer;
     }
 
-    @Override
-    public void onShow() {
-        //NOP
-    }
-
-    @Override
-    public void onHide() {
-        //NOP
-    }
 
     @Override
     protected void onResize(int width, int height) {
-        renderer.setParticlesScale((Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight)) * 1.5f);
+        renderer.setParticlesScale((Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight)) * scaleFactor);
     }
 
     @Override
@@ -51,6 +44,20 @@ public class SoftBodyBatchLayer extends Layer{
             renderable.render(deltaTime,renderer);
         }
         renderer.end();
+    }
+
+    @Override
+    public void onShow() {
+        //NOP
+    }
+
+    @Override
+    public void onHide() {
+        //NOP
+    }
+
+    public void setScaleFactor(float scaleFactor) {
+        this.scaleFactor = scaleFactor;
     }
 
     @Override

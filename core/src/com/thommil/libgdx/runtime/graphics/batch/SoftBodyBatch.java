@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
+import com.thommil.libgdx.runtime.tools.GL11;
 
 /**
  * Custom Batch for LiquidFun ParticleSystem (SoftBody).
@@ -53,7 +54,7 @@ public class SoftBodyBatch implements Batch{
         isDrawing = true;
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
             Gdx.gl.glEnable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
-            Gdx.gl.glEnable(0x8861); //GL11.GL_POINT_SPRITE_OES
+            Gdx.gl.glEnable(GL11.GL_POINT_SPRITE_OES);
         }
 
         shader.begin();
@@ -69,7 +70,7 @@ public class SoftBodyBatch implements Batch{
         shader.end();
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
             Gdx.gl.glDisable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
-            Gdx.gl.glDisable(0x8861); //GL11.GL_POINT_SPRITE_OES
+            Gdx.gl.glDisable(GL11.GL_POINT_SPRITE_OES);
         }
         isDrawing = false;
     }

@@ -17,7 +17,7 @@ import java.util.List;
 public class ContainerActor extends StaticBodyActor {
 
     public ContainerActor(final Texture texture, final float x, final float y, final float width, final float height) {
-        super(MathUtils.random(0x7ffffffe), 1, texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
+        super(MathUtils.random(0x7ffffffe), 0, texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
     }
 
     /**
@@ -27,7 +27,7 @@ public class ContainerActor extends StaticBodyActor {
     public List<Shape> getShapes() {
         List<Shape> shapes = new ArrayList<Shape>();
         PolygonShape groundBodyShape = new PolygonShape();
-        groundBodyShape.setAsBox(this.width/2 - 0.1f,this.height/2 - 0.1f, new Vector2(this.width/2,this.height/2),0);
+        groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
         shapes.add(groundBodyShape);
         return shapes;
     }

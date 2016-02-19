@@ -472,9 +472,7 @@ public class Scene implements Screen {
                 layer.dispose();
             }
         }
-
         this.executor.shutdown();
-        this.physicsWorld.dispose();
     }
 
     public World getPhysicsWorld() {

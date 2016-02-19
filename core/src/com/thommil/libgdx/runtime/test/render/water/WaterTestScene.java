@@ -81,6 +81,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         ParticleGroupDef particleGroupDef = new ParticleGroupDef();
         particleGroupDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);
         PolygonShape waterShape = new PolygonShape();
+
         waterShape.setAsBox(2.5f,0.5f);
         particleGroupDef.position.set(0,-1f);
         particleGroupDef.shape = waterShape;

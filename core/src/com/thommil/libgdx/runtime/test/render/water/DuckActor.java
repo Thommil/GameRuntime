@@ -43,7 +43,6 @@ public class DuckActor extends SpriteBodyActor {
     @Override
     public void setBody(Body body) {
         super.setBody(body);
-        this.setDensity(0.5f);
         MassData massData = body.getMassData();
         massData.center.set(0,-0.1f);
         body.setMassData(massData);

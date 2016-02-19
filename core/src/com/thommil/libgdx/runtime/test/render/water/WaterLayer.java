@@ -10,6 +10,7 @@ public class WaterLayer extends SoftBodyBatchLayer {
 
     public WaterLayer(){
         super(new WaterBatch());
+        this.setScaleFactor(1.5f);
     }
 
     @Override
