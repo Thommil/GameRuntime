@@ -1,24 +1,25 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
-import com.thommil.libgdx.runtime.graphics.batch.ParticleEffectBatch;
+import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
  * Particle Actor for rendering particles
  *
- * //TODO Particle rendering and actor
- *
  * Created by thommil on 14/02/16.
  */
-public class ParticleEffectActor implements Actor, Renderable<ParticleEffectBatch> {
+public class ParticleActor implements Actor, Renderable<SpriteBatch> {
+
+    protected int id;
+    protected int layer = 0;
 
     /**
      * Gets the ID of the Actor
      */
     @Override
     public int getId() {
-        return 0;
+        return this.id;
     }
 
     /**
@@ -28,7 +29,7 @@ public class ParticleEffectActor implements Actor, Renderable<ParticleEffectBatc
      */
     @Override
     public int getLayer() {
-        return 0;
+        return this.layer;
     }
 
     /**
@@ -38,7 +39,7 @@ public class ParticleEffectActor implements Actor, Renderable<ParticleEffectBatc
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, ParticleEffectBatch renderer) {
+    public void render(float deltaTime, SpriteBatch renderer) {
 
     }
 

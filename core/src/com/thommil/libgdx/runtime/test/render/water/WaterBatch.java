@@ -20,13 +20,11 @@ public class WaterBatch extends SoftBodyBatch {
     final Mesh waterMesh;
     final float[] vertices = new float[24];
     FrameBuffer fbo;
-    Matrix4 tmpCombined;
     private int screenWidth, screenHeight;
     private float viewWidth, viewHeight;
     boolean hasResized;
 
     public WaterBatch() {
-        //super(new Texture(Gdx.files.internal("water.png")), 30000);
         super(5000);
         this.waterMesh = this.createWaterMesh();
         this.waterShader = this.createWaterShader();
@@ -38,13 +36,13 @@ public class WaterBatch extends SoftBodyBatch {
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
         this.hasResized = true;
+        this.particlesScale *= this.particlesScaleFactor;
     }
 
     @Override
-    public void begin(Matrix4 combined, float particlesScale) {
+    public void begin() {
         //First render off particles
-        super.begin(combined, particlesScale * particlesScaleFactor);
-        tmpCombined = combined;
+        super.begin();
         this.setupFramebuffer();
         this.fbo.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -101,7 +99,7 @@ public class WaterBatch extends SoftBodyBatch {
 
         //The apply second pass to render water on screen
         this.waterShader.begin();
-        this.waterShader.setUniformMatrix("u_projTrans", this.tmpCombined);
+        this.waterShader.setUniformMatrix("u_projTrans", this.combinedMatrix);
         this.fbo.getColorBufferTexture().bind(0);
         this.waterShader.setUniformi("u_texture", 0);
         this.waterMesh.render(this.waterShader, GL20.GL_TRIANGLES, 0, 6);

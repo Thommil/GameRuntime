@@ -240,6 +240,10 @@ public class SpriteCache implements Disposable {
         }
     }
 
+    /**
+     * Create methods below must be overriden for custom Batch
+     */
+
     protected Mesh createMesh(final int size){
         if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
 

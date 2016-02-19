@@ -1,11 +1,13 @@
 package com.thommil.libgdx.runtime.scene;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+
 /**
  * Defines a renderable element using T as renderer
  *
  * Created by thommil on 01/02/16.
  */
-public interface Renderable<T> extends Actor {
+public interface Renderable<T extends Batch> extends Actor {
 
     /**
      * Returns the layer of the Renderable

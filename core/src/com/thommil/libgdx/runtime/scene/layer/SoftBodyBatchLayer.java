@@ -21,8 +21,6 @@ public class SoftBodyBatchLayer extends Layer{
         this.renderer = customRenderer;
     }
 
-    protected float particlesScale;
-
     @Override
     public void onShow() {
         //NOP
@@ -35,12 +33,13 @@ public class SoftBodyBatchLayer extends Layer{
 
     @Override
     protected void onResize(int width, int height) {
-        this.particlesScale = Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight) * 1.5f;
+        renderer.setParticlesScale((Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight)) * 1.5f);
     }
 
     @Override
     public void render(float deltaTime) {
-        renderer.begin(this.camera.combined, this.particlesScale);
+        renderer.setCombinedMatrix(this.camera.combined);
+        renderer.begin();
         for(Renderable renderable : this.renderables){
             renderable.render(deltaTime,renderer);
         }
