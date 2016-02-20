@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
@@ -30,6 +31,17 @@ public class ContainerActor extends StaticBodyActor {
         groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
         shapes.add(groundBodyShape);
         return shapes;
+    }
+
+    /**
+     * Set body instance of the Collidable
+     *
+     * @param body
+     */
+    @Override
+    public void setBody(Body body) {
+        super.setBody(body);
+        body.getFixtureList().get(0).setFriction(1f);
     }
 
     @Override

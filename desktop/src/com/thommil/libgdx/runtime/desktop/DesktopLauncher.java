@@ -46,7 +46,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new SoftBodyTestScene(), config);
 
 		//Softbody Rendering
-		//new LwjglApplication(new SoftBodyRenderTestScene(), config);
+		new LwjglApplication(new SoftBodyRenderTestScene(), config);
 
 		//Kinematic input
 		//new LwjglApplication(new KinematicInputTestScene(), config);
@@ -55,7 +55,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new PhysicsInputTestScene(), config);
 
 		//Water rendering
-		new LwjglApplication(new WaterTestScene(), config);
+		//new LwjglApplication(new WaterTestScene(), config);
 
 
 	}

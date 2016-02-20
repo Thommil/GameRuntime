@@ -5,16 +5,25 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleDef;
+import finnstr.libgdx.liquidfun.ParticleGroup;
 import finnstr.libgdx.liquidfun.ParticleGroupDef;
 
 /**
  * SoftBody textured display
+ *
+ * This demo is purely based on physics and is heavy in CPU. To be included in a game
+ * the amount of particles must be decreased to allow less iterations and blur pass using FBO
+ * can be used like in the WaterScene demo.
  *
  * Created by tomtom on 04/02/16.
  */
@@ -22,8 +31,7 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
     Scene scene;
     SoftbodyRenderActor particlesActor;
-
-    int inc = 0;
+    ParticleGroup softBody;
 
     @Override
     public void create() {
@@ -33,29 +41,31 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 10;
         settings.viewport.minWorldHeight = 10;
-        settings.physics.particleIterations = 8;
+        settings.physics.particleIterations = 10;
         //settings.renderer.blendEnabled=false;
         //settings.physics.debug = true;
         scene = new Scene(settings);
 
         //Particles
-        SoftBodyBatchLayer softBodyBatchLayer = new SoftBodyBatchLayer(30000);
-        softBodyBatchLayer.setScaleFactor(1.60f);
+        SoftBodyBatchLayer softBodyBatchLayer = new ColoredSoftBodyLayer(1089);
+        softBodyBatchLayer.setScaleFactor(1.2f);
+        //softBodyBatchLayer.setScaleFactor(0.75f);
         scene.addLayer(1,softBodyBatchLayer);
         particlesActor = new SoftbodyRenderActor();
         scene.addActor(particlesActor);
 
         //Container
-        SpriteCacheLayer.setMaxSprites(3);
+        SpriteCacheLayer.setMaxSprites(4);
         SpriteCacheLayer containerLayer = new SpriteCacheLayer();
         scene.addLayer(0,containerLayer);
 
         Texture texture = new Texture(Gdx.files.internal("metal.png"));
         texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         containerLayer.beginCache();
-        scene.addActor(new ContainerActor(texture,-5f,-5f,10f,1f));
-        scene.addActor(new ContainerActor(texture,-5f,-5f,0.5f,8f));
-        scene.addActor(new ContainerActor(texture,4.5f,-5f,0.5f,8f));
+        scene.addActor(new ContainerActor(texture,-5f,-5f,10f,0.5f));
+        scene.addActor(new ContainerActor(texture,-5f,4.5f,10f,0.5f));
+        scene.addActor(new ContainerActor(texture,-5f,-5f,0.5f,10f));
+        scene.addActor(new ContainerActor(texture,4.5f,-5f,0.5f,10f));
         containerLayer.endCache();
 
         Gdx.input.setInputProcessor(this);
@@ -63,6 +73,16 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
         SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
 
         this.setScreen(scene);
+
+        ParticleGroupDef particleGroupDef = new ParticleGroupDef();
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
+        particleGroupDef.position.set(0f, 0f);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1f, 1f);
+        particleGroupDef.shape = shape;
+        softBody = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        shape.dispose();
     }
 
 
@@ -83,20 +103,7 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.scene.runOnPhysicsThread(new Runnable() {
-            @Override
-            public void run() {
-                ParticleGroupDef particleGroupDef = new ParticleGroupDef();
-                particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
-                particleGroupDef.position.set(0f,0f);
-
-                PolygonShape shape = new PolygonShape();
-                shape.setAsBox(0.3f,2f);
-                particleGroupDef.shape = shape;
-                SoftBodyRenderTestScene.this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
-                shape.dispose();
-            }
-        });
+        softBody.applyLinearImpulse(new Vector2(MathUtils.random(-100,100),MathUtils.random(-100,100)));
 
         return false;
     }

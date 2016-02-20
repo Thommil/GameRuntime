@@ -97,7 +97,7 @@ public class ExtendedMesh extends Mesh {
     public void bind(ShaderProgram shader, int[] locations) {
         super.bind(shader, locations);
         for(final VertexData vertexData : this.extendedVertexData){
-            if(vertexData.getNumVertices() != this.getNumVertices()){
+            if(vertexData.getNumVertices() < this.getNumVertices()){
                 throw new GameRuntimeException("Extended VertexData must contains as many vertices ("+vertexData.getNumVertices()+" found) as its Mesh container ("+this.getNumVertices()+" found)");
             }
             vertexData.bind(shader, locations);
@@ -173,6 +173,23 @@ public class ExtendedMesh extends Mesh {
             for(final VertexData vertexData : this.extendedVertexData){
                 for(final VertexAttribute vertexDatavertexAttribute : vertexData.getAttributes()){
                     if(vertexDatavertexAttribute.usage == usage) return vertexDatavertexAttribute;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the first {@link VertexData} having the given Usage.
+     *
+     * @param usage the Usage.
+     * @return the VertexData or null if no attribute with that usage was found.
+     */
+    public VertexData getVertexData(int usage){
+        for(final VertexData vertexData : this.extendedVertexData){
+            for(final VertexAttribute vertexDatavertexAttribute : vertexData.getAttributes()){
+                if(vertexDatavertexAttribute.usage == usage){
+                    return vertexData;
                 }
             }
         }
