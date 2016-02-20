@@ -55,7 +55,7 @@ public class ParticlesTestScene extends Game  implements InputProcessor{
 		Gdx.input.setInputProcessor(this);
 
 		//Profiler
-		SceneProfiler.profile(scene);
+		SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
 
 		//Start
 		this.setScreen(scene);

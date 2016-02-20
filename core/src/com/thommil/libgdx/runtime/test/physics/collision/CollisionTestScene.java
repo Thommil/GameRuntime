@@ -10,9 +10,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
-import com.thommil.libgdx.runtime.scene.actor.physics.LogicActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
-import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleBodyContact;
 import finnstr.libgdx.liquidfun.ParticleContact;
@@ -71,7 +70,7 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
         };
         scene.addActor(burnSensor);
 
-        scene.addActor(new LogicActor() {
+        scene.addActor(new AbstractStepable(MathUtils.random(0x7ffffffe)) {
             @Override
             public void step(long lastStepDuration) {
                 if(Gdx.graphics.getFramesPerSecond() > 30) {
@@ -85,7 +84,7 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
 
         this.scene.setContactListener(this);
 
-        SceneProfiler.profile(this.scene);
+        SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
 
         Gdx.input.setInputProcessor(this);
 

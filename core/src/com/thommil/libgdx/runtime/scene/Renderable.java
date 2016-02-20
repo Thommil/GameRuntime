@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  *
  * Created by thommil on 01/02/16.
  */
-public interface Renderable<T extends Batch> extends Actor {
+public interface Renderable<T extends Batch>{
 
     /**
      * Returns the layer of the Renderable

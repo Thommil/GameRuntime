@@ -17,9 +17,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 2/10/16.
  */
-public class SpriteActor implements Actor, Renderable<SpriteBatch> {
-
-    public static final float DEG_IN_RAD = 57.2957795f;
+public class SpriteActor extends Actor implements Renderable<SpriteBatch> {
 
     static public final int X1 = 0;
     static public final int Y1 = 1;
@@ -63,7 +61,6 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
     protected final float[] vertices = new float[SPRITE_SIZE];
     protected boolean dirty = true;
 
-    protected final int id;
     protected int layer = 0;
 
     public SpriteActor (final int id, final int layer, Texture texture) {
@@ -75,8 +72,8 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
     }
 
     public SpriteActor (final int id, final int layer, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id);
         if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
-        this.id = id;
         this.layer = layer;
         this.texture = texture;
         this.setColor(Color.WHITE.toFloatBits());
@@ -86,7 +83,7 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
     }
 
     public SpriteActor (final int id, final int layer, TextureRegion region) {
-        this.id = id;
+        super(id);
         this.layer = layer;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(region);
@@ -95,7 +92,7 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
     }
 
     public SpriteActor (final int id, final int layer, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-        this.id = id;
+        super(id);
         this.layer = layer;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(region, srcX, srcY, srcWidth, srcHeight);
@@ -263,7 +260,7 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
 
     /** Sets the rotation of the sprite in radiants. Rotation is centered on the origin set in {@link #setOrigin(float, float)} */
     public void setRotationRad (float radiants) {
-        this.rotation = radiants * DEG_IN_RAD;
+        this.rotation = radiants * MathUtils.radDeg;
         dirty = true;
     }
 
@@ -274,7 +271,7 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
 
     /** @return the rotation of the sprite in radiants */
     public float getRotationRad () {
-        return rotation / DEG_IN_RAD;
+        return rotation / MathUtils.radDeg;
     }
 
     /** Sets the sprite's rotation in degrees relative to the current rotation. Rotation is centered on the origin set in
@@ -289,7 +286,7 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
      * {@link #setOrigin(float, float)} */
     public void rotateRad (float radiants) {
         if (radiants == 0) return;
-        rotation += radiants * DEG_IN_RAD;
+        rotation += radiants * MathUtils.radDeg;
         dirty = true;
     }
 
@@ -621,16 +618,30 @@ public class SpriteActor implements Actor, Renderable<SpriteBatch> {
         this.layer = layer;
     }
 
+    /**
+     * Returns the layer of the Renderable
+     *
+     * @return The layer of the Renderable
+     */
     @Override
-    public int getLayer(){
+    public int getLayer() {
         return this.layer;
     }
 
+    /**
+     * Render the element on current viewport (do access physics world here !)
+     *
+     * @param deltaTime The delta time since last call
+     * @param renderer  The renderer to use in current layer
+     */
     @Override
     public void render(float deltaTime, SpriteBatch renderer) {
         renderer.draw(this.texture, getVertices(), 0, SPRITE_SIZE);
     }
 
+    /**
+     * Releases all resources of this object.
+     */
     @Override
     public void dispose() {
         //NOP Texture can be shared

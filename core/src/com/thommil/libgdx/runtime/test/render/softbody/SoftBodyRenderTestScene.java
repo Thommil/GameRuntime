@@ -1,30 +1,27 @@
-package com.thommil.libgdx.runtime.test.physics.softbody;
+package com.thommil.libgdx.runtime.test.render.softbody;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
-import com.thommil.libgdx.runtime.tools.GL11;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleDef;
 import finnstr.libgdx.liquidfun.ParticleGroupDef;
 
 /**
- * Softbody raw display
+ * SoftBody textured display
  *
  * Created by tomtom on 04/02/16.
  */
-public class SoftBodyTestScene extends Game implements InputProcessor{
+public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
     Scene scene;
-    SoftbodyActor particlesActor;
+    SoftbodyRenderActor particlesActor;
 
     int inc = 0;
 
@@ -43,9 +40,9 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
 
         //Particles
         SoftBodyBatchLayer softBodyBatchLayer = new SoftBodyBatchLayer(30000);
-        softBodyBatchLayer.setScaleFactor(1.50f);
+        softBodyBatchLayer.setScaleFactor(1.60f);
         scene.addLayer(1,softBodyBatchLayer);
-        particlesActor = new SoftbodyActor();
+        particlesActor = new SoftbodyRenderActor();
         scene.addActor(particlesActor);
 
         //Container
@@ -64,6 +61,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         Gdx.input.setInputProcessor(this);
 
         SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
+
         this.setScreen(scene);
     }
 
@@ -91,10 +89,11 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
                 ParticleGroupDef particleGroupDef = new ParticleGroupDef();
                 particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
                 particleGroupDef.position.set(0f,0f);
+
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(0.3f,2f);
                 particleGroupDef.shape = shape;
-                SoftBodyTestScene.this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+                SoftBodyRenderTestScene.this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
                 shape.dispose();
             }
         });

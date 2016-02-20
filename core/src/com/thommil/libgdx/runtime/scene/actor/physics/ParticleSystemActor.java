@@ -1,8 +1,5 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
-import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.SoftBody;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 import finnstr.libgdx.liquidfun.ParticleSystemDef;
@@ -12,22 +9,17 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  *
  * Created by thommil on 14/02/16.
  */
-public abstract class ParticleSystemActor implements SoftBody {
+public abstract class ParticleSystemActor extends AbstractStepable implements SoftBody {
 
     public ParticleSystem particleSystem;
 
-    protected final int id;
-
-    public ParticleSystemActor(final int id) {
-        this.id = id;
-    }
-
     /**
-     * Gets the ID of the Actor
+     * Default constructor
+     *
+     * @param id The ID of the Actor in the scene
      */
-    @Override
-    public int getId() {
-        return this.id;
+    public ParticleSystemActor(final int id) {
+        super(id);
     }
 
     /**

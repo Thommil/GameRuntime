@@ -7,11 +7,24 @@ import com.badlogic.gdx.utils.Disposable;
  *
  * Created by thommil on 01/02/16.
  */
-public interface Actor extends Disposable{
+public abstract class Actor implements Disposable{
+
+    protected final int id;
 
     /**
-     *  Gets the ID of the Actor
+     * Default constructor
+     *
+     * @param id The ID of the actor
      */
-    int getId();
+    public Actor(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the ID of the Actor
+     */
+    public int getId() {
+        return this.id;
+    }
 
 }

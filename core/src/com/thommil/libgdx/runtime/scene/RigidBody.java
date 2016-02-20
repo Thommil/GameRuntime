@@ -22,15 +22,4 @@ public interface RigidBody extends Collidable<BodyDef,Body>{
      * Gets the density to the RigidBody
      */
     float getDensity();
-
-    /**
-     * Gets the friction to the RigidBody
-     */
-    float getFriction();
-
-    /**
-     * Gets the restitution to the RigidBody
-     */
-    float getRestitution();
-
 }

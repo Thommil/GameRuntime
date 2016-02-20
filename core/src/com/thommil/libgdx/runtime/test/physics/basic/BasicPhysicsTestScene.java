@@ -34,7 +34,7 @@ public class BasicPhysicsTestScene extends Game{
         scene.addActor(new CuriosityActor(new Texture(Gdx.files.internal("curiosity.png"))));
 
         //Profiler
-        SceneProfiler.profile(scene);
+        SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
 
         this.setScreen(scene);
 

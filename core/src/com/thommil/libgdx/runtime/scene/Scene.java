@@ -32,7 +32,7 @@ public class Scene implements Screen {
     /**
      * Scene settings
      */
-    private final Scene.Settings settings;
+    public final Scene.Settings settings;
 
     /**
      * Viewport of the scene
@@ -226,8 +226,6 @@ public class Scene implements Screen {
                         final Body body = Scene.this.physicsWorld.createBody(rigidBody.getDefinition());
                         for(final Shape shape : rigidBody.getShapes()){
                             final Fixture fixture = body.createFixture(shape, rigidBody.getDensity());
-                            fixture.setFriction(rigidBody.getFriction());
-                            fixture.setRestitution(rigidBody.getRestitution());
                             shape.dispose();
                         }
                         rigidBody.setBody(body);
@@ -254,8 +252,6 @@ public class Scene implements Screen {
                 final Body body = this.physicsWorld.createBody(rigidBody.getDefinition());
                 for(final Shape shape : rigidBody.getShapes()){
                     final Fixture fixture = body.createFixture(shape, rigidBody.getDensity());
-                    fixture.setFriction(rigidBody.getFriction());
-                    fixture.setRestitution(rigidBody.getRestitution());
                     shape.dispose();
                 }
                 rigidBody.setBody(body);

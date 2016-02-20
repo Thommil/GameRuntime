@@ -2,10 +2,7 @@ package com.thommil.libgdx.runtime.test.physics.basic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
@@ -37,11 +34,14 @@ public class CuriosityActor extends SpriteBodyActor {
     }
 
     /**
-     * Gets the restitution to the RigidBody
+     * Set body instance of the Collidable
+     *
+     * @param body
      */
     @Override
-    public float getRestitution() {
-        return 0.7f;
+    public void setBody(Body body) {
+        super.setBody(body);
+        body.getFixtureList().get(0).setRestitution(0.7f);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime.scene.actor.physics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -56,22 +57,6 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
     }
 
     /**
-     * Gets the friction to the RigidBody
-     */
-    @Override
-    public float getFriction() {
-        return 0.2f;
-    }
-
-    /**
-     * Gets the restitution to the RigidBody
-     */
-    @Override
-    public float getRestitution() {
-        return 0.0f;
-    }
-
-    /**
      * Gets the definition of Collidable
      */
     @Override
@@ -79,29 +64,8 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(this.x, this.y);
-        bodyDef.angle = this.rotation / DEG_IN_RAD;
+        bodyDef.angle = this.rotation / MathUtils.radDeg;
         return bodyDef;
-    }
-
-    /**
-     * Sets the density to the RigidBody
-     */
-    public void setDensity(final float density){
-        this.body.getFixtureList().get(0).setDensity(density);
-    }
-
-    /**
-     * Sets the friction to the RigidBody
-     */
-    public void setFriction(final float friction){
-        this.body.getFixtureList().get(0).setFriction(friction);
-    }
-
-    /**
-     * Sets the restitution to the RigidBody
-     */
-    public void setRestitution(final float restitution){
-        this.body.getFixtureList().get(0).setRestitution(restitution);
     }
 
     /**
@@ -115,6 +79,12 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
         this.body.setUserData(this);
     }
 
+    /**
+     * Render the element on current viewport (do access physics world here !)
+     *
+     * @param deltaTime The delta time since last call
+     * @param renderer  The renderer to use in current layer
+     */
     @Override
     public void render(float deltaTime, SpriteBatch renderer) {
         if(!dirty) {
@@ -124,7 +94,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
             final float yAmount = position.y - height / 2 - this.y;
             this.x += xAmount;
             this.y += yAmount;
-            this.rotation = angle * DEG_IN_RAD;
+            this.rotation = angle * MathUtils.radDeg;
 
             if(dirty) return;
 
@@ -143,6 +113,9 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
         super.render(deltaTime, renderer);
     }
 
+    /**
+     * Releases all resources of this object.
+     */
     @Override
     public void dispose() {
         super.dispose();

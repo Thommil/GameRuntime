@@ -13,26 +13,25 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 14/02/16.
  */
-public class ParticleActor implements Actor, Renderable<SpriteBatch> {
+public class ParticleActor extends Actor implements Renderable<SpriteBatch> {
 
-    protected final int id;
     protected int layer = 0;
     protected final ParticleEffectPool particleEffectPool;
     protected final Array<ParticleEffectPool.PooledEffect> particleEffects;
 
+    /**
+     * Default constructor
+     *
+     * @param id Actor ID in the scene
+     * @param layer Renderable layer in the scene
+     * @param particleEffect The particle effect to spawn
+     * @param maxParticlesEffects The maximum amount on effects in this actor
+     */
     public ParticleActor(int id, int layer, ParticleEffect particleEffect, final int maxParticlesEffects) {
-        this.id = id;
+        super(id);
         this.layer = layer;
         this.particleEffectPool = new ParticleEffectPool(particleEffect, maxParticlesEffects, maxParticlesEffects);
         this.particleEffects = new Array<ParticleEffectPool.PooledEffect>(false, maxParticlesEffects);
-    }
-
-    /**
-     * Gets the ID of the Actor
-     */
-    @Override
-    public int getId() {
-        return this.id;
     }
 
     /**

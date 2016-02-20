@@ -110,7 +110,12 @@ public class SoftBodyBatch implements Batch{
     protected Mesh createMesh(final int size){
         if (size > 32767) throw new IllegalArgumentException("Can't have more than 32767 particles per batch (are you serious?): " + size);
 
-        return new Mesh(Mesh.VertexDataType.VertexArray, false, size , 0,
+        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexArray;
+        if (Gdx.gl30 != null) {
+            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        }
+
+        return new Mesh(vertexDataType, false, size , 0,
                         new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE));
     }
 

@@ -9,12 +9,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.thommil.libgdx.runtime.graphics.cache.SpriteCache;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
-import com.thommil.libgdx.runtime.scene.actor.physics.LogicActor;
+import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
@@ -38,7 +37,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
 
     boolean pouring = false;
     int stepCounter = 0;
-    int dropFrequency = 5;
+    int dropFrequency = 1;
 
     private Texture duckTexture;
 
@@ -124,7 +123,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene.addActor(this.gcSensor);
 
         //Step listener
-        scene.addActor(new LogicActor(){
+        scene.addActor(new AbstractStepable(MathUtils.random(0x7ffffffe)){
             @Override
             public void step(long lastStepDuration) {
                 if(pouring) {
@@ -141,7 +140,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
 
         Gdx.input.setInputProcessor(this);
 
-        SceneProfiler.profile(this.scene, (byte)(SceneProfiler.RENDERER | SceneProfiler.PHYSICS), 5000);
+        SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
 
         this.setScreen(scene);
     }

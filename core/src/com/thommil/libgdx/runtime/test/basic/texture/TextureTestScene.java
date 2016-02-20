@@ -29,7 +29,7 @@ public class TextureTestScene extends Game {
 		scene.addActor(new TextureActor());
 
 		//Profiler
-		SceneProfiler.profile(scene);
+		SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
 
 		//Start
 		this.setScreen(scene);

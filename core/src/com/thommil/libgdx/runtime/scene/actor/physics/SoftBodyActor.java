@@ -1,11 +1,7 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
-import com.thommil.libgdx.runtime.scene.SoftBody;
-import finnstr.libgdx.liquidfun.ParticleSystem;
-import finnstr.libgdx.liquidfun.ParticleSystemDef;
 
 /**
  * SoftBody actor (renderable using a SoftBodyBatch)
@@ -18,6 +14,12 @@ public abstract class SoftBodyActor extends ParticleSystemActor implements Rende
 
     protected int layer = 0;
 
+    /**
+     * Default constructor
+     *
+     * @param id The ID of the Actor in the scene
+     * @param layer The layer of the renderable in the scene
+     */
     public SoftBodyActor(final int id, final int layer) {
         super(id);
         this.layer = layer;

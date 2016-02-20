@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 
@@ -11,25 +10,20 @@ import java.util.List;
  *
  * Created by thommil on 13/02/16.
  */
-public abstract class SensorActor implements RigidBody {
-
-    protected final int id;
+public abstract class SensorActor extends AbstractStepable implements RigidBody {
 
     /**
      * The bound body
      */
     public Body body;
 
-    public SensorActor(final int id){
-        this.id = id;
-    }
-
     /**
-     * Gets the ID of the Actor
+     * Default constructor
+     *
+     * @param id The ID of the Actor in the scene
      */
-    @Override
-    public int getId() {
-        return this.id;
+    public SensorActor(final int id){
+        super(id);
     }
 
     /**
@@ -43,22 +37,6 @@ public abstract class SensorActor implements RigidBody {
      */
     @Override
     public float getDensity() {
-        return 0.0f;
-    }
-
-    /**
-     * Gets the friction to the RigidBody
-     */
-    @Override
-    public float getFriction() {
-        return 0.0f;
-    }
-
-    /**
-     * Gets the restitution to the RigidBody
-     */
-    @Override
-    public float getRestitution() {
         return 0.0f;
     }
 
@@ -84,6 +62,17 @@ public abstract class SensorActor implements RigidBody {
             fixture.setSensor(true);
         }
         this.body.setUserData(this);
+    }
+
+    /**
+     * Called at each physics step, any physics related task should be
+     * handled here and not in the rendering phase.
+     *
+     * @param lastStepDuration The duration of the last step for QoS purpose
+     */
+    @Override
+    public void step(long lastStepDuration) {
+        //NOP
     }
 
     /**

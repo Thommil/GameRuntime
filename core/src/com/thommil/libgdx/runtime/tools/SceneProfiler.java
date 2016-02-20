@@ -2,10 +2,11 @@ package com.thommil.libgdx.runtime.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.StringBuilder;
+import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.actor.physics.LogicActor;
-import com.thommil.libgdx.runtime.scene.layer.LogicLayer;
+import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 
 /**
@@ -88,7 +89,8 @@ public class SceneProfiler{
         final float frequencyFactor = 1000f / this.frequency;
         this.startTime = System.currentTimeMillis();
 
-        this.scene.addLayer(new LogicLayer() {
+        this.scene.addLayer(new Layer(1) {
+
             @Override
             public void render(float deltaTime) {
                 renderCalls++;
@@ -99,9 +101,13 @@ public class SceneProfiler{
                     startTime= System.currentTimeMillis();
                 }
             }
+            @Override protected void onShow() {}
+            @Override protected void onHide() {}
+            @Override protected void onResize(int width, int height) {}
+            @Override public void dispose() {}
         });
 
-        this.scene.addActor(new LogicActor() {
+        this.scene.addActor(new AbstractStepable(MathUtils.random(MathUtils.random(0x7ffffffe))) {
             @Override
             public void step(long lastStepDuration) {
                 stepCalls++;

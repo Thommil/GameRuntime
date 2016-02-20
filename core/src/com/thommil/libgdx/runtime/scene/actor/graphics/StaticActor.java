@@ -11,9 +11,8 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 12/02/16.
  */
-public class StaticActor implements Actor, Renderable<SpriteBatch> {
+public class StaticActor extends Actor implements Renderable<SpriteBatch> {
 
-    protected final int id;
     protected int layer = 0;
 
     final public Texture texture;
@@ -23,6 +22,22 @@ public class StaticActor implements Actor, Renderable<SpriteBatch> {
     final public float u2, v2;
     final public float color;
 
+    /**
+     * Default conctructor
+     *
+     * @param id The ID of the Actor in the scene
+     * @param layer The layer ID of the renderable in the scene
+     * @param texture The texture to use
+     * @param x The X coord
+     * @param y The Y coord
+     * @param width The width of the renderable
+     * @param height The height of the renderable
+     * @param u
+     * @param v
+     * @param u2
+     * @param v2
+     * @param color
+     */
     public StaticActor(final int id,
                         final int layer,
                         final Texture texture,
@@ -31,7 +46,7 @@ public class StaticActor implements Actor, Renderable<SpriteBatch> {
                         final float u, final float v,
                         final float u2, final float v2,
                         final float color){
-        this.id =id;
+        super(id);
         this.layer = layer;
         this.texture = texture;
         this.x = x;
@@ -45,28 +60,34 @@ public class StaticActor implements Actor, Renderable<SpriteBatch> {
         this.color = color;
     }
 
-    /**
-     * Gets the ID of the Actor
-     */
-    @Override
-    public int getId() {
-        return this.id;
-    }
-
     public void setLayer(final int layer){
         this.layer = layer;
     }
 
+    /**
+     * Returns the layer of the Renderable
+     *
+     * @return The layer of the Renderable
+     */
     @Override
-    public int getLayer(){
+    public int getLayer() {
         return this.layer;
     }
 
+    /**
+     * Render the element on current viewport (do access physics world here !)
+     *
+     * @param deltaTime The delta time since last call
+     * @param renderer  The renderer to use in current layer
+     */
     @Override
     public void render(float deltaTime, SpriteBatch renderer) {
         renderer.draw(texture, x, y, width, height, u, v, u2, v2, color);
     }
 
+    /**
+     * Releases all resources of this object.
+     */
     @Override
     public void dispose() {
         //NOP Texture can be shared

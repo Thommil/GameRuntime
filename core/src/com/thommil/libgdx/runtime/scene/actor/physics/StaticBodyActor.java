@@ -38,43 +38,6 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
     }
 
     /**
-     * Gets the friction to the RigidBody
-     */
-    @Override
-    public float getFriction() {
-        return 0.2f;
-    }
-
-    /**
-     * Gets the restitution to the RigidBody
-     */
-    @Override
-    public float getRestitution() {
-        return 0.0f;
-    }
-
-    /**
-     * Sets the density to the RigidBody
-     */
-    public void setDensity(final float density){
-        this.body.getFixtureList().get(0).setDensity(density);
-    }
-
-    /**
-     * Sets the friction to the RigidBody
-     */
-    public void setFriction(final float friction){
-        this.body.getFixtureList().get(0).setFriction(friction);
-    }
-
-    /**
-     * Sets the restitution to the RigidBody
-     */
-    public void setRestitution(final float restitution){
-        this.body.getFixtureList().get(0).setRestitution(restitution);
-    }
-
-    /**
      * Gets the definition of Collidable
      */
     @Override
@@ -96,9 +59,13 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
         this.body.setUserData(this);
     }
 
+    /**
+     * Releases all resources of this object.
+     */
     @Override
     public void dispose() {
         super.dispose();
         this.body.getWorld().destroyBody(this.body);
     }
+
 }

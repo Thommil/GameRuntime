@@ -3,26 +3,21 @@ package com.thommil.libgdx.runtime.test.basic.texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
+import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class TextureActor implements Renderable<SpriteBatch> {
+public class TextureActor extends Actor implements Renderable<SpriteBatch> {
 
     Texture texture;
 
     public TextureActor() {
+        super(MathUtils.random(0x7ffffffe));
         this.texture = new Texture(Gdx.files.internal("test.png"));
-    }
-
-    /**
-     * Gets the ID of the Actor
-     */
-    @Override
-    public int getId() {
-        return 0;
     }
 
     @Override
