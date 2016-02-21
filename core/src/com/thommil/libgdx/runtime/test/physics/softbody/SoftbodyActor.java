@@ -22,11 +22,12 @@ public class SoftbodyActor extends SoftBodyActor {
     public ParticleSystemDef getDefinition() {
         ParticleSystemDef particleSystemDef = new ParticleSystemDef();
         particleSystemDef.radius = 0.1f;
-        //particleSystemDef.elasticStrength = 1f;
-        particleSystemDef.density = 2f;
-        particleSystemDef.ejectionStrength = 2f;
-        particleSystemDef.dampingStrength = 2f;
-        particleSystemDef.repulsiveStrength = 2f;
+        particleSystemDef.elasticStrength = 0.7f;
+        particleSystemDef.density = 0.3f;
+        //particleSystemDef.ejectionStrength = 5f;
+        //particleSystemDef.dampingStrength = 2f;
+        //particleSystemDef.repulsiveStrength = 0.1f;
+        particleSystemDef.viscousStrength = 4f;
         return particleSystemDef;
     }
 

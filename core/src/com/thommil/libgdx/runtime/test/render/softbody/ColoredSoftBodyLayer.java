@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.test.render.softbody;
 
-import com.badlogic.gdx.graphics.Color;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 
@@ -21,6 +20,6 @@ public class ColoredSoftBodyLayer extends SoftBodyBatchLayer {
     @Override
     public void add(Renderable renderable) {
         super.add(renderable);
-        ((ColoredSoftBodyBatch)this.renderer).addAttributeColors(((SoftbodyRenderActor)renderable).getColors());
+        ((ColoredSoftBodyBatch)this.renderer).addAttributeColors(((ColoredSoftbodyActor)renderable).getColors());
     }
 }

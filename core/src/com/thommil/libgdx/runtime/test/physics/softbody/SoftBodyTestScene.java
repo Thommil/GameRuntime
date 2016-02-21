@@ -4,16 +4,16 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.thommil.libgdx.runtime.physics.ParticleGroupFactory;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
-import com.thommil.libgdx.runtime.tools.GL11;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleDef;
+import finnstr.libgdx.liquidfun.ParticleGroup;
 import finnstr.libgdx.liquidfun.ParticleGroupDef;
 
 /**
@@ -25,8 +25,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
 
     Scene scene;
     SoftbodyActor particlesActor;
-
-    int inc = 0;
+    ParticleGroup particleGroup1;
 
     @Override
     public void create() {
@@ -48,6 +47,85 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         particlesActor = new SoftbodyActor();
         scene.addActor(particlesActor);
 
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.2f,0f);
+
+        ParticleGroupDef particleGroupDef = new ParticleGroupDef();
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
+        particleGroupDef.shape = shape;
+        particleGroupDef.stride = 0.2f;
+        particleGroup1 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        particleGroupDef.position.set(0f,0.2f);
+        ParticleGroup particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,0.4f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,0.6f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,0.8f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,1f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,1.2f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,1.4f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,1.6f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,1.8f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,2f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,2.2f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,2.4f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,2.6f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,2.8f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,3f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,3.2f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,3.4f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,3.6f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+        particleGroupDef.position.set(0f,3.8f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+
+        shape.setAsBox(0.5f,0.5f);
+        particleGroupDef.position.set(0f,4.4f);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+
+        shape.setAsBox(2f,1);
+        particleGroupDef.position.set(0f,-1.2f);
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
+        particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
+        this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
+
+
+
         //Container
         SpriteCacheLayer.setMaxSprites(3);
         SpriteCacheLayer containerLayer = new SpriteCacheLayer();
@@ -64,9 +142,16 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         Gdx.input.setInputProcessor(this);
 
         SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);
+
         this.setScreen(scene);
     }
 
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        this.particleGroup1.applyLinearImpulse(new Vector2(0,20));
+        return false;
+    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -83,24 +168,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         return false;
     }
 
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.scene.runOnPhysicsThread(new Runnable() {
-            @Override
-            public void run() {
-                ParticleGroupDef particleGroupDef = new ParticleGroupDef();
-                particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
-                particleGroupDef.position.set(0f,0f);
-                PolygonShape shape = new PolygonShape();
-                shape.setAsBox(0.3f,2f);
-                particleGroupDef.shape = shape;
-                SoftBodyTestScene.this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
-                shape.dispose();
-            }
-        });
 
-        return false;
-    }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {

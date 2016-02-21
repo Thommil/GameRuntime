@@ -7,16 +7,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
-import finnstr.libgdx.liquidfun.ParticleDef;
-import finnstr.libgdx.liquidfun.ParticleGroup;
-import finnstr.libgdx.liquidfun.ParticleGroupDef;
 
 /**
  * SoftBody textured display
@@ -30,8 +24,7 @@ import finnstr.libgdx.liquidfun.ParticleGroupDef;
 public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
     Scene scene;
-    SoftbodyRenderActor particlesActor;
-    ParticleGroup softBody;
+    ColoredSoftbodyActor coloredSoftBodyActor;
 
     @Override
     public void create() {
@@ -51,8 +44,8 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
         softBodyBatchLayer.setScaleFactor(1.2f);
         //softBodyBatchLayer.setScaleFactor(0.75f);
         scene.addLayer(1,softBodyBatchLayer);
-        particlesActor = new SoftbodyRenderActor();
-        scene.addActor(particlesActor);
+        coloredSoftBodyActor = new ColoredSoftbodyActor();
+        scene.addActor(coloredSoftBodyActor);
 
         //Container
         SpriteCacheLayer.setMaxSprites(4);
@@ -74,15 +67,6 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
         this.setScreen(scene);
 
-        ParticleGroupDef particleGroupDef = new ParticleGroupDef();
-        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
-        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
-        particleGroupDef.position.set(0f, 0f);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1f, 1f);
-        particleGroupDef.shape = shape;
-        softBody = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
-        shape.dispose();
     }
 
 
@@ -103,7 +87,7 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        softBody.applyLinearImpulse(new Vector2(MathUtils.random(-100,100),100));
+        coloredSoftBodyActor.innerSoftBody.applyLinearImpulse(new Vector2(MathUtils.random(-100,100),100));
 
         return false;
     }

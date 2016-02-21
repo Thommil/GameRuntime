@@ -43,10 +43,10 @@ public class DesktopLauncher {
 		//new LwjglApplication(new ParticlesTestScene(), config);
 
 		//Softbody Physics
-		//new LwjglApplication(new SoftBodyTestScene(), config);
+		new LwjglApplication(new SoftBodyTestScene(), config);
 
 		//Softbody Rendering
-		new LwjglApplication(new SoftBodyRenderTestScene(), config);
+		//new LwjglApplication(new SoftBodyRenderTestScene(), config);
 
 		//Kinematic input
 		//new LwjglApplication(new KinematicInputTestScene(), config);

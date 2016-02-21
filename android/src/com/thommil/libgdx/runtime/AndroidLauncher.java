@@ -45,7 +45,7 @@ public class AndroidLauncher extends AndroidApplication {
 		//initialize(new ParticlesTestScene(), config);
 
 		//Softbody Physics
-		//initialize(new SoftBodyTestScene(), config);
+		initialize(new SoftBodyTestScene(), config);
 
 		//Softbody Rendering
 		//initialize(new SoftBodyRenderTestScene(), config);
@@ -57,7 +57,7 @@ public class AndroidLauncher extends AndroidApplication {
 		//initialize(new PhysicsInputTestScene(), config);
 
 		//Water rendering
-		initialize(new WaterTestScene(), config);
+		//initialize(new WaterTestScene(), config);
 
 
 	}

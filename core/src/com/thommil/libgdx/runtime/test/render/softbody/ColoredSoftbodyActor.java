@@ -2,17 +2,20 @@ package com.thommil.libgdx.runtime.test.render.softbody;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
-import finnstr.libgdx.liquidfun.ParticleSystemDef;
+import finnstr.libgdx.liquidfun.*;
 
 /**
  * Created by tomtom on 03/02/16.
  */
-public class SoftbodyRenderActor extends SoftBodyActor {
+public class ColoredSoftbodyActor extends SoftBodyActor {
 
-    public SoftbodyRenderActor() {
+    public ColoredSoftbodyActor() {
         super(MathUtils.random(0x7ffffffe), 1);
     }
+
+    public ParticleGroup innerSoftBody;
 
     /**
      * Gets the definition of SoftBody
@@ -29,6 +32,25 @@ public class SoftbodyRenderActor extends SoftBodyActor {
         particleSystemDef.elasticStrength = 0.3f;
         particleSystemDef.strictContactCheck = true;
         return particleSystemDef;
+    }
+
+    /**
+     * Set body instance of the Collidable
+     *
+     * @param particleSystem
+     */
+    @Override
+    public void setBody(ParticleSystem particleSystem) {
+        super.setBody(particleSystem);
+        ParticleGroupDef particleGroupDef = new ParticleGroupDef();
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
+        particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
+        particleGroupDef.position.set(0f, 0f);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1f, 1f);
+        particleGroupDef.shape = shape;
+        innerSoftBody = particleSystem.createParticleGroup(particleGroupDef);
+        shape.dispose();
     }
 
     /**
