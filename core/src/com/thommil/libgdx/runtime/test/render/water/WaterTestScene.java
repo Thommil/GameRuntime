@@ -37,7 +37,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
 
     boolean pouring = false;
     int stepCounter = 0;
-    int dropFrequency = 1;
+    int dropFrequency = 2;
 
     private Texture duckTexture;
 

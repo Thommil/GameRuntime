@@ -358,7 +358,7 @@ public class Scene implements Screen {
                             actor.step(lastPhysicsStepDuration);
                         }
 
-                        Scene.this.physicsWorld.step(Scene.this.settings.physics.frequency
+                        Scene.this.physicsWorld.step(Scene.this.settings.physics.frequency * Scene.this.settings.physics.timeFactor
                                 , Scene.this.settings.physics.velocityIterations
                                 , Scene.this.settings.physics.positionIterations
                                 , Scene.this.settings.physics.particleIterations);
@@ -547,7 +547,8 @@ public class Scene implements Screen {
          */
         public static class Physics{
             public float[] gravity = {0.0f,-9.8f};
-            public float frequency = 0.01666666666f;
+            public float frequency = 1/100f;
+            public float timeFactor = 1f;
             public int velocityIterations = 8;
             public int positionIterations = 3;
             public int particleIterations = 3;

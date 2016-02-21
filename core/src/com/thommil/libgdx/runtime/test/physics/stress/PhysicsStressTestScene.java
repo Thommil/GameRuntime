@@ -30,6 +30,7 @@ public class PhysicsStressTestScene extends Game{
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 100;
         settings.viewport.minWorldHeight = 100;
+
         //settings.physics.debug = true;
         scene = new Scene(settings);
         curiosityTexture = new Texture(Gdx.files.internal("curiosity.png"));
@@ -45,7 +46,7 @@ public class PhysicsStressTestScene extends Game{
             @Override
             public void step(long lastStepDuration) {
                 if(Gdx.graphics.getFramesPerSecond() > 30) {
-                    if (inc % 5 == 0) {
+                    if (inc % 30 == 0) {
                         scene.addActor(new CuriosityActor(curiosityTexture));
                     }
                 }

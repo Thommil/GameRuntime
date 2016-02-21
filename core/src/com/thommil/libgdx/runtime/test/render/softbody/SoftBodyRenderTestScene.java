@@ -41,7 +41,7 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
         Scene.Settings settings = new Scene.Settings();
         settings.viewport.minWorldWidth = 10;
         settings.viewport.minWorldHeight = 10;
-        settings.physics.particleIterations = 10;
+        settings.physics.particleIterations = 6;
         //settings.renderer.blendEnabled=false;
         //settings.physics.debug = true;
         scene = new Scene(settings);
@@ -103,7 +103,7 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        softBody.applyLinearImpulse(new Vector2(MathUtils.random(-100,100),MathUtils.random(-100,100)));
+        softBody.applyLinearImpulse(new Vector2(MathUtils.random(-100,100),100));
 
         return false;
     }
