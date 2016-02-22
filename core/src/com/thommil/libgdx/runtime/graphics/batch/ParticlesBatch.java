@@ -9,11 +9,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
 /**
- * Base Batch for LiquidFun ParticleSystem (SoftBody).
+ * Base Batch for LiquidFun ParticleSystem (ParticlesBody).
  *
  * Created by thommil on 2/10/16.
  */

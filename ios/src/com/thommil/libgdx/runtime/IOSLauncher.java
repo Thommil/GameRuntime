@@ -14,7 +14,6 @@ import com.thommil.libgdx.runtime.test.input.dynamic.PhysicsInputTestScene;
 import com.thommil.libgdx.runtime.test.input.kinematic.KinematicInputTestScene;
 import com.thommil.libgdx.runtime.test.physics.basic.BasicPhysicsTestScene;
 import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
-import com.thommil.libgdx.runtime.test.physics.softbody.SoftBodyTestScene;
 import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
 import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
 
@@ -37,7 +36,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //Stress Physics
         //return new IOSApplication(new PhysicsStressTestScene(), config);
 
-        //SoftBody Physics
+        //ParticlesBody Physics
         //return new IOSApplication(new CollisionTestScene(), config);
 
         //Particles Sprite

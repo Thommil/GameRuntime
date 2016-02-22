@@ -230,8 +230,8 @@ public class Scene implements Screen {
                         }
                         rigidBody.setBody(body);
                     }
-                    else if(actor instanceof SoftBody) {
-                        final SoftBody softBody = (SoftBody)actor;
+                    else if(actor instanceof ParticlesBody) {
+                        final ParticlesBody softBody = (ParticlesBody)actor;
                         final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,softBody.getDefinition());
                         softBody.setBody(particleSystem);
                     }
@@ -256,8 +256,8 @@ public class Scene implements Screen {
                 }
                 rigidBody.setBody(body);
             }
-            else if(actor instanceof SoftBody) {
-                final SoftBody softBody = (SoftBody)actor;
+            else if(actor instanceof ParticlesBody) {
+                final ParticlesBody softBody = (ParticlesBody)actor;
                 final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,softBody.getDefinition());
                 softBody.setBody(particleSystem);
             }

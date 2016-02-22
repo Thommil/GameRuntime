@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.actor.graphics.ParticleActor;
+import com.thommil.libgdx.runtime.scene.actor.graphics.ParticleEffectActor;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
@@ -22,7 +22,7 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
 public class ParticlesTestScene extends Game  implements InputProcessor{
 
 	Scene scene;
-	ParticleActor actor;
+	ParticleEffectActor actor;
 	ParticleEffect effect;
 
 	@Override
@@ -49,7 +49,7 @@ public class ParticlesTestScene extends Game  implements InputProcessor{
 		//Actor
 		ParticleEffect effect = new ParticleEffect();
 		effect.load(Gdx.files.internal("effects/particles.p"), Gdx.files.internal("effects"));
-		actor = new ParticleActor(0, 1, effect, 10);
+		actor = new ParticleEffectActor(0, 1, effect, 10);
 		scene.addActor(actor);
 
 		Gdx.input.setInputProcessor(this);

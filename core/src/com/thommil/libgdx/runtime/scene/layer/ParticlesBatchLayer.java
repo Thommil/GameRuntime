@@ -5,7 +5,7 @@ import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
- * SoftBody layer using ParticlesBatch as renderer
+ * ParticlesBody layer using ParticlesBatch as renderer
  *
  * Created by thommil on 03/02/16.
  */

@@ -14,7 +14,6 @@ import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
 import com.thommil.libgdx.runtime.test.physics.softbody.SoftBodyTestScene;
 import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
 import com.thommil.libgdx.runtime.test.render.particles.ParticlesTestScene;
-import com.thommil.libgdx.runtime.test.render.softbody.SoftBodyRenderTestScene;
 import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
 
 public class AndroidLauncher extends AndroidApplication {
@@ -46,9 +45,6 @@ public class AndroidLauncher extends AndroidApplication {
 
 		//Softbody Physics
 		initialize(new SoftBodyTestScene(), config);
-
-		//Softbody Rendering
-		//initialize(new SoftBodyRenderTestScene(), config);
 
 		//Kinematic input
 		//initialize(new KinematicInputTestScene(), config);

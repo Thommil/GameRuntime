@@ -13,7 +13,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 14/02/16.
  */
-public class ParticleActor extends Actor implements Renderable<SpriteBatch> {
+public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch> {
 
     protected int layer = 0;
     protected final ParticleEffectPool particleEffectPool;
@@ -27,7 +27,7 @@ public class ParticleActor extends Actor implements Renderable<SpriteBatch> {
      * @param particleEffect The particle effect to spawn
      * @param maxParticlesEffects The maximum amount on effects in this actor
      */
-    public ParticleActor(int id, int layer, ParticleEffect particleEffect, final int maxParticlesEffects) {
+    public ParticleEffectActor(int id, int layer, ParticleEffect particleEffect, final int maxParticlesEffects) {
         super(id);
         this.layer = layer;
         this.particleEffectPool = new ParticleEffectPool(particleEffect, maxParticlesEffects, maxParticlesEffects);

@@ -8,7 +8,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  *
  * Created by thommil on 14/02/16.
  */
-public interface SoftBody extends Collidable<ParticleSystemDef, ParticleSystem>{
+public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSystem>{
 
 
 }
