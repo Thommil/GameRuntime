@@ -19,6 +19,8 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
  * the amount of particles must be decreased to allow less iterations and blur pass using FBO
  * can be used like in the WaterScene demo.
  *
+ * The colors of the particles are not used as they are always the same and to avoid big buffer on draw.
+ *
  * Created by tomtom on 04/02/16.
  */
 public class SoftBodyRenderTestScene extends Game implements InputProcessor{
@@ -48,8 +50,8 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
         scene.addActor(coloredSoftBodyActor);
 
         //Container
-        SpriteCacheLayer.setMaxSprites(4);
-        SpriteCacheLayer containerLayer = new SpriteCacheLayer();
+        SpriteCacheLayer.setSize(4);
+        SpriteCacheLayer containerLayer = new SpriteCacheLayer(4);
         scene.addLayer(0,containerLayer);
 
         Texture texture = new Texture(Gdx.files.internal("metal.png"));

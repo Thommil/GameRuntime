@@ -13,18 +13,13 @@ public class SpriteBatchLayer extends Layer{
 
     final protected SpriteBatch renderer;
 
-    public SpriteBatchLayer(final int maxSprites) {
-        super(maxSprites);
-        this.renderer = new SpriteBatch(maxSprites);
+    public SpriteBatchLayer(final int size) {
+        super(size);
+        this.renderer = new SpriteBatch(size);
     }
 
-    public SpriteBatchLayer(final int maxSprites, final SpriteBatch customRenderer) {
-        super(maxSprites);
-        this.renderer = customRenderer;
-    }
-
-    public SpriteBatchLayer(final SpriteBatch customRenderer) {
-        super(DEFAULT_INITIAL_CAPACITY);
+    public SpriteBatchLayer(final int initialCapacity, final SpriteBatch customRenderer) {
+        super(initialCapacity);
         this.renderer = customRenderer;
     }
 

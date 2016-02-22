@@ -13,12 +13,7 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SoftBodyActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
 /**
- * Custom Batch for LiquidFun ParticleSystem (SoftBody).
- *
- * Not really a Batch as all vertices are stored in ParticleSystem so only
- * one SoftBodyBatch should be implemented by ParticleSystem
- *
- * Colors are not supported in the default version.
+ * Base Batch for LiquidFun ParticleSystem (SoftBody).
  *
  * Created by thommil on 2/10/16.
  */
@@ -27,27 +22,13 @@ public class SoftBodyBatch implements Batch{
     protected final Mesh mesh;
     protected final ShaderProgram shader;
 
-    protected final Texture texture;
     protected float particlesScale = 1f;
 
     protected final Matrix4 combinedMatrix = new Matrix4();
     protected boolean isDrawing = false;
 
-    public SoftBodyBatch() {
-        this(null, 10000);
-    }
-
-    public SoftBodyBatch(final Texture texture){
-            this(texture, 10000);
-    }
-
-    public SoftBodyBatch(final int size) {
-        this(null, size);
-    }
-
-    public SoftBodyBatch(final Texture texture, final int size) {
-        this.texture = texture;
-        mesh = createMesh(size);
+    public SoftBodyBatch(final int maxParticles) {
+        mesh = createMesh(maxParticles);
         shader = createShader();
     }
 
@@ -61,10 +42,6 @@ public class SoftBodyBatch implements Batch{
 
         shader.begin();
         shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
-        if(this.texture != null){
-            this.texture.bind(0);
-            shader.setUniformi("u_texture", 0);
-        }
     }
 
     @Override
@@ -130,10 +107,7 @@ public class SoftBodyBatch implements Batch{
             prefix += "#version 100\n";
         }
 
-        String vertexShader, fragmentShader;
-
-        if(this.texture == null) {
-            vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+        final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                     + "uniform mat4 u_projTrans;\n" //
                     + "uniform float radius;\n" //
                     + "\n" //
@@ -142,7 +116,8 @@ public class SoftBodyBatch implements Batch{
                     + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                     + "   gl_PointSize = radius;\n" //
                     + "}\n";
-            fragmentShader = "#ifdef GL_ES\n" //
+
+        final String fragmentShader = "#ifdef GL_ES\n" //
                     + "#define LOWP lowp\n" //
                     + "precision mediump float;\n" //
                     + "#else\n" //
@@ -155,30 +130,7 @@ public class SoftBodyBatch implements Batch{
                     + "{\n" //
                     + " gl_FragColor = vec4(FULL, FULL, FULL, HALF-length(vec2(gl_PointCoord.x - HALF, gl_PointCoord.y - HALF)));\n" //
                     + "}";
-        }
-        else{
-            vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-                    + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + ";\n" //
-                    + "uniform mat4 u_projTrans;\n" //
-                    + "uniform float radius;\n" //
-                    + "\n" //
-                    + "void main()\n" //
-                    + "{\n" //
-                    + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-                    + "   gl_PointSize = radius;\n" //
-                    + "}\n";
-            fragmentShader = "#ifdef GL_ES\n" //
-                    + "#define LOWP lowp\n" //
-                    + "precision mediump float;\n" //
-                    + "#else\n" //
-                    + "#define LOWP \n" //
-                    + "#endif\n" //
-                    + "uniform sampler2D u_texture;\n" //
-                    + "void main()\n"//
-                    + "{\n" //
-                    + " gl_FragColor = texture2D(u_texture, gl_PointCoord);\n" //
-                    + "}";
-        }
+
 
         final ShaderProgram shader = new ShaderProgram(prefix + vertexShader, prefix + fragmentShader);
         if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());

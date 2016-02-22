@@ -36,7 +36,7 @@ public class ParticlesTestScene extends Game  implements InputProcessor{
 		scene = new Scene(settings);
 
 		//Layers
-		SpriteCacheLayer backgroundLayer = new SpriteCacheLayer();
+		SpriteCacheLayer backgroundLayer = new SpriteCacheLayer(1);
 		scene.addLayer(backgroundLayer);
 		Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
 		backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);

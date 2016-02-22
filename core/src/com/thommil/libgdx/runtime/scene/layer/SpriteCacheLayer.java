@@ -16,26 +16,22 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
  */
 public class SpriteCacheLayer extends Layer{
 
-    private static int maxSprites = 1000;
+    private static int size = 1000;
     private static int currentCacheId = 0;
     private static SpriteCache renderer;
     private int cacheId;
 
-    public static void setMaxSprites(final int maxSprites){
+    public static void setSize(final int size){
         if(SpriteCacheLayer.renderer != null){
-            throw new GameRuntimeException("Maximum Sprites size must be set before creating a new SpriteCacheLayer");
+            throw new GameRuntimeException("SpriteCacheLayer size must be set before creating a new SpriteCacheLayer");
         }
-        SpriteCacheLayer.maxSprites = maxSprites;
-    }
-
-    public SpriteCacheLayer() {
-        this(DEFAULT_INITIAL_CAPACITY);
+        SpriteCacheLayer.size = size;
     }
 
     public SpriteCacheLayer(final int initialCapacity) {
         super(initialCapacity);
         if(SpriteCacheLayer.renderer == null){
-            SpriteCacheLayer.renderer = new SpriteCache(SpriteCacheLayer.maxSprites);
+            SpriteCacheLayer.renderer = new SpriteCache(SpriteCacheLayer.size);
         }
         this.cacheId = currentCacheId++;
     }
@@ -97,7 +93,7 @@ public class SpriteCacheLayer extends Layer{
             SpriteCacheLayer.renderer.dispose();
             SpriteCacheLayer.renderer = null;
         }
-        SpriteCacheLayer.maxSprites = 1000;
+        SpriteCacheLayer.size = 1000;
         SpriteCacheLayer.currentCacheId = 0;
     }
 }

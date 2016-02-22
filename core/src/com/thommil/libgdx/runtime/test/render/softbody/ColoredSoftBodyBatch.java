@@ -88,8 +88,6 @@ public class ColoredSoftBodyBatch extends SoftBodyBatch {
                     + "#define LOWP \n" //
                     + "#endif\n" //
                     + "varying vec4 v_color;\n" //
-                    + "const float HALF = 0.5;\n" //
-                    + "const float FULL = 1.0;\n" //
                     + "\n" //
                     + "void main()\n"//
                     + "{\n" //

@@ -15,11 +15,6 @@ import java.util.List;
 public abstract class Layer implements Disposable {
 
     /**
-     * Default initial capacity
-     */
-    public static final int DEFAULT_INITIAL_CAPACITY = 16;
-
-    /**
      * Indicates visible/enabled state
      */
     private boolean visible = false;

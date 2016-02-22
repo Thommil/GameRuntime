@@ -31,10 +31,6 @@ public class SpriteBatch implements Batch{
 
     private Color tempColor = new Color(1, 1, 1, 1);
 
-    public SpriteBatch() {
-        this(1000);
-    }
-
     public SpriteBatch(final int size) {
         mesh = createMesh(size);
         vertices = createVertices(size);

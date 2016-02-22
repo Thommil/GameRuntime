@@ -25,8 +25,8 @@ public class CacheTestScene extends Game {
 		Scene scene = new Scene(settings);
 
 		//Layers
-		SpriteCacheLayer.setMaxSprites(60);
-		SpriteCacheLayer planetCacheLayer = new SpriteCacheLayer();
+		SpriteCacheLayer.setSize(60);
+		SpriteCacheLayer planetCacheLayer = new SpriteCacheLayer(60);
 		scene.addLayer(planetCacheLayer);
 
 		//Actor

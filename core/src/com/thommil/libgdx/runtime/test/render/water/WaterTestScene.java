@@ -55,10 +55,10 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene = new Scene(settings);
 
         //Shared Cache
-        SpriteCacheLayer.setMaxSprites(10);
+        SpriteCacheLayer.setSize(10);
 
         //Background - 0
-        SpriteCacheLayer backgroundLayer = new SpriteCacheLayer();
+        SpriteCacheLayer backgroundLayer = new SpriteCacheLayer(10);
         scene.addLayer(backgroundLayer);
         Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
         backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -90,7 +90,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
 
         //Tub - 3
-        SpriteCacheLayer tubLayer = new SpriteCacheLayer();
+        SpriteCacheLayer tubLayer = new SpriteCacheLayer(10);
         scene.addLayer(tubLayer);
         Texture tubTexture = new Texture(Gdx.files.internal("tub.jpg"));
         Texture tabTexture = new Texture(Gdx.files.internal("metal.png"));

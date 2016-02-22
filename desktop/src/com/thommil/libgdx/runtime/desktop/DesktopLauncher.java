@@ -43,7 +43,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new ParticlesTestScene(), config);
 
 		//Softbody Physics
-		//new LwjglApplication(new SoftBodyTestScene(), config);
+		new LwjglApplication(new SoftBodyTestScene(), config);
 
 		//Softbody Rendering
 		//new LwjglApplication(new SoftBodyRenderTestScene(), config);
@@ -55,7 +55,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new PhysicsInputTestScene(), config);
 
 		//Water rendering
-		new LwjglApplication(new WaterTestScene(), config);
+		//new LwjglApplication(new WaterTestScene(), config);
 
 
 	}

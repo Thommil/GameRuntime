@@ -9,7 +9,7 @@ import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
 public class WaterLayer extends SoftBodyBatchLayer {
 
     public WaterLayer(){
-        super(new WaterBatch());
+        super(1,new WaterBatch());
         this.setScaleFactor(1.5f);
     }
 
