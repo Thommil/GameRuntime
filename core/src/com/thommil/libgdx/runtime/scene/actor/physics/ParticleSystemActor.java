@@ -13,6 +13,9 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  */
 public abstract class ParticleSystemActor extends AbstractStepable implements ParticlesBody, Renderable<ParticlesBatch> {
 
+    public static final int VERTEX_SIZE = 2;
+    public static final int COLORED_VERTEX_SIZE  = VERTEX_SIZE + 4;
+
     public ParticleSystem particleSystem;
 
     protected int layer = 0;

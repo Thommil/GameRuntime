@@ -231,9 +231,9 @@ public class Scene implements Screen {
                         rigidBody.setBody(body);
                     }
                     else if(actor instanceof ParticlesBody) {
-                        final ParticlesBody softBody = (ParticlesBody)actor;
-                        final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,softBody.getDefinition());
-                        softBody.setBody(particleSystem);
+                        final ParticlesBody particlesBody = (ParticlesBody)actor;
+                        final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,particlesBody.getDefinition());
+                        particlesBody.setBody(particleSystem);
                     }
                     if(actor instanceof Stepable){
                         Scene.this.stepables.add((Stepable)actor);
@@ -257,9 +257,9 @@ public class Scene implements Screen {
                 rigidBody.setBody(body);
             }
             else if(actor instanceof ParticlesBody) {
-                final ParticlesBody softBody = (ParticlesBody)actor;
-                final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,softBody.getDefinition());
-                softBody.setBody(particleSystem);
+                final ParticlesBody particlesBody = (ParticlesBody)actor;
+                final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,particlesBody.getDefinition());
+                particlesBody.setBody(particleSystem);
             }
             if(actor instanceof Stepable){
                 this.stepables.add((Stepable)actor);

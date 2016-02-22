@@ -26,11 +26,6 @@ public class SpriteCache implements Disposable {
     protected final IntArray counts = new IntArray(8);
     protected Cache currentCache;
 
-    /** Creates a cache that uses indexed geometry and can contain up to 1000 images. */
-    public SpriteCache() {
-        this(1000);
-    }
-
     /** Creates a cache with the specified size and OpenGL ES 2.0 shader.
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      *           Max of 5460 if indices are used.

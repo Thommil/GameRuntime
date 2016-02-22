@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
 /**
@@ -26,11 +27,12 @@ public class ParticlesBatch implements Batch{
     protected final Matrix4 combinedMatrix = new Matrix4();
     protected boolean isDrawing = false;
 
-    protected int verticesSize = 2;
+    protected int verticesSize;
 
     public ParticlesBatch(final int maxParticles) {
         mesh = createMesh(maxParticles);
         shader = createShader();
+        this.verticesSize = ParticleSystemActor.VERTEX_SIZE;
     }
 
     @Override

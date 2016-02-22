@@ -10,5 +10,17 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  */
 public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSystem>{
 
+    /**
+     * Gets the definition of Collidable
+     */
+    @Override
+    ParticleSystemDef getDefinition();
 
+    /**
+     * Set body instance of the Collidable
+     *
+     * @param particleSystem
+     */
+    @Override
+    void setBody(ParticleSystem particleSystem);
 }

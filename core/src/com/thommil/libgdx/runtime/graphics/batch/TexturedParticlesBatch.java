@@ -4,6 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 
 /**
  * Extension of ParticlesBatch with Textured particles
@@ -17,6 +18,7 @@ public class TexturedParticlesBatch extends ParticlesBatch {
     public TexturedParticlesBatch(final Texture texture, final int maxParticles) {
         super(maxParticles);
         this.texture = texture;
+        this.verticesSize = ParticleSystemActor.VERTEX_SIZE;
     }
 
     @Override

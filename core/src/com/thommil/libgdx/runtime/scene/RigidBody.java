@@ -22,4 +22,19 @@ public interface RigidBody extends Collidable<BodyDef,Body>{
      * Gets the density to the RigidBody
      */
     float getDensity();
+
+    /**
+     * Gets the definition of Collidable
+     */
+    @Override
+    BodyDef getDefinition();
+
+    /**
+     * Set body instance of the Collidable
+     *
+     * @param body
+     */
+    @Override
+    void setBody(Body body);
+
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 
 /**
  * Extension of ParticlesBatch with Colored particles
@@ -17,7 +18,7 @@ public class ColoredParticlesBatch extends ParticlesBatch {
 
     public ColoredParticlesBatch(final int maxParticles) {
         super(maxParticles);
-        this.verticesSize = 6;
+        this.verticesSize = ParticleSystemActor.COLORED_VERTEX_SIZE ;
     }
 
     protected Mesh createMesh(final int size){

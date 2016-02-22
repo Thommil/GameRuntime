@@ -23,8 +23,6 @@ import java.util.List;
 /**
  * Contacts listener tests (code not optimized to stay simple !!!)
  *
- * //TODO Buggy collison on sync mode, LibGDX bug ???
- *
  * Created by tomtom on 04/02/16.
  */
 public class CollisionTestScene extends Game implements InputProcessor, ContactListener{
