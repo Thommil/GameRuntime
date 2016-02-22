@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.thommil.libgdx.runtime.graphics.batch.ColoredParticlesBatch;
 import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
@@ -41,7 +42,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        ParticlesBatch softBodybatch = new ParticlesBatch(30000);
+        ParticlesBatch softBodybatch = new ColoredParticlesBatch(30000);
         ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(30000,softBodybatch);
         softBodyBatchLayer.setScaleFactor(1.50f);
         scene.addLayer(1,softBodyBatchLayer);
@@ -49,12 +50,13 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene.addActor(particlesActor);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.2f,0f);
+        shape.setAsBox(0.2f,0.2f);
 
         ParticleGroupDef particleGroupDef = new ParticleGroupDef();
         particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
+        particleGroupDef.color.set(0,0,1,1);
         particleGroupDef.shape = shape;
-        particleGroupDef.stride = 0.2f;
+        particleGroupDef.stride = 0.1f;
         particleGroup1 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
         particleGroupDef.position.set(0f,0.2f);
         ParticleGroup particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
@@ -115,11 +117,13 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
 
         shape.setAsBox(0.5f,0.5f);
+        particleGroupDef.color.set(0,1,0,1);
         particleGroupDef.position.set(0f,4.4f);
         particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
         this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
 
-        shape.setAsBox(2f,1);
+        shape.setAsBox(2f,1.2f);
+        particleGroupDef.color.set(1,0,0,1);
         particleGroupDef.position.set(0f,-1.2f);
         particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
         particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);

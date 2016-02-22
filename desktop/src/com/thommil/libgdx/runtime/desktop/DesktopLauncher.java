@@ -13,7 +13,6 @@ import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
 import com.thommil.libgdx.runtime.test.physics.softbody.SoftBodyTestScene;
 import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
 import com.thommil.libgdx.runtime.test.render.particles.ParticlesTestScene;
-import com.thommil.libgdx.runtime.test.render.softbody.SoftBodyRenderTestScene;
 import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
 
 public class DesktopLauncher {
@@ -44,9 +43,6 @@ public class DesktopLauncher {
 
 		//Softbody Physics
 		new LwjglApplication(new SoftBodyTestScene(), config);
-
-		//Softbody Rendering
-		//new LwjglApplication(new SoftBodyRenderTestScene(), config);
 
 		//Kinematic input
 		//new LwjglApplication(new KinematicInputTestScene(), config);

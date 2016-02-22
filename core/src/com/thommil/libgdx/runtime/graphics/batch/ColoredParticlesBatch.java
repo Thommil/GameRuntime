@@ -14,8 +14,10 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
  */
 public class ColoredParticlesBatch extends ParticlesBatch {
 
+
     public ColoredParticlesBatch(final int maxParticles) {
         super(maxParticles);
+        this.verticesSize = 6;
     }
 
     protected Mesh createMesh(final int size){
@@ -26,8 +28,8 @@ public class ColoredParticlesBatch extends ParticlesBatch {
             vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
         }
 
-        return new Mesh(vertexDataType, false, size , 0,
-                new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE));
+        return new Mesh(vertexDataType, false, size , 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorUnpacked, 4, ShaderProgram.COLOR_ATTRIBUTE));
     }
 
     protected ShaderProgram createShader () {
@@ -39,12 +41,17 @@ public class ColoredParticlesBatch extends ParticlesBatch {
             prefix += "#version 100\n";
         }
 
+
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
                 + "uniform mat4 u_projTrans;\n" //
                 + "uniform float radius;\n" //
                 + "\n" //
+                + "varying vec4 v_color;\n" //
+                + "\n" //
                 + "void main()\n" //
                 + "{\n" //
+                + "   v_color = "+ShaderProgram.COLOR_ATTRIBUTE+";\n" //
                 + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "   gl_PointSize = radius;\n" //
                 + "}\n";
@@ -55,12 +62,11 @@ public class ColoredParticlesBatch extends ParticlesBatch {
                 + "#else\n" //
                 + "#define LOWP \n" //
                 + "#endif\n" //
-                + "const float HALF = 0.5;\n" //
-                + "const float FULL = 1.0;\n" //
+                + "varying vec4 v_color;\n" //
                 + "\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + " gl_FragColor = vec4(FULL, FULL, FULL, HALF-length(vec2(gl_PointCoord.x - HALF, gl_PointCoord.y - HALF)));\n" //
+                + " gl_FragColor = v_color;\n" //
                 + "}";
 
 

@@ -27,6 +27,8 @@ public class ParticlesBatch implements Batch{
     protected final Matrix4 combinedMatrix = new Matrix4();
     protected boolean isDrawing = false;
 
+    protected int verticesSize = 2;
+
     public ParticlesBatch(final int maxParticles) {
         mesh = createMesh(maxParticles);
         shader = createShader();
@@ -55,7 +57,7 @@ public class ParticlesBatch implements Batch{
     }
 
     public void draw (float[] vertices, float radius) {
-        final int count = vertices.length / SoftBodyActor.VERTEX_SIZE;
+        final int count = vertices.length / verticesSize;
         shader.setUniformf("radius", radius * particlesScale * 2f);
         mesh.setVertices(vertices);
         mesh.render(shader, GL20.GL_POINTS, 0, count);
