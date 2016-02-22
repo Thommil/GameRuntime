@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 /**
- * Extension of SoftBodyBatch with Textured particles
+ * Extension of ParticlesBatch with Textured particles
  *
  * Created by thommil on 2/22/16.
  */
-public class SoftBodyTexturedBatch extends SoftBodyBatch {
+public class TexturedParticlesBatch extends ParticlesBatch {
 
     protected final Texture texture;
 
-    public SoftBodyTexturedBatch(final Texture texture, final int maxParticles) {
+    public TexturedParticlesBatch(final Texture texture, final int maxParticles) {
         super(maxParticles);
         this.texture = texture;
     }

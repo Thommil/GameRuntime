@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
@@ -42,7 +42,7 @@ public class SoftBodyRenderTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        SoftBodyBatchLayer softBodyBatchLayer = new ColoredSoftBodyLayer(1089);
+        ParticlesBatchLayer softBodyBatchLayer = new ColoredSoftBodyLayer(1089);
         softBodyBatchLayer.setScaleFactor(1.2f);
         //softBodyBatchLayer.setScaleFactor(0.75f);
         scene.addLayer(1,softBodyBatchLayer);

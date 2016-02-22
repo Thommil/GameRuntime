@@ -1,12 +1,11 @@
 package com.thommil.libgdx.runtime.test.render.water;
 
-import com.badlogic.gdx.Gdx;
-import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
 
 /**
  * Created by tomtom on 17/02/16.
  */
-public class WaterLayer extends SoftBodyBatchLayer {
+public class WaterLayer extends ParticlesBatchLayer {
 
     public WaterLayer(){
         super(1,new WaterBatch());

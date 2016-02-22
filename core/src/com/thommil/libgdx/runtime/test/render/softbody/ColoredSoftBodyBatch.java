@@ -2,21 +2,19 @@ package com.thommil.libgdx.runtime.test.render.softbody;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.VertexBufferObject;
 import com.badlogic.gdx.graphics.glutils.VertexData;
-import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.graphics.ExtendedMesh;
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
+import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
 
 /**
  * Created by tomtom on 20/02/16.
  */
-public class ColoredSoftBodyBatch extends SoftBodyBatch {
+public class ColoredSoftBodyBatch extends ParticlesBatch {
 
     private int colorAttributeOffset = 0;
 

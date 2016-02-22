@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
+import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
 
 /**
  * Created by tomtom on 16/02/16.
  */
-public class WaterBatch extends SoftBodyBatch {
+public class WaterBatch extends ParticlesBatch {
 
     private final float particlesScaleFactor = 2f;
 

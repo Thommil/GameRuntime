@@ -1,26 +1,26 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
+import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
- * SoftBody layer using SoftBodyBatch as renderer
+ * SoftBody layer using ParticlesBatch as renderer
  *
  * Created by thommil on 03/02/16.
  */
-public class SoftBodyBatchLayer extends Layer{
+public class ParticlesBatchLayer extends Layer{
 
     protected float scaleFactor = 1f;
 
-    final protected SoftBodyBatch renderer;
+    final protected ParticlesBatch renderer;
 
-    public SoftBodyBatchLayer(final int maxParticles) {
+    public ParticlesBatchLayer(final int maxParticles) {
         super(maxParticles);
-        this.renderer = new SoftBodyBatch(maxParticles);
+        this.renderer = new ParticlesBatch(maxParticles);
     }
 
-    public SoftBodyBatchLayer(final int initialCapacity, final SoftBodyBatch customRenderer) {
+    public ParticlesBatchLayer(final int initialCapacity, final ParticlesBatch customRenderer) {
         super(initialCapacity);
         this.renderer = customRenderer;
     }

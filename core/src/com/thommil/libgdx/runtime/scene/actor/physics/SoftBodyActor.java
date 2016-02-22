@@ -1,14 +1,14 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
+import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
- * SoftBody actor (renderable using a SoftBodyBatch)
+ * SoftBody actor (renderable using a ParticlesBatch)
  *
  * Created by thommil on 14/02/16.
  */
-public abstract class SoftBodyActor extends ParticleSystemActor implements Renderable<SoftBodyBatch> {
+public abstract class SoftBodyActor extends ParticleSystemActor implements Renderable<ParticlesBatch> {
 
     public static final int VERTEX_SIZE = 2;
 
@@ -51,7 +51,7 @@ public abstract class SoftBodyActor extends ParticleSystemActor implements Rende
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, SoftBodyBatch renderer) {
+    public void render(float deltaTime, ParticlesBatch renderer) {
         renderer.draw(this.particleSystem.getParticlePositionBufferArray(true), this.particleSystem.getParticleRadius());
     }
 }

@@ -1,12 +1,12 @@
 package com.thommil.libgdx.runtime.test.render.softbody;
 
 import com.thommil.libgdx.runtime.scene.Renderable;
-import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
 
 /**
  * Created by tomtom on 20/02/16.
  */
-public class ColoredSoftBodyLayer extends SoftBodyBatchLayer {
+public class ColoredSoftBodyLayer extends ParticlesBatchLayer {
 
     public ColoredSoftBodyLayer(int maxParticles) {
         super(maxParticles, new ColoredSoftBodyBatch(maxParticles));

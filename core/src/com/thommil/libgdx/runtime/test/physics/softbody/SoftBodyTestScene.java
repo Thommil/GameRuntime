@@ -5,14 +5,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyBatch;
-import com.thommil.libgdx.runtime.graphics.batch.SoftBodyTexturedBatch;
-import com.thommil.libgdx.runtime.physics.ParticleGroupFactory;
+import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.SoftBodyBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.ParticleDef;
@@ -44,8 +41,8 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        SoftBodyBatch softBodybatch = new SoftBodyBatch(30000);
-        SoftBodyBatchLayer softBodyBatchLayer = new SoftBodyBatchLayer(30000,softBodybatch);
+        ParticlesBatch softBodybatch = new ParticlesBatch(30000);
+        ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(30000,softBodybatch);
         softBodyBatchLayer.setScaleFactor(1.50f);
         scene.addLayer(1,softBodyBatchLayer);
         particlesActor = new SoftbodyActor();

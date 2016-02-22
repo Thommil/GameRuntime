@@ -17,7 +17,7 @@ import com.thommil.libgdx.runtime.tools.GL11;
  *
  * Created by thommil on 2/10/16.
  */
-public class SoftBodyBatch implements Batch{
+public class ParticlesBatch implements Batch{
 
     protected final Mesh mesh;
     protected final ShaderProgram shader;
@@ -27,7 +27,7 @@ public class SoftBodyBatch implements Batch{
     protected final Matrix4 combinedMatrix = new Matrix4();
     protected boolean isDrawing = false;
 
-    public SoftBodyBatch(final int maxParticles) {
+    public ParticlesBatch(final int maxParticles) {
         mesh = createMesh(maxParticles);
         shader = createShader();
     }
