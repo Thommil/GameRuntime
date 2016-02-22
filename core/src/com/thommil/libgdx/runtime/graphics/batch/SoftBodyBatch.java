@@ -18,6 +18,8 @@ import com.thommil.libgdx.runtime.tools.GL11;
  * Not really a Batch as all vertices are stored in ParticleSystem so only
  * one SoftBodyBatch should be implemented by ParticleSystem
  *
+ * Colors are not supported in the default version.
+ *
  * Created by thommil on 2/10/16.
  */
 public class SoftBodyBatch implements Batch{

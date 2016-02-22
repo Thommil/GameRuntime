@@ -18,9 +18,6 @@ allprojects {
         appName = "GameRuntime"
         gdxVersion = '1.8.0'
         roboVMVersion = '1.12.0'
-        box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.7.0'
     }
 
     repositories {
@@ -76,6 +73,7 @@ project(":ios") {
 project(":core") {
     apply plugin: "java"
 
+
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile fileTree(dir: 'libs', include: '*.jar')
@@ -84,41 +82,4 @@ project(":core") {
 
 tasks.eclipse.doLast {
     delete ".project"
-}
-
-task cleanDist (type: Delete){
-    delete 'dist/core'
-    delete 'dist/desktop'
-    delete 'dist/android'
-    delete 'dist/ios'
-}
-
-task gdxLiquidfunCopy (type: Copy){
-    //Core
-    from ('.'){
-        include 'build.gradle.tpl'
-        include 'core/libs/'
-        include 'desktop/libs/'
-        include 'android/libs/'
-        include 'ios/libs/'
-        include 'ios/robovm.xml'
-        exclude '**/libgdx.so'
-    }
-    into 'dist'
-
-    includeEmptyDirs = true
-}
-
-task gameRuntimeJar (type: Jar, dependsOn: 'core:compileJava'){
-    destinationDir = file('dist/core/libs')
-    archiveName = 'game-runtime.jar'
-    from ('core/build/classes/main/'){
-        include "com/thommil/libgdx/runtime/**"
-        exclude "com/thommil/libgdx/runtime/test"
-    }
-
-}
-
-task dist(dependsOn: ['cleanDist','gameRuntimeJar','gdxLiquidfunCopy']) {
-
 }
