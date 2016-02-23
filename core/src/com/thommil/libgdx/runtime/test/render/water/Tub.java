@@ -33,14 +33,9 @@ public class Tub extends StaticBodyActor {
         return shapes;
     }
 
-    /**
-     * Gets the definition of Collidable
-     */
     @Override
-    public BodyDef getDefinition() {
-        BodyDef groundBodyDef = super.getDefinition();
-        groundBodyDef.position.set(this.x + this.width/2, this.y + this.height/2);
-        return groundBodyDef;
+    public void setDefinition(BodyDef bodyDef) {
+        bodyDef.position.set(this.x + this.width/2, this.y + this.height/2);
     }
 
     @Override

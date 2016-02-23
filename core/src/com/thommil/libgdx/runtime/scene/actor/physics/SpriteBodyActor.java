@@ -22,6 +22,8 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
     public Body body;
 
+    protected float density = 1f;
+
     public SpriteBodyActor(final int id, final int layer, Texture texture) {
         super(id, layer, texture);
     }
@@ -53,7 +55,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      */
     @Override
     public float getDensity() {
-        return 1.0f;
+        return this.density;
     }
 
     /**

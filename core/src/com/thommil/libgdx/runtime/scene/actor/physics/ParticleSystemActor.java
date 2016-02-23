@@ -18,19 +18,21 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
 
     public ParticleSystem particleSystem;
 
+    protected float density;
     protected final float particlesRadius;
-    protected int layer = 0;
-
     protected final boolean colored;
+
+    protected int layer = 0;
 
     /**
      * Default constructor without color support
      *
      * @param id The ID of the Actor in the scene
      * @param layer The layer of the renderable in the scene
+     * @param particlesRadius The particles radius
      */
-    public ParticleSystemActor(final int id, final int layer) {
-        this(id, layer, false);
+    public ParticleSystemActor(final int id, final int layer, final float particlesRadius) {
+        this(id, layer, particlesRadius, false);
     }
 
     /**
@@ -38,11 +40,13 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
      *
      * @param id The ID of the Actor in the scene
      * @param layer The layer of the renderable in the scene
+     * @param particlesRadius The particles radius
      * @param colored If true, the colored are sent to the renderer
      */
-    public ParticleSystemActor(final int id, final int layer, boolean colored) {
+    public ParticleSystemActor(final int id, final int layer, final float particlesRadius, boolean colored) {
         super(id);
         this.layer = layer;
+        this.particlesRadius = particlesRadius;
         this.colored = colored;
     }
 
@@ -50,14 +54,16 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
      * Gets teh radius of particles
      */
     @Override
-    public abstract float getParticlesRadius();
+    public float getParticlesRadius(){
+        return this.particlesRadius;
+    }
 
     /**
      * Gets the density to the particles
      */
     @Override
     public float getDensity() {
-        return 1f;
+        return this.density;
     }
 
     /**
@@ -69,7 +75,8 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
      */
     @Override
     public void setDefinition(ParticleSystemDef particleSystemDef) {
-        //NOP
+        particleSystemDef.radius = this.getParticlesRadius();
+        particleSystemDef.density = this.getDensity();
     }
 
     /**
@@ -111,10 +118,10 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
     @Override
     public void render(float deltaTime, ParticlesBatch renderer) {
         if(this.colored) {
-            renderer.draw(this.particleSystem.getParticlePositionAndColorBufferArray(true), this.particleSystem.getParticleRadius());
+            renderer.draw(this.particleSystem.getParticlePositionAndColorBufferArray(true), this.getParticlesRadius());
         }
         else{
-            renderer.draw(this.particleSystem.getParticlePositionBufferArray(true), this.particleSystem.getParticleRadius());
+            renderer.draw(this.particleSystem.getParticlePositionBufferArray(true), this.getParticlesRadius());
         }
     }
 

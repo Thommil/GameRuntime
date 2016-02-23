@@ -2,8 +2,7 @@ package com.thommil.libgdx.runtime.test.render.water;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
-import finnstr.libgdx.liquidfun.ParticleSystem;
-import finnstr.libgdx.liquidfun.ParticleSystemDef;
+
 
 /**
  * Created by tomtom on 03/02/16.
@@ -11,20 +10,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 public class WaterActor extends ParticleSystemActor {
 
     public WaterActor(int layer) {
-        super(MathUtils.random(0x7ffffffe), layer);
+        super(MathUtils.random(0x7ffffffe), layer, 0.05f);
+        this.density = 5f;
     }
-
-    /**
-     * Gets the definition of ParticlesBody
-     *
-     * @return The definition of the soft body in a particle system
-     */
-    @Override
-    public ParticleSystemDef getDefinition() {
-        ParticleSystemDef particleSystemDef = new ParticleSystemDef();
-        particleSystemDef.radius = 0.05f;
-        particleSystemDef.density = 5f;
-        return particleSystemDef;
-    }
-
 }

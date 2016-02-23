@@ -19,6 +19,8 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      */
     public Body body;
 
+    protected float density = 1f;
+
     public StaticBodyActor(final int id, final int layer, Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2, final float color) {
         super(id, layer, texture, x, y, width, height, u, v, u2, v2, color);
     }
@@ -34,7 +36,7 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      */
     @Override
     public float getDensity() {
-        return 1.0f;
+        return this.density;
     }
 
     /**

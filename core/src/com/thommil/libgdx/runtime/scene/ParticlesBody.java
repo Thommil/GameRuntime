@@ -11,7 +11,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSystem>{
 
     /**
-     * Gets teh radius of particles
+     * Gets the radius of particles
      */
     float getParticlesRadius();
 

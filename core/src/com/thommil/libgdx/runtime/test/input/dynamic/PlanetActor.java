@@ -37,14 +37,10 @@ public class PlanetActor extends SpriteBodyActor {
         return shapes;
     }
 
-    /**
-     * Gets the definition of Collidable
-     */
     @Override
-    public BodyDef getDefinition() {
-        BodyDef groundBodyDef = super.getDefinition();
-        groundBodyDef.type = BodyDef.BodyType.StaticBody;
-        return groundBodyDef;
+    public void setDefinition(BodyDef bodyDef) {
+        super.setDefinition(bodyDef);
+        bodyDef.type = BodyDef.BodyType.StaticBody;
     }
 
     @Override
