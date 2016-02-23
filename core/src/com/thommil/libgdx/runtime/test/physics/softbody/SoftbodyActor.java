@@ -10,18 +10,18 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 public class SoftbodyActor extends ParticleSystemActor {
 
     public SoftbodyActor() {
-        super(MathUtils.random(0x7ffffffe), 1, 0.05f, true);
-        this.density = 0.3f;
+        super(MathUtils.random(0x7ffffffe), 1, 0.5f, false);
+        this.density = 1f;
     }
 
     @Override
     public void setDefinition(ParticleSystemDef particleSystemDef) {
         super.setDefinition(particleSystemDef);
-        particleSystemDef.elasticStrength = 1.2f;
+        //particleSystemDef.elasticStrength = 1.2f;
         particleSystemDef.strictContactCheck = true;
         //particleSystemDef.ejectionStrength = 5f;
         //particleSystemDef.dampingStrength = 2f;
         //particleSystemDef.repulsiveStrength = 0.1f;
-        particleSystemDef.viscousStrength = 2f;
+        //particleSystemDef.viscousStrength = 2f;
     }
 }

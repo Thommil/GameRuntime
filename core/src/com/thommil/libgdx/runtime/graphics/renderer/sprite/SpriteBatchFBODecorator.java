@@ -1,53 +1,84 @@
-package com.thommil.libgdx.runtime.test.render.water;
+package com.thommil.libgdx.runtime.graphics.renderer.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
+import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 
 /**
- * Created by tomtom on 16/02/16.
+ * SpriteBatchRenderer using FBOs
+ *
+ * The default version is just a white mask
+ *
+ * Created by thommil on 2/23/16.
  */
-public class WaterBatch extends ParticlesBatchRenderer {
+public class SpriteBatchFBODecorator extends SpriteBatchRenderer{
 
-    private final float particlesScaleFactor = 2f;
+    private static final int DECORATOR_VERTEX_SIZE = 4;
+    private static final int DECORATOR_FBO_SIZE = 4 * DECORATOR_VERTEX_SIZE;
+    private static final int DECORATOR_SIZE = 16;
 
-    final ShaderProgram waterShader;
-    final Mesh waterMesh;
-    final float[] vertices = new float[24];
-    FrameBuffer fbo;
+    /**
+     * Decorated SpriteBatchRenderer
+     */
+    protected final SpriteBatchRenderer decoratedSpriteBatchRenderer;
+
+    /**
+     * The frame buffer use for off screen rendering
+     */
+    protected FrameBuffer frameBuffer;
+
+    /**
+     * FBO screen size
+     */
     private int screenWidth, screenHeight;
-    private float viewWidth, viewHeight;
-    boolean hasResized;
 
-    public WaterBatch() {
-        super(5000);
-        this.waterMesh = this.createWaterMesh();
-        this.waterShader = this.createWaterShader();
+    /**
+     * FBO view size
+     */
+    private float viewWidth, viewHeight;
+
+    /**
+     * Indicates if the FBO must be resized
+     */
+    private boolean hasResized;
+
+    /**
+     * Default constructor using the decorated SpriteBatchRenderer
+     *
+     * @param decoratedSpriteBatchRenderer The decorated SpriteBatchRenderer
+     */
+    public SpriteBatchFBODecorator(final SpriteBatchRenderer decoratedSpriteBatchRenderer) {
+        super(DECORATOR_SIZE);
+        this.decoratedSpriteBatchRenderer = decoratedSpriteBatchRenderer;
     }
 
+    /**
+     * Must be called when the FBO needs to be resized
+     */
     public void onResize(int screenWidth, int screenHeight, float viewWidth, float viewHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
         this.hasResized = true;
-        this.particlesScale *= this.particlesScaleFactor;
     }
 
+    /**
+     * Called at beginning of rendering
+     */
     @Override
     public void begin() {
-        //First render off particles
-        super.begin();
+        this.decoratedSpriteBatchRenderer.begin();
         this.setupFramebuffer();
-        this.fbo.begin();
+        this.frameBuffer.begin();
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
-    public void setupFramebuffer(){
+    private void setupFramebuffer(){
         //First init
-        if(this.fbo == null){
+        if(this.frameBuffer == null){
             //Vertices UV
             //0 & 5
             this.vertices[2] = this.vertices[22] = 0f;
@@ -64,7 +95,7 @@ public class WaterBatch extends ParticlesBatchRenderer {
         }
         //Resize
         if(this.hasResized) {
-            this.fbo = new FrameBuffer(Pixmap.Format.RGBA4444, this.screenWidth, this.screenHeight, false);
+            this.frameBuffer = new FrameBuffer(Pixmap.Format.RGBA4444, this.screenWidth, this.screenHeight, false);
 
             //Vertices XY
             //0 & 5
@@ -80,54 +111,66 @@ public class WaterBatch extends ParticlesBatchRenderer {
             this.vertices[16] = this.viewWidth/2f;
             this.vertices[17] = this.viewHeight/2f;
 
-            this.waterMesh.setVertices(vertices);
+            this.mesh.setVertices(vertices);
             this.hasResized = false;
         }
     }
 
+    /**
+     * Generic method to draw a set of vertices.
+     *
+     * @param vertices The list of vertices to draw
+     */
     @Override
     public void draw(float[] vertices) {
-        //Currently rendering on FBO
-        super.draw(vertices);
+        this.decoratedSpriteBatchRenderer.draw(vertices);
     }
 
     /**
-     * Flushes the batch and renders all remaining vertices
+     * Called at ending of rendering
      */
     @Override
-    public void flush() {
-        super.flush();
-
-        //End rendering on FBO
-        this.fbo.end();
-        super.end();
-
-        //The apply second pass to render water on screen
-        /*this.waterShader.begin();
-        this.waterShader.setUniformMatrix("u_projTrans", this.combinedMatrix);
-        this.fbo.getColorBufferTexture().bind(0);
-        this.waterShader.setUniformi("u_texture", 0);
-        this.waterMesh.render(this.waterShader, GL20.GL_TRIANGLES, 0, 6);*/
-
-    }
-
-    @Override
     public void end() {
-        super.end();
-        this.waterShader.end();
-        //End rendering on screen
+        this.decoratedSpriteBatchRenderer.end();
+        this.frameBuffer.end();
 
-        //super.end();
+        this.shader.begin();
+        this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
+        this.frameBuffer.getColorBufferTexture().bind(0);
+        this.shader.setUniformi("u_texture", 0);
+        this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, 6);
+        this.shader.end();
     }
 
-    protected Mesh createWaterMesh(){
+    /**
+     * Subclasses should override this method to use their specific Mesh
+     *
+     * @param size
+     */
+    @Override
+    protected Mesh createMesh(int size) {
         final Mesh mesh = new Mesh(false, 6, 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
                 ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
 
         return mesh;
     }
 
-    public ShaderProgram createWaterShader(){
+    /**
+     * Subclasses should override this method to use their specific vertices
+     *
+     * @param size
+     */
+    @Override
+    protected float[] createVertices(int size) {
+        this.verticesSize = DECORATOR_VERTEX_SIZE;
+        return new float[DECORATOR_SIZE * DECORATOR_FBO_SIZE];
+    }
+
+    /**
+     * Subclasses should override this method to use their specific shaders
+     */
+    @Override
+    protected ShaderProgram createShader() {
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "uniform mat4 u_projTrans;\n" //
@@ -149,16 +192,7 @@ public class WaterBatch extends ParticlesBatchRenderer {
                 + "void main()\n"//
                 + "{\n" //
                 + "  vec4 color = texture2D(u_texture, v_texCoords);\n" //
-                + "  if( color.r < 0.15){\n" //
-                + "     color = vec4(0,0,0,0);\n" //
-                + "  }\n" //
-                + "  else if( color.r < 0.3){\n" //
-                + "     color = vec4(0.7,0.7,1.0,0.5);\n" //
-                + "  }\n" //
-                + "  else{\n" //
-                + "     color = vec4(0.0,0.0,1.0,0.3);\n" //
-                + "  }\n" //
-                + "  gl_FragColor = color;\n" //
+                + "  gl_FragColor = vec4(1.0,1.0,1.0,color.a);\n" //
                 + "}";
 
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
@@ -166,10 +200,5 @@ public class WaterBatch extends ParticlesBatchRenderer {
         return shader;
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        this.waterMesh.dispose();
-        this.waterShader.dispose();
-    }
+
 }

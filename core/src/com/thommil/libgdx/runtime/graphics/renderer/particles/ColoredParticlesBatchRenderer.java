@@ -18,7 +18,6 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
 
     public ColoredParticlesBatchRenderer(final int maxParticles) {
         super(maxParticles);
-        this.verticesSize = ParticleSystemActor.COLORED_VERTEX_SIZE ;
     }
 
     protected Mesh createMesh(final int size){
@@ -33,6 +32,12 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
                 ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorUnpacked, 4, ShaderProgram.COLOR_ATTRIBUTE));
     }
 
+
+    protected  float[] createVertices(final int size){
+        this.verticesSize = ParticleSystemActor.COLORED_VERTEX_SIZE;
+        return new float[size * ParticleSystemActor.COLORED_VERTEX_SIZE];
+    }
+
     protected ShaderProgram createShader () {
         String prefix = "";
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
@@ -41,7 +46,6 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
         else {
             prefix += "#version 100\n";
         }
-
 
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //

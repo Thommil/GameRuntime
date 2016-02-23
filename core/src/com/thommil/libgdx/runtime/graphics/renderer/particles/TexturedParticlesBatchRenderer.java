@@ -13,19 +13,47 @@ import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
  */
 public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 
-    protected final Texture texture;
+    protected Texture lastTexture;
+    protected Texture currentTexture;
 
-    public TexturedParticlesBatchRenderer(final Texture texture, final int maxParticles) {
+    public TexturedParticlesBatchRenderer(final int maxParticles) {
         super(maxParticles);
-        this.texture = texture;
-        this.verticesSize = ParticleSystemActor.VERTEX_SIZE;
+    }
+
+    /**
+     * Sets current texture
+     *
+     * @param texture The current texture to use
+     */
+    public void setTexture(final Texture texture){
+        this.currentTexture = texture;
     }
 
     @Override
     public void begin() {
         super.begin();
-        this.texture.bind(0);
-        shader.setUniformi("u_texture", 0);
+        this.shader.setUniformi("u_texture", 0);
+    }
+
+    @Override
+    public void end() {
+        super.end();
+        this.lastTexture = this.currentTexture = null;
+    }
+
+    @Override
+    public void draw(float[] vertices) {
+         if (this.currentTexture != this.lastTexture) {
+             flush();
+             this.lastTexture = this.currentTexture;
+         }
+         super.draw(vertices);
+    }
+
+    @Override
+    public void flush() {
+        this.lastTexture.bind();
+        super.flush();
     }
 
     @Override

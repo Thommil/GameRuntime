@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.scene.Renderer;
+import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
@@ -18,25 +19,33 @@ import com.thommil.libgdx.runtime.tools.GL11;
 public class ParticlesBatchRenderer implements Renderer{
 
     protected final Mesh mesh;
+    protected final float[] vertices;
+    protected int verticesSize;
     protected final ShaderProgram shader;
 
-    protected float particlesRadius;
+    protected int idx = 0;
+    protected float lastParticlesRadius;
+    protected float currentParticlesRadius;
+
     protected float particlesScale = 1f;
-
     protected final Matrix4 combinedMatrix = new Matrix4();
-    protected boolean isDrawing = false;
 
-    protected int verticesSize;
-
-    public ParticlesBatchRenderer(final int maxParticles) {
-        mesh = createMesh(maxParticles);
-        shader = createShader();
-        this.verticesSize = ParticleSystemActor.VERTEX_SIZE;
+    /**
+     * Default constructor
+     *
+     * @param size The batch size
+     */
+    public ParticlesBatchRenderer(final int size) {
+        this.mesh = createMesh(size);
+        this.vertices = createVertices(size);
+        this.shader = createShader();
     }
 
+    /**
+     * Called at beginning of rendering
+     */
     @Override
-    public void begin () {
-        isDrawing = true;
+    public void begin() {
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
             Gdx.gl.glEnable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
             Gdx.gl.glEnable(GL11.GL_POINT_SPRITE_OES);
@@ -46,14 +55,105 @@ public class ParticlesBatchRenderer implements Renderer{
         shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
     }
 
+    /**
+     * Called at ending of rendering
+     */
     @Override
-    public void end () {
+    public void end() {
+        if (this.idx > 0) flush();
         shader.end();
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
             Gdx.gl.glDisable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
             Gdx.gl.glDisable(GL11.GL_POINT_SPRITE_OES);
         }
-        isDrawing = false;
+        this.lastParticlesRadius = this.currentParticlesRadius = 0;
+    }
+
+    /**
+     * Sets the rendering scale of particles
+     *
+     * @param particlesScale rendering scale
+     */
+    public void setParticlesScale(float particlesScale) {
+        this.particlesScale = particlesScale;
+    }
+
+    /**
+     * Sets the current particles radius
+     *
+     * @param particlesRadius The current particles radius
+     */
+    public void setParticlesRadius(float particlesRadius) {
+        this.currentParticlesRadius = particlesRadius;
+    }
+
+
+    /**
+     * Generic method to draw a set of vertices.
+     *
+     * @param vertices The list of vertices to draw
+     */
+    @Override
+    public void draw(float[] vertices) {
+        int offset = 0;
+        int count = vertices.length;
+        int remainingVertices = this.vertices.length;
+        if (this.currentParticlesRadius != this.lastParticlesRadius) {
+            flush();
+            this.lastParticlesRadius = this.currentParticlesRadius;
+        }else {
+            remainingVertices -= this.idx;
+            if (remainingVertices == 0) {
+                flush();
+                remainingVertices = this.vertices.length;
+            }
+        }
+        int copyCount = Math.min(remainingVertices, count);
+
+        System.arraycopy(vertices, offset, this.vertices, this.idx, copyCount);
+        this.idx += copyCount;
+        count -= copyCount;
+        while (count > 0) {
+            offset += copyCount;
+            flush();
+            copyCount = Math.min(this.vertices.length, count);
+            System.arraycopy(vertices, offset, this.vertices, 0, copyCount);
+            this.idx += copyCount;
+            count -= copyCount;
+        }
+    }
+
+    /**
+     * Flushes the batch and renders all remaining vertices
+     */
+    public void flush () {
+        if (this.idx == 0) return;
+
+        final int count = this.idx / this.verticesSize ;
+
+        shader.setUniformf("radius", this.lastParticlesRadius * 2f * this.particlesScale);
+        this.mesh.setVertices(this.vertices, 0, this.idx);
+        mesh.render(shader, GL20.GL_POINTS, 0, count);
+
+        this.idx = 0;
+    }
+
+    /**
+     * Releases all resources of this object.
+     */
+    @Override
+    public void dispose() {
+        mesh.dispose();
+        shader.dispose();
+    }
+
+    /**
+     * Sets the combined matrix for rendering
+     *
+     * @param combinedMatrix the combined matrix
+     */
+    public void setCombinedMatrix(final Matrix4 combinedMatrix) {
+        this.combinedMatrix.set(combinedMatrix);
     }
 
     @Override
@@ -61,35 +161,9 @@ public class ParticlesBatchRenderer implements Renderer{
         throw new GameRuntimeException("Not implemented");
     }
 
-    public void setParticlesRadius(float particlesRadius) {
-        this.particlesRadius = particlesRadius;
-    }
-
-    public void draw (float[] vertices) {
-        final int count = vertices.length / verticesSize;
-        shader.setUniformf("radius", this.particlesRadius * particlesScale * 2f);
-        mesh.setVertices(vertices);
-        mesh.render(shader, GL20.GL_POINTS, 0, count);
-    }
-
-    public void dispose () {
-        mesh.dispose();
-        shader.dispose();
-    }
-
-
-    public void setParticlesScale(float particlesScale) {
-        this.particlesScale = particlesScale;
-    }
-
-    public void setCombinedMatrix(final Matrix4 combinedMatrix) {
-        this.combinedMatrix.set(combinedMatrix);
-    }
-
     /**
-     * Create methods below must be overriden for custom Batch
+     * Subclasses should override this method to use their specific Mesh
      */
-
     protected Mesh createMesh(final int size){
         if (size > 32767) throw new IllegalArgumentException("Can't have more than 32767 particles per batch (are you serious?): " + size);
 
@@ -102,6 +176,17 @@ public class ParticlesBatchRenderer implements Renderer{
                         new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE));
     }
 
+    /**
+     * Subclasses should override this method to use their specific vertices
+     */
+    protected  float[] createVertices(final int size){
+        this.verticesSize = ParticleSystemActor.VERTEX_SIZE;
+        return new float[size * ParticleSystemActor.VERTEX_SIZE];
+    }
+
+    /**
+     * Subclasses should override this method to use their specific shaders
+     */
     protected ShaderProgram createShader () {
         String prefix = "";
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {

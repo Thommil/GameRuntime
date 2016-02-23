@@ -21,6 +21,7 @@ public class SpriteBatchRenderer implements Renderer{
 
     protected final Mesh mesh;
     protected final float[] vertices;
+    protected int verticesSize;
     protected final ShaderProgram shader;
 
     protected int idx = 0;
@@ -57,8 +58,7 @@ public class SpriteBatchRenderer implements Renderer{
     @Override
     public void end() {
         if (this.idx > 0) flush();
-        this.lastTexture = null;
-        this.currentTexture = null;
+        this.lastTexture = this.currentTexture = null;
         this.shader.end();
     }
 
@@ -141,7 +141,7 @@ public class SpriteBatchRenderer implements Renderer{
     public void flush () {
         if (this.idx == 0) return;
 
-        final int count = this.idx / SpriteActor.SPRITE_SIZE * 6;
+        final int count = this.idx / this.verticesSize * 4 * 6;
 
         this.lastTexture.bind();
         this.mesh.setVertices(this.vertices, 0, this.idx);
@@ -197,6 +197,7 @@ public class SpriteBatchRenderer implements Renderer{
      * Subclasses should override this method to use their specific vertices
      */
     protected  float[] createVertices(final int size){
+        this.verticesSize = SpriteActor.VERTEX_SIZE;
         return new float[size * SpriteActor.SPRITE_SIZE];
     }
 

@@ -18,17 +18,17 @@ public class ParticlesBatchLayer extends Layer{
     /**
      * Default constructor
      *
-     * @param maxParticles The maximum particles in this layer
+     * @param initialCapacity The initial capacity of the layer
      */
-    public ParticlesBatchLayer(final int maxParticles) {
-        super(maxParticles);
-        this.renderer = new ParticlesBatchRenderer(maxParticles);
+    public ParticlesBatchLayer(final int initialCapacity) {
+        super(initialCapacity);
+        this.renderer = new ParticlesBatchRenderer(initialCapacity);
     }
 
     /**
      * Constructor with custom renderer
      *
-     * @param initialCapacity The maximum particles in this layer
+     * @param initialCapacity TThe initial capacity of the layer
      * @param customRenderer The custom renderer to use
      */
     public ParticlesBatchLayer(final int initialCapacity, final ParticlesBatchRenderer customRenderer) {
@@ -36,6 +36,11 @@ public class ParticlesBatchLayer extends Layer{
         this.renderer = customRenderer;
     }
 
+    /**
+     * Rendering scale factor around particles
+     *
+     * @param scaleFactor The scale factor of particles
+     */
     public void setScaleFactor(float scaleFactor) {
         this.scaleFactor = scaleFactor;
     }

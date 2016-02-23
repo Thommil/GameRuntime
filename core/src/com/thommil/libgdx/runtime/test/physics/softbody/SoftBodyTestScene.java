@@ -42,7 +42,8 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(30000);
+        //ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(30000);
+        ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(10000);
         ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(30000,softBodybatch);
         softBodyBatchLayer.setScaleFactor(1.50f);
         scene.addLayer(1,softBodyBatchLayer);
@@ -50,15 +51,15 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene.addActor(particlesActor);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.2f,0.2f);
+        shape.setAsBox(3f,3f);
 
         ParticleGroupDef particleGroupDef = new ParticleGroupDef();
         particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
         particleGroupDef.color.set(0,0,1,1);
         particleGroupDef.shape = shape;
-        particleGroupDef.stride = 0.1f;
+        //particleGroupDef.stride = 0.1f;
         particleGroup1 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
-        particleGroupDef.position.set(0f,0.2f);
+        /*particleGroupDef.position.set(0f,0.2f);
         ParticleGroup particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
         this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
         particleGroupDef.position.set(0f,0.4f);
@@ -128,7 +129,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
         particleGroup2 = this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
         this.particlesActor.particleSystem.joinParticleGroups(particleGroup1,particleGroup2);
-
+*/
 
 
         //Container
