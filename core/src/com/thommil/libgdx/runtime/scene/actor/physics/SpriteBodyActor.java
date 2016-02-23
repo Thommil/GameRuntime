@@ -57,15 +57,17 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
     }
 
     /**
-     * Gets the definition of Collidable
+     * Sets the definition of Collidable, implementations
+     * should configure Collidable settings in the passed
+     * definition.
+     *
+     * @param bodyDef The collidable definition (settings)
      */
     @Override
-    public BodyDef getDefinition() {
-        BodyDef bodyDef = new BodyDef();
+    public void setDefinition(final BodyDef bodyDef) {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(this.x, this.y);
         bodyDef.angle = this.rotation / MathUtils.radDeg;
-        return bodyDef;
     }
 
     /**
@@ -74,7 +76,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      * @param body
      */
     @Override
-    public void setBody(Body body) {
+    public void setBody(final Body body) {
         this.body = body;
         this.body.setUserData(this);
     }

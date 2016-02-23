@@ -6,12 +6,19 @@ package com.thommil.libgdx.runtime.scene;
 public interface Collidable<Definition, Body>{
 
     /**
-     * Gets the definition of Collidable
+     * Sets the definition of Collidable, implementations
+     * should configure Collidable settings in the passed
+     * definition.
+     *
+     * @param definition The collidable definition (settings)
      */
-    Definition getDefinition();
+    void setDefinition(final Definition definition);
 
     /**
-     * Set body instance of the Collidable
+     * Called at body creation, implementations can add
+     * settings, behaviour and logic from here.
+     *
+     * @param body The collidable body instance
      */
-    void setBody(Body body);
+    void setBody(final Body body);
 }

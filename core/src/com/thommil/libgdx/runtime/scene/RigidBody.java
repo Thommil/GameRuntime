@@ -19,22 +19,26 @@ public interface RigidBody extends Collidable<BodyDef,Body>{
     List<Shape> getShapes();
 
     /**
-     * Gets the density to the RigidBody
+     * Gets the density to the shapes
      */
     float getDensity();
 
     /**
-     * Gets the definition of Collidable
+     * Sets the definition of Collidable, implementations
+     * should configure Collidable settings in the passed
+     * definition.
+     *
+     * @param bodyDef The collidable definition (settings)
      */
     @Override
-    BodyDef getDefinition();
+    void setDefinition(final BodyDef bodyDef);
 
     /**
-     * Set body instance of the Collidable
+     * Called at body creation, implementations can add
+     * settings, behaviour and logic from here.
      *
-     * @param body
+     * @param body The collidable body instance
      */
     @Override
-    void setBody(Body body);
-
+    void setBody(final Body body);
 }

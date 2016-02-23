@@ -18,6 +18,7 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
 
     public ParticleSystem particleSystem;
 
+    protected final float particlesRadius;
     protected int layer = 0;
 
     protected final boolean colored;
@@ -46,6 +47,32 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
     }
 
     /**
+     * Gets teh radius of particles
+     */
+    @Override
+    public abstract float getParticlesRadius();
+
+    /**
+     * Gets the density to the particles
+     */
+    @Override
+    public float getDensity() {
+        return 1f;
+    }
+
+    /**
+     * Sets the definition of Collidable, implementations
+     * should configure Collidable settings in the passed
+     * definition.
+     *
+     * @param particleSystemDef The collidable definition (settings)
+     */
+    @Override
+    public void setDefinition(ParticleSystemDef particleSystemDef) {
+        //NOP
+    }
+
+    /**
      * Set body instance of the Collidable
      *
      * @param particleSystem
@@ -55,13 +82,6 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
         this.particleSystem = particleSystem;
     }
 
-    /**
-     * Gets the definition of ParticlesBody
-     *
-     * @return The definition of the soft body in a particle system
-     */
-    @Override
-    public abstract ParticleSystemDef getDefinition();
 
     /**
      * Sets the layer index

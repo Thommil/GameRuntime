@@ -41,13 +41,15 @@ public abstract class SensorActor extends AbstractStepable implements RigidBody 
     }
 
     /**
-     * Gets the definition of Collidable
+     * Sets the definition of Collidable, implementations
+     * should configure Collidable settings in the passed
+     * definition.
+     *
+     * @param bodyDef The collidable definition (settings)
      */
     @Override
-    public BodyDef getDefinition() {
-        final BodyDef bodyDef = new BodyDef();
+    public void setDefinition(final BodyDef bodyDef) {
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-        return bodyDef;
     }
 
     /**

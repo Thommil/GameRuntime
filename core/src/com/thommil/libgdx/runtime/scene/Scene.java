@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import finnstr.libgdx.liquidfun.ParticleSystem;
+import finnstr.libgdx.liquidfun.ParticleSystemDef;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -223,7 +224,9 @@ public class Scene implements Screen {
                     }
                     if(actor instanceof RigidBody) {
                         final RigidBody rigidBody = (RigidBody)actor;
-                        final Body body = Scene.this.physicsWorld.createBody(rigidBody.getDefinition());
+                        final BodyDef bodyDef = new BodyDef();
+                        rigidBody.setDefinition(bodyDef);
+                        final Body body = Scene.this.physicsWorld.createBody(bodyDef);
                         for(final Shape shape : rigidBody.getShapes()){
                             final Fixture fixture = body.createFixture(shape, rigidBody.getDensity());
                             shape.dispose();
@@ -232,7 +235,9 @@ public class Scene implements Screen {
                     }
                     else if(actor instanceof ParticlesBody) {
                         final ParticlesBody particlesBody = (ParticlesBody)actor;
-                        final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,particlesBody.getDefinition());
+                        final ParticleSystemDef particleSystemDef = new ParticleSystemDef();
+                        particlesBody.setDefinition(particleSystemDef);
+                        final ParticleSystem particleSystem = new ParticleSystem(Scene.this.physicsWorld,particleSystemDef);
                         particlesBody.setBody(particleSystem);
                     }
                     if(actor instanceof Stepable){
@@ -249,7 +254,9 @@ public class Scene implements Screen {
             }
             if(actor instanceof RigidBody) {
                 final RigidBody rigidBody = (RigidBody)actor;
-                final Body body = this.physicsWorld.createBody(rigidBody.getDefinition());
+                final BodyDef bodyDef = new BodyDef();
+                rigidBody.setDefinition(bodyDef);
+                final Body body = this.physicsWorld.createBody(bodyDef);
                 for(final Shape shape : rigidBody.getShapes()){
                     final Fixture fixture = body.createFixture(shape, rigidBody.getDensity());
                     shape.dispose();
@@ -258,7 +265,9 @@ public class Scene implements Screen {
             }
             else if(actor instanceof ParticlesBody) {
                 final ParticlesBody particlesBody = (ParticlesBody)actor;
-                final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,particlesBody.getDefinition());
+                final ParticleSystemDef particleSystemDef = new ParticleSystemDef();
+                particlesBody.setDefinition(particleSystemDef);
+                final ParticleSystem particleSystem = new ParticleSystem(this.physicsWorld,particleSystemDef);
                 particlesBody.setBody(particleSystem);
             }
             if(actor instanceof Stepable){
