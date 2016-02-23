@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
+import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
@@ -25,8 +25,8 @@ public class CacheTestScene extends Game {
 		Scene scene = new Scene(settings);
 
 		//Layers
-		SpriteCacheLayer.setSize(60);
-		SpriteCacheLayer planetCacheLayer = new SpriteCacheLayer(60);
+		CacheLayer.setSize(60);
+		CacheLayer planetCacheLayer = new CacheLayer(60);
 		scene.addLayer(planetCacheLayer);
 
 		//Actor

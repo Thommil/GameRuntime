@@ -1,6 +1,6 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
+import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.ParticlesBody;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import finnstr.libgdx.liquidfun.ParticleSystem;
@@ -11,7 +11,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  *
  * Created by thommil on 14/02/16.
  */
-public abstract class ParticleSystemActor extends AbstractStepable implements ParticlesBody, Renderable<ParticlesBatch> {
+public abstract class ParticleSystemActor extends AbstractStepable implements ParticlesBody, Renderable<ParticlesBatchRenderer> {
 
     public static final int VERTEX_SIZE = 2;
     public static final int COLORED_VERTEX_SIZE  = VERTEX_SIZE + 4;
@@ -116,12 +116,13 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, ParticlesBatch renderer) {
+    public void render(float deltaTime, ParticlesBatchRenderer renderer) {
+        renderer.setParticlesRadius(this.getParticlesRadius());
         if(this.colored) {
-            renderer.draw(this.particleSystem.getParticlePositionAndColorBufferArray(true), this.getParticlesRadius());
+            renderer.draw(this.particleSystem.getParticlePositionAndColorBufferArray(true));
         }
         else{
-            renderer.draw(this.particleSystem.getParticlePositionBufferArray(true), this.getParticlesRadius());
+            renderer.draw(this.particleSystem.getParticlePositionBufferArray(true));
         }
     }
 

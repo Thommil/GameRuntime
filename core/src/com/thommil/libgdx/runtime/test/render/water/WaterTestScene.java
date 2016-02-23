@@ -14,8 +14,8 @@ import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
 import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
+import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
-import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.*;
 
@@ -55,10 +55,10 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene = new Scene(settings);
 
         //Shared Cache
-        SpriteCacheLayer.setSize(10);
+        CacheLayer.setSize(10);
 
         //Background - 0
-        SpriteCacheLayer backgroundLayer = new SpriteCacheLayer(10);
+        CacheLayer backgroundLayer = new CacheLayer(10);
         scene.addLayer(backgroundLayer);
         Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
         backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
@@ -90,7 +90,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         this.particlesActor.particleSystem.createParticleGroup(particleGroupDef);
 
         //Tub - 3
-        SpriteCacheLayer tubLayer = new SpriteCacheLayer(10);
+        CacheLayer tubLayer = new CacheLayer(10);
         scene.addLayer(tubLayer);
         Texture tubTexture = new Texture(Gdx.files.internal("tub.jpg"));
         Texture tabTexture = new Texture(Gdx.files.internal("metal.png"));

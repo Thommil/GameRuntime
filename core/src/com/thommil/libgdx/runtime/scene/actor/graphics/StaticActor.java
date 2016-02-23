@@ -1,21 +1,21 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
 /**
- * Basic StaticActor using custom for BasicBatch rendering using low level API
+ * Basic StaticActor using custom for rendering using low level API
  *
  * Created by thommil on 12/02/16.
  */
-public class StaticActor extends Actor implements Renderable<SpriteBatch> {
+public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer> {
 
     protected int layer = 0;
 
     final public Texture texture;
+    final float[] vertices = new float[SpriteActor.SPRITE_SIZE];
     final public float x, y;
     final public float width, height;
     final public float u, v;
@@ -49,6 +49,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatch> {
         super(id);
         this.layer = layer;
         this.texture = texture;
+
         this.x = x;
         this.y = y;
         this.width = width;
@@ -58,6 +59,30 @@ public class StaticActor extends Actor implements Renderable<SpriteBatch> {
         this.u2 = u2;
         this.v2 = v2;
         this.color = color;
+
+        vertices[SpriteActor.X1] = x;
+        vertices[SpriteActor.Y1] = y;
+        vertices[SpriteActor.C1] = color;
+        vertices[SpriteActor.U1] = u;
+        vertices[SpriteActor.V1] = v;
+
+        vertices[SpriteActor.X2] = x;
+        vertices[SpriteActor.Y2] = y + height;
+        vertices[SpriteActor.C2] = color;
+        vertices[SpriteActor.U2] = u;
+        vertices[SpriteActor.V2] = v2;
+
+        vertices[SpriteActor.X3] = x + width;
+        vertices[SpriteActor.Y3] = y + height;
+        vertices[SpriteActor.C3] = color;
+        vertices[SpriteActor.U3] = u2;
+        vertices[SpriteActor.V3] = v2;
+
+        vertices[SpriteActor.X4] = x + width;
+        vertices[SpriteActor.Y4] = y;
+        vertices[SpriteActor.C4] = color;
+        vertices[SpriteActor.U4] = u2;
+        vertices[SpriteActor.V4] = v;
     }
 
     public void setLayer(final int layer){
@@ -81,8 +106,9 @@ public class StaticActor extends Actor implements Renderable<SpriteBatch> {
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, SpriteBatch renderer) {
-        renderer.draw(texture, x, y, width, height, u, v, u2, v2, color);
+    public void render(float deltaTime, SpriteBatchRenderer renderer) {
+        renderer.setTexture(this.texture);
+        renderer.draw(this.vertices);
     }
 
     /**

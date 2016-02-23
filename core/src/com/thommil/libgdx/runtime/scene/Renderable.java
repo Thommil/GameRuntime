@@ -1,7 +1,5 @@
 package com.thommil.libgdx.runtime.scene;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-
 /**
  * Defines a renderable element using T as renderer
  *
@@ -9,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
  *
  * Created by thommil on 01/02/16.
  */
-public interface Renderable<T extends Batch>{
+public interface Renderable<T extends Renderer>{
 
     /**
      * Returns the layer of the Renderable

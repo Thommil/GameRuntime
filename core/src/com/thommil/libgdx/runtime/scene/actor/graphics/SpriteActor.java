@@ -2,12 +2,11 @@ package com.thommil.libgdx.runtime.scene.actor.graphics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
-import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
@@ -17,7 +16,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 2/10/16.
  */
-public class SpriteActor extends Actor implements Renderable<SpriteBatch> {
+public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer> {
 
     static public final int X1 = 0;
     static public final int Y1 = 1;
@@ -635,8 +634,9 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatch> {
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, SpriteBatch renderer) {
-        renderer.draw(this.texture, getVertices(), 0, SPRITE_SIZE);
+    public void render(float deltaTime, SpriteBatchRenderer renderer) {
+        renderer.setTexture(this.texture);
+        renderer.draw(this.getVertices());
     }
 
     /**

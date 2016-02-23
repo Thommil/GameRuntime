@@ -9,11 +9,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchAdapter;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.ParticleEffectActor;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
+import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
-import com.thommil.libgdx.runtime.scene.layer.SpriteCacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 
 /**
@@ -36,20 +37,12 @@ public class ParticlesTestScene extends Game  implements InputProcessor{
 		scene = new Scene(settings);
 
 		//Layers
-		SpriteCacheLayer backgroundLayer = new SpriteCacheLayer(1);
-		scene.addLayer(backgroundLayer);
-		Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
-		backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-		backgroundLayer.beginCache();
-		scene.addActor(new StaticActor(MathUtils.random(0x7ffffffe), 0, backgroundTexture,-5,-5,10,10,0,1,1,0, Color.WHITE.toFloatBits()));
-		backgroundLayer.endCache();
-
-		scene.addLayer(new SpriteBatchLayer(100));
+		scene.addLayer(new SpriteBatchLayer(100, new SpriteBatchAdapter(100)));
 
 		//Actor
 		ParticleEffect effect = new ParticleEffect();
 		effect.load(Gdx.files.internal("effects/particles.p"), Gdx.files.internal("effects"));
-		actor = new ParticleEffectActor(0, 1, effect, 10);
+		actor = new ParticleEffectActor(0, 0, effect, 10);
 		scene.addActor(actor);
 
 		Gdx.input.setInputProcessor(this);

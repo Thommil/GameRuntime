@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.graphics.batch.ParticlesBatch;
+import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 
 /**
  * Created by tomtom on 16/02/16.
  */
-public class WaterBatch extends ParticlesBatch {
+public class WaterBatch extends ParticlesBatchRenderer {
 
     private final float particlesScaleFactor = 2f;
 
@@ -86,9 +86,9 @@ public class WaterBatch extends ParticlesBatch {
     }
 
     @Override
-    public void draw(float[] vertices, float radius) {
+    public void draw(float[] vertices) {
         //Currently rendering on FBO
-        super.draw(vertices, radius);
+        super.draw(vertices);
 
         //End rendering on FBO
         this.fbo.end();

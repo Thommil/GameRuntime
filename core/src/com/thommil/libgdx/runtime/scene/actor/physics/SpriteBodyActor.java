@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
@@ -90,7 +90,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, SpriteBatch renderer) {
+    public void render(float deltaTime, SpriteBatchRenderer renderer) {
         if(!dirty) {
             final Vector2 position = this.body.getPosition();
             final float angle = this.body.getAngle();

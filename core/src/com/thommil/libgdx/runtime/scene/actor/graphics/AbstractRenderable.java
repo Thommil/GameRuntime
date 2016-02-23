@@ -3,13 +3,14 @@ package com.thommil.libgdx.runtime.scene.actor.graphics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
+import com.thommil.libgdx.runtime.scene.Renderer;
 
 /**
  * Empty actor used to listen for render calls and implements some game logic
  *
  * Created by tomtom on 20/02/16.
  */
-public abstract class AbstractRenderable extends Actor implements Renderable<Batch> {
+public abstract class AbstractRenderable extends Actor implements Renderable<Renderer> {
 
     protected int layer = 0;
 
@@ -41,7 +42,7 @@ public abstract class AbstractRenderable extends Actor implements Renderable<Bat
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, Batch renderer) {
+    public void render(float deltaTime, Renderer renderer) {
         //NOP
     }
 

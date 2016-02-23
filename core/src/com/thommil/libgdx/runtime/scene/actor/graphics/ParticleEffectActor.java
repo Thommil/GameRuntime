@@ -1,10 +1,10 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.utils.Array;
-import com.thommil.libgdx.runtime.graphics.batch.SpriteBatch;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchAdapter;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
@@ -13,7 +13,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * Created by thommil on 14/02/16.
  */
-public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch> {
+public class ParticleEffectActor extends Actor implements Renderable<SpriteBatchAdapter> {
 
     protected int layer = 0;
     protected final ParticleEffectPool particleEffectPool;
@@ -51,7 +51,7 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, SpriteBatch renderer) {
+    public void render(float deltaTime, SpriteBatchAdapter renderer) {
         for (int i = particleEffects.size - 1; i >= 0; i--) {
             final ParticleEffectPool.PooledEffect particleEffect = particleEffects.get(i);
             particleEffect.draw(renderer, deltaTime);

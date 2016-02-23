@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics.batch;
+package com.thommil.libgdx.runtime.graphics.renderer.particles;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -7,15 +7,15 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 
 /**
- * Extension of ParticlesBatch with Textured particles
+ * Extension of ParticlesBatchRenderer with Textured particles
  *
  * Created by thommil on 2/22/16.
  */
-public class TexturedParticlesBatch extends ParticlesBatch {
+public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 
     protected final Texture texture;
 
-    public TexturedParticlesBatch(final Texture texture, final int maxParticles) {
+    public TexturedParticlesBatchRenderer(final Texture texture, final int maxParticles) {
         super(maxParticles);
         this.texture = texture;
         this.verticesSize = ParticleSystemActor.VERTEX_SIZE;

@@ -1,10 +1,12 @@
-package com.thommil.libgdx.runtime.graphics.cache;
+package com.thommil.libgdx.runtime.graphics.renderer.cache;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
+import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.scene.Renderer;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
@@ -15,7 +17,7 @@ import java.nio.FloatBuffer;
  *
  * Created by thommil on 12/02/16.
  */
-public class SpriteCache implements Disposable {
+public class CacheRenderer implements Renderer{
 
     protected final Mesh mesh;
     protected final ShaderProgram shader;
@@ -26,11 +28,13 @@ public class SpriteCache implements Disposable {
     protected final IntArray counts = new IntArray(8);
     protected Cache currentCache;
 
+    protected final Matrix4 combinedMatrix = new Matrix4();
+
     /** Creates a cache with the specified size and OpenGL ES 2.0 shader.
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      *           Max of 5460 if indices are used.
      */
-    public SpriteCache(final int size) {
+    public CacheRenderer(final int size) {
         this.mesh = createMesh(size);
         this.shader = createShader();
     }
@@ -100,7 +104,7 @@ public class SpriteCache implements Disposable {
         return cache.id;
     }
 
-    /** Invalidates all cache IDs and resets the SpriteCache so new caches can be added. */
+    /** Invalidates all cache IDs and resets the CacheRenderer so new caches can be added. */
     public void clear () {
         caches.clear();
         mesh.getVerticesBuffer().clear().flip();
@@ -163,16 +167,20 @@ public class SpriteCache implements Disposable {
                 staticActor.width, staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2, staticActor.color);
     }
 
-    /** Prepares the OpenGL state for SpriteCache rendering. */
-    public void begin (final Matrix4 combinedMatrix) {
+    public void setCombinedMatrix(final Matrix4 combinedMatrix) {
+        this.combinedMatrix.set(combinedMatrix);
+    }
+
+    /** Prepares the OpenGL state for CacheRenderer rendering. */
+    public void begin () {
         shader.begin();
-        shader.setUniformMatrix("u_projectionViewMatrix", combinedMatrix);
+        shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
         shader.setUniformi("u_texture", 0);
 
         mesh.bind(shader);
     }
 
-    /** Completes rendering for this SpriteCache. */
+    /** Completes rendering for this CacheRenderer. */
     public void end () {
         shader.end();
         mesh.unbind(shader);
@@ -193,27 +201,9 @@ public class SpriteCache implements Disposable {
         }
     }
 
-    /** Draws a subset of images defined for the specified cache ID.
-     * @param offset The first image to render.
-     * @param length The number of images from the first image (inclusive) to render. */
-    public void draw (int cacheID, int offset, int length) {
-        final Cache cache = caches.get(cacheID);
-        offset = offset * 6 + cache.offset;
-        length *= 6;
-        final Texture[] textures = cache.textures;
-        final int[] counts = cache.counts;
-        final int textureCount = cache.textureCount;
-        for (int i = 0; i < textureCount; i++) {
-            textures[i].bind();
-            int count = counts[i];
-            if (count > length) {
-                i = textureCount;
-                count = length;
-            } else
-                length -= count;
-            mesh.render(shader, GL20.GL_TRIANGLES, offset, count);
-            offset += count;
-        }
+    @Override
+    public void draw(float[] vertices) {
+        //Not implemented
     }
 
     public void dispose () {
@@ -236,9 +226,8 @@ public class SpriteCache implements Disposable {
     }
 
     /**
-     * Create methods below must be overriden for custom Batch
+     * Subclasses should override this method to use their specific Mesh
      */
-
     protected Mesh createMesh(final int size){
         if (size > 5460) throw new IllegalArgumentException("Can't have more than 5460 sprites per batch: " + size);
 
@@ -267,6 +256,9 @@ public class SpriteCache implements Disposable {
         return mesh;
     }
 
+    /**
+     * Subclasses should override this method to use their specific vertices
+     */
     protected ShaderProgram createShader () {
         String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //

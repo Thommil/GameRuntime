@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics.batch;
+package com.thommil.libgdx.runtime.graphics.renderer.particles;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 
 /**
- * Extension of ParticlesBatch with Colored particles
+ * Extension of ParticlesBatchRenderer with Colored particles
  *
  * Created by thommil on 2/22/16.
  */
-public class ColoredParticlesBatch extends ParticlesBatch {
+public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
 
 
-    public ColoredParticlesBatch(final int maxParticles) {
+    public ColoredParticlesBatchRenderer(final int maxParticles) {
         super(maxParticles);
         this.verticesSize = ParticleSystemActor.COLORED_VERTEX_SIZE ;
     }

@@ -1,9 +1,7 @@
-package com.thommil.libgdx.runtime.physics;
+package com.thommil.libgdx.runtime.physics.particles;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.utils.Array;
 import finnstr.libgdx.liquidfun.ParticleDef;
 import finnstr.libgdx.liquidfun.ParticleGroup;
 import finnstr.libgdx.liquidfun.ParticleGroupDef;
