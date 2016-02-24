@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime.graphics.renderer.particles;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -31,7 +32,6 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
         return new Mesh(vertexDataType, false, size , 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
                 ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.ColorUnpacked, 4, ShaderProgram.COLOR_ATTRIBUTE));
     }
-
 
     protected  float[] createVertices(final int size){
         this.verticesSize = ParticleSystemActor.COLORED_VERTEX_SIZE;

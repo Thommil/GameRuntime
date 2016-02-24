@@ -128,13 +128,11 @@ public class ParticlesBatchRenderer implements Renderer{
      */
     public void flush () {
         if (this.idx == 0) return;
-
         final int count = this.idx / this.verticesSize ;
 
         shader.setUniformf("radius", this.lastParticlesRadius * 2f * this.particlesScale);
         this.mesh.setVertices(this.vertices, 0, this.idx);
         mesh.render(shader, GL20.GL_POINTS, 0, count);
-
         this.idx = 0;
     }
 

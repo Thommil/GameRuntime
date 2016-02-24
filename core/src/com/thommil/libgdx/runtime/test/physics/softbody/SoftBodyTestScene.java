@@ -42,10 +42,10 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        //ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(30000);
-        ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(10000);
-        ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(30000,softBodybatch);
-        softBodyBatchLayer.setScaleFactor(1.50f);
+        //ParticlesBatchRenderer softBodybatch = new ParticlesBatchRenderer(5000);
+        ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(5000);
+        ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(10,softBodybatch);
+        //softBodyBatchLayer.setScaleFactor(1.50f);
         scene.addLayer(1,softBodyBatchLayer);
         particlesActor = new SoftbodyActor();
         scene.addActor(particlesActor);

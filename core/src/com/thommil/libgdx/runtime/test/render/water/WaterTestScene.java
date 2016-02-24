@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.renderer.advanced.OffScreenRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
@@ -16,6 +18,7 @@ import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
 import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
 import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
+import com.thommil.libgdx.runtime.scene.layer.OffScreenLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
 import finnstr.libgdx.liquidfun.*;
 
@@ -71,7 +74,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene.addLayer(new SpriteBatchLayer(100));
 
         //Water - 2
-        scene.addLayer(new WaterLayer());
+        scene.addLayer(new OffScreenLayer<WaterLayer>(new WaterLayer(), new OffScreenRenderer()));
         this.particlesActor = new WaterActor(2);
         this.particleDef = new ParticleDef();
         this.particleDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);
@@ -91,7 +94,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
 
         //Tub - 3
         CacheLayer tubLayer = new CacheLayer(10);
-        scene.addLayer(tubLayer);
+        scene.addLayer(3,tubLayer);
         Texture tubTexture = new Texture(Gdx.files.internal("tub.jpg"));
         Texture tabTexture = new Texture(Gdx.files.internal("metal.png"));
         tubTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);

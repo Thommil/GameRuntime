@@ -441,7 +441,7 @@ public class Scene implements Screen {
         this.viewport.update(width,height);
         for(final Layer layer : this.layers) {
             if(layer != null) {
-                layer.onResize(width, height);
+                layer.resize(width, height);
             }
         }
     }

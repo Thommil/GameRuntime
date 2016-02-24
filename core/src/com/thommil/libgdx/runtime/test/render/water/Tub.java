@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.test.render.water;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -12,9 +11,6 @@ import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tomtom on 03/02/16.
- */
 public class Tub extends StaticBodyActor {
 
     public Tub(final int layer, Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2, float color) {

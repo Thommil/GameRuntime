@@ -106,6 +106,13 @@ public abstract class Layer implements Disposable {
     protected abstract void onHide();
 
     /**
+     * Resizes a layer
+     */
+    public void resize(int width, int height){
+        this.onResize(width, height);
+    }
+
+    /**
      * Called when layer is resized
      */
     protected abstract void onResize(int width, int height);

@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
+import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
@@ -52,12 +53,12 @@ public class ParticlesBatchLayer extends Layer{
      */
     @Override
     public void render(float deltaTime) {
-        renderer.setCombinedMatrix(this.camera.combined);
-        renderer.begin();
+        this.renderer.setCombinedMatrix(this.camera.combined);
+        this.renderer.begin();
         for(Renderable renderable : this.renderables){
-            renderable.render(deltaTime,renderer);
+            renderable.render(deltaTime,this.renderer);
         }
-        renderer.end();
+        this.renderer.end();
     }
 
     /**
@@ -84,7 +85,7 @@ public class ParticlesBatchLayer extends Layer{
      */
     @Override
     protected void onResize(int width, int height) {
-        renderer.setParticlesScale((Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight)) * scaleFactor);
+        renderer.setParticlesScale((Math.min(width / this.camera.viewportWidth, height / this.camera.viewportHeight)) * this.scaleFactor);
     }
 
     /**

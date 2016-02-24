@@ -141,7 +141,7 @@ public class SpriteBatchRenderer implements Renderer{
     public void flush () {
         if (this.idx == 0) return;
 
-        final int count = this.idx / this.verticesSize * 4 * 6;
+        final int count = this.idx / SpriteActor.SPRITE_SIZE * 6;
 
         this.lastTexture.bind();
         this.mesh.setVertices(this.vertices, 0, this.idx);

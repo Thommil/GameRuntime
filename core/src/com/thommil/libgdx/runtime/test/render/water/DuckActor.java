@@ -1,18 +1,13 @@
 package com.thommil.libgdx.runtime.test.render.water;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tomtom on 17/02/16.
- */
 public class DuckActor extends SpriteBodyActor {
 
 
