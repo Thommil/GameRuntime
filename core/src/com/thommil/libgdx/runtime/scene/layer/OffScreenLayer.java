@@ -25,11 +25,13 @@ public class OffScreenLayer<T extends Layer> extends Layer {
      */
     @Override
     public void render(float deltaTime) {
-        this.offScreenRenderer.setCombinedMatrix(this.camera.combined);
-        this.offScreenRenderer.begin();
-        this.decoratedLayer.render(deltaTime);
-        this.offScreenRenderer.draw();
-        this.offScreenRenderer.end();
+        if(!this.hidden) {
+            this.offScreenRenderer.setCombinedMatrix(this.camera.combined);
+            this.offScreenRenderer.begin();
+            this.decoratedLayer.render(deltaTime);
+            this.offScreenRenderer.draw();
+            this.offScreenRenderer.end();
+        }
     }
 
     /**

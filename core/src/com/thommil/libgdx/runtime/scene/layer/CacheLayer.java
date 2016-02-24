@@ -80,10 +80,12 @@ public class CacheLayer extends Layer{
      */
     @Override
     public void render(float deltaTime) {
-        CacheLayer.renderer.setCombinedMatrix(this.camera.combined);
-        CacheLayer.renderer.begin();
-        CacheLayer.renderer.draw(this.cacheId);
-        CacheLayer.renderer.end();
+        if(!this.hidden) {
+            CacheLayer.renderer.setCombinedMatrix(this.camera.combined);
+            CacheLayer.renderer.begin();
+            CacheLayer.renderer.draw(this.cacheId);
+            CacheLayer.renderer.end();
+        }
     }
 
     /**

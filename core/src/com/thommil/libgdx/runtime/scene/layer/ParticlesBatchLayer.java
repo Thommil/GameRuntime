@@ -53,12 +53,14 @@ public class ParticlesBatchLayer extends Layer{
      */
     @Override
     public void render(float deltaTime) {
-        this.renderer.setCombinedMatrix(this.camera.combined);
-        this.renderer.begin();
-        for(Renderable renderable : this.renderables){
-            renderable.render(deltaTime,this.renderer);
+        if(!this.hidden) {
+            this.renderer.setCombinedMatrix(this.camera.combined);
+            this.renderer.begin();
+            for (Renderable renderable : this.renderables) {
+                renderable.render(deltaTime, this.renderer);
+            }
+            this.renderer.end();
         }
-        this.renderer.end();
     }
 
     /**

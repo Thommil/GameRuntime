@@ -43,18 +43,19 @@ public class SpriteBatchLayer extends Layer{
      */
     @Override
     public void render(float deltaTime) {
-        if(this.renderer instanceof SpriteBatchRenderer) {
-            ((SpriteBatchRenderer)renderer).setCombinedMatrix(this.camera.combined);
+        if(!this.hidden) {
+            if (this.renderer instanceof SpriteBatchRenderer) {
+                ((SpriteBatchRenderer) renderer).setCombinedMatrix(this.camera.combined);
+            } else if (this.renderer instanceof Batch) {
+                ((Batch) renderer).setProjectionMatrix(this.camera.projection);
+                ((Batch) renderer).setTransformMatrix(this.camera.view);
+            }
+            this.renderer.begin();
+            for (Renderable renderable : this.renderables) {
+                renderable.render(deltaTime, this.renderer);
+            }
+            this.renderer.end();
         }
-        else if(this.renderer instanceof Batch) {
-            ((Batch)renderer).setProjectionMatrix(this.camera.projection);
-            ((Batch)renderer).setTransformMatrix(this.camera.view);
-        }
-        this.renderer.begin();
-        for(Renderable renderable : this.renderables){
-            renderable.render(deltaTime,this.renderer);
-        }
-        this.renderer.end();
     }
 
     /**

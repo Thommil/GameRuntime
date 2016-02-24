@@ -17,7 +17,7 @@ public abstract class Layer implements Disposable {
     /**
      * Indicates visible/enabled state
      */
-    private boolean visible = false;
+    protected boolean hidden = true;
 
     /**
      * Inner Renderable actors list
@@ -83,12 +83,13 @@ public abstract class Layer implements Disposable {
      * Shows a layer
      */
     public void show(){
+        this.hidden = false;
         this.onShow();
-        this.visible = true;
     }
 
     /**
-     * Called when layer is showed for subclasses
+     * Called when layer is showed for subclasses. Fade in can be done
+     * by setting hidden to true here and adjusting rendering alpha.
      */
     protected abstract void onShow();
 
@@ -96,12 +97,13 @@ public abstract class Layer implements Disposable {
      * Hides a layer
      */
     public void hide(){
-        this.visible = false;
+        this.hidden = true;
         this.onHide();
     }
 
     /**
-     * Called when layer is hidden
+     * Called when layer is hidden for subclasses. Fade out can be done
+     * by setting hidden to false here and adjusting rendering alpha.
      */
     protected abstract void onHide();
 
@@ -120,7 +122,7 @@ public abstract class Layer implements Disposable {
     /**
      * Indicates if layer is currently visible/enabled
      */
-    public boolean isVisible() {
-        return visible;
+    public boolean isHidden() {
+        return hidden;
     }
 }

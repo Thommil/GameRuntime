@@ -415,7 +415,7 @@ public class Scene implements Screen {
         this.renderLock.lock();
 
         for (final Layer layer : this.layers) {
-            if (layer != null && layer.isVisible()) {
+            if (layer != null) {
                 layer.render(delta);
             }
         }

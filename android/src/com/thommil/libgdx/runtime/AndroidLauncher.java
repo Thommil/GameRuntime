@@ -6,7 +6,6 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
 import com.thommil.libgdx.runtime.test.basic.cache.CacheTestScene;
 import com.thommil.libgdx.runtime.test.basic.sprite.SpriteTestScene;
-import com.thommil.libgdx.runtime.test.basic.texture.TextureTestScene;
 import com.thommil.libgdx.runtime.test.input.dynamic.PhysicsInputTestScene;
 import com.thommil.libgdx.runtime.test.input.kinematic.KinematicInputTestScene;
 import com.thommil.libgdx.runtime.test.physics.basic.BasicPhysicsTestScene;
