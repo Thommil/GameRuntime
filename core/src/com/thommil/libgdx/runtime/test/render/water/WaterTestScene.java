@@ -9,8 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.thommil.libgdx.runtime.graphics.renderer.advanced.OffScreenRenderer;
-import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.OffScreenRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
@@ -74,7 +73,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene.addLayer(new SpriteBatchLayer(100));
 
         //Water - 2
-        scene.addLayer(new OffScreenLayer<WaterLayer>(new WaterLayer(), new OffScreenRenderer()));
+        scene.addLayer(new OffScreenLayer<WaterLayer>(new WaterLayer(), new WaterRenderer()));
         this.particlesActor = new WaterActor(2);
         this.particleDef = new ParticleDef();
         this.particleDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);

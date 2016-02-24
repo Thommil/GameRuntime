@@ -2,7 +2,7 @@ package com.thommil.libgdx.runtime.scene.layer;
 
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.thommil.libgdx.runtime.graphics.renderer.advanced.OffScreenRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.OffScreenRenderer;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
@@ -28,7 +28,7 @@ public class OffScreenLayer<T extends Layer> extends Layer {
         this.offScreenRenderer.setCombinedMatrix(this.camera.combined);
         this.offScreenRenderer.begin();
         this.decoratedLayer.render(deltaTime);
-        this.offScreenRenderer.draw(null);
+        this.offScreenRenderer.draw();
         this.offScreenRenderer.end();
     }
 
@@ -98,7 +98,7 @@ public class OffScreenLayer<T extends Layer> extends Layer {
     @Override
     protected void onResize(int width, int height) {
         this.decoratedLayer.resize(width, height);
-        this.offScreenRenderer.onResize(0,0,this.camera.viewportWidth, this.camera.viewportHeight, width, height);
+        this.offScreenRenderer.onResize(this.camera.viewportWidth, this.camera.viewportHeight, width, height);
     }
 
     /**

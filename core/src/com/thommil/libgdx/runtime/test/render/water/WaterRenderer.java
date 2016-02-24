@@ -1,7 +1,7 @@
 package com.thommil.libgdx.runtime.test.render.water;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.graphics.renderer.advanced.OffScreenRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.OffScreenRenderer;
 
 public class WaterRenderer extends OffScreenRenderer {
 

@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics.renderer.advanced;
+package com.thommil.libgdx.runtime.graphics.renderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
@@ -38,14 +38,9 @@ public class OffScreenRenderer implements Renderer {
     protected final Pixmap.Format textureFormat;
 
     /**
-     * FBO screen size
+     * FBO size
      */
     private int screenWidth, screenHeight;
-
-    /**
-     * FBO coordinates
-     */
-    private float x, y;
 
     /**
      * FBO view size
@@ -78,16 +73,12 @@ public class OffScreenRenderer implements Renderer {
     /**
      * Called when the screen/view size changes to resize the inner FBO
      *
-     * @param x The framebuffer X coord. (in world units)
-     * @param y The framebuffer Y coord. (in world units)
      * @param width The framebuffer width (in world units)
      * @param height The framebuffer height (in world units)
      * @param screenWidth The display area width in pixels
      * @param screenHeight The display area height in pixels
      */
-    public void onResize(final int x, final int y, final float width, final float height, final int screenWidth, final int screenHeight) {
-        this.x = x;
-        this.y = y;
+    public void onResize(final float width, final float height, final int screenWidth, final int screenHeight) {
         this.width = width;
         this.height = height;
         this.screenWidth = screenWidth;
@@ -115,7 +106,9 @@ public class OffScreenRenderer implements Renderer {
     }
 
     /**
-     * Get the current offscreen image in a Texture
+     * Get the current offscreen image in a Texture.
+     * Can be retrieved to reinject the result in another renderer instead of calling
+     * inner draw methods.
      *
      * @return The current offscreen image
      */
@@ -145,7 +138,7 @@ public class OffScreenRenderer implements Renderer {
         }
         //Resize
         if(this.hasResized) {
-            this.frameBuffer = new FrameBuffer(Pixmap.Format.RGBA4444, this.screenWidth, this.screenHeight, false);
+            this.frameBuffer = new FrameBuffer(this.textureFormat, this.screenWidth, this.screenHeight, false);
 
             //Vertices XY
             //0 & 5
@@ -183,6 +176,40 @@ public class OffScreenRenderer implements Renderer {
             this.mesh.setVertices(vertices);
         }
         this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
+    }
+
+    /**
+     * Draw the offscreen result in the specified view only
+     *
+     * @param x The X coord of the view
+     * @param y The Y coord of the view
+     * @param width The width of the view
+     * @param height The height of the view
+     */
+    public void draw(final float x, final float y, final float width, final float height){
+        //Vertices XY
+        //0 & 5
+        this.vertices[0] = this.vertices[20] = x;
+        this.vertices[1] = this.vertices[21] = y + height;
+        //1
+        this.vertices[4] = x;
+        this.vertices[5] = y;
+        //2 & 3
+        this.vertices[8] = this.vertices[12] = x + width;
+        this.vertices[9] = this.vertices[13] = y;
+        //4
+        this.vertices[16] = x + width;
+        this.vertices[17] = y + height;
+
+        this.mesh.setVertices(vertices);
+        this.draw(null);
+    }
+
+    /**
+     * Simple call, certainly the good one
+     */
+    public void draw(){
+        this.draw(null);
     }
 
     /**
