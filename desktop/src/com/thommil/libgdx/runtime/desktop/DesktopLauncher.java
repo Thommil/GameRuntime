@@ -24,13 +24,13 @@ public class DesktopLauncher {
 		//new LwjglApplication(new SpriteTestScene(), config);
 
 		//Basic cache
-		new LwjglApplication(new CacheTestScene(), config);
+		//new LwjglApplication(new CacheTestScene(), config);
 
 		//Basic Physics
 		//new LwjglApplication(new BasicPhysicsTestScene(), config);
 
 		//Stress Physics
-		//new LwjglApplication(new PhysicsStressTestScene(), config);
+		new LwjglApplication(new PhysicsStressTestScene(), config);
 
 		//Collision Physics
 		//new LwjglApplication(new CollisionTestScene(), config);

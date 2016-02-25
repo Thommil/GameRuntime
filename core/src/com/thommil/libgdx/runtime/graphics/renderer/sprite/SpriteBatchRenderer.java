@@ -13,7 +13,9 @@ import com.thommil.libgdx.runtime.scene.Renderer;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**
- * Custom Batch for simple Sprite based on LibGDX SpriteBatch
+ * Custom Batch for simple Sprite based on LibGDX SpriteBatch with multimap support.
+ * Base version only support 1 texture (u_texture0), additional textures
+ * can be used using u_textureN in custom shaders.
  *
  * Created by thommil on 2/10/16.
  */
@@ -25,8 +27,10 @@ public class SpriteBatchRenderer implements Renderer{
     protected final ShaderProgram shader;
 
     protected int idx = 0;
-    protected Texture lastTexture = null;
-    protected Texture currentTexture = null;
+    protected Texture lastTexture[] = null;
+    protected Texture currentTexture[] = null;
+    protected int texturesCount = 1;
+    protected final Texture[] tmptexture = new Texture[1];
     protected float color = Color.WHITE.toFloatBits();
 
     protected final Matrix4 combinedMatrix = new Matrix4();
@@ -49,7 +53,15 @@ public class SpriteBatchRenderer implements Renderer{
     public void begin() {
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
-        this.shader.setUniformi("u_texture", 0);
+        switch(this.texturesCount){
+            case 1 :
+                this.shader.setUniformi("u_texture0", 0);
+                break;
+            default:
+                for(int i=0; i < this.texturesCount; i++){
+                    this.shader.setUniformi("u_texture"+i, i);
+                }
+        }
     }
 
     /**
@@ -81,14 +93,23 @@ public class SpriteBatchRenderer implements Renderer{
     }
 
     /**
-     * Sets current texture
+     * Sets current texture (single image)
      *
      * @param texture The current texture to use
      */
     public void setTexture(final Texture texture){
-        this.currentTexture = texture;
+        this.tmptexture[0] = texture;
+        this.currentTexture = this.tmptexture;
     }
 
+    /**
+     * Sets current textures (multimap)
+     *
+     * @param texture The current textures to use
+     */
+    public void setTexture(final Texture[] texture){
+        this.currentTexture = texture;
+    }
 
     /**
      * Generic method to draw a set of vertices.
@@ -143,7 +164,15 @@ public class SpriteBatchRenderer implements Renderer{
 
         final int count = this.idx / SpriteActor.SPRITE_SIZE * 6;
 
-        this.lastTexture.bind();
+        switch(this.texturesCount){
+            case 1 :
+                this.lastTexture[0].bind(0);
+                break;
+            default:
+                for(int i=0; i < this.texturesCount; i++){
+                    this.lastTexture[i].bind(i);
+                }
+        }
         this.mesh.setVertices(this.vertices, 0, this.idx);
         this.mesh.getIndicesBuffer().position(0);
         this.mesh.getIndicesBuffer().limit(count);
@@ -226,10 +255,10 @@ public class SpriteBatchRenderer implements Renderer{
                 + "#endif\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "varying vec4 v_color;\n" //
-                + "uniform sampler2D u_texture;\n" //
+                + "uniform sampler2D u_texture0;\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+                + "  gl_FragColor = v_color * texture2D(u_texture0, v_texCoords);\n" //
                 + "}";
 
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
