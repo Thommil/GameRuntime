@@ -2,7 +2,7 @@ package com.thommil.libgdx.runtime.test.basic.cache;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 /**

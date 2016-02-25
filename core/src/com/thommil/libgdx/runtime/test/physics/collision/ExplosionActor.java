@@ -1,8 +1,7 @@
 package com.thommil.libgdx.runtime.test.physics.collision;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
 /**

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
-import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.scene.Renderer;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 

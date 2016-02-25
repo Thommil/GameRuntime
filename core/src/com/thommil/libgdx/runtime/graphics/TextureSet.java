@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.graphics.renderer;
+package com.thommil.libgdx.runtime.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
@@ -26,14 +26,14 @@ public class CacheTestScene extends Game {
 		Scene scene = new Scene(settings);
 
 		//Layers
-		CacheLayer.setSize(5000);
-		CacheLayer planetCacheLayer = new CacheLayer(5000);
+		CacheLayer.setSize(60);
+		CacheLayer planetCacheLayer = new CacheLayer(60);
 		scene.addLayer(planetCacheLayer);
 
 		//Actor
 		TextureSet textureSet = new TextureSet(new Texture(Gdx.files.internal("planet_sprite.png")));
 		planetCacheLayer.beginCache();
-		for(int i = 0; i < 800; i++) {
+		for(int i = 0; i < 10; i++) {
 			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 0));
 			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 1));
 			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 2));
