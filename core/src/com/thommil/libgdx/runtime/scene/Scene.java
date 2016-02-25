@@ -53,7 +53,7 @@ public class Scene implements Screen {
     /**
      * Inner layers  list
      */
-    protected final List<Layer> layers;
+    protected final Array<Layer> layers;
 
     /**
      * The current number of renderable in the scene
@@ -117,7 +117,7 @@ public class Scene implements Screen {
         this.physicsQueue = new ArrayDeque<Runnable>();
 
         //Graphics
-        this.layers = new ArrayList<Layer>();
+        this.layers = new Array<Layer>();
         this.renderablesCount = 0;
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(settings.viewport.minWorldWidth,settings.viewport.minWorldHeight,this.camera);
@@ -151,7 +151,7 @@ public class Scene implements Screen {
         //Gdx.app.debug("Scene","addLayer("+index+")");
         layer.setCamera(this.camera);
         this.renderLock.lock();
-        while(index > (this.layers.size()-1)){
+        while(index > (this.layers.size-1)){
             this.layers.add(null);
         }
         this.layers.set(index, layer);
@@ -171,7 +171,7 @@ public class Scene implements Screen {
         this.renderLock.lock();
         this.layers.add(layer);
         this.renderLock.unlock();
-        return (this.layers.size()-1);
+        return (this.layers.size-1);
     }
 
     /**
