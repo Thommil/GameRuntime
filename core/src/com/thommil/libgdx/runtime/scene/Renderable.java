@@ -3,8 +3,6 @@ package com.thommil.libgdx.runtime.scene;
 /**
  * Defines a renderable element using T as renderer
  *
- * TODO replace Batch by Renderer (begin, end, setCombinedMatrix) -> Then open Sprite25D
- *
  * Created by thommil on 01/02/16.
  */
 public interface Renderable<T extends Renderer>{

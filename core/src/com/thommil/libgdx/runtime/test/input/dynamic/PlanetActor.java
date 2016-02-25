@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 import java.util.ArrayList;
@@ -14,11 +15,11 @@ import java.util.List;
  */
 public class PlanetActor extends SpriteBodyActor {
 
-    static Texture texture = new Texture(Gdx.files.internal("planet.png"));
+    static TextureSet textureSet = new TextureSet(new Texture(Gdx.files.internal("planet.png")));
     float radius;
 
     public PlanetActor() {
-        super(MathUtils.random(0x7ffffffe), 0, texture);
+        super(MathUtils.random(0x7ffffffe), 0, textureSet);
         this.setOriginCenter();
         this.setPosition(MathUtils.random(-10f,10f),MathUtils.random(-10f,10f));
     }
@@ -46,6 +47,6 @@ public class PlanetActor extends SpriteBodyActor {
     @Override
     public void dispose() {
         super.dispose();
-        PlanetActor.texture.dispose();
+        PlanetActor.textureSet.dispose();
     }
 }

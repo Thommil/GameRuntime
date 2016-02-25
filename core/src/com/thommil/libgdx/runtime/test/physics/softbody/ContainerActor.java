@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ import java.util.List;
  */
 public class ContainerActor extends StaticBodyActor {
 
-    public ContainerActor(final Texture texture, final float x, final float y, final float width, final float height) {
-        super(MathUtils.random(0x7ffffffe), 0, texture,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
+    public ContainerActor(final TextureSet textureSet, final float x, final float y, final float width, final float height) {
+        super(MathUtils.random(0x7ffffffe), 0, textureSet,x,y,width,height,0f,1f,1f,0f, Color.WHITE.toFloatBits());
     }
 
     /**
@@ -35,6 +36,6 @@ public class ContainerActor extends StaticBodyActor {
     @Override
     public void dispose() {
         super.dispose();
-        this.texture.dispose();
+        this.textureSet.dispose();
     }
 }

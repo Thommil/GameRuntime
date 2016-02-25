@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
@@ -18,7 +19,7 @@ import com.thommil.libgdx.runtime.tools.SceneProfiler;
 public class PhysicsStressTestScene extends Game{
 
     Scene scene;
-    Texture curiosityTexture;
+    TextureSet curiosityTextureSet;
 
     int inc = 0;
 
@@ -33,13 +34,13 @@ public class PhysicsStressTestScene extends Game{
 
         //settings.physics.debug = true;
         scene = new Scene(settings);
-        curiosityTexture = new Texture(Gdx.files.internal("curiosity.png"));
+        curiosityTextureSet = new TextureSet(new Texture(Gdx.files.internal("curiosity.png")));
 
         //Layer
         scene.addLayer(new SpriteBatchLayer(5000));
 
         //Actors
-        scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-100f,-50f,200f,10f));
+        scene.addActor(new GroundActor(new TextureSet(new Texture(Gdx.files.internal("metal.png"))),-100f,-50f,200f,10f));
 
         scene.addActor(new AbstractStepable(MathUtils.random(0x7ffffffe)) {
 
@@ -47,7 +48,7 @@ public class PhysicsStressTestScene extends Game{
             public void step(long lastStepDuration) {
                 if(Gdx.graphics.getFramesPerSecond() > 30) {
                     if (inc % 30 == 0) {
-                        scene.addActor(new CuriosityActor(curiosityTexture));
+                        scene.addActor(new CuriosityActor(curiosityTextureSet));
                     }
                 }
                 inc+=1;
@@ -64,6 +65,6 @@ public class PhysicsStressTestScene extends Game{
     @Override
     public void dispose() {
         super.dispose();
-        this.curiosityTexture.dispose();
+        this.curiosityTextureSet.dispose();
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
@@ -27,7 +28,7 @@ public class ShipActor extends SpriteActor {
     private Vector2 spriteVec = new Vector2();
 
     public ShipActor() {
-        super(MathUtils.random(0x7ffffffe), 0, new Texture(Gdx.files.internal("ship.png")));
+        super(MathUtils.random(0x7ffffffe), 0, new TextureSet(new Texture(Gdx.files.internal("ship.png"))));
         this.setSize(1f,1f);
         this.setOriginCenter();
         this.setCenter(0f,0f);
@@ -89,6 +90,6 @@ public class ShipActor extends SpriteActor {
     @Override
     public void dispose() {
         super.dispose();
-        this.texture.dispose();
+        this.textureSet.dispose();
     }
 }

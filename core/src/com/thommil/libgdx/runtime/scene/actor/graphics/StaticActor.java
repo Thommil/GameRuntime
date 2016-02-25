@@ -1,6 +1,6 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
@@ -14,7 +14,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
 
     protected int layer = 0;
 
-    final public Texture texture;
+    final public TextureSet textureSet;
     final float[] vertices = new float[SpriteActor.SPRITE_SIZE];
     final public float x, y;
     final public float width, height;
@@ -27,7 +27,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      *
      * @param id The ID of the Actor in the scene
      * @param layer The layer ID of the renderable in the scene
-     * @param texture The texture to use
+     * @param textureSet The TextureSet to use
      * @param x The X coord
      * @param y The Y coord
      * @param width The width of the renderable
@@ -40,7 +40,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     public StaticActor(final int id,
                         final int layer,
-                        final Texture texture,
+                        final TextureSet textureSet,
                         final float x, final float y,
                         final float width, final float height,
                         final float u, final float v,
@@ -48,7 +48,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
                         final float color){
         super(id);
         this.layer = layer;
-        this.texture = texture;
+        this.textureSet = textureSet;
 
         this.x = x;
         this.y = y;
@@ -107,7 +107,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
-        renderer.setTexture(this.texture);
+        renderer.setTextureSet(this.textureSet);
         renderer.draw(this.vertices);
     }
 

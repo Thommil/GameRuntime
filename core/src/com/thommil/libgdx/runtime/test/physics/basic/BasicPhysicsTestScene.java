@@ -4,7 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.World;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
@@ -30,8 +30,8 @@ public class BasicPhysicsTestScene extends Game{
         scene.addLayer(new SpriteBatchLayer(2));
 
         //Actors
-        scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-2f,-2f,4f,1f));
-        scene.addActor(new CuriosityActor(new Texture(Gdx.files.internal("curiosity.png"))));
+        scene.addActor(new GroundActor(new TextureSet(new Texture(Gdx.files.internal("metal.png"))),-2f,-2f,4f,1f));
+        scene.addActor(new CuriosityActor(new TextureSet(new Texture(Gdx.files.internal("curiosity.png")))));
 
         //Profiler
         SceneProfiler.profile(scene, SceneProfiler.ALL, 5000);

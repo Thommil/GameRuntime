@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
-import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Renderer;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
@@ -24,7 +24,7 @@ public class CacheRenderer implements Renderer{
 
     protected final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
     protected final Array<Cache> caches = new Array();
-    protected final Array<Texture> textures = new Array(8);
+    protected final Array<TextureSet> textureSets = new Array(8);
     protected final IntArray counts = new IntArray(8);
     protected Cache currentCache;
 
@@ -63,11 +63,11 @@ public class CacheRenderer implements Renderer{
     public int endCache () {
         final Cache cache = currentCache;
         int cacheCount = mesh.getVerticesBuffer().position() - cache.offset;
-        if (cache.textures == null) {
+        if (cache.textureSets == null) {
             // New cache.
             cache.maxCount = cacheCount;
-            cache.textureCount = textures.size;
-            cache.textures = textures.toArray(Texture.class);
+            cache.textureCount = textureSets.size;
+            cache.textureSets = textureSets.toArray(TextureSet.class);
             cache.counts = new int[cache.textureCount];
             for (int i = 0, n = counts.size; i < n; i++)
                 cache.counts[i] = counts.get(i);
@@ -81,11 +81,11 @@ public class CacheRenderer implements Renderer{
                                 + cacheCount + " (" + cache.maxCount + " max)");
             }
 
-            cache.textureCount = textures.size;
+            cache.textureCount = textureSets.size;
 
-            if (cache.textures.length < cache.textureCount) cache.textures = new Texture[cache.textureCount];
+            if (cache.textureSets.length < cache.textureCount) cache.textureSets = new TextureSet[cache.textureCount];
             for (int i = 0, n = cache.textureCount; i < n; i++)
-                cache.textures[i] = textures.get(i);
+                cache.textureSets[i] = textureSets.get(i);
 
             if (cache.counts.length < cache.textureCount) cache.counts = new int[cache.textureCount];
             for (int i = 0, n = cache.textureCount; i < n; i++)
@@ -98,7 +98,7 @@ public class CacheRenderer implements Renderer{
         }
 
         currentCache = null;
-        textures.clear();
+        textureSets.clear();
         counts.clear();
 
         return cache.id;
@@ -113,11 +113,11 @@ public class CacheRenderer implements Renderer{
     /** Adds the specified vertices to the cache. Each vertex should have 5 elements, one for each of the attributes: x, y, color,
      * u, and v. If indexed geometry is used, each image should be specified as 4 vertices, otherwise each image should be
      * specified as 6 vertices. */
-    public void add (Texture texture, float[] vertices, int offset, int length) {
+    public void add (TextureSet textureSet, float[] vertices, int offset, int length) {
         final int count = length / (4 * SpriteActor.VERTEX_SIZE) * 6;
-        final int lastIndex = textures.size - 1;
-        if (lastIndex < 0 || textures.get(lastIndex) != texture) {
-            textures.add(texture);
+        final int lastIndex = textureSets.size - 1;
+        if (lastIndex < 0 || textureSets.get(lastIndex) != textureSet) {
+            textureSets.add(textureSet);
             counts.add(count);
         } else
             counts.incr(lastIndex, count);
@@ -126,7 +126,7 @@ public class CacheRenderer implements Renderer{
     }
 
     /** Adds the specified texture to the cache. */
-    public void add (Texture texture, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2, float color) {
+    public void add (TextureSet textureSet, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2, float color) {
         final float fx2 = x + srcWidth;
         final float fy2 = y + srcHeight;
 
@@ -153,17 +153,17 @@ public class CacheRenderer implements Renderer{
         tempVertices[17] = color;
         tempVertices[18] = u2;
         tempVertices[19] = v;
-        add(texture, tempVertices, 0, SpriteActor.SPRITE_SIZE);
+        add(textureSet, tempVertices, 0, SpriteActor.SPRITE_SIZE);
     }
 
     /** Adds the specified SpriteActor to the cache. */
     public void add (SpriteActor spriteActor) {
-        this.add(spriteActor.texture, spriteActor.getVertices(), 0, SpriteActor.SPRITE_SIZE);
+        this.add(spriteActor.textureSet, spriteActor.getVertices(), 0, SpriteActor.SPRITE_SIZE);
     }
 
     /** Adds the specified StaticActor to the cache. */
     public void add (StaticActor staticActor) {
-        this.add(staticActor.texture, staticActor.x, staticActor.y,
+        this.add(staticActor.textureSet, staticActor.x, staticActor.y,
                 staticActor.width, staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2, staticActor.color);
     }
 
@@ -175,8 +175,6 @@ public class CacheRenderer implements Renderer{
     public void begin () {
         shader.begin();
         shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
-        shader.setUniformi("u_texture", 0);
-
         mesh.bind(shader);
     }
 
@@ -190,12 +188,17 @@ public class CacheRenderer implements Renderer{
     public void draw (int cacheID) {
         final Cache cache = caches.get(cacheID);
         int offset = cache.offset / (4 * SpriteActor.VERTEX_SIZE) * 6;
-        final Texture[] textures = cache.textures;
+        final TextureSet[] textureSets = cache.textureSets;
         final int[] counts = cache.counts;
         final int textureCount = cache.textureCount;
+        int lastTextureSetSize = 0;
         for (int i = 0; i < textureCount; i++) {
             int count = counts[i];
-            textures[i].bind();
+            if(textureSets[i].textures.length != lastTextureSetSize){
+                textureSets[i].setUniformAll(shader);
+                lastTextureSetSize = textureSets[i].textures.length;
+            }
+            textureSets[i].bindAll();
             mesh.render(shader, GL20.GL_TRIANGLES, offset, count);
             offset += count;
         }
@@ -216,7 +219,7 @@ public class CacheRenderer implements Renderer{
         final int offset;
         int maxCount;
         int textureCount;
-        Texture[] textures;
+        TextureSet[] textureSets;
         int[] counts;
 
         public Cache (int id, int offset) {
@@ -278,10 +281,10 @@ public class CacheRenderer implements Renderer{
                 + "#endif\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "varying vec4 v_color;\n" //
-                + "uniform sampler2D u_texture;\n" //
+                + "uniform sampler2D "+TextureSet.UNIFORM_TEXTURE_0+";\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+                + "  gl_FragColor = v_color * texture2D("+TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
                 + "}";
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
         if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());

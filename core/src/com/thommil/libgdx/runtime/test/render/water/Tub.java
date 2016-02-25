@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.physics.StaticBodyActor;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class Tub extends StaticBodyActor {
 
-    public Tub(final int layer, Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2, float color) {
-        super(MathUtils.random(0x7ffffffe), layer, texture, x, y, width, height, u, v, u2, v2, color);
+    public Tub(final int layer, TextureSet textureSet, float x, float y, float width, float height, float u, float v, float u2, float v2, float color) {
+        super(MathUtils.random(0x7ffffffe), layer, textureSet, x, y, width, height, u, v, u2, v2, color);
     }
 
     /**
@@ -37,6 +38,6 @@ public class Tub extends StaticBodyActor {
     @Override
     public void dispose() {
         super.dispose();
-        this.texture.dispose();
+        this.textureSet.dispose();
     }
 }

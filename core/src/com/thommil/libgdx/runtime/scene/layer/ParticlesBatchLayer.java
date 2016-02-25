@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
-import com.badlogic.gdx.Gdx;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;

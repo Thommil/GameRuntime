@@ -7,8 +7,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ColoredParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.particles.TexturedParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
@@ -42,8 +44,10 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        //ParticlesBatchRenderer softBodybatch = new ParticlesBatchRenderer(5000);
-        ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(5000);
+        ParticlesBatchRenderer softBodybatch = new ParticlesBatchRenderer(5000);
+        //ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(5000);
+        //TexturedParticlesBatchRenderer softBodybatch = new TexturedParticlesBatchRenderer(5000);
+        //softBodybatch.setTextureSet(new TextureSet(new Texture(Gdx.files.internal("water.png"))));
         ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(10,softBodybatch);
         //softBodyBatchLayer.setScaleFactor(1.50f);
         scene.addLayer(1,softBodyBatchLayer);
@@ -137,12 +141,12 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         CacheLayer containerLayer = new CacheLayer(3);
         scene.addLayer(0,containerLayer);
 
-        Texture texture = new Texture(Gdx.files.internal("metal.png"));
-        texture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        TextureSet textureSet = new TextureSet(new Texture(Gdx.files.internal("metal.png")));
+        textureSet.setWrapAll(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         containerLayer.beginCache();
-        scene.addActor(new ContainerActor(texture,-5f,-5f,10f,1f));
-        scene.addActor(new ContainerActor(texture,-5f,-5f,0.5f,8f));
-        scene.addActor(new ContainerActor(texture,4.5f,-5f,0.5f,8f));
+        scene.addActor(new ContainerActor(textureSet,-5f,-5f,10f,1f));
+        scene.addActor(new ContainerActor(textureSet,-5f,-5f,0.5f,8f));
+        scene.addActor(new ContainerActor(textureSet,4.5f,-5f,0.5f,8f));
         containerLayer.endCache();
 
         Gdx.input.setInputProcessor(this);

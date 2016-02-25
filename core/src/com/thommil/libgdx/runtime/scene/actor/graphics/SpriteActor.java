@@ -1,11 +1,10 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
@@ -45,7 +44,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public static final int VERTEX_SIZE = 2 + 1 + 2;
     public static final int SPRITE_SIZE = 4 * VERTEX_SIZE;
 
-    public Texture texture;
+    public TextureSet textureSet;
     public float x, y;
     public float u, v;
     public float u2, v2;
@@ -62,43 +61,24 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
     protected int layer = 0;
 
-    public SpriteActor (final int id, final int layer, Texture texture) {
-        this(id, layer, texture, 0, 0, texture.getWidth(), texture.getHeight());
+    public SpriteActor (final int id, final int layer, final TextureSet textureSet) {
+        this(id, layer, textureSet, 0, 0, textureSet.getWidth(), textureSet.getHeight());
     }
 
-    public SpriteActor (final int id, final int layer, Texture texture, int srcWidth, int srcHeight) {
-        this(id, layer, texture, 0, 0, srcWidth, srcHeight);
+    public SpriteActor (final int id, final int layer, final TextureSet textureSet, final int srcWidth, final int srcHeight) {
+        this(id, layer, textureSet, 0, 0, srcWidth, srcHeight);
     }
 
-    public SpriteActor (final int id, final int layer, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+    public SpriteActor (final int id, final int layer, final TextureSet textureSet, final int srcX, final int srcY, final int srcWidth, final int srcHeight) {
         super(id);
-        if (texture == null) throw new IllegalArgumentException("texture cannot be null.");
+        if (textureSet == null) throw new IllegalArgumentException("texture cannot be null.");
         this.layer = layer;
-        this.texture = texture;
+        this.textureSet = textureSet;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(srcX, srcY, srcWidth, srcHeight);
         setSize(Math.abs(srcWidth), Math.abs(srcHeight));
         setOrigin(width / 2, height / 2);
     }
-
-    public SpriteActor (final int id, final int layer, TextureRegion region) {
-        super(id);
-        this.layer = layer;
-        this.setColor(Color.WHITE.toFloatBits());
-        setRegion(region);
-        setSize(region.getRegionWidth(), region.getRegionHeight());
-        setOrigin(width / 2, height / 2);
-    }
-
-    public SpriteActor (final int id, final int layer, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(id);
-        this.layer = layer;
-        this.setColor(Color.WHITE.toFloatBits());
-        setRegion(region, srcX, srcY, srcWidth, srcHeight);
-        setSize(Math.abs(srcWidth), Math.abs(srcHeight));
-        setOrigin(width / 2, height / 2);
-    }
-
 
     /** Sets the position and size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale
      * are changed, it is slightly more efficient to set the bounds after those operations. */
@@ -418,7 +398,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
 
     public void setRegion (float u, float v, float u2, float v2) {
-        final int texWidth = texture.getWidth(), texHeight = texture.getHeight();
+        final int texWidth = textureSet.getWidth(), texHeight = textureSet.getHeight();
         regionWidth = Math.round(Math.abs(u2 - u) * texWidth);
         regionHeight = Math.round(Math.abs(v2 - v) * texHeight);
 
@@ -452,28 +432,28 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
     public void setU (float u) {
         this.u = u;
-        regionWidth = Math.round(Math.abs(u2 - u) * texture.getWidth());
+        regionWidth = Math.round(Math.abs(u2 - u) * textureSet.getWidth());
         vertices[U1] = u;
         vertices[U2] = u;
     }
 
     public void setV (float v) {
         this.v = v;
-        regionHeight = Math.round(Math.abs(v2 - v) * texture.getHeight());
+        regionHeight = Math.round(Math.abs(v2 - v) * textureSet.getHeight());
         vertices[V2] = v;
         vertices[V3] = v;
     }
 
     public void setU2 (float u2) {
         this.u2 = u2;
-        regionWidth = Math.round(Math.abs(u2 - u) * texture.getWidth());
+        regionWidth = Math.round(Math.abs(u2 - u) * textureSet.getWidth());
         vertices[U3] = u2;
         vertices[U4] = u2;
     }
 
     public void setV2 (float v2) {
         this.v2 = v2;
-        regionHeight = Math.round(Math.abs(v2 - v) * texture.getHeight());
+        regionHeight = Math.round(Math.abs(v2 - v) * textureSet.getHeight());
         vertices[V1] = v2;
         vertices[V4] = v2;
     }
@@ -521,7 +501,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public void scroll (float xAmount, float yAmount) {
         if (xAmount != 0) {
             final float u = (vertices[U1] + xAmount) % 1;
-            final float u2 = u + width / texture.getWidth();
+            final float u2 = u + width / textureSet.getWidth();
             this.u = u;
             this.u2 = u2;
             vertices[U1] = u;
@@ -531,7 +511,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         }
         if (yAmount != 0) {
             final float v = (vertices[V2] + yAmount) % 1;
-            final float v2 = v + height / texture.getHeight();
+            final float v2 = v + height / textureSet.getHeight();
             this.v = v;
             this.v2 = v2;
             vertices[V1] = v2;
@@ -541,33 +521,14 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         }
     }
 
-
-    /** Sets the texture and sets the coordinates to the size of the specified texture. */
-    public void setRegion (Texture texture) {
-        this.texture = texture;
-        setRegion(0, 0, texture.getWidth(), texture.getHeight());
-    }
-
     /** @param width The width of the texture region. May be negative to flip the sprite when drawn.
      * @param height The height of the texture region. May be negative to flip the sprite when drawn. */
     public void setRegion (int x, int y, int width, int height) {
-        final float invTexWidth = 1f / texture.getWidth();
-        final float invTexHeight = 1f / texture.getHeight();
+        final float invTexWidth = 1f / textureSet.getWidth();
+        final float invTexHeight = 1f / textureSet.getHeight();
         setRegion(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
         regionWidth = Math.abs(width);
         regionHeight = Math.abs(height);
-    }
-
-    /** Sets the texture and coordinates to the specified region. */
-    public void setRegion (TextureRegion region) {
-        texture = region.getTexture();
-        setRegion(region.getU(), region.getV(), region.getU2(), region.getV2());
-    }
-
-    /** Sets the texture to that of the specified region and sets the coordinates relative to the specified region. */
-    public void setRegion (TextureRegion region, int x, int y, int width, int height) {
-        texture = region.getTexture();
-        setRegion(region.getRegionX() + x, region.getRegionY() + y, width, height);
     }
 
     public boolean isFlipX () {
@@ -635,7 +596,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
-        renderer.setTexture(this.texture);
+        renderer.setTextureSet(this.textureSet);
         renderer.draw(this.getVertices());
     }
 

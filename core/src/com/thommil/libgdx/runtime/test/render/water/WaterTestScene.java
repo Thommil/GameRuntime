@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.thommil.libgdx.runtime.graphics.renderer.OffScreenRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
@@ -41,7 +42,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
     int stepCounter = 0;
     int dropFrequency = 2;
 
-    private Texture duckTexture;
+    private TextureSet duckTextureSet;
 
     @Override
     public void create() {
@@ -62,14 +63,14 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         //Background - 0
         CacheLayer backgroundLayer = new CacheLayer(10);
         scene.addLayer(backgroundLayer);
-        Texture backgroundTexture = new Texture(Gdx.files.internal("floor_tiles.jpg"));
-        backgroundTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        TextureSet backgroundTextureSet = new TextureSet(new Texture(Gdx.files.internal("floor_tiles.jpg")));
+        backgroundTextureSet.setWrapAll(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         backgroundLayer.beginCache();
-        scene.addActor(new StaticActor(MathUtils.random(0x7ffffffe), 0, backgroundTexture,-5,-5,10,10,0,4,4,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new StaticActor(MathUtils.random(0x7ffffffe), 0, backgroundTextureSet,-5,-5,10,10,0,4,4,0, Color.WHITE.toFloatBits()));
         backgroundLayer.endCache();
 
         //Ducks - 1
-        duckTexture = new Texture(Gdx.files.internal("duck.png"));
+        duckTextureSet = new TextureSet(new Texture(Gdx.files.internal("duck.png")));
         scene.addLayer(new SpriteBatchLayer(100));
 
         //Water - 2
@@ -94,14 +95,14 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         //Tub - 3
         CacheLayer tubLayer = new CacheLayer(10);
         scene.addLayer(3,tubLayer);
-        Texture tubTexture = new Texture(Gdx.files.internal("tub.jpg"));
-        Texture tabTexture = new Texture(Gdx.files.internal("metal.png"));
-        tubTexture.setWrap(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
+        TextureSet tubTextureSet = new TextureSet(new Texture(Gdx.files.internal("tub.jpg")));
+        TextureSet tabTextureSet = new TextureSet(new Texture(Gdx.files.internal("metal.png")));
+        tubTextureSet.setWrapAll(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
         tubLayer.beginCache();
-        scene.addActor(new Tub(3, tubTexture,-4,-4,8,1,0,0.5f,4,0, Color.WHITE.toFloatBits()));
-        scene.addActor(new Tub(3, tubTexture,-4,-3,1,2,0,1,0.5f,0, Color.WHITE.toFloatBits()));
-        scene.addActor(new Tub(3, tubTexture,3,-3,1,4,0,2,0.5f,0, Color.WHITE.toFloatBits()));
-        scene.addActor(new Tub(3, tabTexture,2.25f,0f,0.75f,0.2f,0,1,1,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tubTextureSet,-4,-4,8,1,0,0.5f,4,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tubTextureSet,-4,-3,1,2,0,1,0.5f,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tubTextureSet,3,-3,1,4,0,2,0.5f,0, Color.WHITE.toFloatBits()));
+        scene.addActor(new Tub(3, tabTextureSet,2.25f,0f,0.75f,0.2f,0,1,1,0, Color.WHITE.toFloatBits()));
         tubLayer.endCache();
 
         //Sensor for GC
@@ -160,7 +161,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
                 this.pouring =! this.pouring;
             }
             else {
-                this.scene.addActor(new DuckActor(duckTexture,1, worldVector.x, worldVector.y));
+                this.scene.addActor(new DuckActor(duckTextureSet,1, worldVector.x, worldVector.y));
             }
         }
         return false;
@@ -182,7 +183,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
     @Override
     public void dispose() {
         super.dispose();
-        this.duckTexture.dispose();
+        this.duckTextureSet.dispose();
     }
 
     @Override

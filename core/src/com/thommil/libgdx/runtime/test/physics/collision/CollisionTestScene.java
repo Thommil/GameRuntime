@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.actor.physics.SensorActor;
@@ -28,8 +29,8 @@ import java.util.List;
 public class CollisionTestScene extends Game implements InputProcessor, ContactListener{
 
     Scene scene;
-    Texture textureCuriosity;
-    Texture textureExplosion;
+    TextureSet textureSetCuriosity;
+    TextureSet textureSetExplosion;
 
     int inc = 0;
 
@@ -43,14 +44,14 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
         settings.viewport.minWorldHeight = 100;
         //settings.physics.debug = true;
         scene = new Scene(settings);
-        textureCuriosity = new Texture(Gdx.files.internal("curiosity.png"));
-        textureExplosion = new Texture(Gdx.files.internal("explosion.png"));
+        textureSetCuriosity = new TextureSet(new Texture(Gdx.files.internal("curiosity.png")));
+        textureSetExplosion = new TextureSet(new Texture(Gdx.files.internal("explosion.png")));
 
         //Layer
         scene.addLayer(new SpriteBatchLayer(1000));
 
         //Actors
-        scene.addActor(new GroundActor(new Texture(Gdx.files.internal("metal.png")),-1000f,-50f,2000f,10f));
+        scene.addActor(new GroundActor(new TextureSet(new Texture(Gdx.files.internal("metal.png"))),-1000f,-50f,2000f,10f));
         SensorActor burnSensor = new SensorActor(MathUtils.random(0x7ffffffe)) {
             @Override
             public List<Shape> getShapes() {
@@ -73,7 +74,7 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
             public void step(long lastStepDuration) {
                 if(Gdx.graphics.getFramesPerSecond() > 30) {
                     if (inc % 10 == 0) {
-                        scene.addActor(new CuriosityActor(textureCuriosity));
+                        scene.addActor(new CuriosityActor(textureSetCuriosity));
                     }
                 }
                 inc+=1;
@@ -96,21 +97,21 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
         final Actor actorB = (Actor) contact.getFixtureB().getBody().getUserData();
         //Sensor
         if(actorA instanceof CuriosityActor && actorB instanceof SensorActor){
-            ((CuriosityActor) actorA).texture = textureExplosion;
+            ((CuriosityActor) actorA).textureSet = textureSetExplosion;
         }
         else if(actorB instanceof CuriosityActor && actorA instanceof SensorActor){
-            ((CuriosityActor) actorB).texture = textureExplosion;
+            ((CuriosityActor) actorB).textureSet = textureSetExplosion;
         }
 
         //Collision
         else if(actorA instanceof CuriosityActor && actorB instanceof GroundActor){
-            final ExplosionActor explosionActor = new ExplosionActor(textureExplosion);
+            final ExplosionActor explosionActor = new ExplosionActor(textureSetExplosion);
             explosionActor.setPosition(((CuriosityActor) actorA).x,((CuriosityActor) actorA).y-2f);
             this.scene.addActor(explosionActor);
             this.scene.removeActor(actorA);
         }
         else if(actorB instanceof CuriosityActor && actorA instanceof GroundActor){
-            final ExplosionActor explosionActor = new ExplosionActor(textureExplosion);
+            final ExplosionActor explosionActor = new ExplosionActor(textureSetExplosion);
             explosionActor.setPosition(((CuriosityActor) actorB).x,((CuriosityActor) actorB).y-2f);
             this.scene.addActor(explosionActor);
             this.scene.removeActor(actorB);
@@ -119,8 +120,8 @@ public class CollisionTestScene extends Game implements InputProcessor, ContactL
 
     @Override
     public void dispose() {
-        this.textureCuriosity.dispose();
-        this.textureExplosion.dispose();
+        this.textureSetCuriosity.dispose();
+        this.textureSetExplosion.dispose();
         super.dispose();
     }
 

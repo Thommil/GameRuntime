@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.scene.actor.graphics;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.thommil.libgdx.runtime.scene.Actor;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.Renderer;

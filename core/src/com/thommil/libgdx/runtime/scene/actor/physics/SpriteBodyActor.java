@@ -1,12 +1,11 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
@@ -24,24 +23,16 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
     protected float density = 1f;
 
-    public SpriteBodyActor(final int id, final int layer, Texture texture) {
-        super(id, layer, texture);
+    public SpriteBodyActor(final int id, final int layer, TextureSet textureSet) {
+        super(id, layer, textureSet);
     }
 
-    public SpriteBodyActor(final int id, final int layer, Texture texture, int srcWidth, int srcHeight) {
-        super(id, layer, texture, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, final int layer, TextureSet textureSet, int srcWidth, int srcHeight) {
+        super(id, layer, textureSet, srcWidth, srcHeight);
     }
 
-    public SpriteBodyActor(final int id, final int layer, Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(id, layer, texture, srcX, srcY, srcWidth, srcHeight);
-    }
-
-    public SpriteBodyActor(final int id, final int layer, TextureRegion region) {
-        super(id, layer, region);
-    }
-
-    public SpriteBodyActor(final int id, final int layer, TextureRegion region, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(id, layer, region, srcX, srcY, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, final int layer, TextureSet textureSet, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id, layer, textureSet, srcX, srcY, srcWidth, srcHeight);
     }
 
     /**

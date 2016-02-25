@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Stepable;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
@@ -32,7 +33,7 @@ public class ShipActor extends SpriteBodyActor implements Stepable {
     private Vector2 spriteVec = new Vector2();
 
     public ShipActor() {
-        super(MathUtils.random(0x7ffffffe), 0, new Texture(Gdx.files.internal("ship.png")));
+        super(MathUtils.random(0x7ffffffe), 0, new TextureSet(new Texture(Gdx.files.internal("ship.png"))));
         this.setSize(1f,1f);
         this.setOriginCenter();
     }
@@ -105,6 +106,6 @@ public class ShipActor extends SpriteBodyActor implements Stepable {
     @Override
     public void dispose() {
         super.dispose();
-        this.texture.dispose();
+        this.textureSet.dispose();
     }
 }

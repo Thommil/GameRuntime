@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a rendering layer (mainly for batch purpose)
  *

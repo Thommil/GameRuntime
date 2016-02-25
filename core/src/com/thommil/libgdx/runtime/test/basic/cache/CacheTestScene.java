@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.tools.SceneProfiler;
@@ -30,15 +31,15 @@ public class CacheTestScene extends Game {
 		scene.addLayer(planetCacheLayer);
 
 		//Actor
-		Texture texture = new Texture(Gdx.files.internal("planet_sprite.png"));
+		TextureSet textureSet = new TextureSet(new Texture(Gdx.files.internal("planet_sprite.png")));
 		planetCacheLayer.beginCache();
 		for(int i = 0; i < 10; i++) {
-			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 0));
-			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 1));
-			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 2));
-			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 3));
-			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 4));
-			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 5));
+			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 0));
+			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 1));
+			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 2));
+			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 3));
+			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 4));
+			scene.addActor(new PlanetActor(textureSet, MathUtils.random(0.1f, 2f), 5));
 		}
 		planetCacheLayer.endCache();
 

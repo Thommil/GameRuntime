@@ -2,9 +2,8 @@ package com.thommil.libgdx.runtime.graphics.renderer.particles;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 
 /**
  * Extension of ParticlesBatchRenderer with Textured particles
@@ -13,46 +12,52 @@ import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
  */
 public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 
-    protected Texture lastTexture;
-    protected Texture currentTexture;
+    protected TextureSet lastTextureSet;
+    protected TextureSet currentTextureSet;
+    protected int currentTextureSetSize = 0;
 
     public TexturedParticlesBatchRenderer(final int maxParticles) {
         super(maxParticles);
     }
 
     /**
-     * Sets current texture
+     * Sets current TextureSet
      *
-     * @param texture The current texture to use
+     * @param textureSet The current TextureSet to use
      */
-    public void setTexture(final Texture texture){
-        this.currentTexture = texture;
+    public void setTextureSet(final TextureSet textureSet){
+        this.currentTextureSet = textureSet;
     }
 
     @Override
     public void begin() {
         super.begin();
-        this.shader.setUniformi("u_texture", 0);
     }
 
     @Override
     public void end() {
         super.end();
-        this.lastTexture = this.currentTexture = null;
     }
 
     @Override
     public void draw(float[] vertices) {
-         if (this.currentTexture != this.lastTexture) {
+         if (this.currentTextureSet != this.lastTextureSet) {
              flush();
-             this.lastTexture = this.currentTexture;
+             this.lastTextureSet = this.currentTextureSet;
          }
          super.draw(vertices);
     }
 
     @Override
     public void flush() {
-        this.lastTexture.bind();
+        if(idx == 0) return;
+
+        if(this.lastTextureSet.textures.length != currentTextureSetSize){
+            this.lastTextureSet.setUniformAll(this.shader);
+            this.currentTextureSetSize = this.lastTextureSet.textures.length;
+        }
+        this.lastTextureSet.bindAll();
+
         super.flush();
     }
 
@@ -82,10 +87,10 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
                     + "#else\n" //
                     + "#define LOWP \n" //
                     + "#endif\n" //
-                    + "uniform sampler2D u_texture;\n" //
+                    + "uniform sampler2D "+TextureSet.UNIFORM_TEXTURE_0+";\n" //
                     + "void main()\n"//
                     + "{\n" //
-                    + " gl_FragColor = texture2D(u_texture, gl_PointCoord);\n" //
+                    + " gl_FragColor = texture2D("+TextureSet.UNIFORM_TEXTURE_0+", gl_PointCoord);\n" //
                     + "}";
 
 

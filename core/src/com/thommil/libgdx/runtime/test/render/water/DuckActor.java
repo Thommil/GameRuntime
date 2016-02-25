@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.test.render.water;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import java.util.List;
 public class DuckActor extends SpriteBodyActor {
 
 
-    public DuckActor(final Texture texture, final int layer, float x, float y) {
-        super(MathUtils.random(0x7ffffffe), layer, texture);
+    public DuckActor(final TextureSet textureSet, final int layer, float x, float y) {
+        super(MathUtils.random(0x7ffffffe), layer, textureSet);
         this.setSize(0.5f,0.5f);
         this.setOriginCenter();
         this.setPosition(x, y);

@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.test.physics.collision;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.actor.physics.SpriteBodyActor;
 
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import java.util.List;
  */
 public class CuriosityActor extends SpriteBodyActor {
 
-    public CuriosityActor(Texture texture) {
-        super(MathUtils.random(0x7ffffffe), 0, texture);
+    public CuriosityActor(TextureSet textureSet) {
+        super(MathUtils.random(0x7ffffffe), 0, textureSet);
         this.setSize(2.6f,2.3f);
         this.setOriginCenter();
         this.setPosition(MathUtils.random(-20f,20f),100f);

@@ -2,13 +2,9 @@ package com.thommil.libgdx.runtime.graphics.renderer.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.NumberUtils;
-import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.Renderer;
 import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 
@@ -25,8 +21,9 @@ public class SpriteBatchRenderer implements Renderer{
     protected final ShaderProgram shader;
 
     protected int idx = 0;
-    protected Texture lastTexture = null;
-    protected Texture currentTexture = null;
+    protected TextureSet lastTextureSet = null;
+    protected TextureSet currentTextureSet = null;
+    protected int currentTextureSetSize = 0;
     protected float color = Color.WHITE.toFloatBits();
 
     protected final Matrix4 combinedMatrix = new Matrix4();
@@ -49,7 +46,6 @@ public class SpriteBatchRenderer implements Renderer{
     public void begin() {
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
-        this.shader.setUniformi("u_texture", 0);
     }
 
     /**
@@ -58,7 +54,6 @@ public class SpriteBatchRenderer implements Renderer{
     @Override
     public void end() {
         if (this.idx > 0) flush();
-        this.lastTexture = this.currentTexture = null;
         this.shader.end();
     }
 
@@ -81,14 +76,13 @@ public class SpriteBatchRenderer implements Renderer{
     }
 
     /**
-     * Sets current texture
+     * Sets current TextureSet
      *
-     * @param texture The current texture to use
+     * @param textureSet The current TextureSet to use
      */
-    public void setTexture(final Texture texture){
-        this.currentTexture = texture;
+    public void setTextureSet(final TextureSet textureSet){
+        this.currentTextureSet = textureSet;
     }
-
 
     /**
      * Generic method to draw a set of vertices.
@@ -100,9 +94,9 @@ public class SpriteBatchRenderer implements Renderer{
         int offset = 0;
         int count = vertices.length;
         int remainingVertices = this.vertices.length;
-        if (this.currentTexture != this.lastTexture) {
+        if (this.currentTextureSet != this.lastTextureSet) {
             flush();
-            this.lastTexture = this.currentTexture;
+            this.lastTextureSet = this.currentTextureSet;
         }else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
@@ -141,9 +135,14 @@ public class SpriteBatchRenderer implements Renderer{
     public void flush () {
         if (this.idx == 0) return;
 
+        if(this.lastTextureSet.textures.length != currentTextureSetSize){
+            this.lastTextureSet.setUniformAll(this.shader);
+            this.currentTextureSetSize = this.lastTextureSet.textures.length;
+        }
+
         final int count = this.idx / SpriteActor.SPRITE_SIZE * 6;
 
-        this.lastTexture.bind();
+        this.lastTextureSet.bindAll();
         this.mesh.setVertices(this.vertices, 0, this.idx);
         this.mesh.getIndicesBuffer().position(0);
         this.mesh.getIndicesBuffer().limit(count);
@@ -226,10 +225,10 @@ public class SpriteBatchRenderer implements Renderer{
                 + "#endif\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "varying vec4 v_color;\n" //
-                + "uniform sampler2D u_texture;\n" //
+                + "uniform sampler2D "+TextureSet.UNIFORM_TEXTURE_0+";\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);\n" //
+                + "  gl_FragColor = v_color * texture2D("+TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
                 + "}";
 
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);

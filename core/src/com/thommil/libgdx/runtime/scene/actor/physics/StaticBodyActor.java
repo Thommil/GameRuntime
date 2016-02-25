@@ -1,9 +1,9 @@
 package com.thommil.libgdx.runtime.scene.actor.physics;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.thommil.libgdx.runtime.graphics.renderer.TextureSet;
 import com.thommil.libgdx.runtime.scene.RigidBody;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
@@ -21,8 +21,8 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
 
     protected float density = 1f;
 
-    public StaticBodyActor(final int id, final int layer, Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2, final float color) {
-        super(id, layer, texture, x, y, width, height, u, v, u2, v2, color);
+    public StaticBodyActor(final int id, final int layer, TextureSet textureSet, float x, float y, float width, float height, float u, float v, float u2, float v2, final float color) {
+        super(id, layer, textureSet, x, y, width, height, u, v, u2, v2, color);
     }
 
     /**
