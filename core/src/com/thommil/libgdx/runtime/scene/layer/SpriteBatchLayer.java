@@ -46,7 +46,8 @@ public class SpriteBatchLayer extends Layer{
         if(!this.hidden) {
             if (this.renderer instanceof SpriteBatchRenderer) {
                 ((SpriteBatchRenderer) renderer).setCombinedMatrix(this.camera.combined);
-            } else if (this.renderer instanceof Batch) {
+            }
+            else if (this.renderer instanceof Batch) {
                 ((Batch) renderer).setProjectionMatrix(this.camera.projection);
                 ((Batch) renderer).setTransformMatrix(this.camera.view);
             }

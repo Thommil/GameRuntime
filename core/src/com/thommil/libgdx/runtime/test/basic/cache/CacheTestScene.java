@@ -25,14 +25,14 @@ public class CacheTestScene extends Game {
 		Scene scene = new Scene(settings);
 
 		//Layers
-		CacheLayer.setSize(60);
-		CacheLayer planetCacheLayer = new CacheLayer(60);
+		CacheLayer.setSize(5000);
+		CacheLayer planetCacheLayer = new CacheLayer(5000);
 		scene.addLayer(planetCacheLayer);
 
 		//Actor
 		Texture texture = new Texture(Gdx.files.internal("planet_sprite.png"));
 		planetCacheLayer.beginCache();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 800; i++) {
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 0));
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 1));
 			scene.addActor(new PlanetActor(texture, MathUtils.random(0.1f, 2f), 2));
