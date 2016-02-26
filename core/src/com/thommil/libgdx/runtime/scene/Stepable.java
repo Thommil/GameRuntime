@@ -3,7 +3,7 @@ package com.thommil.libgdx.runtime.scene;
 /**
  * Defines an stepable element
  *
- * Created by thommil on 15/02/16.
+ * @author thommil on 03/02/16.
  */
 public interface Stepable {
 

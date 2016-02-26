@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Disposable;
  * can be used also to improve batch by a repartition of regions on set
  * and adding a texture index in a subclass of actors.
  *
- * Created by tomtom on 25/02/16.
+ * @author thommil on 03/02/16.
  */
 public class TextureSet implements Disposable{
 

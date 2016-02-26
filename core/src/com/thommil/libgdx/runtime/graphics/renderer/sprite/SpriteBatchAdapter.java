@@ -7,7 +7,7 @@ import com.thommil.libgdx.runtime.scene.Renderer;
 /**
  * Adapter to allow use of SpriteBatch in layers by actors
  *
- * Created by thommil on 2/23/16.
+ * @author thommil on 03/02/16.
  */
 public class SpriteBatchAdapter extends SpriteBatch implements Renderer{
 

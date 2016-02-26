@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Simple sensor implementation
  *
- * Created by thommil on 13/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class SensorActor extends AbstractStepable implements RigidBody {
 

@@ -10,7 +10,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
 /**
  * Particle Actor for rendering particles using an inner Pool
  *
- * Created by thommil on 14/02/16.
+ * @author thommil on 03/02/16.
  */
 public class ParticleEffectActor extends Actor implements Renderable<SpriteBatchAdapter> {
 

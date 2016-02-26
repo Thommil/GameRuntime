@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 /**
  * Generic loading screen
  *
- * Created by thommil on 03/02/16.
+ * @author thommil on 03/02/16.
  */
 public class LoadingScreen implements Screen{
 

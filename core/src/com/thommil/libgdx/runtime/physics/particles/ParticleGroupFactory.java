@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Factory used to create custom ParticleGroups
  *
- * Created by thommil on 21/02/16.
+ * @author thommil on 03/02/16.
  */
 public class ParticleGroupFactory {
 

@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 /**
  * Custom Batch for simple Sprite based on LibGDX SpriteBatch
  *
- * Created by thommil on 2/10/16.
+ * @author thommil on 03/02/16.
  */
 public class SpriteBatchRenderer implements Renderer{
 

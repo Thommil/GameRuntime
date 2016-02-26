@@ -13,7 +13,7 @@ import com.thommil.libgdx.runtime.tools.GL11;
 /**
  * Base Batch for LiquidFun ParticleSystem (ParticlesBody).
  *
- * Created by thommil on 2/10/16.
+ * @author thommil on 03/02/16.
  */
 public class ParticlesBatchRenderer implements Renderer{
 

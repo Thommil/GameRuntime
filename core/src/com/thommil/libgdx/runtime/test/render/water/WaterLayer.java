@@ -9,6 +9,10 @@ public class WaterLayer extends ParticlesBatchLayer {
 
     public static final float PARTICLES_SCALE_FACTOR = 3f;
 
+    static {
+        ParticlesBatchLayer.setGlobalSize(5000);
+    }
+
     public WaterLayer() {
         super(5000);
         this.setScaleFactor(PARTICLES_SCALE_FACTOR);

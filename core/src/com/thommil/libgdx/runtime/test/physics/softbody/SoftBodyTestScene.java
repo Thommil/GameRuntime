@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.particles.TexturedParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Scene;
 import com.thommil.libgdx.runtime.scene.layer.CacheLayer;
 import com.thommil.libgdx.runtime.scene.layer.ParticlesBatchLayer;
@@ -42,11 +43,13 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
         scene = new Scene(settings);
 
         //Particles
-        ParticlesBatchRenderer softBodybatch = new ParticlesBatchRenderer(5000);
+        ParticlesBatchLayer.setGlobalSize(7000);
         //ParticlesBatchRenderer softBodybatch = new ColoredParticlesBatchRenderer(5000);
+        //ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(10,softBodybatch);
         //TexturedParticlesBatchRenderer softBodybatch = new TexturedParticlesBatchRenderer(5000);
         //softBodybatch.setTextureSet(new TextureSet(new Texture(Gdx.files.internal("water.png"))));
-        ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(10,softBodybatch);
+        //ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(10,softBodybatch);
+        ParticlesBatchLayer softBodyBatchLayer = new ParticlesBatchLayer(1);
         //softBodyBatchLayer.setScaleFactor(1.50f);
         scene.addLayer(1,softBodyBatchLayer);
         particlesActor = new SoftbodyActor();
@@ -135,7 +138,7 @@ public class SoftBodyTestScene extends Game implements InputProcessor{
 
 
         //Container
-        CacheLayer.setSize(3);
+        CacheLayer.setGlobalSize(3);
         CacheLayer containerLayer = new CacheLayer(3);
         scene.addLayer(0,containerLayer);
 

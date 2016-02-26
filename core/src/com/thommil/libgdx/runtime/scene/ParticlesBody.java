@@ -6,7 +6,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 /**
  * Defines a physics actor with a soft body or particle system
  *
- * Created by thommil on 14/02/16.
+ * @author thommil on 03/02/16.
  */
 public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSystem>{
 

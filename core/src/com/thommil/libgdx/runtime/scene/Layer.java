@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Represents a rendering layer (mainly for batch purpose)
  *
- * Created by thommil on 03/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class Layer implements Disposable {
 

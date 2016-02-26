@@ -26,7 +26,7 @@ public class CacheTestScene extends Game {
 		Scene scene = new Scene(settings);
 
 		//Layers
-		CacheLayer.setSize(60);
+		CacheLayer.setGlobalSize(60);
 		CacheLayer planetCacheLayer = new CacheLayer(60);
 		scene.addLayer(planetCacheLayer);
 

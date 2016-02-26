@@ -8,7 +8,7 @@ import com.thommil.libgdx.runtime.graphics.TextureSet;
 /**
  * Extension of ParticlesBatchRenderer with Textured particles
  *
- * Created by thommil on 2/22/16.
+ * @author thommil on 03/02/16.
  */
 public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 

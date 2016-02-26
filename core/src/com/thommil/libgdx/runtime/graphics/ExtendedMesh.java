@@ -15,7 +15,7 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
  * These VertexData are treated separatly in Shaders, this class should be used when
  * it's not possible to inject data directly in main vertices buffer.
  *
- * Created by thommil on 20/02/16.
+ * @author thommil on 03/02/16.
  */
 public class ExtendedMesh extends Mesh {
 

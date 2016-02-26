@@ -15,7 +15,7 @@ import java.nio.FloatBuffer;
 /**
  * Custom Cache for simple images rendering
  *
- * Created by thommil on 12/02/16.
+ * @author thommil on 03/02/16.
  */
 public class CacheRenderer implements Renderer{
 

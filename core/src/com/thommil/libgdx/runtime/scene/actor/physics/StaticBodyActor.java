@@ -10,7 +10,9 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 import java.util.List;
 
 /**
- * Created by tomtom on 12/02/16.
+ * Defines a static renderable actor which can interact with physic world
+ *
+ * @author thommil on 03/02/16.
  */
 public abstract class StaticBodyActor extends StaticActor implements RigidBody {
 

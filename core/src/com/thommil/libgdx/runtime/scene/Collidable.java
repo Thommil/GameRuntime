@@ -1,7 +1,9 @@
 package com.thommil.libgdx.runtime.scene;
 
 /**
- * Created by tomtom on 14/02/16.
+ * Defines a physics object with a body
+ *
+ * @author thommil on 03/02/16.
  */
 public interface Collidable<Definition, Body>{
 

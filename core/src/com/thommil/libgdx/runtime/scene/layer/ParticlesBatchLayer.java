@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
+import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
@@ -9,28 +10,48 @@ import com.thommil.libgdx.runtime.scene.Renderable;
  *
  * TODO Add the same shared instance as CacheLayer
  *
- * Created by thommil on 03/02/16.
+ * @author thommil on 03/02/16.
  */
 public class ParticlesBatchLayer extends Layer{
 
     protected float scaleFactor = 1f;
 
-    final protected ParticlesBatchRenderer renderer;
+    private static int size = 1000;
+    private static int currentConsumersCount = 0;
+    private static ParticlesBatchRenderer sharedRenderer;
+
+    protected final ParticlesBatchRenderer renderer;
 
     /**
-     * Default constructor
+     * Set global batch size
      *
-     * @param initialCapacity The initial capacity of the layer
+     * @param size The maximum size of the global cache shared among layers
+     */
+    public static void setGlobalSize(final int size){
+        if(ParticlesBatchLayer.sharedRenderer != null){
+            throw new GameRuntimeException("Global batch size must be set before creating a new shared ParticlesBatchLayer");
+        }
+        ParticlesBatchLayer.size = size;
+    }
+
+    /**
+     * Default constructor using the default shared renderer
+     *
+     * @param initialCapacity The initial capacity of the layer (number of actors)
      */
     public ParticlesBatchLayer(final int initialCapacity) {
         super(initialCapacity);
-        this.renderer = new ParticlesBatchRenderer(initialCapacity);
+        if(ParticlesBatchLayer.sharedRenderer == null){
+            ParticlesBatchLayer.sharedRenderer = new ParticlesBatchRenderer(ParticlesBatchLayer.size);
+        }
+        this.renderer = ParticlesBatchLayer.sharedRenderer;
+        this.currentConsumersCount++;
     }
 
     /**
      * Constructor with custom renderer
      *
-     * @param initialCapacity TThe initial capacity of the layer
+     * @param initialCapacity TThe initial capacity of the layer (number of actors)
      * @param customRenderer The custom renderer to use
      */
     public ParticlesBatchLayer(final int initialCapacity, final ParticlesBatchRenderer customRenderer) {
@@ -96,6 +117,15 @@ public class ParticlesBatchLayer extends Layer{
      */
     @Override
     public void dispose() {
-        renderer.dispose();
+        if(this.renderer == ParticlesBatchLayer.sharedRenderer){
+            currentConsumersCount--;
+            if(currentConsumersCount == 0) {
+                ParticlesBatchLayer.sharedRenderer.dispose();
+                ParticlesBatchLayer.sharedRenderer = null;
+            }
+        }
+        else{
+            this.renderer.dispose();
+        }
     }
 }

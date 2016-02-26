@@ -9,7 +9,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 /**
  * Physics particles system actor container
  *
- * Created by thommil on 14/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class ParticleSystemActor extends AbstractStepable implements ParticlesBody, Renderable<ParticlesBatchRenderer> {
 

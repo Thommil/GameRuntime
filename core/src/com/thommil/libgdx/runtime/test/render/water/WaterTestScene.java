@@ -57,7 +57,7 @@ public class WaterTestScene extends Game implements InputProcessor,ContactListen
         scene = new Scene(settings);
 
         //Shared Cache
-        CacheLayer.setSize(10);
+        CacheLayer.setGlobalSize(10);
 
         //Background - 0
         CacheLayer backgroundLayer = new CacheLayer(10);

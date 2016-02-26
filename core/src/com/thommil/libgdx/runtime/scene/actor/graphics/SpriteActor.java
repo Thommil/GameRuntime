@@ -13,7 +13,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
 /**
  * Basic SpriteActor for BasicBatch rendering based on Sprite from LibGDX
  *
- * Created by thommil on 2/10/16.
+ * @author thommil on 03/02/16.
  */
 public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer> {
 

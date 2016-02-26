@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Defines a physics actor with a rigid body
  *
- * Created by thommil on 12/02/16.
+ * @author thommil on 03/02/16.
  */
 public interface RigidBody extends Collidable<BodyDef,Body>{
 

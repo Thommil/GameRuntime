@@ -8,14 +8,14 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 /**
- * Basic Sprite layer using BasicSpriteBatch as sharedRenderer
+ * Basic Sprite layer using shared/custom BasicSpriteBatch as Renderer
  *
- * Created by thommil on 03/02/16.
+ * @author thommil on 03/02/16.
  */
 public class CacheLayer extends Layer{
 
     private static int size = 1000;
-    private static int currentCacheCount = 0;
+    private static int currentConsumersCount = 0;
     private static CacheRenderer sharedRenderer;
     private int cacheId;
 
@@ -26,9 +26,9 @@ public class CacheLayer extends Layer{
      *
      * @param size The maximum size of the global cache shared among layers
      */
-    public static void setSize(final int size){
+    public static void setGlobalSize(final int size){
         if(CacheLayer.sharedRenderer != null){
-            throw new GameRuntimeException("CacheLayer size must be set before creating a new CacheLayer");
+            throw new GameRuntimeException("Global cache size must be set before creating a new shared CacheLayer");
         }
         CacheLayer.size = size;
     }
@@ -36,7 +36,7 @@ public class CacheLayer extends Layer{
     /**
      * Default constructor using the default shared cache
      *
-     * @param initialCapacity The initial capacity of the layer
+     * @param initialCapacity The initial capacity of the layer (number of actors)
      */
     public CacheLayer(final int initialCapacity) {
         super(initialCapacity);
@@ -44,13 +44,13 @@ public class CacheLayer extends Layer{
             CacheLayer.sharedRenderer = new CacheRenderer(CacheLayer.size);
         }
         this.renderer = CacheLayer.sharedRenderer;
-        this.currentCacheCount++;
+        this.currentConsumersCount++;
     }
 
     /**
      * Custom cache renderer constructor
      *
-     * @param initialCapacity The initial capacity of the layer
+     * @param initialCapacity The initial capacity of the layer (number of actors)
      * @param renderer The custom renderer to use
      */
     public CacheLayer(final int initialCapacity, final CacheRenderer renderer) {
@@ -135,8 +135,8 @@ public class CacheLayer extends Layer{
     @Override
     public void dispose() {
         if(this.renderer == CacheLayer.sharedRenderer){
-            currentCacheCount--;
-            if(currentCacheCount == 0) {
+            currentConsumersCount--;
+            if(currentConsumersCount == 0) {
                 CacheLayer.sharedRenderer.dispose();
                 CacheLayer.sharedRenderer = null;
             }

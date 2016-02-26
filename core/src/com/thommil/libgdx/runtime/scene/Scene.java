@@ -22,9 +22,15 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Main container for Actors.
+ * Main container for a screen, handles :
+ * <ul>
+ *     <li>- rendering/physics loops</li>
+ *     <li>- screen lifecycle</li>
+ *     <li>- layer/actors add/removal</li>
+ *     <li>- rendering/physics settings</li>
+ * </ul>
  *
- * Created by thommil on 01/02/16.
+ * @author thommil on 03/02/16.
  */
 public class Scene implements Screen {
 

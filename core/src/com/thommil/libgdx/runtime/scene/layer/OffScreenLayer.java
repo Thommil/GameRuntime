@@ -6,7 +6,11 @@ import com.thommil.libgdx.runtime.graphics.renderer.OffScreenRenderer;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderable;
 
-
+/**
+ * Layer decorator for offscreen buffering purpose
+ *
+ * @author thommil on 03/02/16.
+ */
 public class OffScreenLayer<T extends Layer> extends Layer {
 
     final protected OffScreenRenderer offScreenRenderer;

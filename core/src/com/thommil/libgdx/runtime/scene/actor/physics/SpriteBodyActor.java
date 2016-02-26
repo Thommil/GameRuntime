@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Defines a dynamic SpriteActor actor which can interact with physic world
  *
- * Created by thommil on 03/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 

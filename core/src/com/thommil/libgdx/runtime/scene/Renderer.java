@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Definition of a Renderer
  *
- * Created by thommil on 2/23/16.
+ * @author thommil on 03/02/16.
  */
 public interface Renderer extends Disposable{
 

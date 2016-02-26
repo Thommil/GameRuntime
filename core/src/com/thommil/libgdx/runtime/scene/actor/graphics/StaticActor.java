@@ -8,7 +8,7 @@ import com.thommil.libgdx.runtime.scene.Renderable;
 /**
  * Basic StaticActor using custom for rendering using low level API
  *
- * Created by thommil on 12/02/16.
+ * @author thommil on 03/02/16.
  */
 public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer> {
 

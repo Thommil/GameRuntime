@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
 /**
  * Extension of ParticlesBatchRenderer with Colored particles
  *
- * Created by thommil on 2/22/16.
+ * @author thommil on 03/02/16.
  */
 public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
 

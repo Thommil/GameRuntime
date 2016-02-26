@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Disposable;
 /**
  * Base element of a Scene, represents any entity contained in Scene.
  *
- * Created by thommil on 01/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class Actor implements Disposable{
 

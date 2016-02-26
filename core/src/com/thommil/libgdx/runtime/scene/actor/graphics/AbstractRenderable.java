@@ -7,7 +7,7 @@ import com.thommil.libgdx.runtime.scene.Renderer;
 /**
  * Empty actor used to listen for render calls and implements some game logic
  *
- * Created by tomtom on 20/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class AbstractRenderable extends Actor implements Renderable<Renderer> {
 

@@ -6,7 +6,7 @@ import com.thommil.libgdx.runtime.scene.Stepable;
 /**
  * Empty actor used to listen for steps calls and implements some game logic
  *
- * Created by thommil on 18/02/16.
+ * @author thommil on 03/02/16.
  */
 public abstract class AbstractStepable extends Actor implements Stepable{
 

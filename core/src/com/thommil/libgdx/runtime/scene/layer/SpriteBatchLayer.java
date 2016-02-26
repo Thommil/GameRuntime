@@ -1,36 +1,55 @@
 package com.thommil.libgdx.runtime.scene.layer;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.scene.Renderable;
 import com.thommil.libgdx.runtime.scene.Layer;
 import com.thommil.libgdx.runtime.scene.Renderer;
 
 /**
- * Basic Sprite layer using SpriteBatchRenderer or Batch as renderer
+ * Basic Sprite layer using shared/custom SpriteBatchRenderer or Batch as renderer
  *
- * TODO Add the same shared instance as CacheLayer
- *
- * Created by thommil on 03/02/16.
+ * @author thommil on 03/02/16.
  */
 public class SpriteBatchLayer extends Layer{
 
-    final protected Renderer renderer;
+    private static int size = 1000;
+    private static int currentConsumersCount = 0;
+    private static SpriteBatchRenderer sharedRenderer;
+
+    protected final Renderer renderer;
 
     /**
-     * Default constructor
+     * Set global batch size
      *
-     * @param initialCapacity The initial capacity of the layer
+     * @param size The maximum size of the global cache shared among layers
+     */
+    public static void setGlobalSize(final int size){
+        if(SpriteBatchLayer.sharedRenderer != null){
+            throw new GameRuntimeException("Global batch size must be set before creating a new shared SpriteBatchLayer");
+        }
+        SpriteBatchLayer.size = size;
+    }
+
+    /**
+     * Default constructor using the default shared renderer
+     *
+     * @param initialCapacity The initial capacity of the layer (number of actors)
      */
     public SpriteBatchLayer(final int initialCapacity) {
         super(initialCapacity);
-        this.renderer = new SpriteBatchRenderer(initialCapacity);
+        if(SpriteBatchLayer.sharedRenderer == null){
+            SpriteBatchLayer.sharedRenderer = new SpriteBatchRenderer(SpriteBatchLayer.size);
+        }
+        this.renderer = SpriteBatchLayer.sharedRenderer;
+        this.currentConsumersCount++;
     }
 
     /**
      * Constructor with custom renderer
      *
-     * @param initialCapacity The initial capacity of the layer
+     * @param initialCapacity The initial capacity of the layer (number of actors)
      * @param customRenderer The custom renderer to use
      */
     public SpriteBatchLayer(final int initialCapacity, final Renderer customRenderer) {
@@ -92,6 +111,15 @@ public class SpriteBatchLayer extends Layer{
      */
     @Override
     public void dispose() {
-        renderer.dispose();
+        if(this.renderer == SpriteBatchLayer.sharedRenderer){
+            currentConsumersCount--;
+            if(currentConsumersCount == 0) {
+                SpriteBatchLayer.sharedRenderer.dispose();
+                SpriteBatchLayer.sharedRenderer = null;
+            }
+        }
+        else{
+            this.renderer.dispose();
+        }
     }
 }

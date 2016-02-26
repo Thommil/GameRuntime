@@ -12,7 +12,7 @@ import com.thommil.libgdx.runtime.scene.Renderer;
  *
  * The default version is just a white inversed alpha mask for debug purpose
  *
- * Created by thommil on 2/23/16.
+ * @author thommil on 03/02/16.
  */
 public class OffScreenRenderer implements Renderer {
 

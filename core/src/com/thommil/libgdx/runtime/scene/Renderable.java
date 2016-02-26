@@ -3,7 +3,7 @@ package com.thommil.libgdx.runtime.scene;
 /**
  * Defines a renderable element using T as renderer
  *
- * Created by thommil on 01/02/16.
+ * @author thommil on 03/02/16.
  */
 public interface Renderable<T extends Renderer>{
 
