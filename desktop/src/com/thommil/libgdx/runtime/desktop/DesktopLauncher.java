@@ -11,6 +11,7 @@ import com.thommil.libgdx.runtime.test.physics.basic.BasicPhysicsTestScene;
 import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
 import com.thommil.libgdx.runtime.test.physics.softbody.SoftBodyTestScene;
 import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
+import com.thommil.libgdx.runtime.test.render.normalmap.NormalTestScene;
 import com.thommil.libgdx.runtime.test.render.particles.ParticlesTestScene;
 import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
 
@@ -24,7 +25,7 @@ public class DesktopLauncher {
 		//new LwjglApplication(new SpriteTestScene(), config);
 
 		//Basic cache
-		new LwjglApplication(new CacheTestScene(), config);
+		//new LwjglApplication(new CacheTestScene(), config);
 
 		//Basic Physics
 		//new LwjglApplication(new BasicPhysicsTestScene(), config);
@@ -50,6 +51,8 @@ public class DesktopLauncher {
 		//Water rendering
 		//new LwjglApplication(new WaterTestScene(), config);
 
+		//Normal rendering
+		new LwjglApplication(new NormalTestScene(), config);
 
 	}
 }

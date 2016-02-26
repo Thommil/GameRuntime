@@ -12,6 +12,7 @@ import com.thommil.libgdx.runtime.test.physics.basic.BasicPhysicsTestScene;
 import com.thommil.libgdx.runtime.test.physics.collision.CollisionTestScene;
 import com.thommil.libgdx.runtime.test.physics.softbody.SoftBodyTestScene;
 import com.thommil.libgdx.runtime.test.physics.stress.PhysicsStressTestScene;
+import com.thommil.libgdx.runtime.test.render.normalmap.NormalTestScene;
 import com.thommil.libgdx.runtime.test.render.particles.ParticlesTestScene;
 import com.thommil.libgdx.runtime.test.render.water.WaterTestScene;
 
@@ -43,7 +44,7 @@ public class AndroidLauncher extends AndroidApplication {
 		//initialize(new ParticlesTestScene(), config);
 
 		//Softbody Physics
-		initialize(new SoftBodyTestScene(), config);
+		//initialize(new SoftBodyTestScene(), config);
 
 		//Kinematic input
 		//initialize(new KinematicInputTestScene(), config);
@@ -54,6 +55,8 @@ public class AndroidLauncher extends AndroidApplication {
 		//Water rendering
 		//initialize(new WaterTestScene(), config);
 
+		//Normal rendering
+		initialize(new NormalTestScene(), config);
 
 	}
 }

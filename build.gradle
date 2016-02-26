@@ -15,12 +15,9 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "GameRuntime"
+        appName = "gdx-tgrt"
         gdxVersion = '1.8.0'
         roboVMVersion = '1.12.0'
-        box2DLightsVersion = '1.4'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.7.0'
     }
 
     repositories {
@@ -111,7 +108,7 @@ task gdxLiquidfunCopy (type: Copy){
 
 task gameRuntimeJar (type: Jar, dependsOn: 'core:compileJava'){
     destinationDir = file('dist/core/libs')
-    archiveName = 'game-runtime.jar'
+    archiveName = 'gdx-tgrt.jar'
     from ('core/build/classes/main/'){
         include "com/thommil/libgdx/runtime/**"
         exclude "com/thommil/libgdx/runtime/test"

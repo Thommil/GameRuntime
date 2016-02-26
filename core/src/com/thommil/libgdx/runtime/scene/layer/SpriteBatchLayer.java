@@ -9,6 +9,8 @@ import com.thommil.libgdx.runtime.scene.Renderer;
 /**
  * Basic Sprite layer using SpriteBatchRenderer or Batch as renderer
  *
+ * TODO Add the same shared instance as CacheLayer
+ *
  * Created by thommil on 03/02/16.
  */
 public class SpriteBatchLayer extends Layer{

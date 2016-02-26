@@ -8,16 +8,18 @@ import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
 
 /**
- * Basic Sprite layer using BasicSpriteBatch as renderer
+ * Basic Sprite layer using BasicSpriteBatch as sharedRenderer
  *
  * Created by thommil on 03/02/16.
  */
 public class CacheLayer extends Layer{
 
     private static int size = 1000;
-    private static int currentCacheId = 0;
-    private static CacheRenderer renderer;
+    private static int currentCacheCount = 0;
+    private static CacheRenderer sharedRenderer;
     private int cacheId;
+
+    protected final CacheRenderer renderer;
 
     /**
      * Set global cache size
@@ -25,37 +27,49 @@ public class CacheLayer extends Layer{
      * @param size The maximum size of the global cache shared among layers
      */
     public static void setSize(final int size){
-        if(CacheLayer.renderer != null){
+        if(CacheLayer.sharedRenderer != null){
             throw new GameRuntimeException("CacheLayer size must be set before creating a new CacheLayer");
         }
         CacheLayer.size = size;
     }
 
     /**
-     * Default constructor
+     * Default constructor using the default shared cache
      *
      * @param initialCapacity The initial capacity of the layer
      */
     public CacheLayer(final int initialCapacity) {
         super(initialCapacity);
-        if(CacheLayer.renderer == null){
-            CacheLayer.renderer = new CacheRenderer(CacheLayer.size);
+        if(CacheLayer.sharedRenderer == null){
+            CacheLayer.sharedRenderer = new CacheRenderer(CacheLayer.size);
         }
-        this.cacheId = currentCacheId++;
+        this.renderer = CacheLayer.sharedRenderer;
+        this.currentCacheCount++;
+    }
+
+    /**
+     * Custom cache renderer constructor
+     *
+     * @param initialCapacity The initial capacity of the layer
+     * @param renderer The custom renderer to use
+     */
+    public CacheLayer(final int initialCapacity, final CacheRenderer renderer) {
+        super(initialCapacity);
+        this.renderer = renderer;
     }
 
     /**
      *  Cals this method to begin cache for underlying CacheRenderer
      */
     public void beginCache(){
-        CacheLayer.renderer.beginCache();
+        this.renderer.beginCache();
     }
 
     /**
      *  Cals this method to begin cache for underlying CacheRenderer
      */
     public void endCache(){
-        CacheLayer.renderer.endCache();
+        this.cacheId = this.renderer.endCache();
     }
 
     /**
@@ -66,10 +80,10 @@ public class CacheLayer extends Layer{
     @Override
     public void add(Renderable renderable) {
         if(renderable instanceof StaticActor){
-            CacheLayer.renderer.add((StaticActor)renderable);
+            this.renderer.add((StaticActor)renderable);
         }
         else if(renderable instanceof SpriteActor){
-            CacheLayer.renderer.add((SpriteActor)renderable);
+            this.renderer.add((SpriteActor)renderable);
         }
     }
 
@@ -81,10 +95,10 @@ public class CacheLayer extends Layer{
     @Override
     public void render(float deltaTime) {
         if(!this.hidden) {
-            CacheLayer.renderer.setCombinedMatrix(this.camera.combined);
-            CacheLayer.renderer.begin();
-            CacheLayer.renderer.draw(this.cacheId);
-            CacheLayer.renderer.end();
+            this.renderer.setCombinedMatrix(this.camera.combined);
+            this.renderer.begin();
+            this.renderer.draw(this.cacheId);
+            this.renderer.end();
         }
     }
 
@@ -120,11 +134,15 @@ public class CacheLayer extends Layer{
      */
     @Override
     public void dispose() {
-        if(CacheLayer.renderer != null) {
-            CacheLayer.renderer.dispose();
-            CacheLayer.renderer = null;
+        if(this.renderer == CacheLayer.sharedRenderer){
+            currentCacheCount--;
+            if(currentCacheCount == 0) {
+                CacheLayer.sharedRenderer.dispose();
+                CacheLayer.sharedRenderer = null;
+            }
         }
-        CacheLayer.size = 1000;
-        CacheLayer.currentCacheId = 0;
+        else{
+            this.renderer.dispose();
+        }
     }
 }
