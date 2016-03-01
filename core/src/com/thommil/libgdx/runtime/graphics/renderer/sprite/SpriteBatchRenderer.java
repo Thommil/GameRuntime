@@ -2,10 +2,14 @@ package com.thommil.libgdx.runtime.graphics.renderer.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
+import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
+import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.SpriteActor;
 
 /**
@@ -13,7 +17,7 @@ import com.thommil.libgdx.runtime.runtime.actor.graphics.SpriteActor;
  *
  * @author thommil on 03/02/16.
  */
-public class SpriteBatchRenderer implements Renderer{
+public class SpriteBatchRenderer implements BatchRenderer{
 
     protected final Mesh mesh;
     protected final float[] vertices;
@@ -22,9 +26,9 @@ public class SpriteBatchRenderer implements Renderer{
 
     protected int idx = 0;
     protected TextureSet lastTextureSet = null;
-    protected TextureSet currentTextureSet = null;
     protected int currentTextureSetSize = 0;
     protected float color = Color.WHITE.toFloatBits();
+    protected final TextureSet tmpTextureSet = new TextureSet(1);
 
     protected final Matrix4 combinedMatrix = new Matrix4();
 
@@ -71,32 +75,27 @@ public class SpriteBatchRenderer implements Renderer{
      *
      * @param combinedMatrix the combined matrix
      */
+    @Override
     public void setCombinedMatrix(final Matrix4 combinedMatrix) {
         this.combinedMatrix.set(combinedMatrix);
     }
 
-    /**
-     * Sets current TextureSet
-     *
-     * @param textureSet The current TextureSet to use
-     */
-    public void setTextureSet(final TextureSet textureSet){
-        this.currentTextureSet = textureSet;
+
+    @Override
+    public void draw(Texture texture, float[] vertices, int offset, int count) {
+        this.tmpTextureSet.textures[0] = texture;
+        if(this.lastTextureSet != null && this.lastTextureSet.textures[0] != this.tmpTextureSet.textures[0]){
+            this.lastTextureSet = null;
+        }
+        this.draw(this.tmpTextureSet, vertices, offset, count);
     }
 
-    /**
-     * Generic method to draw a set of vertices.
-     *
-     * @param vertices The list of vertices to draw
-     */
     @Override
-    public void draw(float[] vertices) {
-        int offset = 0;
-        int count = vertices.length;
+    public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
-        if (this.currentTextureSet != this.lastTextureSet) {
+        if (textureSet != this.lastTextureSet) {
             flush();
-            this.lastTextureSet = this.currentTextureSet;
+            this.lastTextureSet = textureSet;
         }else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
@@ -117,16 +116,6 @@ public class SpriteBatchRenderer implements Renderer{
             this.idx += copyCount;
             count -= copyCount;
         }
-    }
-
-    /**
-     * Generic method to draw a predefined object
-     *
-     * @param id The ID of the object
-     */
-    @Override
-    public void draw(int id) {
-        //Not implemented
     }
 
     /**
@@ -235,4 +224,40 @@ public class SpriteBatchRenderer implements Renderer{
         if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
+
+    @Override
+    public ShaderProgram getShader() {
+        return this.shader;
+    }
+
+    /**
+     * NOT IMPLEMENTED API
+     */
+    @Override public void setColor(Color tint) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setColor(float r, float g, float b, float a) {throw new GameRuntimeException("Not implemented");}
+    @Override public Color getColor() {throw new GameRuntimeException("Not implemented");}
+    @Override public float getPackedColor() {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {throw new GameRuntimeException("Not implemented");}
+    @Override public void disableBlending() {throw new GameRuntimeException("Not implemented");}
+    @Override public void enableBlending() {throw new GameRuntimeException("Not implemented");}
+    @Override public void setBlendFunction(int srcFunc, int dstFunc) {throw new GameRuntimeException("Not implemented");}
+    @Override public int getBlendSrcFunc() {throw new GameRuntimeException("Not implemented");}
+    @Override public int getBlendDstFunc() {throw new GameRuntimeException("Not implemented");}
+    @Override public Matrix4 getProjectionMatrix() {throw new GameRuntimeException("Not implemented");}
+    @Override public Matrix4 getTransformMatrix() {throw new GameRuntimeException("Not implemented");}
+    @Override public void setProjectionMatrix(Matrix4 projection) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setTransformMatrix(Matrix4 transform) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setShader(ShaderProgram shader) {throw new GameRuntimeException("Not implemented");}
+    @Override public boolean isBlendingEnabled() {throw new GameRuntimeException("Not implemented");}
+    @Override public boolean isDrawing() {throw new GameRuntimeException("Not implemented");}
 }

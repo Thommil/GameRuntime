@@ -1,10 +1,8 @@
 package com.thommil.libgdx.runtime.runtime.layer;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.Renderable;
-import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
 
 /**
  * Basic Sprite layer using shared/custom SpriteBatchRenderer or Batch as renderer
@@ -17,7 +15,7 @@ public class SpriteBatchLayer extends Layer{
     private static int currentConsumersCount = 0;
     private static SpriteBatchRenderer sharedRenderer;
 
-    protected final Renderer renderer;
+    protected final SpriteBatchRenderer renderer;
 
     /**
      * Set global batch size
@@ -51,7 +49,7 @@ public class SpriteBatchLayer extends Layer{
      * @param initialCapacity The initial capacity of the layer (number of actors)
      * @param customRenderer The custom renderer to use
      */
-    public SpriteBatchLayer(final int initialCapacity, final Renderer customRenderer) {
+    public SpriteBatchLayer(final int initialCapacity, final SpriteBatchRenderer customRenderer) {
         super(initialCapacity);
         this.renderer = customRenderer;
     }
@@ -64,12 +62,7 @@ public class SpriteBatchLayer extends Layer{
     @Override
     public void render(float deltaTime) {
         if(!this.hidden) {
-            if (this.renderer instanceof SpriteBatchRenderer) {
-                ((SpriteBatchRenderer) renderer).setCombinedMatrix(this.camera.combined);
-            } else if (this.renderer instanceof Batch) {
-                ((Batch) renderer).setProjectionMatrix(this.camera.projection);
-                ((Batch) renderer).setTransformMatrix(this.camera.view);
-            }
+            ((SpriteBatchRenderer) renderer).setCombinedMatrix(this.camera.combined);
             this.renderer.begin();
             for (Renderable renderable : this.renderables) {
                 renderable.render(deltaTime, this.renderer);

@@ -1,10 +1,12 @@
-package com.thommil.libgdx.runtime.graphics.renderer;
+package com.thommil.libgdx.runtime.graphics.renderer.buffer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.utils.Disposable;
+import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
 
 /**
  * FBO offscreen renderer
@@ -13,7 +15,7 @@ import com.badlogic.gdx.math.Matrix4;
  *
  * @author thommil on 03/02/16.
  */
-public class OffScreenRenderer implements Renderer {
+public class OffScreenRenderer implements Disposable{
 
     private static final int VERTEX_SIZE = 4;
     private static final int VERTEX_COUNT = 6;
@@ -97,7 +99,6 @@ public class OffScreenRenderer implements Renderer {
     /**
      * Called at beginning of rendering
      */
-    @Override
     public void begin() {
         this.setupFramebuffer();
         this.frameBuffer.begin();
@@ -160,20 +161,14 @@ public class OffScreenRenderer implements Renderer {
 
     /**
      * Generic method to draw a set of vertices.
-     *
-     * @param vertices The list of vertices to draw
      */
-    @Override
-    public void draw(float[] vertices) {
+    public void draw() {
         this.frameBuffer.end();
 
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
         this.frameBuffer.getColorBufferTexture().bind(0);
         this.shader.setUniformi("u_texture", 0);
-        if(vertices != null){
-            this.mesh.setVertices(vertices);
-        }
         this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
     }
 
@@ -201,30 +196,12 @@ public class OffScreenRenderer implements Renderer {
         this.vertices[17] = y + height;
 
         this.mesh.setVertices(vertices);
-        this.draw(null);
+        this.draw();
     }
 
-    /**
-     * Simple call, certainly the good one
-     */
-    public void draw(){
-        this.draw(null);
-    }
-
-    /**
-     * Generic method to draw a predefined object
-     *
-     * @param id The ID of the object
-     */
-    @Override
-    public void draw(int id) {
-        this.draw(null);
-    }
-
-    /**
+     /**
      * Called at ending of rendering
      */
-    @Override
     public void end() {
         this.shader.end();
     }

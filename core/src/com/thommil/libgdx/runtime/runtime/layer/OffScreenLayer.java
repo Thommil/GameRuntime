@@ -2,7 +2,7 @@ package com.thommil.libgdx.runtime.runtime.layer;
 
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.thommil.libgdx.runtime.graphics.renderer.OffScreenRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.buffer.OffScreenRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.Renderable;
 
 /**

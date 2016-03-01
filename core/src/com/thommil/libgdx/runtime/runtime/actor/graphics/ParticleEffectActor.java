@@ -3,7 +3,7 @@ package com.thommil.libgdx.runtime.runtime.actor.graphics;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.utils.Array;
-import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchAdapter;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.Actor;
 
 /**
@@ -11,7 +11,7 @@ import com.thommil.libgdx.runtime.runtime.actor.Actor;
  *
  * @author thommil on 03/02/16.
  */
-public class ParticleEffectActor extends Actor implements Renderable<SpriteBatchAdapter> {
+public class ParticleEffectActor extends Actor implements Renderable<SpriteBatchRenderer> {
 
     protected final ParticleEffectPool particleEffectPool;
     protected final Array<ParticleEffectPool.PooledEffect> particleEffects;
@@ -20,7 +20,6 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
      * Default constructor
      *
      * @param id Actor ID in the scene
-     * @param layer Renderable layer in the scene
      * @param particleEffect The particle effect to spawn
      * @param maxParticlesEffects The maximum amount on effects in this actor
      */
@@ -37,7 +36,7 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, SpriteBatchAdapter renderer) {
+    public void render(float deltaTime, SpriteBatchRenderer renderer) {
         for (int i = particleEffects.size - 1; i >= 0; i--) {
             final ParticleEffectPool.PooledEffect particleEffect = particleEffects.get(i);
             particleEffect.draw(renderer, deltaTime);

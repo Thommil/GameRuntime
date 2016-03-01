@@ -7,8 +7,6 @@ import com.thommil.libgdx.runtime.runtime.actor.graphics.Renderable;
 /**
  * ParticlesBody layer using ParticlesBatchRenderer as renderer
  *
- * TODO Add the same shared instance as CacheLayer
- *
  * @author thommil on 03/02/16.
  */
 public class ParticlesBatchLayer extends Layer{

@@ -92,8 +92,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
-        renderer.setTextureSet(this.textureSet);
-        renderer.draw(this.vertices);
+        renderer.draw(this.textureSet, this.vertices, 0, SpriteActor.SPRITE_SIZE);
     }
 
     /**

@@ -581,8 +581,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
-        renderer.setTextureSet(this.textureSet);
-        renderer.draw(this.getVertices());
+        renderer.draw(this.textureSet, this.getVertices(), 0, SPRITE_SIZE);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime.graphics.renderer.particles;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 
@@ -13,23 +14,14 @@ import com.thommil.libgdx.runtime.graphics.TextureSet;
 public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 
     protected TextureSet lastTextureSet;
-    protected TextureSet currentTextureSet;
     protected int currentTextureSetSize = 0;
+    protected final TextureSet tmpTextureSet = new TextureSet(1);
 
     public TexturedParticlesBatchRenderer(final int maxParticles) {
         super(maxParticles);
     }
 
-    /**
-     * Sets current TextureSet
-     *
-     * @param textureSet The current TextureSet to use
-     */
-    public void setTextureSet(final TextureSet textureSet){
-        this.currentTextureSet = textureSet;
-    }
-
-    @Override
+   @Override
     public void begin() {
         super.begin();
     }
@@ -40,12 +32,40 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
     }
 
     @Override
-    public void draw(float[] vertices) {
-         if (this.currentTextureSet != this.lastTextureSet) {
-             flush();
-             this.lastTextureSet = this.currentTextureSet;
-         }
-         super.draw(vertices);
+    public void draw(Texture texture, float[] vertices, int offset, int count) {
+        this.tmpTextureSet.textures[0] = texture;
+        if(this.lastTextureSet != null && this.lastTextureSet.textures[0] != this.tmpTextureSet.textures[0]){
+            this.lastTextureSet = null;
+        }
+        this.draw(this.tmpTextureSet, vertices, offset, count);
+    }
+
+    @Override
+    public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
+        int remainingVertices = this.vertices.length;
+        if (textureSet != this.lastTextureSet) {
+            flush();
+            this.lastTextureSet = textureSet;
+        }else {
+            remainingVertices -= this.idx;
+            if (remainingVertices == 0) {
+                flush();
+                remainingVertices = this.vertices.length;
+            }
+        }
+        int copyCount = Math.min(remainingVertices, count);
+
+        System.arraycopy(vertices, offset, this.vertices, this.idx, copyCount);
+        this.idx += copyCount;
+        count -= copyCount;
+        while (count > 0) {
+            offset += copyCount;
+            flush();
+            copyCount = Math.min(this.vertices.length, count);
+            System.arraycopy(vertices, offset, this.vertices, 0, copyCount);
+            this.idx += copyCount;
+            count -= copyCount;
+        }
     }
 
     @Override

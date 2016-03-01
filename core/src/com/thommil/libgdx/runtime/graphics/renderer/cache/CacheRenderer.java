@@ -2,22 +2,24 @@ package com.thommil.libgdx.runtime.graphics.renderer.cache;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
+import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.StaticActor;
 
 import java.nio.FloatBuffer;
 
 /**
- * Custom Cache for simple images rendering
+ * Custom CacheRenderer for simple images rendering
  *
  * @author thommil on 03/02/16.
  */
-public class CacheRenderer implements Renderer{
+public class CacheRenderer implements com.thommil.libgdx.runtime.graphics.renderer.CacheRenderer {
 
     protected final Mesh mesh;
     protected final ShaderProgram shader;
@@ -40,6 +42,7 @@ public class CacheRenderer implements Renderer{
     }
 
     /** Starts the definition of a new cache, allowing the add and {@link #endCache()} methods to be called. */
+    @Override
     public void beginCache () {
         currentCache = new Cache(caches.size, mesh.getVerticesBuffer().limit());
         caches.add(currentCache);
@@ -48,6 +51,7 @@ public class CacheRenderer implements Renderer{
 
     /** Starts the redefinition of an existing cache, allowing the add and {@link #endCache()} methods to be called. If this is not
      * the last cache created, it cannot have more entries added to it than when it was first created. To do that, use*/
+    @Override
     public void beginCache (int cacheID) {
         if (cacheID == caches.size - 1) {
             Cache oldCache = caches.removeIndex(cacheID);
@@ -60,6 +64,7 @@ public class CacheRenderer implements Renderer{
     }
 
     /** Ends the definition of a cache, returning the cache ID to be used with {@link #draw(int)}. */
+    @Override
     public int endCache () {
         final Cache cache = currentCache;
         int cacheCount = mesh.getVerticesBuffer().position() - cache.offset;
@@ -105,6 +110,7 @@ public class CacheRenderer implements Renderer{
     }
 
     /** Invalidates all cache IDs and resets the CacheRenderer so new caches can be added. */
+    @Override
     public void clear () {
         caches.clear();
         mesh.getVerticesBuffer().clear().flip();
@@ -113,6 +119,7 @@ public class CacheRenderer implements Renderer{
     /** Adds the specified vertices to the cache. Each vertex should have 5 elements, one for each of the attributes: x, y, color,
      * u, and v. If indexed geometry is used, each image should be specified as 4 vertices, otherwise each image should be
      * specified as 6 vertices. */
+    @Override
     public void add (TextureSet textureSet, float[] vertices, int offset, int length) {
         final int count = length / (4 * SpriteActor.VERTEX_SIZE) * 6;
         final int lastIndex = textureSets.size - 1;
@@ -126,6 +133,7 @@ public class CacheRenderer implements Renderer{
     }
 
     /** Adds the specified texture to the cache. */
+    @Override
     public void add (TextureSet textureSet, float x, float y, float srcWidth, float srcHeight, float u, float v, float u2, float v2, float color) {
         final float fx2 = x + srcWidth;
         final float fy2 = y + srcHeight;
@@ -167,11 +175,13 @@ public class CacheRenderer implements Renderer{
                 staticActor.width, staticActor.height, staticActor.u, staticActor.v, staticActor.u2, staticActor.v2, staticActor.color);
     }
 
+    @Override
     public void setCombinedMatrix(final Matrix4 combinedMatrix) {
         this.combinedMatrix.set(combinedMatrix);
     }
 
     /** Prepares the OpenGL state for CacheRenderer rendering. */
+    @Override
     public void begin () {
         shader.begin();
         shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
@@ -179,12 +189,14 @@ public class CacheRenderer implements Renderer{
     }
 
     /** Completes rendering for this CacheRenderer. */
+    @Override
     public void end () {
         shader.end();
         mesh.unbind(shader);
     }
 
     /** Draws all the images defined for the specified cache ID. */
+    @Override
     public void draw (int cacheID) {
         final Cache cache = caches.get(cacheID);
         int offset = cache.offset / (4 * SpriteActor.VERTEX_SIZE) * 6;
@@ -205,10 +217,6 @@ public class CacheRenderer implements Renderer{
     }
 
     @Override
-    public void draw(float[] vertices) {
-        //Not implemented
-    }
-
     public void dispose () {
         mesh.dispose();
         if (shader != null) shader.dispose();
@@ -290,4 +298,43 @@ public class CacheRenderer implements Renderer{
         if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
+
+    @Override
+    public ShaderProgram getShader() {
+        return this.shader;
+    }
+
+    /**
+     * NOT IMPLEMENTED API
+     */
+    @Override public void setColor(Color tint) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setColor(float r, float g, float b, float a) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setColor(float color) {throw new GameRuntimeException("Not implemented");}
+    @Override public Color getColor() {throw new GameRuntimeException("Not implemented");}
+    @Override public float getPackedColor() {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(Texture texture, float[] spriteVertices, int offset, int count) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {throw new GameRuntimeException("Not implemented");}
+    @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {throw new GameRuntimeException("Not implemented");}
+    @Override public void flush() {throw new GameRuntimeException("Not implemented");}
+    @Override public void disableBlending() {throw new GameRuntimeException("Not implemented");}
+    @Override public void enableBlending() {throw new GameRuntimeException("Not implemented");}
+    @Override public void setBlendFunction(int srcFunc, int dstFunc) {throw new GameRuntimeException("Not implemented");}
+    @Override public int getBlendSrcFunc() {throw new GameRuntimeException("Not implemented");}
+    @Override public int getBlendDstFunc() {throw new GameRuntimeException("Not implemented");}
+    @Override public Matrix4 getProjectionMatrix() {throw new GameRuntimeException("Not implemented");}
+    @Override public Matrix4 getTransformMatrix() {throw new GameRuntimeException("Not implemented");}
+    @Override public void setProjectionMatrix(Matrix4 projection) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setTransformMatrix(Matrix4 transform) {throw new GameRuntimeException("Not implemented");}
+    @Override public void setShader(ShaderProgram shader) {throw new GameRuntimeException("Not implemented");}
+    @Override public boolean isBlendingEnabled() {throw new GameRuntimeException("Not implemented");}
+    @Override public boolean isDrawing() {throw new GameRuntimeException("Not implemented");}
 }

@@ -1,14 +1,14 @@
 package com.thommil.libgdx.runtime.runtime.actor.graphics;
 
+import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.Actor;
-import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
 
 /**
  * Empty actor used to listen for render calls and implements some game logic
  *
  * @author thommil on 03/02/16.
  */
-public abstract class AbstractRenderable extends Actor implements Renderable<Renderer> {
+public abstract class AbstractRenderable extends Actor implements Renderable<BatchRenderer> {
 
     /**
      * Default constructor
@@ -26,7 +26,7 @@ public abstract class AbstractRenderable extends Actor implements Renderable<Ren
      * @param renderer  The renderer to use in current layer
      */
     @Override
-    public void render(float deltaTime, Renderer renderer) {
+    public void render(float deltaTime, BatchRenderer renderer) {
         //NOP
     }
 
