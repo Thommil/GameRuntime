@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.StringBuilder;
-import com.thommil.libgdx.runtime.scene.Layer;
-import com.thommil.libgdx.runtime.scene.Scene;
-import com.thommil.libgdx.runtime.scene.actor.physics.AbstractStepable;
+import com.thommil.libgdx.runtime.runtime.layer.Layer;
+import com.thommil.libgdx.runtime.runtime.Scene;
+import com.thommil.libgdx.runtime.runtime.actor.physics.AbstractStepable;
 import finnstr.libgdx.liquidfun.ParticleSystem;
 
 /**

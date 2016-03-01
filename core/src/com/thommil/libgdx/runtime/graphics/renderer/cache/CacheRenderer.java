@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.scene.Renderer;
-import com.thommil.libgdx.runtime.scene.actor.graphics.SpriteActor;
-import com.thommil.libgdx.runtime.scene.actor.graphics.StaticActor;
+import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
+import com.thommil.libgdx.runtime.runtime.actor.graphics.SpriteActor;
+import com.thommil.libgdx.runtime.runtime.actor.graphics.StaticActor;
 
 import java.nio.FloatBuffer;
 

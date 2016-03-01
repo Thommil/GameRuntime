@@ -5,9 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
-import com.thommil.libgdx.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.scene.Renderer;
-import com.thommil.libgdx.runtime.scene.actor.physics.ParticleSystemActor;
+import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
+import com.thommil.libgdx.runtime.runtime.actor.physics.ParticleSystemActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
 /**

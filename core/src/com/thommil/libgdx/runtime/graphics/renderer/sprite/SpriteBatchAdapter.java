@@ -2,7 +2,7 @@ package com.thommil.libgdx.runtime.graphics.renderer.sprite;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.scene.Renderer;
+import com.thommil.libgdx.runtime.graphics.renderer.Renderer;
 
 /**
  * Adapter to allow use of SpriteBatch in layers by actors
