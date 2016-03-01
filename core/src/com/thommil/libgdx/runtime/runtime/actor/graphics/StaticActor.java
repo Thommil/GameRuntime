@@ -5,7 +5,8 @@ import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.Actor;
 
 /**
- * Basic StaticActor using custom for rendering using low level API
+ * Basic StaticActor using custom for rendering using low level API. Can be rendered
+ * using a SpriteBatchRenderer but intended to be added in a SpriteCacheRenderer.
  *
  * @author thommil on 03/02/16.
  */

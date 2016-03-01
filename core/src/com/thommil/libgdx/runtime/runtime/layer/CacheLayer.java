@@ -1,7 +1,7 @@
 package com.thommil.libgdx.runtime.runtime.layer;
 
 import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.graphics.renderer.cache.CacheRenderer;
+import com.thommil.libgdx.runtime.graphics.renderer.cache.SpriteCacheRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.Renderable;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.StaticActor;
@@ -15,10 +15,10 @@ public class CacheLayer extends Layer{
 
     private static int size = 1000;
     private static int currentConsumersCount = 0;
-    private static CacheRenderer sharedRenderer;
+    private static SpriteCacheRenderer sharedRenderer;
     private int cacheId;
 
-    protected final CacheRenderer renderer;
+    protected final SpriteCacheRenderer renderer;
 
     /**
      * Set global cache size
@@ -40,7 +40,7 @@ public class CacheLayer extends Layer{
     public CacheLayer(final int initialCapacity) {
         super(initialCapacity);
         if(CacheLayer.sharedRenderer == null){
-            CacheLayer.sharedRenderer = new CacheRenderer(CacheLayer.size);
+            CacheLayer.sharedRenderer = new SpriteCacheRenderer(CacheLayer.size);
         }
         this.renderer = CacheLayer.sharedRenderer;
         this.currentConsumersCount++;
@@ -52,7 +52,7 @@ public class CacheLayer extends Layer{
      * @param initialCapacity The initial capacity of the layer (number of actors)
      * @param renderer The custom renderer to use
      */
-    public CacheLayer(final int initialCapacity, final CacheRenderer renderer) {
+    public CacheLayer(final int initialCapacity, final SpriteCacheRenderer renderer) {
         super(initialCapacity);
         this.renderer = renderer;
     }

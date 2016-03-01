@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.runtime.actor.physics;
 
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.runtime.actor.graphics.Renderable;
 import finnstr.libgdx.liquidfun.ParticleSystem;
@@ -20,11 +21,12 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
     protected float density;
     protected final float particlesRadius;
     protected final boolean colored;
+    protected final TextureSet textureSet;
 
     protected int layer = 0;
 
     /**
-     * Default constructor without color support
+     * Default constructor without color or texture support
      *
      * @param id The ID of the Actor in the scene
      * @param layer The layer of the renderable in the scene
@@ -35,7 +37,7 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
     }
 
     /**
-     * Full constructor
+     * Constructor with color support enabled (no texture)
      *
      * @param id The ID of the Actor in the scene
      * @param layer The layer of the renderable in the scene
@@ -47,6 +49,23 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
         this.layer = layer;
         this.particlesRadius = particlesRadius;
         this.colored = colored;
+        this.textureSet = null;
+    }
+
+    /**
+     * Constructor with texture support enabled (no color)
+     *
+     * @param id The ID of the Actor in the scene
+     * @param layer The layer of the renderable in the scene
+     * @param particlesRadius The particles radius
+     * @param textureSet The texture set used for rendering
+     */
+    public ParticleSystemActor(final int id, final int layer, final float particlesRadius, final TextureSet textureSet) {
+        super(id);
+        this.layer = layer;
+        this.particlesRadius = particlesRadius;
+        this.colored = false;
+        this.textureSet = textureSet;
     }
 
     /**
@@ -97,12 +116,14 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
     @Override
     public void render(float deltaTime, ParticlesBatchRenderer renderer) {
         renderer.setParticlesRadius(this.getParticlesRadius());
+        final float[]vertices;
         if(this.colored) {
-            renderer.draw(this.particleSystem.getParticlePositionAndColorBufferArray(true));
+            vertices = this.particleSystem.getParticlePositionAndColorBufferArray(true);
         }
         else{
-            renderer.draw(this.particleSystem.getParticlePositionBufferArray(true));
+            vertices = this.particleSystem.getParticlePositionBufferArray(true);
         }
+        renderer.draw(this.textureSet, vertices, 0, vertices.length);
     }
 
     /**

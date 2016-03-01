@@ -15,11 +15,11 @@ import com.thommil.libgdx.runtime.runtime.actor.graphics.StaticActor;
 import java.nio.FloatBuffer;
 
 /**
- * Custom CacheRenderer for simple images rendering
+ * Custom LibGDX CacheRenderer for simple images rendering
  *
  * @author thommil on 03/02/16.
  */
-public class CacheRenderer implements com.thommil.libgdx.runtime.graphics.renderer.CacheRenderer {
+public class SpriteCacheRenderer implements com.thommil.libgdx.runtime.graphics.renderer.CacheRenderer {
 
     protected final Mesh mesh;
     protected final ShaderProgram shader;
@@ -36,7 +36,7 @@ public class CacheRenderer implements com.thommil.libgdx.runtime.graphics.render
      * @param size The maximum number of images this cache can hold. The memory required to hold the images is allocated up front.
      *           Max of 5460 if indices are used.
      */
-    public CacheRenderer(final int size) {
+    public SpriteCacheRenderer(final int size) {
         this.mesh = createMesh(size);
         this.shader = createShader();
     }

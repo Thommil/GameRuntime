@@ -2,18 +2,12 @@ package com.thommil.libgdx.runtime.runtime.screen;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchAdapter;
 import com.thommil.libgdx.runtime.runtime.Game;
 
 /**
  * Created by tomtom on 29/02/16.
  */
 public class Runtime implements Screen{
-
-    /**
-     * Reference to a shared SpriteBatchAdapter for integration with LibGDX consumers
-     */
-    private final SpriteBatchAdapter spriteBatchAdapter = new SpriteBatchAdapter();
 
     /**
      * The runtime settings
@@ -68,13 +62,6 @@ public class Runtime implements Screen{
      */
     public void setViewport(Viewport viewport) {
         this.viewport = viewport;
-    }
-
-    /**
-     * Gets the shared SpriteBatchAdapter
-     */
-    public SpriteBatchAdapter getSpriteBatchAdapter() {
-        return spriteBatchAdapter;
     }
 
     /**
@@ -141,6 +128,6 @@ public class Runtime implements Screen{
      */
     @Override
     public void dispose() {
-        this.spriteBatchAdapter.dispose();
+
     }
 }

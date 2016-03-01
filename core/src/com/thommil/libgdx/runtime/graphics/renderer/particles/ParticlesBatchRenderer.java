@@ -92,15 +92,6 @@ public class ParticlesBatchRenderer implements BatchRenderer{
 
     @Override
     public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
-        this.draw(vertices, offset, count);
-    }
-
-    @Override
-    public void draw(Texture texture, float[] vertices, int offset, int count) {
-        this.draw(vertices, offset, count);
-    }
-
-    public void draw(float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
         if (this.currentParticlesRadius != this.lastParticlesRadius) {
             flush();
@@ -127,7 +118,10 @@ public class ParticlesBatchRenderer implements BatchRenderer{
         }
     }
 
-
+    @Override
+    public void draw(Texture texture, float[] vertices, int offset, int count) {
+        this.draw((TextureSet)null, vertices, offset, count);
+    }
 
     /**
      * Flushes the batch and renders all remaining vertices

@@ -21,16 +21,6 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
         super(maxParticles);
     }
 
-   @Override
-    public void begin() {
-        super.begin();
-    }
-
-    @Override
-    public void end() {
-        super.end();
-    }
-
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
         this.tmpTextureSet.textures[0] = texture;

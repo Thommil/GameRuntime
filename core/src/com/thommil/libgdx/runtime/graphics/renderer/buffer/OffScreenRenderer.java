@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Disposable;
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
 
 /**
@@ -168,7 +169,7 @@ public class OffScreenRenderer implements Disposable{
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
         this.frameBuffer.getColorBufferTexture().bind(0);
-        this.shader.setUniformi("u_texture", 0);
+        this.shader.setUniformi(TextureSet.UNIFORM_TEXTURE_0, 0);
         this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
     }
 
@@ -246,10 +247,10 @@ public class OffScreenRenderer implements Disposable{
                 + "#define LOWP \n" //
                 + "#endif\n" //
                 + "varying vec2 v_texCoords;\n" //
-                + "uniform sampler2D u_texture;\n" //
+                + "uniform sampler2D "+TextureSet.UNIFORM_TEXTURE_0+";\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + "  vec4 color = texture2D(u_texture, v_texCoords);\n" //
+                + "  vec4 color = texture2D("+TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
                 + "  if( color.r + color.g + color.b > 0.0 ){\n" //
                 + "     gl_FragColor = vec4(1.0,1.0,1.0,color.a);\n" //
                 + "  }\n" //
