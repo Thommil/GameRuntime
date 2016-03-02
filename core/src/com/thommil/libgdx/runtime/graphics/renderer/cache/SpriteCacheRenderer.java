@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.runtime.actor.graphics.SpriteActor;
-import com.thommil.libgdx.runtime.runtime.actor.graphics.StaticActor;
+import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
+import com.thommil.libgdx.runtime.actor.graphics.StaticActor;
 
 import java.nio.FloatBuffer;
 

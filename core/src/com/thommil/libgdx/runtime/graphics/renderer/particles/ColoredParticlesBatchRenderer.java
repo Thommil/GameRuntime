@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.thommil.libgdx.runtime.runtime.actor.physics.ParticleSystemActor;
+import com.thommil.libgdx.runtime.actor.physics.ParticleSystemActor;
 
 /**
  * Extension of ParticlesBatchRenderer with Colored particles

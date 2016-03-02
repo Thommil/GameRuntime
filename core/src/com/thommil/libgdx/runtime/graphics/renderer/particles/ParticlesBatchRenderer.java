@@ -3,15 +3,14 @@ package com.thommil.libgdx.runtime.graphics.renderer.particles;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
-import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.runtime.actor.physics.ParticleSystemActor;
+import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.actor.physics.ParticleSystemActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
 /**

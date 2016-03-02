@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.IndexData;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.VertexData;
 import com.badlogic.gdx.utils.Array;
-import com.thommil.libgdx.runtime.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.GameRuntimeException;
 
 /**
  * Extended Mesh class with support for additonnal VertexData after construction
