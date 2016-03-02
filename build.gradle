@@ -15,8 +15,8 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "gdx-tgrt"
-        gdxVersion = '1.8.0'
+        appName = "gdx-runtime"
+        gdxVersion = '1.9.1'
         roboVMVersion = '1.12.0'
     }
 
@@ -115,7 +115,7 @@ task gdxLiquidfunCopy (type: Copy){
 
 task gameRuntimeJar (type: Jar, dependsOn: 'core:compileJava'){
     destinationDir = file('dist/core/libs')
-    archiveName = 'gdx-tgrt.jar'
+    archiveName = 'gdx-runtime.jar'
     from ('core/build/classes/main/'){
         include "com/thommil/libgdx/runtime/**"
         exclude "com/thommil/libgdx/runtime/test"

@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.viewport.*;
-import com.thommil.libgdx.runtime.screen.DefaultLoadingScreen;
 import com.thommil.libgdx.runtime.screen.LoadingScreen;
 
 /**
@@ -25,12 +24,17 @@ public abstract class Game implements ApplicationListener {
     /**
      * Current screen displayed
      */
-    protected Screen currentScreen;
+    private Screen currentScreen;
+
+    /**
+     * Next screen displayed
+     */
+    private Screen nextScreen;
 
     /**
      * The global settings
      */
-    protected Settings settings;
+    private Settings settings;
 
     /**
      * The global asset manager
@@ -48,9 +52,9 @@ public abstract class Game implements ApplicationListener {
     private Viewport viewport;
 
     /**
-     * Default loading screen to use of not overriden
+     * Indicates the loading state of the game
      */
-    private LoadingScreen defaultLoadingScreen;
+    private boolean loading = true;
 
     /**
      * Called when the {@link Application} is first created.
@@ -65,6 +69,9 @@ public abstract class Game implements ApplicationListener {
         this.assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         this.onCreate(this.settings, this.assetManager);
+
+        this.loading = (this.assetManager.getProgress() < 1.0f);
+
         switch(this.settings.viewport.type){
             case Settings.Viewport.SCREEN :
                 this.viewport = new ScreenViewport();
@@ -82,19 +89,7 @@ public abstract class Game implements ApplicationListener {
 
         this.runtime = Runtime.createInstance(this.settings);
         this.runtime.setViewport(this.viewport);
-
-        final Screen splashScreen = this.getSplashScreen(this.viewport);
-        if(splashScreen != null) {
-            this.showScreen(splashScreen, false);
-        }
-        else{
-            final Screen homeScreen = this.getHomeScreen(this.viewport);
-            if(homeScreen == null){
-                throw new GameRuntimeException("No homescreen found");
-            }
-            this.showScreen(homeScreen, true);
-        }
-
+        this.onStart();
     }
 
     /**
@@ -107,6 +102,7 @@ public abstract class Game implements ApplicationListener {
     @Override
     public final void resize(int width, int height) {
         this.viewport.update(width, height);
+        this.currentScreen.resize(width, height);
     }
 
     /**
@@ -114,22 +110,21 @@ public abstract class Game implements ApplicationListener {
      */
     @Override
     public final void render() {
-        this.currentScreen.render(Gdx.graphics.getDeltaTime());
-    }
-
-    public final void showScreen(final Screen screen, final boolean loadingScreen){
-        //Not loaded
-        /*if(loadingScreen && this.assetManager.getProgress() < 1f){
-            this.currentScreen = this.getLoadingScreen(this.viewport);
+        if(this.loading){
+            this.assetManager.update();
+            final float progress = this.assetManager.getProgress();
+            if(progress == 1.0f){
+                this.loading = false;
+                this.assetManager.setErrorListener(null);
+                this.currentScreen.hide();
+                this.currentScreen = this.nextScreen;
+                this.currentScreen.show();
+            }
+            else if(this.currentScreen instanceof LoadingScreen){
+                ((LoadingScreen)this.currentScreen).onLoadProgress(progress);
+            }
         }
-        else
-        if(this.assetManager.getProgress() < 1f){
-           this.currentScreen = sc
-        }*/
-    }
-
-    public final void showLevel(final int levelId, final boolean loadingScreen){
-
+        this.currentScreen.render(Gdx.graphics.getDeltaTime());
     }
 
     /**
@@ -138,7 +133,8 @@ public abstract class Game implements ApplicationListener {
      */
     @Override
     public final void pause() {
-
+        this.currentScreen.pause();
+        this.onPause();
     }
 
     /**
@@ -146,7 +142,8 @@ public abstract class Game implements ApplicationListener {
      */
     @Override
     public final void resume() {
-
+        this.currentScreen.resume();
+        this.onResume();
     }
 
     /**
@@ -163,39 +160,31 @@ public abstract class Game implements ApplicationListener {
      * API
      */
 
-    /**
-     * Gets the splash screen if any
-     *
-     * @return The splash screen instance
-     */
-    protected Screen getSplashScreen(final Viewport viewport){
-        return null;
-    }
-
-
-    /**
-     * Gets the loading screen if any
-     *
-     * @return The loading screen
-     */
-    protected LoadingScreen getLoadingScreen(final Viewport viewport){
-        if(this.defaultLoadingScreen == null){
-            this.defaultLoadingScreen = new DefaultLoadingScreen(this.viewport, this.assetManager);
+    public final void showScreen(final Screen screen){
+        this.onShowScreen(screen, this.assetManager);
+        this.loading = (this.assetManager.getProgress() < 1.0f);
+        if(this.loading){
+            this.nextScreen = screen;
+            if(this.currentScreen instanceof LoadingScreen) {
+                this.assetManager.setErrorListener((LoadingScreen) this.currentScreen);
+            }
         }
-        return this.defaultLoadingScreen;
+        else{
+            this.currentScreen.hide();
+            this.currentScreen = screen;
+            this.currentScreen.show();
+        }
     }
 
     protected abstract void onCreate(final Settings settings, final AssetManager assetManager);
 
-    protected abstract Screen getHomeScreen(final Viewport viewport);
+    protected abstract void onStart();
 
     protected abstract void onShowScreen(final Screen screen, final AssetManager assetManager);
 
-    protected abstract void onShowLevel(final int levelId, final AssetManager assetManager);
+    protected abstract void onResume();
 
     protected abstract void onPause();
-
-    protected abstract void onResume();
 
     protected abstract void onDispose();
 

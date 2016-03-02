@@ -1,29 +1,18 @@
 package com.thommil.libgdx.runtime.screen;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.assets.AssetErrorListener;
 
 /**
- * Created by tomtom on 29/02/16.
+ * Screens implementing this interface can listen for loading events
+ *
+ * @author  Thommil on 02/03/16.
  */
-public abstract class LoadingScreen extends AbstractScreen {
-
-    protected final AssetManager assetManager;
-
-    public LoadingScreen(final Viewport viewport, final AssetManager assetManager) {
-        super(viewport);
-        this.assetManager = assetManager;
-    }
+public interface LoadingScreen extends AssetErrorListener {
 
     /**
-     * Called when the screen should render itself.
+     * Indicates the loading progress (0.0 - 1.0)
      *
-     * @param delta The time in seconds since the last render.
+     * @param progress The loading progress
      */
-    @Override
-    public final void render(float delta) {
-        this.render(delta, this.assetManager.getProgress());
-    }
-
-    public abstract void render(float delta, float progress);
+    void onLoadProgress(final float progress);
 }
