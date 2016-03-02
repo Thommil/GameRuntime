@@ -12,6 +12,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
 
         //return new IOSApplication(, config);
+        return null;
     }
 
     public static void main(String[] argv) {

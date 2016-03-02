@@ -4,6 +4,12 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.viewport.*;
 import com.thommil.libgdx.runtime.screen.DefaultLoadingScreen;
 import com.thommil.libgdx.runtime.screen.LoadingScreen;
@@ -53,6 +59,10 @@ public abstract class Game implements ApplicationListener {
     public final void create() {
         this.settings = new Settings();
         this.assetManager = new AssetManager();
+
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        this.assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        this.assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         this.onCreate(this.settings, this.assetManager);
         switch(this.settings.viewport.type){
