@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.graphics.BitmapFontActor;
 import com.thommil.libgdx.runtime.layer.BitmapFontBatchLayer;
+import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
 
 /**
  * Basic and dirty level implementation just to show that levels
@@ -35,7 +36,8 @@ public class SampleLevel implements Disposable{
         fontActor.setWrap(true);
         bitmapFontBatchLayer.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.bitmapFontBatchLayer.addActor(fontActor);
-        Runtime.getInstance().addLayer(0,bitmapFontBatchLayer);
+        Runtime.getInstance().addLayer(bitmapFontBatchLayer);
+        RuntimeProfiler.profile();
     }
 
     @Override

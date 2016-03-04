@@ -14,6 +14,7 @@ import com.thommil.libgdx.runtime.test.test_01_screens.screens.LoadingScreen;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.MainScreen;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.SampleLevel;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.SplashScreen;
+import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
 
 /**
  * Screens worlflow TEST

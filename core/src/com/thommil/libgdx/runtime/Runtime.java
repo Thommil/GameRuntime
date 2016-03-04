@@ -211,7 +211,7 @@ public class Runtime implements Screen{
     }
 
     /**
-     * Add a layer to the runtime
+     * Add a layer to the runtime at specified index
      *
      * @param index The index (z-index) of the layer
      * @param layer The layer to add
@@ -222,6 +222,17 @@ public class Runtime implements Screen{
             this.layers.add(null);
         }
         this.layers.set(index, layer);
+        layer.bind(this);
+    }
+
+    /**
+     * Add a layer to the runtime on top of other layers
+     *
+     * @param layer The layer to add
+     */
+    public void addLayer(final Layer layer){
+        if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
+        this.layers.add(layer);
         layer.bind(this);
     }
 
