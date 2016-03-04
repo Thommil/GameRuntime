@@ -3,7 +3,6 @@ package com.thommil.libgdx.runtime.test.test_01_screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -12,9 +11,8 @@ import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.Settings;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.LoadingScreen;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.MainScreen;
-import com.thommil.libgdx.runtime.test.test_01_screens.screens.SampleLevel;
+import com.thommil.libgdx.runtime.test.test_01_screens.levels.SampleLevel;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.SplashScreen;
-import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
 
 /**
  * Screens worlflow TEST
@@ -33,6 +31,7 @@ public class ScreensGame extends Game implements InputProcessor{
         settings.viewport.type = Settings.Viewport.FILL;
         settings.viewport.width = 100;
         settings.viewport.height = 100;
+        settings.physics.enabled = false;
     }
 
     @Override

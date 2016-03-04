@@ -236,9 +236,9 @@ public abstract class Layer implements Disposable {
             this.runtime.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
-                    for (final Collidable collidable : collidables) {
-                        setCollidablesState(collidable, true);
-                    }
+                for (final Collidable collidable : collidables) {
+                    setCollidablesState(collidable, true);
+                }
                 }
             });
         }

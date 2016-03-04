@@ -119,7 +119,7 @@ public class RuntimeProfiler {
                     .append("fps=").append((int)(renderCalls * frequencyFactor))
                     .append("]");
         }
-        if((this.flags & RuntimeProfiler.PHYSICS) != 0){
+        if((this.flags & RuntimeProfiler.PHYSICS) != 0 && Runtime.getInstance().getSettings().physics.enabled){
             int particlesCount = 0;
             for(final ParticleSystem particleSystem : Runtime.getInstance().getPhysicsWorld().particleSystems.values()){
                 particlesCount += particleSystem.getParticleCount();

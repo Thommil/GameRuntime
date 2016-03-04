@@ -125,8 +125,10 @@ public class CacheLayer extends Layer{
      */
     @Override
     protected void onHide() {
-        this.renderer.beginCache(this.cacheId);
-        this.renderer.endCache();
+        //if(this.cacheId >= 0) {
+            this.renderer.beginCache(this.cacheId);
+            this.renderer.endCache();
+        //}
     }
 
     /**

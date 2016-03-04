@@ -139,6 +139,27 @@ public class Runtime implements Screen{
     }
 
     /**
+     * Get the settings (some settings can be modified when started)
+     */
+    public Settings getSettings() {
+        return settings;
+    }
+
+    /**
+     * Indicates if the Runtime is in paused state
+     */
+    public boolean isPaused() {
+        return paused;
+    }
+
+    /**
+     * Indicates if the Runtime is running
+     */
+    public boolean isRunning() {
+        return running;
+    }
+
+    /**
      * Starts the instance
      */
     private final void start(){
@@ -262,7 +283,9 @@ public class Runtime implements Screen{
      * @param task The task to run
      */
     public void runOnPhysicsThread(final Runnable task){
-        physicsQueue.add(task);
+        if(settings.physics.enabled) {
+            physicsQueue.add(task);
+        }
     }
 
     /**
@@ -364,7 +387,9 @@ public class Runtime implements Screen{
                 ((Layer)items[index]).dispose();
             }
         }
-        executor.shutdown();
+        if(this.settings.physics.enabled) {
+            executor.shutdown();
+        }
     }
 
     /**

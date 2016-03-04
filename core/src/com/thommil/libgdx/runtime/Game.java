@@ -110,13 +110,16 @@ public abstract class Game implements ApplicationListener {
         this.onShowScreen(screen);
         this.loading = (this.assetManager.getProgress() < 1.0f);
         if(this.loading){
+            if(this.currentScreen == null) {
+                throw new GameRuntimeException("Current screen cannot be null when AssetManager is loading");
+            }
             this.nextScreen = screen;
             if(this.currentScreen instanceof LoadingScreen) {
                 this.assetManager.setErrorListener((LoadingScreen) this.currentScreen);
             }
         }
         else{
-            if(this.currentScreen != null){
+            if(this.currentScreen != null) {
                 this.currentScreen.hide();
             }
             this.currentScreen = screen;

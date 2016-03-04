@@ -1,4 +1,4 @@
-package com.thommil.libgdx.runtime.test.test_01_screens.screens;
+package com.thommil.libgdx.runtime.test.test_01_screens.levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
