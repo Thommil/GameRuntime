@@ -35,6 +35,7 @@ public class SplashScreen extends AbstractScreen {
         fontActor.setText("SplashScreen");
         fontActor.setPosition(-120,0);
         fontActor.setTargetWidth(240);
+        bitmapFontBatchLayer.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.bitmapFontBatchLayer.addActor(fontActor);
         this.bitmapFontBatchLayer.show();
     }

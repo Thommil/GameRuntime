@@ -1,6 +1,10 @@
 package com.thommil.libgdx.runtime.test.test_01_screens.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thommil.libgdx.runtime.actor.graphics.BitmapFontActor;
+import com.thommil.libgdx.runtime.layer.BitmapFontBatchLayer;
 import com.thommil.libgdx.runtime.screen.AbstractScreen;
 
 /**
@@ -10,13 +14,17 @@ import com.thommil.libgdx.runtime.screen.AbstractScreen;
  */
 public class MainScreen extends AbstractScreen {
 
-    /**
-     * Default constructor
-     *
-     * @param viewport reference to the game viewport to use
-     */
+    final BitmapFontBatchLayer bitmapFontBatchLayer;
+    final BitmapFontActor fontActor;
+
     public MainScreen(Viewport viewport) {
         super(viewport);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/OpenSans-Bold.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 36;
+        fontActor = new BitmapFontActor(0,generator.generateFont(parameter));
+        generator.dispose();
+        bitmapFontBatchLayer = new BitmapFontBatchLayer(this.viewport,1);
     }
 
     /**
@@ -24,7 +32,12 @@ public class MainScreen extends AbstractScreen {
      */
     @Override
     public void show() {
-
+        fontActor.setText("MainScreen");
+        fontActor.setPosition(-110,0);
+        fontActor.setTargetWidth(220);
+        bitmapFontBatchLayer.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.bitmapFontBatchLayer.addActor(fontActor);
+        this.bitmapFontBatchLayer.show();
     }
 
     /**
@@ -34,7 +47,7 @@ public class MainScreen extends AbstractScreen {
      */
     @Override
     public void render(float delta) {
-
+        bitmapFontBatchLayer.render(delta);
     }
 
     /**
@@ -44,7 +57,7 @@ public class MainScreen extends AbstractScreen {
      */
     @Override
     public void resize(int width, int height) {
-
+        bitmapFontBatchLayer.resize(width, height);
     }
 
     /**
@@ -68,7 +81,7 @@ public class MainScreen extends AbstractScreen {
      */
     @Override
     public void hide() {
-
+        this.bitmapFontBatchLayer.hide();
     }
 
     /**
@@ -76,6 +89,7 @@ public class MainScreen extends AbstractScreen {
      */
     @Override
     public void dispose() {
-
+        fontActor.dispose();
+        bitmapFontBatchLayer.dispose();
     }
 }

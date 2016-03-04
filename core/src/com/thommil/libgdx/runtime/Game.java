@@ -59,7 +59,7 @@ public abstract class Game implements ApplicationListener {
         this.settings = new Settings();
         this.assetManager = new AssetManager();
 
-        this.onCreate(this.settings, this.assetManager);
+        this.onCreate(this.settings);
 
         this.loading = (this.assetManager.getProgress() < 1.0f);
 
@@ -107,7 +107,7 @@ public abstract class Game implements ApplicationListener {
      * @param screen The screen to display
      */
     public final void showScreen(final Screen screen){
-        this.onShowScreen(screen, this.assetManager);
+        this.onShowScreen(screen);
         this.loading = (this.assetManager.getProgress() < 1.0f);
         if(this.loading){
             this.nextScreen = screen;
@@ -164,6 +164,20 @@ public abstract class Game implements ApplicationListener {
     }
 
     /**
+     * Get the current displayed screen
+     */
+    protected Screen getCurrentScreen() {
+        return currentScreen;
+    }
+
+    /**
+     * Get the AssetManager
+     */
+    protected AssetManager getAssetManager(){
+        return assetManager;
+    }
+
+    /**
      * Called when the {@link Application} is paused, usually when it's not active or visible on screen. An Application is also
      * paused before it is destroyed.
      */
@@ -200,9 +214,8 @@ public abstract class Game implements ApplicationListener {
      * Called at creation, settings can be modified here, assets can be added too.
      *
      * @param settings The settings of the game
-     * @param assetManager The assets manager of the game
      */
-    protected abstract void onCreate(final Settings settings, final AssetManager assetManager);
+    protected abstract void onCreate(final Settings settings);
 
     /**
      * Called at game startup, can be used to set the first screen
@@ -213,12 +226,11 @@ public abstract class Game implements ApplicationListener {
 
     /**
      * Called when a screen is asked to be displayed, subclasses can add assets and logic here to
-     * prepare the next screen.
+     * prepare this screen.
      *
      * @param screen The screen to display
-     * @param assetManager The asset manager of the game
      */
-    protected abstract void onShowScreen(final Screen screen, final AssetManager assetManager);
+    protected abstract void onShowScreen(final Screen screen);
 
     /**
      * Android only, called when game is displayed
