@@ -12,6 +12,7 @@ import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.Settings;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.LoadingScreen;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.MainScreen;
+import com.thommil.libgdx.runtime.test.test_01_screens.screens.SampleLevel;
 import com.thommil.libgdx.runtime.test.test_01_screens.screens.SplashScreen;
 
 /**
@@ -24,6 +25,7 @@ public class ScreensGame extends Game implements InputProcessor{
     Screen splashScreen;
     LoadingScreen loadingScreen;
     MainScreen mainScreen;
+    SampleLevel sampleLevel;
 
     @Override
     protected void onCreate(Settings settings) {
@@ -51,6 +53,8 @@ public class ScreensGame extends Game implements InputProcessor{
                     showScreen(loadingScreen);
                     getAssetManager().load("big_textures/stone.png", Texture.class);
                     getAssetManager().load("big_textures/lether.png", Texture.class);
+                    sampleLevel = new SampleLevel();
+                    sampleLevel.build();
                     showScreen(mainScreen);
                 }
             },1);
@@ -95,6 +99,8 @@ public class ScreensGame extends Game implements InputProcessor{
     @Override
     protected void onDispose() {
         this.splashScreen.dispose();
+        this.mainScreen.dispose();
+        this.loadingScreen.dispose();
     }
 
 

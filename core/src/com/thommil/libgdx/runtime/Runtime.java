@@ -2,7 +2,6 @@ package com.thommil.libgdx.runtime;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -70,6 +69,11 @@ public class Runtime implements Screen{
      * Pause/resume state
      */
     protected boolean paused = true;
+
+    /**
+     * Runnning state
+     */
+    protected boolean running = true;
 
     /**
      * Create instance based on settings
@@ -154,8 +158,9 @@ public class Runtime implements Screen{
 
                 @Override
                 public void run() {
-                    paused = false;
-                    while (true) {
+                    running = true;
+                    paused = true;
+                    while (running) {
                         final long longAsyncFrequency = (long) (settings.physics.frequency * 1000f);
                         final long start = System.currentTimeMillis();
 
@@ -169,9 +174,10 @@ public class Runtime implements Screen{
 
                             final float lastPhysicsStepDurationFloat = (float)lastPhysicsStepDuration/1000f;
 
-                            for (final Layer layer : layers) {
-                                if (layer != null) {
-                                    layer.step(lastPhysicsStepDurationFloat);
+                            final Object[] items = ((Object[])layers.items);
+                            for(int index=0; index < layers.size; index++){
+                                if (items != null) {
+                                    ((Layer)items[index]).step(lastPhysicsStepDurationFloat);
                                 }
                             }
 
@@ -262,9 +268,10 @@ public class Runtime implements Screen{
      */
     @Override
     public void show() {
-        for (final Layer layer : layers) {
-            if (layer != null) {
-                layer.show();
+        final Object[] items = ((Object[])layers.items);
+        for(int index=0; index < layers.size; index++){
+            if (items != null) {
+                ((Layer)items[index]).show();
             }
         }
         paused = false;
@@ -277,9 +284,10 @@ public class Runtime implements Screen{
      */
     @Override
     public void render(float delta) {
-        for (final Layer layer : layers) {
-            if (layer != null) {
-                layer.render(delta);
+        final Object[] items = ((Object[])layers.items);
+        for(int index=0; index < layers.size; index++){
+            if (items != null) {
+                ((Layer)items[index]).render(delta);
             }
         }
 
@@ -295,9 +303,10 @@ public class Runtime implements Screen{
      */
     @Override
     public void resize(int width, int height) {
-        for (final Layer layer : layers) {
-            if (layer != null) {
-                layer.resize(width, height);
+        final Object[] items = ((Object[])layers.items);
+        for(int index=0; index < layers.size; index++){
+            if (items != null) {
+                ((Layer)items[index]).resize(width, height);
             }
         }
     }
@@ -324,9 +333,10 @@ public class Runtime implements Screen{
     @Override
     public void hide() {
         paused = true;
-        for (final Layer layer : layers) {
-            if (layer != null) {
-                layer.hide();
+        final Object[] items = ((Object[])layers.items);
+        for(int index=0; index < layers.size; index++){
+            if (items != null) {
+                ((Layer)items[index]).hide();
             }
         }
     }
@@ -336,11 +346,21 @@ public class Runtime implements Screen{
      */
     @Override
     public void dispose() {
-        for (final Layer layer : layers) {
-            if (layer != null) {
-                layer.dispose();
+        running=false;
+        final Object[] items = ((Object[])layers.items);
+        for(int index=0; index < layers.size; index++){
+            if (items != null) {
+                ((Layer)items[index]).dispose();
             }
         }
-        executor.shutdownNow();
+        executor.shutdown();
+    }
+
+    /**
+     * Destrou the runtime instance
+     */
+    public static void destroyInstance(){
+        Runtime.instance.dispose();
+        Runtime.instance = null;
     }
 }

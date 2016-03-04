@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.layer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;

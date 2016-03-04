@@ -201,9 +201,9 @@ public abstract class Game implements ApplicationListener {
      */
     @Override
     public final void dispose() {
-        this.assetManager.clear();
-        this.runtime.dispose();
         this.onDispose();
+        this.assetManager.clear();
+        Runtime.destroyInstance();
     }
 
     /**
