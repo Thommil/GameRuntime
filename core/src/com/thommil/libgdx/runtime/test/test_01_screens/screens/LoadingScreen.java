@@ -1,28 +1,23 @@
-package com.thommil.libgdx.runtime.screen;
+package com.thommil.libgdx.runtime.test.test_01_screens.screens;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.Game;
+import com.thommil.libgdx.runtime.screen.AbstractScreen;
 
 /**
- * Abstract screen definition of runtime screens
+ * Loading screen
  *
- * @author Thommil on 29/02/16.
+ * @author Thommil on 3/4/16.
  */
-public abstract class AbstractScreen implements Screen {
-
-    /**
-     * Viewport of the screen
-     */
-    protected Viewport viewport;
+public class LoadingScreen extends AbstractScreen implements com.thommil.libgdx.runtime.screen.LoadingScreen {
 
     /**
      * Default constructor
      *
      * @param viewport reference to the game viewport to use
      */
-    public AbstractScreen(final Viewport viewport){
-        this.viewport = viewport;
+    public LoadingScreen(Viewport viewport) {
+        super(viewport);
     }
 
     /**
@@ -30,7 +25,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void show() {
-        //NOP
+
     }
 
     /**
@@ -40,7 +35,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        //NOP
+
     }
 
     /**
@@ -50,7 +45,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        //NOP
+
     }
 
     /**
@@ -58,7 +53,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void pause() {
-        //NOP
+
     }
 
     /**
@@ -66,7 +61,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void resume() {
-        //NOP
+
     }
 
     /**
@@ -74,7 +69,22 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void hide() {
-        //NOP
+
+    }
+
+    /**
+     * Indicates the loading progress (0.0 - 1.0)
+     *
+     * @param progress The loading progress
+     */
+    @Override
+    public void onLoadProgress(float progress) {
+
+    }
+
+    @Override
+    public void error(AssetDescriptor asset, Throwable throwable) {
+
     }
 
     /**
@@ -82,6 +92,6 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void dispose() {
-        //NOP
+
     }
 }

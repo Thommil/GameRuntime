@@ -79,6 +79,10 @@ public class SpriteBatchRenderer implements BatchRenderer{
         this.combinedMatrix.set(combinedMatrix);
     }
 
+    @Override
+    public Matrix4 getCombinedMatrix() {
+        return this.combinedMatrix;
+    }
 
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {

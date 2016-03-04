@@ -216,7 +216,7 @@ public abstract class Layer implements Disposable {
     /**
      * Unbinds a layer from a Runtime (normaly called by the Runtime itself)
      */
-    public final void unbind(final Runtime runtime){
+    public final void unbind(){
         this.runtime.runOnPhysicsThread(new Runnable() {
             @Override
             public void run() {
@@ -232,14 +232,16 @@ public abstract class Layer implements Disposable {
      * Shows a layer
      */
     public final void show(){
-        this.runtime.runOnPhysicsThread(new Runnable() {
-            @Override
-            public void run() {
-                for(final Collidable collidable : collidables){
-                    setCollidablesState(collidable, true);
+        if(this.runtime != null) {
+            this.runtime.runOnPhysicsThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (final Collidable collidable : collidables) {
+                        setCollidablesState(collidable, true);
+                    }
                 }
-            }
-        });
+            });
+        }
         this.hidden = false;
         this.onShow();
     }
@@ -257,14 +259,16 @@ public abstract class Layer implements Disposable {
      * Hides a layer
      */
     public final void hide(){
-        this.runtime.runOnPhysicsThread(new Runnable() {
-            @Override
-            public void run() {
-                for(final Collidable collidable : collidables){
-                    setCollidablesState(collidable, false);
+        if(this.runtime != null) {
+            this.runtime.runOnPhysicsThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (final Collidable collidable : collidables) {
+                        setCollidablesState(collidable, false);
+                    }
                 }
-            }
-        });
+            });
+        }
         this.hidden = true;
         this.onHide();
     }

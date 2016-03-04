@@ -154,6 +154,11 @@ public class ParticlesBatchRenderer implements BatchRenderer{
         this.combinedMatrix.set(combinedMatrix);
     }
 
+    @Override
+    public Matrix4 getCombinedMatrix() {
+        return this.combinedMatrix;
+    }
+
     /**
      * Subclasses should override this method to use their specific Mesh
      */

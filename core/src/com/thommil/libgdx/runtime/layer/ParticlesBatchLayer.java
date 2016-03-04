@@ -14,9 +14,9 @@ public class ParticlesBatchLayer extends Layer{
 
     protected float scaleFactor = 1f;
 
-    private static int size = 1000;
-    private static int currentConsumersCount = 0;
-    private static ParticlesBatchRenderer sharedRenderer;
+    protected static int size = 1000;
+    protected static int currentConsumersCount = 0;
+    protected static ParticlesBatchRenderer sharedRenderer;
 
     protected final ParticlesBatchRenderer renderer;
 

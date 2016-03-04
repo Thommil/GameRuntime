@@ -1,28 +1,22 @@
-package com.thommil.libgdx.runtime.screen;
+package com.thommil.libgdx.runtime.test.test_01_screens.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.Game;
+import com.thommil.libgdx.runtime.screen.AbstractScreen;
 
 /**
- * Abstract screen definition of runtime screens
+ * Main menu screen
  *
- * @author Thommil on 29/02/16.
+ * @author  thommil on 3/4/16.
  */
-public abstract class AbstractScreen implements Screen {
-
-    /**
-     * Viewport of the screen
-     */
-    protected Viewport viewport;
+public class MainScreen extends AbstractScreen {
 
     /**
      * Default constructor
      *
      * @param viewport reference to the game viewport to use
      */
-    public AbstractScreen(final Viewport viewport){
-        this.viewport = viewport;
+    public MainScreen(Viewport viewport) {
+        super(viewport);
     }
 
     /**
@@ -30,7 +24,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void show() {
-        //NOP
+
     }
 
     /**
@@ -40,7 +34,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void render(float delta) {
-        //NOP
+
     }
 
     /**
@@ -50,7 +44,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void resize(int width, int height) {
-        //NOP
+
     }
 
     /**
@@ -58,7 +52,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void pause() {
-        //NOP
+
     }
 
     /**
@@ -66,7 +60,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void resume() {
-        //NOP
+
     }
 
     /**
@@ -74,7 +68,7 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void hide() {
-        //NOP
+
     }
 
     /**
@@ -82,6 +76,6 @@ public abstract class AbstractScreen implements Screen {
      */
     @Override
     public void dispose() {
-        //NOP
+
     }
 }

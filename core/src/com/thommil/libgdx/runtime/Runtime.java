@@ -107,21 +107,6 @@ public class Runtime implements Screen{
         }
         this.layers = new Array<Layer>();
 
-        //GL Settings
-        Gdx.gl.glClearColor(this.settings.graphics.clearColor[0]
-                , this.settings.graphics.clearColor[1]
-                , this.settings.graphics.clearColor[2]
-                , this.settings.graphics.clearColor[3]);
-
-        Gdx.gl.glDepthMask(this.settings.graphics.depthMaskEnabled);
-
-        if (this.settings.graphics.blendEnabled) {
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(this.settings.graphics.blendSrcFunc, this.settings.graphics.blendDstFunc);
-        } else {
-            Gdx.gl.glDisable(GL20.GL_BLEND);
-        }
-
         if(settings.physics.debug){
             this.debugRenderer = new Box2DDebugRenderer();
         }
@@ -231,6 +216,7 @@ public class Runtime implements Screen{
             this.layers.add(null);
         }
         this.layers.set(index, layer);
+        layer.bind(this);
     }
 
     /**
@@ -249,6 +235,7 @@ public class Runtime implements Screen{
      */
     public void removeLayer(final int index){
         if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
+        this.layers.get(index).unbind();
         this.layers.set(index, null);
     }
 
@@ -290,10 +277,6 @@ public class Runtime implements Screen{
      */
     @Override
     public void render(float delta) {
-        if(settings.graphics.clearScreen) {
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        }
-
         for (final Layer layer : layers) {
             if (layer != null) {
                 layer.render(delta);

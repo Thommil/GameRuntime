@@ -15,10 +15,10 @@ import com.thommil.libgdx.runtime.actor.graphics.StaticActor;
  */
 public class CacheLayer extends Layer{
 
-    private static int size = 1000;
-    private static int currentConsumersCount = 0;
-    private static SpriteCacheRenderer sharedRenderer;
-    private int cacheId = -1;
+    protected static int size = 1000;
+    protected static int currentConsumersCount = 0;
+    protected static SpriteCacheRenderer sharedRenderer;
+    protected int cacheId = -1;
 
     protected final SpriteCacheRenderer renderer;
 

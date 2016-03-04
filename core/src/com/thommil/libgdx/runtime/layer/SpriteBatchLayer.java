@@ -12,9 +12,9 @@ import com.thommil.libgdx.runtime.actor.graphics.Renderable;
  */
 public class SpriteBatchLayer extends Layer{
 
-    private static int size = 1000;
-    private static int currentConsumersCount = 0;
-    private static SpriteBatchRenderer sharedRenderer;
+    protected static int size = 1000;
+    protected static int currentConsumersCount = 0;
+    protected static SpriteBatchRenderer sharedRenderer;
 
     protected final SpriteBatchRenderer renderer;
 
@@ -65,7 +65,7 @@ public class SpriteBatchLayer extends Layer{
     @Override
     public void render(float deltaTime) {
         if(!this.isHidden()) {
-            ((SpriteBatchRenderer) renderer).setCombinedMatrix(this.viewport.getCamera().combined);
+            this.renderer.setCombinedMatrix(this.viewport.getCamera().combined);
             this.renderer.begin();
             for (Renderable renderable : this.renderables) {
                 renderable.render(deltaTime, this.renderer);

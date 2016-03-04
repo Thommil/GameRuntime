@@ -180,6 +180,11 @@ public class SpriteCacheRenderer implements com.thommil.libgdx.runtime.graphics.
         this.combinedMatrix.set(combinedMatrix);
     }
 
+    @Override
+    public Matrix4 getCombinedMatrix() {
+        return this.combinedMatrix;
+    }
+
     /** Prepares the OpenGL state for CacheRenderer rendering. */
     @Override
     public void begin () {

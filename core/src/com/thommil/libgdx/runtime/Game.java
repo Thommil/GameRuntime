@@ -4,12 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.*;
 import com.thommil.libgdx.runtime.screen.LoadingScreen;
 
@@ -64,10 +59,6 @@ public abstract class Game implements ApplicationListener {
         this.settings = new Settings();
         this.assetManager = new AssetManager();
 
-        FileHandleResolver resolver = new InternalFileHandleResolver();
-        this.assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        this.assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-
         this.onCreate(this.settings, this.assetManager);
 
         this.loading = (this.assetManager.getProgress() < 1.0f);
@@ -89,7 +80,48 @@ public abstract class Game implements ApplicationListener {
 
         this.runtime = Runtime.createInstance(this.settings);
         this.runtime.setViewport(this.viewport);
-        this.onStart();
+
+        //GL Settings
+        Gdx.gl.glClearColor(this.settings.graphics.clearColor[0]
+                , this.settings.graphics.clearColor[1]
+                , this.settings.graphics.clearColor[2]
+                , this.settings.graphics.clearColor[3]);
+
+        Gdx.gl.glDepthMask(this.settings.graphics.depthMaskEnabled);
+
+        if (this.settings.graphics.blendEnabled) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(this.settings.graphics.blendSrcFunc, this.settings.graphics.blendDstFunc);
+        } else {
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+        }
+
+        this.onStart(this.viewport);
+    }
+
+    /**
+     * Display the specified screen. If current displayed screen implements LoadingScreen,
+     * it will be called to display loading feedbacks. Subclasses should implement onShowScreen()
+     * to prepare the screen to display (assets, logic ...)
+     *
+     * @param screen The screen to display
+     */
+    public final void showScreen(final Screen screen){
+        this.onShowScreen(screen, this.assetManager);
+        this.loading = (this.assetManager.getProgress() < 1.0f);
+        if(this.loading){
+            this.nextScreen = screen;
+            if(this.currentScreen instanceof LoadingScreen) {
+                this.assetManager.setErrorListener((LoadingScreen) this.currentScreen);
+            }
+        }
+        else{
+            if(this.currentScreen != null){
+                this.currentScreen.hide();
+            }
+            this.currentScreen = screen;
+            this.currentScreen.show();
+        }
     }
 
     /**
@@ -110,6 +142,10 @@ public abstract class Game implements ApplicationListener {
      */
     @Override
     public final void render() {
+        if(settings.graphics.clearScreen) {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        }
+
         if(this.loading){
             this.assetManager.update();
             final float progress = this.assetManager.getProgress();
@@ -160,32 +196,43 @@ public abstract class Game implements ApplicationListener {
      * API
      */
 
-    public final void showScreen(final Screen screen){
-        this.onShowScreen(screen, this.assetManager);
-        this.loading = (this.assetManager.getProgress() < 1.0f);
-        if(this.loading){
-            this.nextScreen = screen;
-            if(this.currentScreen instanceof LoadingScreen) {
-                this.assetManager.setErrorListener((LoadingScreen) this.currentScreen);
-            }
-        }
-        else{
-            this.currentScreen.hide();
-            this.currentScreen = screen;
-            this.currentScreen.show();
-        }
-    }
-
+    /**
+     * Called at creation, settings can be modified here, assets can be added too.
+     *
+     * @param settings The settings of the game
+     * @param assetManager The assets manager of the game
+     */
     protected abstract void onCreate(final Settings settings, final AssetManager assetManager);
 
-    protected abstract void onStart();
+    /**
+     * Called at game startup, can be used to set the first screen
+     *
+     * @param viewport The viewport to use
+     */
+    protected abstract void onStart(final Viewport viewport);
 
+    /**
+     * Called when a screen is asked to be displayed, subclasses can add assets and logic here to
+     * prepare the next screen.
+     *
+     * @param screen The screen to display
+     * @param assetManager The asset manager of the game
+     */
     protected abstract void onShowScreen(final Screen screen, final AssetManager assetManager);
 
+    /**
+     * Android only, called when game is displayed
+     */
     protected abstract void onResume();
 
+    /**
+     * Android only, called when game is hidden
+     */
     protected abstract void onPause();
 
+    /**
+     * Called at end of the game
+     */
     protected abstract void onDispose();
 
 }
