@@ -202,29 +202,19 @@ public abstract class Layer implements Disposable {
      */
     public final void bind(final Runtime runtime){
         this.runtime = runtime;
-        //Bind all physics actors
-        this.runtime.runOnPhysicsThread(new Runnable() {
-            @Override
-            public void run() {
-                for(final Collidable collidable : collidables){
-                    bindCollidable(collidable);
-                }
-            }
-        });
+        for(final Collidable collidable : collidables){
+            bindCollidable(collidable);
+        }
+        this.show();
     }
 
     /**
      * Unbinds a layer from a Runtime (normaly called by the Runtime itself)
      */
     public final void unbind(){
-        this.runtime.runOnPhysicsThread(new Runnable() {
-            @Override
-            public void run() {
-                for(final Collidable collidable : collidables){
-                    unbindCollidable(collidable);
-                }
-            }
-        });
+        for(final Collidable collidable : collidables){
+            unbindCollidable(collidable);
+        }
         this.runtime = null;
     }
 
@@ -236,14 +226,18 @@ public abstract class Layer implements Disposable {
             this.runtime.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
-                for (final Collidable collidable : collidables) {
-                    setCollidablesState(collidable, true);
-                }
+                    for (final Collidable collidable : collidables) {
+                        setCollidablesState(collidable, true);
+                    }
+                    hidden = false;
+                    onShow();
                 }
             });
         }
-        this.hidden = false;
-        this.onShow();
+        else {
+            this.hidden = false;
+            this.onShow();
+        }
     }
 
     /**
@@ -266,11 +260,15 @@ public abstract class Layer implements Disposable {
                     for (final Collidable collidable : collidables) {
                         setCollidablesState(collidable, false);
                     }
+                    hidden = true;
+                    onHide();
                 }
             });
         }
-        this.hidden = true;
-        this.onHide();
+        else {
+            hidden = true;
+            onHide();
+        }
     }
 
     /**

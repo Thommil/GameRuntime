@@ -301,13 +301,7 @@ public class Runtime implements Screen{
      */
     @Override
     public void show() {
-        final Object[] items = ((Object[])layers.items);
-        for(int index=0; index < layers.size; index++){
-            if (items != null) {
-                ((Layer)items[index]).show();
-            }
-        }
-        paused = false;
+        this.resume();
     }
 
     /**
@@ -351,7 +345,7 @@ public class Runtime implements Screen{
      */
     @Override
     public void pause() {
-        paused = true;
+        this.hide();
     }
 
     /**
@@ -368,12 +362,6 @@ public class Runtime implements Screen{
     @Override
     public void hide() {
         paused = true;
-        final Object[] items = ((Object[])layers.items);
-        for(int index=0; index < layers.size; index++){
-            if (items != null) {
-                ((Layer)items[index]).hide();
-            }
-        }
     }
 
     /**

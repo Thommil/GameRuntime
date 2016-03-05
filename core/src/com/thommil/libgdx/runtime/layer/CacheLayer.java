@@ -103,21 +103,18 @@ public class CacheLayer extends Layer{
      */
     @Override
     protected void onShow() {
-        if(this.cacheId >=0){
-            this.renderer.beginCache(this.cacheId);
-        }
-        else{
+        if(this.cacheId < 0){
             this.renderer.beginCache();
-        }
-        for(Renderable renderable : this.renderables){
-            if(renderable instanceof StaticActor){
-                this.renderer.add((StaticActor)renderable);
+            for(Renderable renderable : this.renderables){
+                if(renderable instanceof StaticActor){
+                    this.renderer.add((StaticActor)renderable);
+                }
+                else if(renderable instanceof SpriteActor){
+                    this.renderer.add((SpriteActor)renderable);
+                }
             }
-            else if(renderable instanceof SpriteActor){
-                this.renderer.add((SpriteActor)renderable);
-            }
+            this.cacheId = this.renderer.endCache();
         }
-        this.cacheId = this.renderer.endCache();
     }
 
     /**
@@ -125,10 +122,7 @@ public class CacheLayer extends Layer{
      */
     @Override
     protected void onHide() {
-        //if(this.cacheId >= 0) {
-            this.renderer.beginCache(this.cacheId);
-            this.renderer.endCache();
-        //}
+        //NOP
     }
 
     /**
