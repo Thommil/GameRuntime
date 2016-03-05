@@ -47,7 +47,7 @@ public class CacheLevel implements Disposable {
         private final static float xOffset = 1/6f;
 
         public PlanetActor(final TextureSet textureSet, final float radius, int offset) {
-            super(MathUtils.random(0x7ffffffe), 0, textureSet, MathUtils.random(-4.5f,3.5f),MathUtils.random(-4.5f,3.5f),radius,radius,xOffset*offset,1f,(1+offset)*xOffset,0f, new Color(1,1,1,0.8f).toFloatBits());
+            super(MathUtils.random(0x7ffffffe), textureSet, MathUtils.random(-4.5f,3.5f),MathUtils.random(-4.5f,3.5f),radius,radius,xOffset*offset,1f,(1+offset)*xOffset,0f, new Color(1,1,1,0.8f).toFloatBits());
         }
 
     }

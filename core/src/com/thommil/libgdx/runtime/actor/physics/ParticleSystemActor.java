@@ -23,30 +23,25 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
     protected final boolean colored;
     protected final TextureSet textureSet;
 
-    protected int layer = 0;
-
     /**
      * Default constructor without color or texture support
      *
      * @param id The ID of the Actor in the scene
-     * @param layer The layer of the renderable in the scene
      * @param particlesRadius The particles radius
      */
-    public ParticleSystemActor(final int id, final int layer, final float particlesRadius) {
-        this(id, layer, particlesRadius, false);
+    public ParticleSystemActor(final int id, final float particlesRadius) {
+        this(id, particlesRadius, false);
     }
 
     /**
      * Constructor with color support enabled (no texture)
      *
      * @param id The ID of the Actor in the scene
-     * @param layer The layer of the renderable in the scene
      * @param particlesRadius The particles radius
      * @param colored If true, the colored are sent to the renderer
      */
-    public ParticleSystemActor(final int id, final int layer, final float particlesRadius, boolean colored) {
+    public ParticleSystemActor(final int id, final float particlesRadius, boolean colored) {
         super(id);
-        this.layer = layer;
         this.particlesRadius = particlesRadius;
         this.colored = colored;
         this.textureSet = null;
@@ -56,13 +51,11 @@ public abstract class ParticleSystemActor extends AbstractStepable implements Pa
      * Constructor with texture support enabled (no color)
      *
      * @param id The ID of the Actor in the scene
-     * @param layer The layer of the renderable in the scene
      * @param particlesRadius The particles radius
      * @param textureSet The texture set used for rendering
      */
-    public ParticleSystemActor(final int id, final int layer, final float particlesRadius, final TextureSet textureSet) {
+    public ParticleSystemActor(final int id, final float particlesRadius, final TextureSet textureSet) {
         super(id);
-        this.layer = layer;
         this.particlesRadius = particlesRadius;
         this.colored = false;
         this.textureSet = textureSet;

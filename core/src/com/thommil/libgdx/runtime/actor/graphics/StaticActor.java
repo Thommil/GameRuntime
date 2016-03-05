@@ -12,8 +12,6 @@ import com.thommil.libgdx.runtime.actor.Actor;
  */
 public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer> {
 
-    protected int layer = 0;
-
     final public TextureSet textureSet;
     final float[] vertices = new float[SpriteActor.SPRITE_SIZE];
     final public float x, y;
@@ -39,7 +37,6 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param color
      */
     public StaticActor(final int id,
-                        final int layer,
                         final TextureSet textureSet,
                         final float x, final float y,
                         final float width, final float height,
@@ -47,7 +44,6 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
                         final float u2, final float v2,
                         final float color){
         super(id);
-        this.layer = layer;
         this.textureSet = textureSet;
 
         this.x = x;

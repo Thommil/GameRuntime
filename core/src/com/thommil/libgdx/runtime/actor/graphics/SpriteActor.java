@@ -58,20 +58,17 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     protected final float[] vertices = new float[SPRITE_SIZE];
     protected boolean dirty = true;
 
-    protected int layer = 0;
-
-    public SpriteActor (final int id, final int layer, final TextureSet textureSet) {
-        this(id, layer, textureSet, 0, 0, textureSet.getWidth(), textureSet.getHeight());
+    public SpriteActor (final int id, final TextureSet textureSet) {
+        this(id, textureSet, 0, 0, textureSet.getWidth(), textureSet.getHeight());
     }
 
-    public SpriteActor (final int id, final int layer, final TextureSet textureSet, final int srcWidth, final int srcHeight) {
-        this(id, layer, textureSet, 0, 0, srcWidth, srcHeight);
+    public SpriteActor (final int id, final TextureSet textureSet, final int srcWidth, final int srcHeight) {
+        this(id, textureSet, 0, 0, srcWidth, srcHeight);
     }
 
-    public SpriteActor (final int id, final int layer, final TextureSet textureSet, final int srcX, final int srcY, final int srcWidth, final int srcHeight) {
+    public SpriteActor (final int id, final TextureSet textureSet, final int srcX, final int srcY, final int srcWidth, final int srcHeight) {
         super(id);
         if (textureSet == null) throw new IllegalArgumentException("texture cannot be null.");
-        this.layer = layer;
         this.textureSet = textureSet;
         this.setColor(Color.WHITE.toFloatBits());
         setRegion(srcX, srcY, srcWidth, srcHeight);

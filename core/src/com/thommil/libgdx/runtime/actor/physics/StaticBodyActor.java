@@ -22,8 +22,8 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
 
     protected float density = 1f;
 
-    public StaticBodyActor(final int id, final int layer, TextureSet textureSet, float x, float y, float width, float height, float u, float v, float u2, float v2, final float color) {
-        super(id, layer, textureSet, x, y, width, height, u, v, u2, v2, color);
+    public StaticBodyActor(final int id, TextureSet textureSet, float x, float y, float width, float height, float u, float v, float u2, float v2, final float color) {
+        super(id, textureSet, x, y, width, height, u, v, u2, v2, color);
     }
 
     /**

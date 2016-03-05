@@ -22,16 +22,16 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
     protected float density = 1f;
 
-    public SpriteBodyActor(final int id, final int layer, TextureSet textureSet) {
-        super(id, layer, textureSet);
+    public SpriteBodyActor(final int id, TextureSet textureSet) {
+        super(id, textureSet);
     }
 
-    public SpriteBodyActor(final int id, final int layer, TextureSet textureSet, int srcWidth, int srcHeight) {
-        super(id, layer, textureSet, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, TextureSet textureSet, int srcWidth, int srcHeight) {
+        super(id, textureSet, srcWidth, srcHeight);
     }
 
-    public SpriteBodyActor(final int id, final int layer, TextureSet textureSet, int srcX, int srcY, int srcWidth, int srcHeight) {
-        super(id, layer, textureSet, srcX, srcY, srcWidth, srcHeight);
+    public SpriteBodyActor(final int id, TextureSet textureSet, int srcX, int srcY, int srcWidth, int srcHeight) {
+        super(id, textureSet, srcX, srcY, srcWidth, srcHeight);
     }
 
     /**

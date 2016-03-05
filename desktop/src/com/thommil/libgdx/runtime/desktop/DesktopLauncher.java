@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.thommil.libgdx.runtime.Game;
 import com.thommil.libgdx.runtime.test.test_01_screens.ScreensGame;
 import com.thommil.libgdx.runtime.test.test_02_spritecache.SpriteCacheGame;
+import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -17,8 +18,11 @@ public class DesktopLauncher {
 		// TEST 01 - Screens Workflow
 		//game = new ScreensGame();
 
-		// TEST 02 - Screens Workflow
-		game = new SpriteCacheGame();
+		// TEST 02 - Sprite Cache
+		//game = new SpriteCacheGame();
+
+		// TEST 03 - Sprite Batch
+		game = new SpriteBatchGame();
 
 		new LwjglApplication(game, config);
 	}
