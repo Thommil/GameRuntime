@@ -56,7 +56,6 @@ public class ScreensGame extends Game implements InputProcessor{
                     getAssetManager().load("big_textures/stone.png", Texture.class);
                     getAssetManager().load("big_textures/lether.png", Texture.class);
                     sampleLevel = new SampleLevel();
-                    sampleLevel.build();
                     showScreen(mainScreen);
                 }
             },1);
@@ -65,12 +64,12 @@ public class ScreensGame extends Game implements InputProcessor{
 
     @Override
     protected void onResume() {
-
+        this.showScreen(Runtime.getInstance());
     }
 
     @Override
     protected void onPause() {
-
+        this.showScreen(mainScreen);
     }
 
     /**
