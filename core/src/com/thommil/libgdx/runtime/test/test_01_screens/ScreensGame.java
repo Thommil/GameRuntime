@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.test_01_screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,6 +41,7 @@ public class ScreensGame extends Game implements InputProcessor{
         this.loadingScreen = new LoadingScreen(viewport);
         this.mainScreen = new MainScreen(viewport);
         Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchBackKey(true);
         this.showScreen(this.splashScreen);
     }
 
@@ -97,24 +99,20 @@ public class ScreensGame extends Game implements InputProcessor{
     }
 
     @Override
+    public boolean keyDown(int keycode) {
+        if(keycode == Input.Keys.BACK && this.getCurrentScreen() == Runtime.getInstance()){
+            this.showScreen(mainScreen);
+        }
+        return false;
+    }
+
+    @Override
     protected void onDispose() {
         this.splashScreen.dispose();
         this.mainScreen.dispose();
         this.loadingScreen.dispose();
     }
 
-
-
-    /**
-     * Called when a key was pressed
-     *
-     * @param keycode one of the constants in {@link Input.Keys}
-     * @return whether the input was processed
-     */
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
 
     /**
      * Called when a key was released

@@ -236,12 +236,12 @@ public abstract class Game implements ApplicationListener {
     protected abstract void onShowScreen(final Screen screen);
 
     /**
-     * Android only, called when game is displayed
+     * Called when the game gains the focus
      */
     protected abstract void onResume();
 
     /**
-     * Android only, called when game is hidden
+     * Called when the game lose the focus
      */
     protected abstract void onPause();
 

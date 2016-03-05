@@ -6,6 +6,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.thommil.libgdx.runtime.test.test_01_screens.ScreensGame;
 import com.thommil.libgdx.runtime.test.test_02_spritecache.SpriteCacheGame;
 import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
+import com.thommil.libgdx.runtime.test.test_04_rigidbody.RigidbodyGame;
 
 public class AndroidLauncher extends AndroidApplication {
 
@@ -17,13 +18,16 @@ public class AndroidLauncher extends AndroidApplication {
 		Game game;
 
 		// TEST 01 - Screens Workflow
-		game = new ScreensGame();
+		//game = new ScreensGame();
 
 		// TEST 02 - Sprite Cache
 		//game = new SpriteCacheGame();
 
 		// TEST 03 - Sprite Batch
-		game = new SpriteBatchGame();
+		//game = new SpriteBatchGame();
+
+		// TEST 04 - RigidBody
+		game = new RigidbodyGame();
 
 		initialize(game, config);
 

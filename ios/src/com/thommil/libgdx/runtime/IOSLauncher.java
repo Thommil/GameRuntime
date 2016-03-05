@@ -1,6 +1,8 @@
 package com.thommil.libgdx.runtime;
 
 import com.thommil.libgdx.runtime.test.test_02_spritecache.SpriteCacheGame;
+import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
+import com.thommil.libgdx.runtime.test.test_04_rigidbody.RigidbodyGame;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -17,8 +19,14 @@ public class IOSLauncher extends IOSApplication.Delegate {
         // TEST 01 - Screens Workflow
         //game = new ScreensGame();
 
-        // TEST 02 - Screens Workflow
-        game = new SpriteCacheGame();
+        // TEST 02 - Sprite Cache
+        //game = new SpriteCacheGame();
+
+        // TEST 03 - Sprite Batch
+        //game = new SpriteBatchGame();
+
+        // TEST 04 - RigidBody
+        game = new RigidbodyGame();
 
         return new IOSApplication(game, config);
     }

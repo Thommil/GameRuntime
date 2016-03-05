@@ -6,6 +6,7 @@ import com.thommil.libgdx.runtime.Game;
 import com.thommil.libgdx.runtime.test.test_01_screens.ScreensGame;
 import com.thommil.libgdx.runtime.test.test_02_spritecache.SpriteCacheGame;
 import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
+import com.thommil.libgdx.runtime.test.test_04_rigidbody.RigidbodyGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -22,7 +23,10 @@ public class DesktopLauncher {
 		//game = new SpriteCacheGame();
 
 		// TEST 03 - Sprite Batch
-		game = new SpriteBatchGame();
+		//game = new SpriteBatchGame();
+
+		// TEST 04 - RigidBody
+		game = new RigidbodyGame();
 
 		new LwjglApplication(game, config);
 	}

@@ -1,17 +1,19 @@
-package com.thommil.libgdx.runtime.test.test_03_spritebatch.level;
+package com.thommil.libgdx.runtime.test.test_04_rigidbody.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
-import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
-import com.thommil.libgdx.runtime.actor.graphics.StaticActor;
+import com.thommil.libgdx.runtime.actor.physics.SpriteBodyActor;
+import com.thommil.libgdx.runtime.actor.physics.StaticBodyActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.layer.CacheLayer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
@@ -22,17 +24,28 @@ import java.util.List;
 /**
  * @author  Thommil on 04/03/16.
  */
-public class SpriteLevel implements InputProcessor, Disposable {
+public class RigidbodyLevel implements InputProcessor, Disposable {
 
-    TextureSet textureSet;
-    SpriteBatchLayer shipsLayer;
+    TextureSet groundTextureSet;
+    CacheLayer cacheLayer;
+
+    TextureSet curiosityTextureSet;
+    SpriteBatchLayer curiosityLayer;
+
     List<Actor> actors = new ArrayList<Actor>();
 
-    public SpriteLevel() {
+    public RigidbodyLevel() {
+        CacheLayer.setGlobalSize(10);
+        groundTextureSet = new TextureSet(new Texture("static/metal.png"));
+        cacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 10);
+        cacheLayer.addActor(new GroundActor(0, groundTextureSet,-100f,-50f,200f,10f,0f,1f,1f,0f, Color.WHITE.toFloatBits()));
+        Runtime.getInstance().addLayer(cacheLayer);
+
         SpriteBatchLayer.setGlobalSize(1000);
-        shipsLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1000);
-        textureSet = new TextureSet(new Texture("sprites/ship.png"));
-        Runtime.getInstance().addLayer(shipsLayer);
+        curiosityTextureSet = new TextureSet(new Texture("sprites/curiosity.png"));
+        curiosityLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1000);
+        Runtime.getInstance().addLayer(curiosityLayer);
+
         RuntimeProfiler.profile();
         Gdx.input.setInputProcessor(this);
     }
@@ -42,17 +55,19 @@ public class SpriteLevel implements InputProcessor, Disposable {
      */
     @Override
     public void dispose() {
-        this.shipsLayer.dispose();
-        textureSet.dispose();
+        this.cacheLayer.dispose();
+        this.curiosityLayer.dispose();
+        this.groundTextureSet.dispose();
+        this.curiosityTextureSet.dispose();
     }
 
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         for(int i =0; i<10; i++){
-            final ShipActor shipActor = new ShipActor(textureSet, Runtime.getInstance().getViewport().getWorldWidth() / 2);
-            this.actors.add(shipActor);
-            shipsLayer.addActor(shipActor);
+            final CuriosityActor curiosityActor = new CuriosityActor(this.curiosityTextureSet);
+            this.actors.add(curiosityActor);
+            this.curiosityLayer.addActor(curiosityActor);
         }
         return false;
     }
@@ -60,39 +75,47 @@ public class SpriteLevel implements InputProcessor, Disposable {
     @Override
     public boolean keyDown(int keycode) {
         final Actor actor = this.actors.remove(0);
-        this.shipsLayer.removeActor(actor);
+        this.curiosityLayer.removeActor(actor);
         return false;
     }
 
 
-    public static class ShipActor extends SpriteActor{
+    public static class GroundActor extends StaticBodyActor{
 
-        private float maxPosition;
-
-        public ShipActor(TextureSet textureSet, float maxPosition) {
-            super(MathUtils.random(0x7ffffffe), textureSet);
-            this.maxPosition = maxPosition;
-            this.setSize(2.6f,2.3f);
-            this.setOriginCenter();
-            this.setCenter(MathUtils.random(-maxPosition, maxPosition),MathUtils.random(-maxPosition, maxPosition));
+        public GroundActor(int id, TextureSet textureSet, float x, float y, float width, float height, float u, float v, float u2, float v2, float color) {
+            super(id, textureSet, x, y, width, height, u, v, u2, v2, color);
         }
 
-        /**
-         * Render the element on current viewport (do access physics world here !)
-         *
-         * @param deltaTime The delta time since last call
-         * @param renderer  The renderer to use in current layer
-         */
         @Override
-        public void render(float deltaTime, SpriteBatchRenderer renderer) {
-            this.rotate(2);
-            super.render(deltaTime, renderer);
+        public List<Shape> getShapes() {
+            List<Shape> shapes = new ArrayList<Shape>();
+            PolygonShape groundBodyShape = new PolygonShape();
+            groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
+            shapes.add(groundBodyShape);
+            return shapes;
         }
+
     }
 
+    public static class CuriosityActor extends SpriteBodyActor {
 
+        public CuriosityActor(TextureSet textureSet) {
+            super(MathUtils.random(0x7ffffffe), textureSet);
+            this.setSize(2.6f,2.3f);
+            this.setOriginCenter();
+            this.setPosition(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
+            this.setRotation(MathUtils.random(0f,90f));
+        }
 
-
+        @Override
+        public List<Shape> getShapes() {
+            List<Shape> shapes = new ArrayList<Shape>();
+            PolygonShape dynamicPolygonShape = new PolygonShape();
+            dynamicPolygonShape.setAsBox(1f,1f);
+            shapes.add(dynamicPolygonShape);
+            return shapes;
+        }
+    }
 
 
     /**

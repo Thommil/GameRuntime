@@ -188,7 +188,6 @@ public class Runtime implements Screen{
                         if (!paused) {
 
                             int tasksCount = settings.physics.maxTasks;
-
                             while (!physicsQueue.isEmpty() && tasksCount-- > 0) {
                                 physicsQueue.poll().run();
                             }
@@ -318,15 +317,17 @@ public class Runtime implements Screen{
      */
     @Override
     public void render(float delta) {
-        final Object[] items = ((Object[])layers.items);
-        for(int index=0; index < layers.size; index++){
-            if (items != null) {
-                ((Layer)items[index]).render(delta);
+        if(!paused) {
+            final Object[] items = ((Object[]) layers.items);
+            for (int index = 0; index < layers.size; index++) {
+                if (items != null) {
+                    ((Layer) items[index]).render(delta);
+                }
             }
-        }
 
-        if(this.settings.physics.debug){
-            debugRenderer.render(physicsWorld, viewport.getCamera().combined);
+            if (this.settings.physics.debug) {
+                debugRenderer.render(physicsWorld, viewport.getCamera().combined);
+            }
         }
     }
 
