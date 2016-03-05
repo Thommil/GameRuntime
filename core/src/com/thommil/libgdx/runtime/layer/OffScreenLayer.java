@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.layer;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
 import com.thommil.libgdx.runtime.graphics.renderer.buffer.OffScreenRenderer;
 
@@ -77,6 +78,26 @@ public class OffScreenLayer<T extends Layer> extends Layer {
     }
 
     /**
+     * Binds a layer to a Runtime (normaly called by the Runtime itself)
+     *
+     * @param runtime
+     */
+    @Override
+    public void bind(Runtime runtime) {
+        this.decoratedLayer.bind(runtime);
+        super.bind(runtime);
+    }
+
+    /**
+     * Unbinds a layer from a Runtime (normaly called by the Runtime itself)
+     */
+    @Override
+    public void unbind() {
+        this.decoratedLayer.unbind();
+        super.unbind();
+    }
+
+    /**
      * Called when layer is showed for subclasses
      */
     @Override
@@ -100,7 +121,7 @@ public class OffScreenLayer<T extends Layer> extends Layer {
      */
     @Override
     protected void onResize(int width, int height) {
-        this.decoratedLayer.onResize(width, height);
+        this.decoratedLayer.resize(width, height);
         this.offScreenRenderer.onResize(this.viewport.getWorldWidth(), this.viewport.getWorldHeight(), width, height);
     }
 

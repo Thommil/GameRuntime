@@ -147,6 +147,10 @@ public class CacheLayer extends Layer{
                 CacheLayer.sharedRenderer.dispose();
                 CacheLayer.sharedRenderer = null;
             }
+            else{
+                this.renderer.beginCache(this.cacheId);
+                this.renderer.endCache();
+            }
         }
         else{
             this.renderer.dispose();

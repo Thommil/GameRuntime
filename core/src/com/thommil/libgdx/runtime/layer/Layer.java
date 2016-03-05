@@ -200,18 +200,17 @@ public abstract class Layer implements Disposable {
     /**
      * Binds a layer to a Runtime (normaly called by the Runtime itself)
      */
-    public final void bind(final Runtime runtime){
+    public void bind(final Runtime runtime){
         this.runtime = runtime;
         for(final Collidable collidable : collidables){
             bindCollidable(collidable);
         }
-        this.show();
     }
 
     /**
      * Unbinds a layer from a Runtime (normaly called by the Runtime itself)
      */
-    public final void unbind(){
+    public void unbind(){
         for(final Collidable collidable : collidables){
             unbindCollidable(collidable);
         }
@@ -222,7 +221,7 @@ public abstract class Layer implements Disposable {
      * Shows a layer
      */
     public final void show(){
-        if(this.runtime != null) {
+        if(this.runtime != null && this.runtime.getSettings().physics.enabled) {
             this.runtime.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
@@ -253,7 +252,7 @@ public abstract class Layer implements Disposable {
      * Hides a layer
      */
     public final void hide(){
-        if(this.runtime != null) {
+        if(this.runtime != null && this.runtime.getSettings().physics.enabled) {
             this.runtime.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {

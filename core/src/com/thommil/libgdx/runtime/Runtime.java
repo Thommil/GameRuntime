@@ -243,6 +243,7 @@ public class Runtime implements Screen{
         }
         this.layers.set(index, layer);
         layer.bind(this);
+        layer.show();
     }
 
     /**
@@ -254,6 +255,7 @@ public class Runtime implements Screen{
         if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
         this.layers.add(layer);
         layer.bind(this);
+        layer.show();
     }
 
     /**
@@ -272,6 +274,7 @@ public class Runtime implements Screen{
      */
     public void removeLayer(final int index){
         if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
+        this.layers.get(index).hide();
         this.layers.get(index).unbind();
         this.layers.set(index, null);
     }
