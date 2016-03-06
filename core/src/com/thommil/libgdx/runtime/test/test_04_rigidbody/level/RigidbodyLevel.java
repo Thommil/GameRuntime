@@ -35,16 +35,16 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
     List<Actor> actors = new ArrayList<Actor>();
 
     public RigidbodyLevel() {
-        CacheLayer.setGlobalSize(10);
+        CacheLayer.setGlobalSize(1);
         groundTextureSet = new TextureSet(new Texture("static/metal.png"));
         groundTextureSet.setWrapAll(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        cacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 10);
-        cacheLayer.addActor(new GroundActor(0, groundTextureSet,-100f,-50f,200f,10f,0f,1f,100f,0f, Color.WHITE.toFloatBits()));
+        cacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 1);
+        cacheLayer.addActor(new GroundActor(0, groundTextureSet,-100f,-50f,200f,10f,0f,1f,20f,0f, Color.WHITE.toFloatBits()));
         Runtime.getInstance().addLayer(cacheLayer);
 
         SpriteBatchLayer.setGlobalSize(1000);
         curiosityTextureSet = new TextureSet(new Texture("sprites/curiosity.png"));
-        curiosityLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1000);
+        curiosityLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 100);
         Runtime.getInstance().addLayer(curiosityLayer);
 
         RuntimeProfiler.profile();

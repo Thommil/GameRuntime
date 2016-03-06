@@ -33,19 +33,18 @@ public class SoftbodyLevel implements InputProcessor, Disposable {
     ParticlesBatchLayer particlesBatchLayer;
 
     public SoftbodyLevel() {
-        CacheLayer.setGlobalSize(10);
+        CacheLayer.setGlobalSize(4);
         groundTextureSet = new TextureSet(new Texture("static/metal.png"));
         groundTextureSet.setWrapAll(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        cacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 10);
+        cacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 4);
         cacheLayer.addActor(new GroundActor(0, groundTextureSet,-20f,-20f,1f,40f,0f,20f,1f,0f, Color.WHITE.toFloatBits()));
         cacheLayer.addActor(new GroundActor(1, groundTextureSet,-20f,-20f,40f,1f,0f,1f,20f,0f, Color.WHITE.toFloatBits()));
         cacheLayer.addActor(new GroundActor(2, groundTextureSet,19f,-20f,1f,40f,0f,20f,1f,0f, Color.WHITE.toFloatBits()));
         cacheLayer.addActor(new GroundActor(3, groundTextureSet,-20f,19f,40f,1f,0f,1f,20f,0f, Color.WHITE.toFloatBits()));
         Runtime.getInstance().addLayer(cacheLayer);
 
-        ParticlesBatchLayer.setGlobalSize(5000);
-        ColoredParticlesBatchRenderer coloredParticlesBatchRenderer = new ColoredParticlesBatchRenderer(5000);
-        particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(),5000, coloredParticlesBatchRenderer);
+        ColoredParticlesBatchRenderer coloredParticlesBatchRenderer = new ColoredParticlesBatchRenderer(2000);
+        particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(),2000, coloredParticlesBatchRenderer);
         softBodyActor = new SoftBodyActor(0);
         particlesBatchLayer.addActor(softBodyActor);
         Runtime.getInstance().addLayer(particlesBatchLayer);

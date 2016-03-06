@@ -20,9 +20,9 @@ public class SpriteBatchLayer extends Layer{
     protected final SpriteBatchRenderer renderer;
 
     /**
-     * Set global batch size (number of sprites)
+     * Set global batch size in sprites count (buffer size, not the maximum !!!)
      *
-     * @param size The maximum size of the global cache shared among layers
+     * @param size The size of the batch shared among layers
      */
     public static void setGlobalSize(final int size){
         if(SpriteBatchLayer.sharedRenderer != null){

@@ -21,9 +21,9 @@ public class ParticlesBatchLayer extends Layer{
     protected final ParticlesBatchRenderer renderer;
 
     /**
-     * Set global batch size (number of particles)
+     * Set global batch size in particles count (buffer size, not the maximum !!!)
      *
-     * @param size The maximum size of the global cache shared among layers
+     * @param size The size of the batch shared among layers
      */
     public static void setGlobalSize(final int size){
         if(ParticlesBatchLayer.sharedRenderer != null){

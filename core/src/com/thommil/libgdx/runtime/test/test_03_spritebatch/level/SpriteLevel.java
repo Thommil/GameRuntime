@@ -30,7 +30,7 @@ public class SpriteLevel implements InputProcessor, Disposable {
 
     public SpriteLevel() {
         SpriteBatchLayer.setGlobalSize(1000);
-        shipsLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1000);
+        shipsLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 100);
         textureSet = new TextureSet(new Texture("sprites/ship.png"));
         Runtime.getInstance().addLayer(shipsLayer);
         RuntimeProfiler.profile();

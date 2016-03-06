@@ -8,6 +8,7 @@ import com.thommil.libgdx.runtime.test.test_02_spritecache.SpriteCacheGame;
 import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
 import com.thommil.libgdx.runtime.test.test_04_rigidbody.RigidbodyGame;
 import com.thommil.libgdx.runtime.test.test_05_softbody.SoftbodyGame;
+import com.thommil.libgdx.runtime.test.test_06_input.InputGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -30,7 +31,10 @@ public class DesktopLauncher {
 		//game = new RigidbodyGame();
 
 		// TEST 05 - SoftBody
-		game= new SoftbodyGame();
+		//game= new SoftbodyGame();
+
+		// TEST 06 - Input
+		game= new InputGame();
 
 		new LwjglApplication(game, config);
 	}
