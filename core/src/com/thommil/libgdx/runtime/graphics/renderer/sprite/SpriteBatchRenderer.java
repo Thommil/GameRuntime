@@ -29,6 +29,10 @@ public class SpriteBatchRenderer implements BatchRenderer{
     protected float color = Color.WHITE.toFloatBits();
     protected final TextureSet tmpTextureSet = new TextureSet(1);
 
+    private boolean blendingDisabled = false;
+    private int blendSrcFunc = GL20.GL_SRC_ALPHA;
+    private int blendDstFunc = GL20.GL_ONE_MINUS_SRC_ALPHA;
+
     protected final Matrix4 combinedMatrix = new Matrix4();
 
     /**
@@ -144,6 +148,43 @@ public class SpriteBatchRenderer implements BatchRenderer{
         this.idx = 0;
     }
 
+    @Override
+    public void disableBlending () {
+        if (blendingDisabled) return;
+        flush();
+        blendingDisabled = true;
+    }
+
+    @Override
+    public void enableBlending () {
+        if (!blendingDisabled) return;
+        flush();
+        blendingDisabled = false;
+    }
+
+    @Override
+    public void setBlendFunction (int srcFunc, int dstFunc) {
+        if (blendSrcFunc == srcFunc && blendDstFunc == dstFunc) return;
+        flush();
+        blendSrcFunc = srcFunc;
+        blendDstFunc = dstFunc;
+    }
+
+    @Override
+    public int getBlendSrcFunc () {
+        return blendSrcFunc;
+    }
+
+    @Override
+    public int getBlendDstFunc () {
+        return blendDstFunc;
+    }
+
+    @Override
+    public boolean isBlendingEnabled () {
+        return !blendingDisabled;
+    }
+
     /**
      * Releases all resources of this object.
      */
@@ -251,16 +292,10 @@ public class SpriteBatchRenderer implements BatchRenderer{
     @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {throw new GameRuntimeException("Not implemented");}
     @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {throw new GameRuntimeException("Not implemented");}
     @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {throw new GameRuntimeException("Not implemented");}
-    @Override public void disableBlending() {throw new GameRuntimeException("Not implemented");}
-    @Override public void enableBlending() {throw new GameRuntimeException("Not implemented");}
-    @Override public void setBlendFunction(int srcFunc, int dstFunc) {throw new GameRuntimeException("Not implemented");}
-    @Override public int getBlendSrcFunc() {throw new GameRuntimeException("Not implemented");}
-    @Override public int getBlendDstFunc() {throw new GameRuntimeException("Not implemented");}
     @Override public Matrix4 getProjectionMatrix() {throw new GameRuntimeException("Not implemented");}
     @Override public Matrix4 getTransformMatrix() {throw new GameRuntimeException("Not implemented");}
     @Override public void setProjectionMatrix(Matrix4 projection) {throw new GameRuntimeException("Not implemented");}
     @Override public void setTransformMatrix(Matrix4 transform) {throw new GameRuntimeException("Not implemented");}
     @Override public void setShader(ShaderProgram shader) {throw new GameRuntimeException("Not implemented");}
-    @Override public boolean isBlendingEnabled() {throw new GameRuntimeException("Not implemented");}
     @Override public boolean isDrawing() {throw new GameRuntimeException("Not implemented");}
 }

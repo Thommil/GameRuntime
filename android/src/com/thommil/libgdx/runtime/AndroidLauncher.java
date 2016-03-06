@@ -9,6 +9,7 @@ import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
 import com.thommil.libgdx.runtime.test.test_04_rigidbody.RigidbodyGame;
 import com.thommil.libgdx.runtime.test.test_05_softbody.SoftbodyGame;
 import com.thommil.libgdx.runtime.test.test_06_input.InputGame;
+import com.thommil.libgdx.runtime.test.test_07_particleseffect.ParticlesEffectGame;
 
 public class AndroidLauncher extends AndroidApplication {
 
@@ -35,7 +36,11 @@ public class AndroidLauncher extends AndroidApplication {
 		//game= new SoftbodyGame();
 
 		// TEST 06 - Input
-		game= new InputGame();
+		//game= new InputGame();
+
+		// TEST 07 - Particles effect
+		game= new ParticlesEffectGame();
+
 
 		initialize(game, config);
 
