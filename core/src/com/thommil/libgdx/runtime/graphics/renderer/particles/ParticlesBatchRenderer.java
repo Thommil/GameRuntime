@@ -232,32 +232,32 @@ public class ParticlesBatchRenderer implements BatchRenderer{
     /**
      * NOT IMPLEMENTED API
      */
-    @Override public void setColor(Color tint) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setColor(float r, float g, float b, float a) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setColor(float color) {throw new GameRuntimeException("Not implemented");}
-    @Override public Color getColor() {throw new GameRuntimeException("Not implemented");}
-    @Override public float getPackedColor() {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {throw new GameRuntimeException("Not implemented");}
-    @Override public void disableBlending() {throw new GameRuntimeException("Not implemented");}
-    @Override public void enableBlending() {throw new GameRuntimeException("Not implemented");}
-    @Override public void setBlendFunction(int srcFunc, int dstFunc) {throw new GameRuntimeException("Not implemented");}
-    @Override public int getBlendSrcFunc() {throw new GameRuntimeException("Not implemented");}
-    @Override public int getBlendDstFunc() {throw new GameRuntimeException("Not implemented");}
-    @Override public Matrix4 getProjectionMatrix() {throw new GameRuntimeException("Not implemented");}
-    @Override public Matrix4 getTransformMatrix() {throw new GameRuntimeException("Not implemented");}
-    @Override public void setProjectionMatrix(Matrix4 projection) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setTransformMatrix(Matrix4 transform) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setShader(ShaderProgram shader) {throw new GameRuntimeException("Not implemented");}
-    @Override public boolean isBlendingEnabled() {throw new GameRuntimeException("Not implemented");}
-    @Override public boolean isDrawing() {throw new GameRuntimeException("Not implemented");}
+    @Override public void setColor(Color tint) {}
+    @Override public void setColor(float r, float g, float b, float a) {}
+    @Override public Color getColor() {return null;}
+    @Override public void setColor(float color) {}
+    @Override public float getPackedColor() {return 0;}
+    @Override public void draw(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {}
+    @Override public void draw(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {}
+    @Override public void draw(Texture texture, float x, float y) {}
+    @Override public void draw(Texture texture, float x, float y, float width, float height) {}
+    @Override public void draw(TextureRegion region, float x, float y) {}
+    @Override public void draw(TextureRegion region, float x, float y, float width, float height) {}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {}
+    @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {}
+    @Override public void disableBlending() {}
+    @Override public void enableBlending() {}
+    @Override public void setBlendFunction(int srcFunc, int dstFunc) {}
+    @Override public int getBlendSrcFunc() {return 0;}
+    @Override public int getBlendDstFunc() {return 0;}
+    @Override public Matrix4 getProjectionMatrix() {return null;}
+    @Override public Matrix4 getTransformMatrix() {return null;}
+    @Override public void setProjectionMatrix(Matrix4 projection) {}
+    @Override public void setTransformMatrix(Matrix4 transform) {}
+    @Override public void setShader(ShaderProgram shader) {}
+    @Override public boolean isBlendingEnabled() {return false;}
+    @Override public boolean isDrawing() {return false;}
 }

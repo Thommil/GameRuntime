@@ -3,6 +3,7 @@
 package com.thommil.libgdx.runtime.test.test_07_particleseffect;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Game;
 import com.thommil.libgdx.runtime.Runtime;
@@ -23,6 +24,7 @@ public class ParticlesEffectGame extends Game{
         settings.viewport.type = Settings.Viewport.FILL;
         settings.viewport.width = 5;
         settings.viewport.height = 5;
+        settings.graphics.blendDstFunc = GL20.GL_ONE;
         settings.physics.enabled = false;
     }
 

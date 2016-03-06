@@ -63,10 +63,7 @@ public class ParticlesEffectLevel implements InputProcessor, Disposable {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         final Vector2 worldVector =  Runtime.getInstance().getViewport().unproject(new Vector2(screenX, screenY));
         if(particleEffect != null) {
-            particleEffect.getEmitters().get(0).setPosition(worldVector.x, worldVector.y);
-            particleEffect.getEmitters().get(1).allowCompletion();
-            particleEffect.getEmitters().get(2).setPosition(worldVector.x, worldVector.y);
-            particleEffect.getEmitters().get(3).setPosition(worldVector.x, worldVector.y);
+            particleEffect.setPosition(worldVector.x, worldVector.y);
         }
 
         return false;

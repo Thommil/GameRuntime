@@ -21,30 +21,59 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
         super(maxParticles);
     }
 
+    /**
+     * Draws a rectangle using the given vertices. There must be 4 vertices, each made up of 5 elements in this order: x, y, color,
+     * u, v. The {@link #getColor()} from the Batch is not applied.
+     *
+     * @param texture
+     * @param spriteVertices
+     * @param offset
+     * @param count
+     */
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
-        this.tmpTextureSet.textures[0] = texture;
-        if(this.lastTextureSet != null && this.lastTextureSet.textures[0] != this.tmpTextureSet.textures[0]){
-            this.lastTextureSet = null;
-        }
-        this.draw(this.tmpTextureSet, vertices, offset, count);
-    }
-
-    @Override
-    public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
-        if (textureSet != this.lastTextureSet) {
+        if (texture != this.tmpTextureSet.textures[0]) {
             flush();
-            this.lastTextureSet = textureSet;
-        }else {
+            this.tmpTextureSet.textures[0] = texture;
+            this.lastTextureSet = tmpTextureSet;
+        }
+        else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
                 flush();
                 remainingVertices = this.vertices.length;
             }
         }
-        int copyCount = Math.min(remainingVertices, count);
+        this.copyAndFlush(vertices, Math.min(remainingVertices, count), offset, count);
+    }
 
+    /**
+     * Draw generic method with textureSet support
+     *
+     * @param textureSet The textureset to draw
+     * @param vertices   The vertices to add to the Batch
+     * @param offset     The offset in vertices array
+     * @param count      The number of vertices to add
+     */
+    @Override
+    public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
+        int remainingVertices = this.vertices.length;
+        if (textureSet != this.lastTextureSet) {
+            flush();
+            this.lastTextureSet = textureSet;
+        }
+        else {
+            remainingVertices -= this.idx;
+            if (remainingVertices == 0) {
+                flush();
+                remainingVertices = this.vertices.length;
+            }
+        }
+        this.copyAndFlush(vertices, Math.min(remainingVertices, count), offset, count);
+    }
+
+    private void copyAndFlush(float[] vertices, int copyCount, int offset, int count){
         System.arraycopy(vertices, offset, this.vertices, this.idx, copyCount);
         this.idx += copyCount;
         count -= copyCount;
@@ -58,6 +87,9 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
         }
     }
 
+    /**
+     * Flushes the batch and renders all remaining vertices
+     */
     @Override
     public void flush() {
         if(idx == 0) return;

@@ -25,6 +25,7 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
      */
     public ParticleEffectActor(int id, ParticleEffect particleEffect, final int maxParticlesEffects) {
         super(id);
+        particleEffect.setEmittersCleanUpBlendFunction(false);
         this.particleEffectPool = new ParticleEffectPool(particleEffect, maxParticlesEffects, maxParticlesEffects);
         this.particleEffects = new Array<ParticleEffectPool.PooledEffect>(false, maxParticlesEffects);
     }

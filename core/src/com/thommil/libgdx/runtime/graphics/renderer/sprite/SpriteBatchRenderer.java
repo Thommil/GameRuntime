@@ -29,10 +29,6 @@ public class SpriteBatchRenderer implements BatchRenderer{
     protected float color = Color.WHITE.toFloatBits();
     protected final TextureSet tmpTextureSet = new TextureSet(1);
 
-    private boolean blendingDisabled = false;
-    private int blendSrcFunc = GL20.GL_SRC_ALPHA;
-    private int blendDstFunc = GL20.GL_ONE_MINUS_SRC_ALPHA;
-
     protected final Matrix4 combinedMatrix = new Matrix4();
 
     /**
@@ -88,30 +84,59 @@ public class SpriteBatchRenderer implements BatchRenderer{
         return this.combinedMatrix;
     }
 
+    /**
+     * Draws a rectangle using the given vertices. There must be 4 vertices, each made up of 5 elements in this order: x, y, color,
+     * u, v. The {@link #getColor()} from the Batch is not applied.
+     *
+     * @param texture
+     * @param spriteVertices
+     * @param offset
+     * @param count
+     */
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
-        this.tmpTextureSet.textures[0] = texture;
-        if(this.lastTextureSet != null && this.lastTextureSet.textures[0] != this.tmpTextureSet.textures[0]){
-            this.lastTextureSet = null;
-        }
-        this.draw(this.tmpTextureSet, vertices, offset, count);
-    }
-
-    @Override
-    public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
-        if (textureSet != this.lastTextureSet) {
+        if (texture != this.tmpTextureSet.textures[0]) {
             flush();
-            this.lastTextureSet = textureSet;
-        }else {
+            this.tmpTextureSet.textures[0] = texture;
+            this.lastTextureSet = tmpTextureSet;
+        }
+        else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
                 flush();
                 remainingVertices = this.vertices.length;
             }
         }
-        int copyCount = Math.min(remainingVertices, count);
+        this.copyAndFlush(vertices, Math.min(remainingVertices, count), offset, count);
+    }
 
+    /**
+     * Draw generic method with textureSet support
+     *
+     * @param textureSet The textureset to draw
+     * @param vertices   The vertices to add to the Batch
+     * @param offset     The offset in vertices array
+     * @param count      The number of vertices to add
+     */
+    @Override
+    public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
+        int remainingVertices = this.vertices.length;
+        if (textureSet != this.lastTextureSet) {
+            flush();
+            this.lastTextureSet = textureSet;
+        }
+        else {
+            remainingVertices -= this.idx;
+            if (remainingVertices == 0) {
+                flush();
+                remainingVertices = this.vertices.length;
+            }
+        }
+        this.copyAndFlush(vertices, Math.min(remainingVertices, count), offset, count);
+    }
+
+    private void copyAndFlush(float[] vertices, int copyCount, int offset, int count){
         System.arraycopy(vertices, offset, this.vertices, this.idx, copyCount);
         this.idx += copyCount;
         count -= copyCount;
@@ -146,43 +171,6 @@ public class SpriteBatchRenderer implements BatchRenderer{
         this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, count);
 
         this.idx = 0;
-    }
-
-    @Override
-    public void disableBlending () {
-        if (blendingDisabled) return;
-        flush();
-        blendingDisabled = true;
-    }
-
-    @Override
-    public void enableBlending () {
-        if (!blendingDisabled) return;
-        flush();
-        blendingDisabled = false;
-    }
-
-    @Override
-    public void setBlendFunction (int srcFunc, int dstFunc) {
-        if (blendSrcFunc == srcFunc && blendDstFunc == dstFunc) return;
-        flush();
-        blendSrcFunc = srcFunc;
-        blendDstFunc = dstFunc;
-    }
-
-    @Override
-    public int getBlendSrcFunc () {
-        return blendSrcFunc;
-    }
-
-    @Override
-    public int getBlendDstFunc () {
-        return blendDstFunc;
-    }
-
-    @Override
-    public boolean isBlendingEnabled () {
-        return !blendingDisabled;
     }
 
     /**
@@ -277,25 +265,31 @@ public class SpriteBatchRenderer implements BatchRenderer{
     /**
      * NOT IMPLEMENTED API
      */
-    @Override public void setColor(Color tint) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setColor(float r, float g, float b, float a) {throw new GameRuntimeException("Not implemented");}
-    @Override public Color getColor() {throw new GameRuntimeException("Not implemented");}
-    @Override public float getPackedColor() {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(Texture texture, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y, float width, float height) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {throw new GameRuntimeException("Not implemented");}
-    @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {throw new GameRuntimeException("Not implemented");}
-    @Override public Matrix4 getProjectionMatrix() {throw new GameRuntimeException("Not implemented");}
-    @Override public Matrix4 getTransformMatrix() {throw new GameRuntimeException("Not implemented");}
-    @Override public void setProjectionMatrix(Matrix4 projection) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setTransformMatrix(Matrix4 transform) {throw new GameRuntimeException("Not implemented");}
-    @Override public void setShader(ShaderProgram shader) {throw new GameRuntimeException("Not implemented");}
-    @Override public boolean isDrawing() {throw new GameRuntimeException("Not implemented");}
+    @Override public void setColor(Color tint) {}
+    @Override public void setColor(float r, float g, float b, float a) {}
+    @Override public Color getColor() {return null;}
+    @Override public float getPackedColor() {return 0;}
+    @Override public void draw(Texture texture, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, int srcX, int srcY, int srcWidth, int srcHeight, boolean flipX, boolean flipY) {}
+    @Override public void draw(Texture texture, float x, float y, int srcX, int srcY, int srcWidth, int srcHeight) {}
+    @Override public void draw(Texture texture, float x, float y, float width, float height, float u, float v, float u2, float v2) {}
+    @Override public void draw(Texture texture, float x, float y) {}
+    @Override public void draw(Texture texture, float x, float y, float width, float height) {}
+    @Override public void draw(TextureRegion region, float x, float y) {}
+    @Override public void draw(TextureRegion region, float x, float y, float width, float height) {}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {}
+    @Override public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation, boolean clockwise) {}
+    @Override public void draw(TextureRegion region, float width, float height, Affine2 transform) {}
+    @Override public void disableBlending() {}
+    @Override public void enableBlending() {}
+    @Override public void setBlendFunction(int srcFunc, int dstFunc) {}
+    @Override public int getBlendSrcFunc() {return 0;}
+    @Override public int getBlendDstFunc() {return 0;}
+    @Override public Matrix4 getProjectionMatrix() {return null;}
+    @Override public Matrix4 getTransformMatrix() {return null;}
+    @Override public void setProjectionMatrix(Matrix4 projection) {}
+    @Override public void setTransformMatrix(Matrix4 transform) {}
+    @Override public void setShader(ShaderProgram shader) {}
+    @Override public boolean isBlendingEnabled() {return false;}
+    @Override public boolean isDrawing() {return false;}
 }

@@ -130,13 +130,13 @@ particle.png
 fire
 - Delay -
 active: false
-- Duration - 
+- Duration -
 lowMin: 1.0
 lowMax: 1.0
-- Count - 
+- Count -
 min: 0
 max: 1000
-- Emission - 
+- Emission -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 10.0
@@ -146,7 +146,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life - 
+- Life -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 1000.0
@@ -156,15 +156,15 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life Offset - 
+- Life Offset -
 active: false
-- X Offset - 
+- X Offset -
 active: false
-- Y Offset - 
+- Y Offset -
 active: false
-- Spawn Shape - 
+- Spawn Shape -
 shape: point
-- Spawn Width - 
+- Spawn Width -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
@@ -174,7 +174,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Spawn Height - 
+- Spawn Height -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
@@ -184,7 +184,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Scale - 
+- Scale -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 80.0
@@ -194,7 +194,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Velocity - 
+- Velocity -
 active: true
 lowMin: 0.0
 lowMax: 0.0
@@ -205,7 +205,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Angle - 
+- Angle -
 active: true
 lowMin: 0.0
 lowMax: 0.0
@@ -216,7 +216,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Rotation - 
+- Rotation -
 active: true
 lowMin: 1.0
 lowMax: 360.0
@@ -229,18 +229,18 @@ scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
-- Wind - 
+- Wind -
 active: false
-- Gravity - 
+- Gravity -
 active: false
-- Tint - 
+- Tint -
 colorsCount: 3
 colors0: 1.0
 colors1: 0.3372549
 colors2: 0.0
 timelineCount: 1
 timeline0: 0.0
-- Transparency - 
+- Transparency -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 1.0
@@ -254,7 +254,7 @@ timelineCount: 3
 timeline0: 0.0
 timeline1: 0.6712329
 timeline2: 1.0
-- Options - 
+- Options -
 attached: true
 continuous: true
 aligned: false
@@ -268,13 +268,13 @@ particle-fire.png
 stars
 - Delay -
 active: false
-- Duration - 
+- Duration -
 lowMin: 1.0
 lowMax: 1.0
-- Count - 
+- Count -
 min: 0
 max: 1000
-- Emission - 
+- Emission -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 10.0
@@ -284,7 +284,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life - 
+- Life -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 1000.0
@@ -294,15 +294,15 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life Offset - 
+- Life Offset -
 active: false
-- X Offset - 
+- X Offset -
 active: false
-- Y Offset - 
+- Y Offset -
 active: false
-- Spawn Shape - 
+- Spawn Shape -
 shape: point
-- Spawn Width - 
+- Spawn Width -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
@@ -312,7 +312,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Spawn Height - 
+- Spawn Height -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 0.0
@@ -322,7 +322,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Scale - 
+- Scale -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 64.0
@@ -342,7 +342,7 @@ timeline2: 0.28767124
 timeline3: 0.4041096
 timeline4: 0.5753425
 timeline5: 0.70547944
-- Velocity - 
+- Velocity -
 active: true
 lowMin: 0.0
 lowMax: 0.0
@@ -353,7 +353,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Angle - 
+- Angle -
 active: true
 lowMin: 1.0
 lowMax: 360.0
@@ -366,7 +366,7 @@ scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 0.51369864
-- Rotation - 
+- Rotation -
 active: true
 lowMin: 1.0
 lowMax: 360.0
@@ -379,11 +379,11 @@ scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
-- Wind - 
+- Wind -
 active: false
-- Gravity - 
+- Gravity -
 active: false
-- Tint - 
+- Tint -
 colorsCount: 9
 colors0: 0.0
 colors1: 0.105882354
@@ -398,7 +398,7 @@ timelineCount: 3
 timeline0: 0.0
 timeline1: 0.63705105
 timeline2: 1.0
-- Transparency - 
+- Transparency -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 1.0
@@ -416,7 +416,7 @@ timeline1: 0.34246576
 timeline2: 0.74657536
 timeline3: 0.9315069
 timeline4: 1.0
-- Options - 
+- Options -
 attached: false
 continuous: true
 aligned: false
@@ -430,13 +430,13 @@ particle-star.png
 smoke
 - Delay -
 active: false
-- Duration - 
+- Duration -
 lowMin: 1.0
 lowMax: 1.0
-- Count - 
+- Count -
 min: 0
 max: 1000
-- Emission - 
+- Emission -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 3.0
@@ -446,7 +446,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life - 
+- Life -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 3000.0
@@ -456,15 +456,15 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Life Offset - 
+- Life Offset -
 active: false
-- X Offset - 
+- X Offset -
 active: false
-- Y Offset - 
+- Y Offset -
 active: false
-- Spawn Shape - 
+- Spawn Shape -
 shape: square
-- Spawn Width - 
+- Spawn Width -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 180.0
@@ -474,7 +474,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Spawn Height - 
+- Spawn Height -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 110.0
@@ -484,7 +484,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Scale - 
+- Scale -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 256.0
@@ -494,7 +494,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Velocity - 
+- Velocity -
 active: true
 lowMin: -25.0
 lowMax: -25.0
@@ -507,7 +507,7 @@ scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
-- Angle - 
+- Angle -
 active: true
 lowMin: 0.0
 lowMax: 0.0
@@ -518,7 +518,7 @@ scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
-- Rotation - 
+- Rotation -
 active: true
 lowMin: 1.0
 lowMax: 360.0
@@ -531,11 +531,11 @@ scaling1: 1.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
-- Wind - 
+- Wind -
 active: false
-- Gravity - 
+- Gravity -
 active: false
-- Tint - 
+- Tint -
 colorsCount: 6
 colors0: 1.0
 colors1: 0.0
@@ -546,7 +546,7 @@ colors5: 0.0
 timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
-- Transparency - 
+- Transparency -
 lowMin: 0.0
 lowMax: 0.0
 highMin: 1.0
@@ -560,7 +560,7 @@ timelineCount: 3
 timeline0: 0.0
 timeline1: 0.5068493
 timeline2: 1.0
-- Options - 
+- Options -
 attached: false
 continuous: true
 aligned: false
