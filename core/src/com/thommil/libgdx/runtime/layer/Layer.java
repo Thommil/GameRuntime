@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.Actor;
 import com.thommil.libgdx.runtime.actor.graphics.Renderable;
@@ -28,6 +29,11 @@ public abstract class Layer implements Disposable {
      * When null, the layer is not bound and can be rendered directly.
      */
     protected Runtime runtime;
+
+    /**
+     * Inner Actors list
+     */
+    protected final IntMap<Actor> actors;
 
     /**
      * Inner Renderable list
@@ -63,6 +69,7 @@ public abstract class Layer implements Disposable {
     public Layer(final Viewport viewport, final int initialCapacity) {
         this.runtime = null;
         this.viewport = viewport;
+        actors = new IntMap<Actor>(initialCapacity);
         renderables = new Array<Renderable>(false, initialCapacity);
         collidables= new Array<Collidable>(false, initialCapacity);
         stepables = new Array<Stepable>(false, initialCapacity);
@@ -113,6 +120,7 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to add
      */
     public void addActor(final Actor actor){
+        actors.put(actor.getId(), actor);
         //Adding when not bound
         if(this.runtime == null) {
             if (actor instanceof Renderable) {
@@ -153,11 +161,23 @@ public abstract class Layer implements Disposable {
     }
 
     /**
+     * Gets an actor in the layer from its ID
+     *
+     * @param id The OD of the actor
+     *
+     * @return The Actor instance, null if not found
+     */
+    public Actor getActor(final int id){
+        return actors.get(id);
+    }
+
+    /**
      * Remove a renderable from the layer
      *
      * @param renderable The renderable to remove
      */
     public void removeActor(final Actor actor){
+        actors.remove(actor.getId());
         //Removing when not bound
         if(this.runtime == null) {
             if (actor instanceof Renderable) {

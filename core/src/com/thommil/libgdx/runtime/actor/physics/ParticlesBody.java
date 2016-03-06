@@ -34,6 +34,11 @@ public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSys
      * Called at body creation, implementations can add
      * settings, behaviour and logic from here.
      *
+     * ParticlesBody differs from RididBody as new shapes and
+     * fixtures must be added after creation of the ParticleSystem.
+     *
+     * This can be done by adding ParticleSystemGroup and Particles here.
+     *
      * @param particleSystem The collidable body instance
      */
     @Override

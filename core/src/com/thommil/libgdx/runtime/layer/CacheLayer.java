@@ -23,7 +23,7 @@ public class CacheLayer extends Layer{
     protected final SpriteCacheRenderer renderer;
 
     /**
-     * Set global cache size
+     * Set global cache size (number of sprites)
      *
      * @param size The maximum size of the global cache shared among layers
      */

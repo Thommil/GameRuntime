@@ -16,7 +16,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Created by tomtom on 29/02/16.
+ * Main runtime
+ *
+ * @author Thommil on 29/02/16.
  */
 public class Runtime implements Screen{
 

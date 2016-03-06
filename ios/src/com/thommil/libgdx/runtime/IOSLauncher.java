@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime;
 import com.thommil.libgdx.runtime.test.test_02_spritecache.SpriteCacheGame;
 import com.thommil.libgdx.runtime.test.test_03_spritebatch.SpriteBatchGame;
 import com.thommil.libgdx.runtime.test.test_04_rigidbody.RigidbodyGame;
+import com.thommil.libgdx.runtime.test.test_05_softbody.SoftbodyGame;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -26,7 +27,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //game = new SpriteBatchGame();
 
         // TEST 04 - RigidBody
-        game = new RigidbodyGame();
+        //game = new RigidbodyGame();
+
+        // TEST 05 - SoftBody
+        game= new SoftbodyGame();
 
         return new IOSApplication(game, config);
     }

@@ -20,7 +20,7 @@ public class SpriteBatchLayer extends Layer{
     protected final SpriteBatchRenderer renderer;
 
     /**
-     * Set global batch size
+     * Set global batch size (number of sprites)
      *
      * @param size The maximum size of the global cache shared among layers
      */

@@ -21,7 +21,7 @@ public class ParticlesBatchLayer extends Layer{
     protected final ParticlesBatchRenderer renderer;
 
     /**
-     * Set global batch size
+     * Set global batch size (number of particles)
      *
      * @param size The maximum size of the global cache shared among layers
      */

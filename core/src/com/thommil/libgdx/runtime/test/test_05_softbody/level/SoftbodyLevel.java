@@ -1,22 +1,22 @@
-package com.thommil.libgdx.runtime.test.test_04_rigidbody.level;
+package com.thommil.libgdx.runtime.test.test_05_softbody.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
-import com.thommil.libgdx.runtime.actor.Actor;
-import com.thommil.libgdx.runtime.actor.physics.SpriteBodyActor;
+import com.thommil.libgdx.runtime.actor.physics.ParticleSystemActor;
 import com.thommil.libgdx.runtime.actor.physics.StaticBodyActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
+import com.thommil.libgdx.runtime.graphics.renderer.particles.ColoredParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.layer.CacheLayer;
-import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
+import com.thommil.libgdx.runtime.layer.ParticlesBatchLayer;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
+import finnstr.libgdx.liquidfun.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,28 +24,31 @@ import java.util.List;
 /**
  * @author  Thommil on 04/03/16.
  */
-public class RigidbodyLevel implements InputProcessor, Disposable {
+public class SoftbodyLevel implements InputProcessor, Disposable {
 
     TextureSet groundTextureSet;
     CacheLayer cacheLayer;
 
-    TextureSet curiosityTextureSet;
-    SpriteBatchLayer curiosityLayer;
+    SoftBodyActor softBodyActor;
+    ParticlesBatchLayer particlesBatchLayer;
 
-    List<Actor> actors = new ArrayList<Actor>();
-
-    public RigidbodyLevel() {
+    public SoftbodyLevel() {
         CacheLayer.setGlobalSize(10);
         groundTextureSet = new TextureSet(new Texture("static/metal.png"));
         groundTextureSet.setWrapAll(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         cacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 10);
-        cacheLayer.addActor(new GroundActor(0, groundTextureSet,-100f,-50f,200f,10f,0f,1f,100f,0f, Color.WHITE.toFloatBits()));
+        cacheLayer.addActor(new GroundActor(0, groundTextureSet,-20f,-20f,1f,40f,0f,20f,1f,0f, Color.WHITE.toFloatBits()));
+        cacheLayer.addActor(new GroundActor(1, groundTextureSet,-20f,-20f,40f,1f,0f,1f,20f,0f, Color.WHITE.toFloatBits()));
+        cacheLayer.addActor(new GroundActor(2, groundTextureSet,19f,-20f,1f,40f,0f,20f,1f,0f, Color.WHITE.toFloatBits()));
+        cacheLayer.addActor(new GroundActor(3, groundTextureSet,-20f,19f,40f,1f,0f,1f,20f,0f, Color.WHITE.toFloatBits()));
         Runtime.getInstance().addLayer(cacheLayer);
 
-        SpriteBatchLayer.setGlobalSize(1000);
-        curiosityTextureSet = new TextureSet(new Texture("sprites/curiosity.png"));
-        curiosityLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1000);
-        Runtime.getInstance().addLayer(curiosityLayer);
+        ParticlesBatchLayer.setGlobalSize(5000);
+        ColoredParticlesBatchRenderer coloredParticlesBatchRenderer = new ColoredParticlesBatchRenderer(5000);
+        particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(),5000, coloredParticlesBatchRenderer);
+        softBodyActor = new SoftBodyActor(0);
+        particlesBatchLayer.addActor(softBodyActor);
+        Runtime.getInstance().addLayer(particlesBatchLayer);
 
         RuntimeProfiler.profile();
         Gdx.input.setInputProcessor(this);
@@ -57,28 +60,18 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
     @Override
     public void dispose() {
         this.cacheLayer.dispose();
-        this.curiosityLayer.dispose();
+        this.particlesBatchLayer.dispose();
         this.groundTextureSet.dispose();
-        this.curiosityTextureSet.dispose();
     }
 
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        for(int i =0; i<10; i++){
-            final CuriosityActor curiosityActor = new CuriosityActor(this.curiosityTextureSet);
-            this.actors.add(curiosityActor);
-            this.curiosityLayer.addActor(curiosityActor);
-        }
+        Vector2 force = Runtime.getInstance().getViewport().unproject(new Vector2(screenX,screenY));
+        this.softBodyActor.push(force.x * 100, force.y * 100);
         return false;
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        final Actor actor = this.actors.remove(0);
-        this.curiosityLayer.removeActor(actor);
-        return false;
-    }
 
 
     public static class GroundActor extends StaticBodyActor{
@@ -95,28 +88,70 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
             shapes.add(groundBodyShape);
             return shapes;
         }
-
     }
 
-    public static class CuriosityActor extends SpriteBodyActor {
+    public static class SoftBodyActor extends ParticleSystemActor {
 
-        public CuriosityActor(TextureSet textureSet) {
-            super(MathUtils.random(0x7ffffffe), textureSet);
-            this.setSize(2.6f,2.3f);
-            this.setOriginCenter();
-            this.setPosition(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
-            this.setRotation(MathUtils.random(0f,90f));
+        private ParticleGroup particleGroup;
+
+        public SoftBodyActor(int id) {
+            super(id, 0.2f, true);
+            this.density = 0.2f;
         }
 
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
-            PolygonShape dynamicPolygonShape = new PolygonShape();
-            dynamicPolygonShape.setAsBox(1f,1f);
-            shapes.add(dynamicPolygonShape);
-            return shapes;
+        public void setDefinition(ParticleSystemDef particleSystemDef) {
+            super.setDefinition(particleSystemDef);
+            particleSystemDef.viscousStrength = 2f;
+        }
+
+        /**
+         * Set body instance of the Collidable
+         *
+         * @param particleSystem
+         */
+        @Override
+        public void setBody(ParticleSystem particleSystem) {
+            super.setBody(particleSystem);
+
+            ParticleGroupDef particleGroupDef = new ParticleGroupDef();
+            ParticleGroup tmpParticleGroup;
+
+            //Link
+            particleGroupDef.shape = new PolygonShape();
+            ((PolygonShape)particleGroupDef.shape).setAsBox(2,6);
+            particleGroupDef.position.set(0,0);
+            particleGroupDef.color.set(0,0,1,1);
+            particleGroupDef.flags.add(ParticleDef.ParticleType.b2_elasticParticle);
+            particleGroup = particleSystem.createParticleGroup(particleGroupDef);
+
+            //Base
+            ((PolygonShape)particleGroupDef.shape).setAsBox(4,2);
+            particleGroupDef.position.set(0,8);
+            particleGroupDef.color.set(1,0,0,1);
+            particleGroupDef.flags.add(ParticleDef.ParticleType.b2_viscousParticle);
+            tmpParticleGroup = particleSystem.createParticleGroup(particleGroupDef);
+            particleSystem.joinParticleGroups(this.particleGroup, tmpParticleGroup);
+
+            //Top
+            particleGroupDef.position.set(0,-8);
+            tmpParticleGroup = particleSystem.createParticleGroup(particleGroupDef);
+            particleSystem.joinParticleGroups(this.particleGroup, tmpParticleGroup);
+
+            particleGroupDef.shape.dispose();
+        }
+
+        public void push(final float x, final float y){
+            this.particleGroup.applyLinearImpulse(new Vector2(x,y));
         }
     }
+
+    @Override
+    public boolean keyDown(int keycode) {
+
+        return false;
+    }
+
 
 
     /**
