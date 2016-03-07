@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
 
@@ -165,7 +167,7 @@ public class OffScreenRenderer implements Disposable{
      */
     public void draw() {
         this.frameBuffer.end();
-
+        Runtime.getInstance().getViewport().apply();
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
         this.frameBuffer.getColorBufferTexture().bind(0);
