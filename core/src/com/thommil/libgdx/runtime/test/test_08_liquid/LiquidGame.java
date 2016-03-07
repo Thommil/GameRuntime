@@ -23,6 +23,7 @@ public class LiquidGame extends Game{
         settings.viewport.type = Settings.Viewport.FIT;
         settings.viewport.width = 10;
         settings.viewport.height = 10;
+        //settings.physics.particleIterations = 6;
         //settings.physics.debug = true;
     }
 

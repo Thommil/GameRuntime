@@ -33,7 +33,7 @@ public class OffScreenLayer<T extends Layer> extends Layer {
             this.offScreenRenderer.setCombinedMatrix(this.viewport.getCamera().combined);
             this.offScreenRenderer.begin();
             this.decoratedLayer.render(deltaTime);
-            this.offScreenRenderer.draw();
+            this.offScreenRenderer.draw(this.viewport);
             this.offScreenRenderer.end();
         }
     }

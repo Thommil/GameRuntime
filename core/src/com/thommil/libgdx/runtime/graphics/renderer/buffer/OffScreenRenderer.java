@@ -164,10 +164,12 @@ public class OffScreenRenderer implements Disposable{
 
     /**
      * Generic method to draw a set of vertices.
+     *
+     * @param viewport The viewport used to render the FBO
      */
-    public void draw() {
-        this.frameBuffer.end();
-        Runtime.getInstance().getViewport().apply();
+    public void draw(final Viewport viewport) {
+        this.frameBuffer.end(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
         this.frameBuffer.getColorBufferTexture().bind(0);
@@ -178,12 +180,13 @@ public class OffScreenRenderer implements Disposable{
     /**
      * Draw the offscreen result in the specified view only
      *
+     * @param viewport The viewport used to render the FBO
      * @param x The X coord of the view
      * @param y The Y coord of the view
      * @param width The width of the view
      * @param height The height of the view
      */
-    public void draw(final float x, final float y, final float width, final float height){
+    public void draw(final Viewport viewport, final float x, final float y, final float width, final float height){
         //Vertices XY
         //0 & 5
         this.vertices[0] = this.vertices[20] = x;
@@ -199,7 +202,7 @@ public class OffScreenRenderer implements Disposable{
         this.vertices[17] = y + height;
 
         this.mesh.setVertices(vertices);
-        this.draw();
+        this.draw(viewport);
     }
 
      /**

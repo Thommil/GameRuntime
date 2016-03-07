@@ -60,7 +60,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
         //Water - 2
         final ParticlesBatchLayer particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(), 5000);
-        particlesBatchLayer.setScaleFactor(3);
+        particlesBatchLayer.setScaleFactor(4);
         waterLayer = new OffScreenLayer<ParticlesBatchLayer>(Runtime.getInstance().getViewport(), particlesBatchLayer, new WaterRenderer());
         waterActor = new WaterActor();
         waterLayer.addActor(waterActor);
@@ -181,6 +181,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
             this.setSize(0.5f,0.5f);
             this.setOriginCenter();
             this.setPosition(x, y);
+            this.density = 0.4f;
         }
 
         /**
@@ -219,7 +220,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
         public WaterActor() {
             super(MathUtils.random(0x7ffffffe), 0.05f);
-            this.density = 5f;
+            this.density = 1f;
             particleDef = new ParticleDef();
             this.particleDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);
         }
