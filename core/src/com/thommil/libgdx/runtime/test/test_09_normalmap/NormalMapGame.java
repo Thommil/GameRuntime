@@ -1,33 +1,33 @@
 
-package com.thommil.libgdx.runtime.test.test_03_spritebatch;
+package com.thommil.libgdx.runtime.test.test_09_normalmap;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Game;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.Settings;
-import com.thommil.libgdx.runtime.test.test_03_spritebatch.level.SpriteLevel;
+import com.thommil.libgdx.runtime.test.test_09_normalmap.level.NormalMapLevel;
 
 /**
- * Sprite batch TEST
+ * NormalMap TEST
  *
  * @author  thommil on 3/4/16.
  */
-public class SpriteBatchGame extends Game{
+public class NormalMapGame extends Game{
 
-    SpriteLevel batchLevel;
+    NormalMapLevel normalMapLevel;
 
     @Override
     protected void onCreate(Settings settings) {
-        settings.viewport.type = Settings.Viewport.FIT;
-        settings.viewport.width = 40;
-        settings.viewport.height = 40;
+        settings.viewport.type = Settings.Viewport.STRECTCH;
+        settings.viewport.width = 20;
+        settings.viewport.height = 20;
         settings.physics.enabled = false;
     }
 
     @Override
     protected void onStart(final Viewport viewport) {
-        batchLevel = new SpriteLevel();
+        normalMapLevel = new NormalMapLevel();
         this.showScreen(Runtime.getInstance());
     }
 
@@ -38,7 +38,7 @@ public class SpriteBatchGame extends Game{
 
     @Override
     protected void onResize(int width, int height) {
-
+        this.normalMapLevel.onResize(width, height);
     }
 
     @Override

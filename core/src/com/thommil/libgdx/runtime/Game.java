@@ -138,6 +138,7 @@ public abstract class Game implements ApplicationListener {
     public final void resize(int width, int height) {
         this.viewport.update(width, height);
         this.currentScreen.resize(width, height);
+        this.onResize(width, height);
     }
 
     /**
@@ -234,6 +235,14 @@ public abstract class Game implements ApplicationListener {
      * @param screen The screen to display
      */
     protected abstract void onShowScreen(final Screen screen);
+
+    /**
+     * Called when screen is resized
+     *
+     * @param width the new screen width
+     * @param height the new screen height
+     */
+    protected abstract void onResize(int width, int height);
 
     /**
      * Called when the game gains the focus

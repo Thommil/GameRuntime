@@ -41,6 +41,11 @@ public class InputGame extends Game{
     }
 
     @Override
+    protected void onResize(int width, int height) {
+
+    }
+
+    @Override
     protected void onResume() {
 
     }

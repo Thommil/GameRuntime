@@ -123,7 +123,7 @@ public class OffScreenLayer<T extends Layer> extends Layer {
     @Override
     protected void onResize(int width, int height) {
         this.decoratedLayer.resize(width, height);
-        this.offScreenRenderer.onResize(this.viewport.getWorldWidth(), this.viewport.getWorldHeight(), width, height);
+        this.offScreenRenderer.onResize(this.viewport.getWorldWidth(), this.viewport.getWorldHeight(), this.viewport.getScreenWidth(), this.viewport.getScreenHeight());
     }
 
     /**

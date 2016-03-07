@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.actor.graphics.StaticActor;
+import com.thommil.libgdx.runtime.graphics.renderer.CacheRenderer;
 
 import java.nio.FloatBuffer;
 
@@ -19,7 +19,7 @@ import java.nio.FloatBuffer;
  *
  * @author thommil on 03/02/16.
  */
-public class SpriteCacheRenderer implements com.thommil.libgdx.runtime.graphics.renderer.CacheRenderer {
+public class SpriteCacheRenderer implements CacheRenderer {
 
     protected final Mesh mesh;
     protected final ShaderProgram shader;
