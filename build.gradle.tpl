@@ -15,7 +15,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "GameRuntime"
+        appName = project.name
         gdxVersion = '1.9.1'
         roboVMVersion = '1.12.0'
     }

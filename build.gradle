@@ -103,7 +103,7 @@ task gdxLiquidfunCopy (type: Copy){
         include 'build.gradle.tpl'
         include 'core/libs/'
         include 'desktop/libs/'
-        include 'android/libs/'
+        include 'android/libs/**/*libgdx-liquidfun*'
         include 'ios/libs/'
         include 'ios/robovm.xml'
         exclude '**/libgdx.so'
