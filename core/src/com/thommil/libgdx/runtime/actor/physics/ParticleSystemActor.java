@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.actor.physics;
 
+import com.thommil.libgdx.runtime.actor.Actor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.actor.graphics.Renderable;
@@ -11,7 +12,7 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
  *
  * @author thommil on 03/02/16.
  */
-public abstract class ParticleSystemActor extends AbstractStepable implements ParticlesBody, Renderable<ParticlesBatchRenderer> {
+public abstract class ParticleSystemActor extends Actor implements ParticlesBody, Renderable<ParticlesBatchRenderer> {
 
     public static final int VERTEX_SIZE = 2;
     public static final int COLORED_VERTEX_SIZE  = VERTEX_SIZE + 4;

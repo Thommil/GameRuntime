@@ -264,6 +264,14 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
                 stepCounter++;
             }
         }
+
+        /**
+         * Releases all resources of this object.
+         */
+        @Override
+        public void dispose() {
+
+        }
     }
 
 

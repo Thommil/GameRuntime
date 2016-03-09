@@ -143,6 +143,11 @@ public class SoftbodyLevel implements InputProcessor, Disposable {
         public void push(final float x, final float y){
             this.particleGroup.applyLinearImpulse(new Vector2(x,y));
         }
+
+        @Override
+        public void dispose() {
+
+        }
     }
 
     @Override
