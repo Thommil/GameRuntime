@@ -19,7 +19,7 @@ public abstract class ParticleSystemActor extends Actor implements ParticlesBody
 
     public ParticleSystem particleSystem;
 
-    protected float density;
+    protected float density = 1f;
     protected final float particlesRadius;
     protected final boolean colored;
     protected final TextureSet textureSet;
