@@ -13,7 +13,7 @@ import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
  * @autor Thommil on 3/4/16.
  */
 public class BitmapFontBatchLayer extends SpriteBatchLayer {
-    
+
     /**
      * Inner screen viewport used to render fonts
      */
