@@ -30,8 +30,8 @@ public class ScreensGame extends Game implements InputProcessor{
     @Override
     protected void onCreate(Settings settings) {
         settings.viewport.type = Settings.Viewport.FILL;
-        settings.viewport.width = 100;
-        settings.viewport.height = 100;
+        settings.viewport.width = 600;
+        settings.viewport.height = 600;
         settings.physics.enabled = false;
     }
 

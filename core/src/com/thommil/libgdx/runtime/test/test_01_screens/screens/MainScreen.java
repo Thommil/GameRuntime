@@ -24,7 +24,7 @@ public class MainScreen extends AbstractScreen {
         parameter.size = 36;
         fontActor = new BitmapFontActor(0,generator.generateFont(parameter));
         generator.dispose();
-        bitmapFontBatchLayer = new BitmapFontBatchLayer(this.viewport,1);
+        bitmapFontBatchLayer = new BitmapFontBatchLayer(1);
     }
 
     /**
