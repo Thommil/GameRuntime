@@ -26,7 +26,7 @@ public class LoadingScreen extends AbstractScreen implements com.thommil.libgdx.
         parameter.size = 28;
         fontActor = new BitmapFontActor(0,generator.generateFont(parameter));
         generator.dispose();
-        bitmapFontBatchLayer = new BitmapFontBatchLayer(1);
+        bitmapFontBatchLayer = new BitmapFontBatchLayer(viewport, 1);
     }
 
     /**

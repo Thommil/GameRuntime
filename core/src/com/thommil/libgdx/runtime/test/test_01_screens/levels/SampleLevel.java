@@ -26,7 +26,7 @@ public class SampleLevel implements Disposable{
         parameter.size = 64;
         fontActor = new BitmapFontActor(0,generator.generateFont(parameter));
         generator.dispose();
-        bitmapFontBatchLayer = new BitmapFontBatchLayer(1);
+        bitmapFontBatchLayer = new BitmapFontBatchLayer(Runtime.getInstance().getViewport(),1);
 
         fontActor.setText("Playing Level :)");
         fontActor.setPosition(-240,0);

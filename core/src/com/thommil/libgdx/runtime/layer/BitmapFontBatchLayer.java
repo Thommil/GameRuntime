@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.layer;
 
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.graphics.Renderable;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 
@@ -12,24 +13,30 @@ import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
  * @autor Thommil on 3/4/16.
  */
 public class BitmapFontBatchLayer extends SpriteBatchLayer {
+    
+    /**
+     * Inner screen viewport used to render fonts
+     */
+    private final ScreenViewport screenViewport = new ScreenViewport();
 
     /**
      * Default constructor using the default shared renderer
      *
+     * @param viewport The viewport used arounf layer
      * @param initialCapacity The initial capacity of the layer (number of actors)
      */
-    public BitmapFontBatchLayer(int initialCapacity) {
-        super(new ScreenViewport(), initialCapacity);
+    public BitmapFontBatchLayer(final Viewport viewport, int initialCapacity) {
+        super(viewport, initialCapacity);
     }
 
     /**
      * Constructor with custom renderer
-     *
+     * @param viewport The viewport used arounf layer
      * @param initialCapacity The initial capacity of the layer (number of actors)
      * @param customRenderer  The custom renderer to use
      */
-    public BitmapFontBatchLayer(int initialCapacity, SpriteBatchRenderer customRenderer) {
-        super(new ScreenViewport(), initialCapacity, customRenderer);
+    public BitmapFontBatchLayer(final Viewport viewport, int initialCapacity, SpriteBatchRenderer customRenderer) {
+        super(viewport, initialCapacity, customRenderer);
     }
 
     /**
@@ -38,7 +45,7 @@ public class BitmapFontBatchLayer extends SpriteBatchLayer {
     @Override
     protected void onResize(int width, int height) {
         super.onResize(width, height);
-        this.viewport.update(width, height);
+        this.screenViewport.update(width, height);
     }
 
     /**
@@ -49,12 +56,14 @@ public class BitmapFontBatchLayer extends SpriteBatchLayer {
     @Override
     public void render(float deltaTime) {
         if(!this.isHidden()) {
-            renderer.setCombinedMatrix(this.viewport.getCamera().combined);
+            this.screenViewport.apply();
+            renderer.setCombinedMatrix(this.screenViewport.getCamera().combined);
             this.renderer.begin();
             for (Renderable renderable : this.renderables) {
                 renderable.render(deltaTime, this.renderer);
             }
             this.renderer.end();
+            this.viewport.apply();
         }
     }
 }
