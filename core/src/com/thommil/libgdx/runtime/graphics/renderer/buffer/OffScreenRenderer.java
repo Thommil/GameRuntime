@@ -14,15 +14,13 @@ import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
 /**
  * FBO offscreen renderer
  *
- * The default version is just a white inversed alpha mask for debug purpose
- *
  * @author thommil on 03/02/16.
  */
 public class OffScreenRenderer implements Disposable{
 
-    private static final int VERTEX_SIZE = 4;
-    private static final int VERTEX_COUNT = 6;
-    private static final int SIZE = VERTEX_COUNT * VERTEX_SIZE;
+    public static final int VERTEX_SIZE = 4;
+    public static final int VERTEX_COUNT = 6;
+    public static final int SIZE = VERTEX_COUNT * VERTEX_SIZE;
 
     protected final Mesh mesh;
     protected final float[] vertices;
@@ -57,21 +55,38 @@ public class OffScreenRenderer implements Disposable{
     private boolean hasResized;
 
     /**
+     * Indicates if the FBO uses a single pass cache
+     */
+    private final boolean singlePass;
+
+    /**
+     * Indicates if the FBO uses a single pass cache
+     */
+    private boolean mustRedraw = true;
+
+    /**
      * Default constructor using RGBA4444 for FBO texture format
      */
     public OffScreenRenderer() {
-        this(Pixmap.Format.RGBA4444);
+        this(Pixmap.Format.RGBA4444, false);
     }
 
     /**
      * Constructor with specific color format
-     *
      */
     public OffScreenRenderer(final Pixmap.Format textureFormat) {
+        this(textureFormat, false);
+    }
+
+    /**
+     * Constructor with specific color format and Single pass support (use invalidate() for redraw)
+     */
+    public OffScreenRenderer(final Pixmap.Format textureFormat, final boolean singlePass) {
         this.mesh = this.createMesh();
         this.vertices = this.createVertices();
         this.shader = this.createShader();
         this.textureFormat = textureFormat;
+        this.singlePass = singlePass;
     }
 
     /**
@@ -103,9 +118,11 @@ public class OffScreenRenderer implements Disposable{
      * Called at beginning of rendering
      */
     public void begin() {
-        this.setupFramebuffer();
-        this.frameBuffer.begin();
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(mustRedraw) {
+            this.setupFramebuffer();
+            this.frameBuffer.begin();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        }
     }
 
     /**
@@ -168,7 +185,10 @@ public class OffScreenRenderer implements Disposable{
      * @param viewport The viewport used to render the FBO
      */
     public void draw(final Viewport viewport) {
-        this.frameBuffer.end(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+        if(mustRedraw) {
+            this.frameBuffer.end(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
+            mustRedraw = !singlePass;
+        }
 
         this.shader.begin();
         this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
@@ -205,7 +225,21 @@ public class OffScreenRenderer implements Disposable{
         this.draw(viewport);
     }
 
-     /**
+    /**
+     * Invalidate current offscreen texture
+     */
+    public void invalidate(){
+        this.mustRedraw = true;
+    }
+
+    /**
+     * Indicates if the offscreen renderer must be redrawn
+     */
+    public boolean mustRedraw() {
+        return mustRedraw;
+    }
+
+    /**
      * Called at ending of rendering
      */
     public void end() {
@@ -255,13 +289,7 @@ public class OffScreenRenderer implements Disposable{
                 + "uniform sampler2D "+TextureSet.UNIFORM_TEXTURE_0+";\n" //
                 + "void main()\n"//
                 + "{\n" //
-                + "  vec4 color = texture2D("+TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
-                + "  if( color.r + color.g + color.b > 0.0 ){\n" //
-                + "     gl_FragColor = vec4(1.0,1.0,1.0,color.a);\n" //
-                + "  }\n" //
-                + "  else{\n" //
-                + "     gl_FragColor = vec4(0.0,0.0,0.0,0.0);\n" //
-                + "  }\n" //
+                + "  gl_FragColor = texture2D("+TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
                 + "}";
 
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);

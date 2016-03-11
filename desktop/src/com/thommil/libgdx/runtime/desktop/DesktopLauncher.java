@@ -22,7 +22,7 @@ public class DesktopLauncher {
 		Game game;
 
 		// TEST 01 - Screens Workflow
-		game = new ScreensGame();
+		//game = new ScreensGame();
 
 		// TEST 02 - Sprite Cache
 		//game = new SpriteCacheGame();
@@ -46,7 +46,7 @@ public class DesktopLauncher {
 		//game= new LiquidGame();
 
 		// TEST 09 - NormalMap
-		//game= new NormalMapGame();
+		game= new NormalMapGame();
 
 		new LwjglApplication(game, config);
 	}

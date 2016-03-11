@@ -31,7 +31,9 @@ public class OffScreenLayer<T extends Layer> extends Layer {
         if(!this.isHidden()) {
             this.offScreenRenderer.setCombinedMatrix(this.viewport.getCamera().combined);
             this.offScreenRenderer.begin();
-            this.decoratedLayer.render(deltaTime);
+            if(this.offScreenRenderer.mustRedraw()) {
+                this.decoratedLayer.render(deltaTime);
+            }
             this.offScreenRenderer.draw(this.viewport);
             this.offScreenRenderer.end();
         }
