@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.layer;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -14,7 +13,7 @@ import com.thommil.libgdx.runtime.graphics.renderer.buffer.OffScreenRenderer;
 public class OffScreenLayer<T extends Layer> extends Layer {
 
     final protected OffScreenRenderer offScreenRenderer;
-    final protected Layer decoratedLayer;
+    final protected T decoratedLayer;
 
     public OffScreenLayer(final Viewport viewport, final T decoratedLayer, final OffScreenRenderer offScreenRenderer) {
         super(viewport,1);
