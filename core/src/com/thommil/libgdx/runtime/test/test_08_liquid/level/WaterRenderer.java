@@ -1,10 +1,21 @@
 package com.thommil.libgdx.runtime.test.test_08_liquid.level;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.buffer.OffScreenRenderer;
 
 public class WaterRenderer extends OffScreenRenderer {
+
+    /**
+     * Default constructor using RGBA4444 for FBO texture format
+     *
+     * @param viewport
+     */
+    public WaterRenderer(Viewport viewport) {
+        super(viewport, Pixmap.Format.RGB565);
+    }
 
     @Override
     protected ShaderProgram createShader() {

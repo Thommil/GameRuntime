@@ -61,7 +61,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
         //Water - 2
         final ParticlesBatchLayer particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(), 5000);
         particlesBatchLayer.setScaleFactor(4);
-        waterLayer = new OffScreenLayer<ParticlesBatchLayer>(Runtime.getInstance().getViewport(), particlesBatchLayer, new WaterRenderer());
+        waterLayer = new OffScreenLayer<ParticlesBatchLayer>(Runtime.getInstance().getViewport(), particlesBatchLayer, new WaterRenderer(Runtime.getInstance().getViewport()));
         waterActor = new WaterActor();
         waterLayer.addActor(waterActor);
         Runtime.getInstance().addLayer(waterLayer);

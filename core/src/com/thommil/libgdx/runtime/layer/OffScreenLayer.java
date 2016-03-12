@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.layer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -29,12 +30,10 @@ public class OffScreenLayer<T extends Layer> extends Layer {
     @Override
     public void render(float deltaTime) {
         if(!this.isHidden()) {
-            this.offScreenRenderer.setCombinedMatrix(this.viewport.getCamera().combined);
             this.offScreenRenderer.begin();
             if(this.offScreenRenderer.mustRedraw()) {
                 this.decoratedLayer.render(deltaTime);
             }
-            this.offScreenRenderer.draw(this.viewport);
             this.offScreenRenderer.end();
         }
     }
@@ -124,7 +123,7 @@ public class OffScreenLayer<T extends Layer> extends Layer {
     @Override
     protected void onResize(int width, int height) {
         this.decoratedLayer.resize(width, height);
-        this.offScreenRenderer.onResize(this.viewport.getWorldWidth(), this.viewport.getWorldHeight(), this.viewport.getScreenWidth(), this.viewport.getScreenHeight());
+        this.offScreenRenderer.onResize(width, height);
     }
 
     /**
