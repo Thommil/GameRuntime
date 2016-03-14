@@ -65,28 +65,38 @@ public class OffScreenRenderer implements Disposable{
     private boolean mustRedraw = true;
 
     /**
-     * Default constructor using RGBA4444 for FBO texture format
+     * Indicates if the FBO color buffer must be cleared at each redraw
+     */
+    private boolean clearScreen = true;
+
+    /**
+     * Default constructor using RGBA4444 for FBO texture format, redraw and clear at each render call.
      */
     public OffScreenRenderer() {
-        this(Pixmap.Format.RGBA4444, false);
+        this(Pixmap.Format.RGBA4444, false, true);
     }
 
     /**
-     * Constructor with specific color format
+     * Constructor with specific color format, redraw and clear at each render call.
      */
     public OffScreenRenderer(final Pixmap.Format textureFormat) {
-        this(textureFormat, false);
+        this(textureFormat, false, true);
     }
 
     /**
-     * Constructor with specific color format and Single pass support (use invalidate() for redraw)
+     * Full constructor
+     *
+     * @param textureFormat Inner texture color format
+     * @param singlePass If true, the FBO will be redrawn only after an invalidate() call
+     * @param clearScreen If false, the FBO color buffer will not be cleared before each draw, useful to redraw only a part of buffer
      */
-    public OffScreenRenderer(final Pixmap.Format textureFormat, final boolean singlePass) {
+    public OffScreenRenderer(final Pixmap.Format textureFormat, final boolean singlePass, final boolean clearScreen) {
         this.mesh = this.createMesh();
         this.vertices = this.createVertices();
         this.shader = this.createShader();
         this.textureFormat = textureFormat;
         this.singlePass = singlePass;
+        this.clearScreen = clearScreen;
     }
 
     /**
@@ -119,9 +129,12 @@ public class OffScreenRenderer implements Disposable{
      */
     public void begin() {
         if(mustRedraw) {
+            final boolean mustClearScreen = clearScreen || hasResized;
             this.setupFramebuffer();
             this.frameBuffer.begin();
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            if(mustClearScreen) {
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            }
         }
     }
 

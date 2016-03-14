@@ -43,10 +43,10 @@ public class DesktopLauncher {
 		//game= new ParticlesEffectGame();
 
 		// TEST 08 - Liquid
-		//game= new LiquidGame();
+		game= new LiquidGame();
 
 		// TEST 09 - NormalMap
-		game= new NormalMapGame();
+		//game= new NormalMapGame();
 
 		new LwjglApplication(game, config);
 	}
