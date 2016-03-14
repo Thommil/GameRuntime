@@ -29,8 +29,6 @@ public class FineOffscreenLevel implements InputProcessor, Disposable {
     OffScreenRenderer offScreenRenderer;
 
     public FineOffscreenLevel() {
-        CacheLayer.setGlobalSize(1);
-
         normalSpriteRenderer = new NormalSpriteRenderer(1);
         spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1, normalSpriteRenderer);
 
@@ -42,7 +40,7 @@ public class FineOffscreenLevel implements InputProcessor, Disposable {
         spriteBatchLayer.addActor(new WallActor(2,textureSet,-50,-50,50,50,0,1,1,0, Color.WHITE.toFloatBits()));
         spriteBatchLayer.addActor(new WallActor(3,textureSet,0,-50,50,50,0,1,1,0, Color.WHITE.toFloatBits()));
 
-        offScreenRenderer = new OffScreenRenderer(Runtime.getInstance().getViewport(), Pixmap.Format.RGB565, true, false);
+        offScreenRenderer = new OffScreenRenderer(Runtime.getInstance().getViewport(), Pixmap.Format.RGBA8888, true, false);
         Runtime.getInstance().addLayer(new OffScreenLayer<SpriteBatchLayer>(Runtime.getInstance().getViewport(),spriteBatchLayer,offScreenRenderer));
 
         Gdx.input.setInputProcessor(this);

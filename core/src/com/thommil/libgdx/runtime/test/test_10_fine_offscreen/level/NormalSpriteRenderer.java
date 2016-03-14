@@ -71,7 +71,7 @@ public class NormalSpriteRenderer extends SpriteBatchRenderer{
                 + "uniform vec4 u_lightData;\n" //
                 + "uniform int u_lightOn;\n" //
                 + "const vec3 LightColor = vec3(1.0, 0.8, 0.4);\n" //
-                + "const vec3 Falloff = vec3(0.8, 8.0, 40.0);\n" //
+                + "const vec3 Falloff = vec3(1, 20.0, 100.0);\n" //
                 + "const vec3 AmbientColor = vec3(0.3, 0.3, 0.3);\n" //
                 + "void main()\n"//
                 + "{\n" //
