@@ -8,6 +8,7 @@ import com.thommil.libgdx.runtime.test.test_06_input.InputGame;
 import com.thommil.libgdx.runtime.test.test_07_particleseffect.ParticlesEffectGame;
 import com.thommil.libgdx.runtime.test.test_08_liquid.LiquidGame;
 import com.thommil.libgdx.runtime.test.test_09_normalmap.NormalMapGame;
+import com.thommil.libgdx.runtime.test.test_10_fine_offscreen.FineOffscreenGame;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -46,8 +47,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //game= new LiquidGame();
 
         // TEST 09 - NormalMap
-        game= new NormalMapGame();
+        //game= new NormalMapGame();
 
+        // TEST 10 - Fine Offscreen rendering
+        game= new FineOffscreenGame();
 
         return new IOSApplication(game, config);
     }

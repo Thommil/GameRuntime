@@ -21,13 +21,13 @@ public class WaterRenderer extends OffScreenRenderer {
     protected ShaderProgram createShader() {
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-                + "uniform mat4 u_projTrans;\n" //
+                + "uniform mat4 u_projectionViewMatrix;\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "\n" //
                 + "void main()\n" //
                 + "{\n" //
                 + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-                + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "}\n";
         final String fragmentShader = "#ifdef GL_ES\n" //
                 + "#define LOWP lowp\n" //

@@ -48,7 +48,7 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
 
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-                + "uniform mat4 u_projTrans;\n" //
+                + "uniform mat4 u_projectionViewMatrix;\n" //
                 + "uniform float radius;\n" //
                 + "\n" //
                 + "varying vec4 v_color;\n" //
@@ -56,7 +56,7 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
                 + "void main()\n" //
                 + "{\n" //
                 + "   v_color = "+ShaderProgram.COLOR_ATTRIBUTE+";\n" //
-                + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "   gl_PointSize = radius;\n" //
                 + "}\n";
 

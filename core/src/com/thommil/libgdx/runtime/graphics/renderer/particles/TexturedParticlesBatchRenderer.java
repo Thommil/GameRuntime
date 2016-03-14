@@ -115,12 +115,12 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                     + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + ";\n" //
-                    + "uniform mat4 u_projTrans;\n" //
+                    + "uniform mat4 u_projectionViewMatrix;\n" //
                     + "uniform float radius;\n" //
                     + "\n" //
                     + "void main()\n" //
                     + "{\n" //
-                    + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                    + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                     + "   gl_PointSize = radius;\n" //
                     + "}\n";
          final String fragmentShader = "#ifdef GL_ES\n" //

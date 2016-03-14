@@ -192,7 +192,7 @@ public class OffScreenRenderer implements Disposable{
         }
 
         this.shader.begin();
-        this.shader.setUniformMatrix("u_projTrans", this.viewport.getCamera().combined);
+        this.shader.setUniformMatrix("u_projectionViewMatrix", this.viewport.getCamera().combined);
         this.frameBuffer.getColorBufferTexture().bind(0);
         this.shader.setUniformi(TextureSet.UNIFORM_TEXTURE_0, 0);
         this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
@@ -225,13 +225,13 @@ public class OffScreenRenderer implements Disposable{
     protected ShaderProgram createShader() {
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-                + "uniform mat4 u_projTrans;\n" //
+                + "uniform mat4 u_projectionViewMatrix;\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "\n" //
                 + "void main()\n" //
                 + "{\n" //
                 + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-                + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "}\n";
         final String fragmentShader = "#ifdef GL_ES\n" //
                 + "#define LOWP lowp\n" //

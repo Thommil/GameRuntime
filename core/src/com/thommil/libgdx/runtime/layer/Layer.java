@@ -172,6 +172,15 @@ public abstract class Layer implements Disposable {
     }
 
     /**
+     * Gets the list of actors in the layer
+     *
+     * @return The list of actors in an Array
+     */
+    public Array<Actor> listActors(){
+        return this.actors.values().toArray();
+    }
+
+    /**
      * Remove a renderable from the layer
      *
      * @param renderable The renderable to remove

@@ -54,7 +54,7 @@ public class ParticlesBatchRenderer implements BatchRenderer{
         }
 
         shader.begin();
-        shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
+        shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
     }
 
     /**
@@ -195,12 +195,12 @@ public class ParticlesBatchRenderer implements BatchRenderer{
         }
 
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-                    + "uniform mat4 u_projTrans;\n" //
+                    + "uniform mat4 u_projectionViewMatrix;\n" //
                     + "uniform float radius;\n" //
                     + "\n" //
                     + "void main()\n" //
                     + "{\n" //
-                    + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                    + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                     + "   gl_PointSize = radius;\n" //
                     + "}\n";
 

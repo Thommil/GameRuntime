@@ -12,6 +12,7 @@ import com.thommil.libgdx.runtime.test.test_06_input.InputGame;
 import com.thommil.libgdx.runtime.test.test_07_particleseffect.ParticlesEffectGame;
 import com.thommil.libgdx.runtime.test.test_08_liquid.LiquidGame;
 import com.thommil.libgdx.runtime.test.test_09_normalmap.NormalMapGame;
+import com.thommil.libgdx.runtime.test.test_10_fine_offscreen.FineOffscreenGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -43,10 +44,13 @@ public class DesktopLauncher {
 		//game= new ParticlesEffectGame();
 
 		// TEST 08 - Liquid
-		game= new LiquidGame();
+		//game= new LiquidGame();
 
 		// TEST 09 - NormalMap
 		//game= new NormalMapGame();
+
+		// TEST 10 - Fine Offscreen rendering
+		game= new FineOffscreenGame();
 
 		new LwjglApplication(game, config);
 	}

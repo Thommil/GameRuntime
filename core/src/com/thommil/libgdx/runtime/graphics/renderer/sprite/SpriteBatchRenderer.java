@@ -48,7 +48,7 @@ public class SpriteBatchRenderer implements BatchRenderer{
     @Override
     public void begin() {
         this.shader.begin();
-        this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
+        this.shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
     }
 
     /**
@@ -228,7 +228,7 @@ public class SpriteBatchRenderer implements BatchRenderer{
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
                 + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-                + "uniform mat4 u_projTrans;\n" //
+                + "uniform mat4 u_projectionViewMatrix;\n" //
                 + "varying vec4 v_color;\n" //
                 + "varying vec2 v_texCoords;\n" //
                 + "\n" //
@@ -236,7 +236,7 @@ public class SpriteBatchRenderer implements BatchRenderer{
                 + "{\n" //
                 + "   v_color = " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
                 + "   v_texCoords = " + ShaderProgram.TEXCOORD_ATTRIBUTE + "0;\n" //
-                + "   gl_Position =  u_projTrans * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                 + "}\n";
         final String fragmentShader = "#ifdef GL_ES\n" //
                 + "#define LOWP lowp\n" //
