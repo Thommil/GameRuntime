@@ -4,12 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
 
 /**
  * FBO offscreen renderer
@@ -27,8 +24,6 @@ public class OffScreenRenderer implements Disposable{
     protected int verticesSize;
     protected final ShaderProgram shader;
 
-    protected final Matrix4 combinedMatrix = new Matrix4();
-
     /**
      * The frame buffer use for off screen rendering
      */
@@ -40,14 +35,9 @@ public class OffScreenRenderer implements Disposable{
     protected final Pixmap.Format textureFormat;
 
     /**
-     * FBO size
+     * The viewport used for rendering FBO
      */
-    private int screenWidth, screenHeight;
-
-    /**
-     * FBO view size
-     */
-    private float width, height;
+    private final Viewport viewport;
 
     /**
      * Indicates if the FBO must be resized
@@ -72,15 +62,15 @@ public class OffScreenRenderer implements Disposable{
     /**
      * Default constructor using RGBA4444 for FBO texture format, redraw and clear at each render call.
      */
-    public OffScreenRenderer() {
-        this(Pixmap.Format.RGBA4444, false, true);
+    public OffScreenRenderer(final Viewport viewport) {
+        this(viewport, Pixmap.Format.RGBA4444, false, true);
     }
 
     /**
      * Constructor with specific color format, redraw and clear at each render call.
      */
-    public OffScreenRenderer(final Pixmap.Format textureFormat) {
-        this(textureFormat, false, true);
+    public OffScreenRenderer(final Viewport viewport, final Pixmap.Format textureFormat) {
+        this(viewport, textureFormat, false, true);
     }
 
     /**
@@ -90,38 +80,22 @@ public class OffScreenRenderer implements Disposable{
      * @param singlePass If true, the FBO will be redrawn only after an invalidate() call
      * @param clearScreen If false, the FBO color buffer will not be cleared before each draw, useful to redraw only a part of buffer
      */
-    public OffScreenRenderer(final Pixmap.Format textureFormat, final boolean singlePass, final boolean clearScreen) {
+    public OffScreenRenderer(final Viewport viewport, final Pixmap.Format textureFormat, final boolean singlePass, final boolean clearScreen) {
+        this.viewport = viewport;
         this.mesh = this.createMesh();
         this.vertices = this.createVertices();
         this.shader = this.createShader();
         this.textureFormat = textureFormat;
         this.singlePass = singlePass;
         this.clearScreen = clearScreen;
-    }
-
-    /**
-     * Called when the screen/view size changes to resize the inner FBO
-     *
-     * @param width The framebuffer width (in world units)
-     * @param height The framebuffer height (in world units)
-     * @param screenWidth The display area width in pixels
-     * @param screenHeight The display area height in pixels
-     */
-    public void onResize(final float width, final float height, final int screenWidth, final int screenHeight) {
-        this.width = width;
-        this.height = height;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
         this.hasResized = true;
     }
 
     /**
-     * Sets the combined matrix for rendering
-     *
-     * @param combinedMatrix the combined matrix
+     * Called when the screen/view size changes to resize the inner FBO
      */
-    public void setCombinedMatrix(final Matrix4 combinedMatrix) {
-        this.combinedMatrix.set(combinedMatrix);
+    public void onResize(final int width, final int height) {
+        this.hasResized = true;
     }
 
     /**
@@ -171,71 +145,25 @@ public class OffScreenRenderer implements Disposable{
         }
         //Resize
         if(this.hasResized) {
-            this.frameBuffer = new FrameBuffer(this.textureFormat, this.screenWidth, this.screenHeight, false);
+            this.frameBuffer = new FrameBuffer(this.textureFormat, this.viewport.getScreenWidth(), this.viewport.getScreenHeight(), false);
 
             //Vertices XY
             //0 & 5
-            this.vertices[0] = this.vertices[20] = -this.width/2f;
-            this.vertices[1] = this.vertices[21] = this.height/2f;
+            this.vertices[0] = this.vertices[20] = -this.viewport.getWorldWidth()/2f;
+            this.vertices[1] = this.vertices[21] = this.viewport.getWorldHeight()/2f;
             //1
-            this.vertices[4] = -this.width/2f;
-            this.vertices[5] = -this.height/2f;
+            this.vertices[4] = -this.viewport.getWorldWidth()/2f;
+            this.vertices[5] = -this.viewport.getWorldHeight()/2f;
             //2 & 3
-            this.vertices[8] = this.vertices[12] = this.width/2f;
-            this.vertices[9] = this.vertices[13] = -this.height/2f;
+            this.vertices[8] = this.vertices[12] = this.viewport.getWorldWidth()/2f;
+            this.vertices[9] = this.vertices[13] = -this.viewport.getWorldHeight()/2f;
             //4
-            this.vertices[16] = this.width/2f;
-            this.vertices[17] = this.height/2f;
+            this.vertices[16] = this.viewport.getWorldWidth()/2f;
+            this.vertices[17] = this.viewport.getWorldHeight()/2f;
 
             this.mesh.setVertices(vertices);
             this.hasResized = false;
         }
-    }
-
-    /**
-     * Generic method to draw a set of vertices.
-     *
-     * @param viewport The viewport used to render the FBO
-     */
-    public void draw(final Viewport viewport) {
-        if(mustRedraw) {
-            this.frameBuffer.end(viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(), viewport.getScreenHeight());
-            mustRedraw = !singlePass;
-        }
-
-        this.shader.begin();
-        this.shader.setUniformMatrix("u_projTrans", this.combinedMatrix);
-        this.frameBuffer.getColorBufferTexture().bind(0);
-        this.shader.setUniformi(TextureSet.UNIFORM_TEXTURE_0, 0);
-        this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
-    }
-
-    /**
-     * Draw the offscreen result in the specified view only
-     *
-     * @param viewport The viewport used to render the FBO
-     * @param x The X coord of the view
-     * @param y The Y coord of the view
-     * @param width The width of the view
-     * @param height The height of the view
-     */
-    public void draw(final Viewport viewport, final float x, final float y, final float width, final float height){
-        //Vertices XY
-        //0 & 5
-        this.vertices[0] = this.vertices[20] = x;
-        this.vertices[1] = this.vertices[21] = y + height;
-        //1
-        this.vertices[4] = x;
-        this.vertices[5] = y;
-        //2 & 3
-        this.vertices[8] = this.vertices[12] = x + width;
-        this.vertices[9] = this.vertices[13] = y;
-        //4
-        this.vertices[16] = x + width;
-        this.vertices[17] = y + height;
-
-        this.mesh.setVertices(vertices);
-        this.draw(viewport);
     }
 
     /**
@@ -254,8 +182,21 @@ public class OffScreenRenderer implements Disposable{
 
     /**
      * Called at ending of rendering
+     *
+     * @param restoreViewport The viewport to restore at end of rendering
      */
     public void end() {
+        if(mustRedraw) {
+            this.frameBuffer.end(this.viewport.getScreenX(), this.viewport.getScreenY(), this.viewport.getScreenWidth(), this.viewport.getScreenHeight());
+            mustRedraw = !singlePass;
+        }
+
+        this.shader.begin();
+        this.shader.setUniformMatrix("u_projTrans", this.viewport.getCamera().combined);
+        this.frameBuffer.getColorBufferTexture().bind(0);
+        this.shader.setUniformi(TextureSet.UNIFORM_TEXTURE_0, 0);
+        this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
+
         this.shader.end();
     }
 
