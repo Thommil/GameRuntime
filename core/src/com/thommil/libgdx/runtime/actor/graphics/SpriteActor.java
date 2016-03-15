@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
+import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -14,7 +15,7 @@ import com.thommil.libgdx.runtime.actor.Actor;
  *
  * @author thommil on 03/02/16.
  */
-public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer> {
+public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer>, TouchListener {
 
     static public final int X1 = 0;
     static public final int Y1 = 1;
@@ -355,44 +356,6 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         return vertices;
     }
 
-    /** Returns the bounding axis aligned {@link Rectangle} that bounds this sprite. The rectangles x and y coordinates describe its
-     * bottom left corner. If you change the position or size of the sprite, you have to fetch the triangle again for it to be
-     * recomputed.
-     *
-     * @return the bounding Rectangle */
-    public Rectangle getBoundingRectangle () {
-        final float[] vertices = getVertices();
-
-        float minx = vertices[X1];
-        float miny = vertices[Y1];
-        float maxx = vertices[X1];
-        float maxy = vertices[Y1];
-
-        minx = minx > vertices[X2] ? vertices[X2] : minx;
-        minx = minx > vertices[X3] ? vertices[X3] : minx;
-        minx = minx > vertices[X4] ? vertices[X4] : minx;
-
-        maxx = maxx < vertices[X2] ? vertices[X2] : maxx;
-        maxx = maxx < vertices[X3] ? vertices[X3] : maxx;
-        maxx = maxx < vertices[X4] ? vertices[X4] : maxx;
-
-        miny = miny > vertices[Y2] ? vertices[Y2] : miny;
-        miny = miny > vertices[Y3] ? vertices[Y3] : miny;
-        miny = miny > vertices[Y4] ? vertices[Y4] : miny;
-
-        maxy = maxy < vertices[Y2] ? vertices[Y2] : maxy;
-        maxy = maxy < vertices[Y3] ? vertices[Y3] : maxy;
-        maxy = maxy < vertices[Y4] ? vertices[Y4] : maxy;
-
-        if (bounds == null) bounds = new Rectangle();
-        bounds.x = minx;
-        bounds.y = miny;
-        bounds.width = maxx - minx;
-        bounds.height = maxy - miny;
-        return bounds;
-    }
-
-
     public void setRegion (float u, float v, float u2, float v2) {
         final int texWidth = textureSet.getWidth(), texHeight = textureSet.getHeight();
         regionWidth = Math.round(Math.abs(u2 - u) * texWidth);
@@ -579,6 +542,86 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
         renderer.draw(this.textureSet, this.getVertices(), 0, SPRITE_SIZE);
+    }
+
+    /**
+     * Gets the bounding rectangle of this element for touch detection
+     *
+     * @return The bounding Rectangle
+     */
+    @Override
+    public Rectangle getBoundingRectangle() {
+        final float[] vertices = getVertices();
+
+        float minx = vertices[X1];
+        float miny = vertices[Y1];
+        float maxx = vertices[X1];
+        float maxy = vertices[Y1];
+
+        minx = minx > vertices[X2] ? vertices[X2] : minx;
+        minx = minx > vertices[X3] ? vertices[X3] : minx;
+        minx = minx > vertices[X4] ? vertices[X4] : minx;
+
+        maxx = maxx < vertices[X2] ? vertices[X2] : maxx;
+        maxx = maxx < vertices[X3] ? vertices[X3] : maxx;
+        maxx = maxx < vertices[X4] ? vertices[X4] : maxx;
+
+        miny = miny > vertices[Y2] ? vertices[Y2] : miny;
+        miny = miny > vertices[Y3] ? vertices[Y3] : miny;
+        miny = miny > vertices[Y4] ? vertices[Y4] : miny;
+
+        maxy = maxy < vertices[Y2] ? vertices[Y2] : maxy;
+        maxy = maxy < vertices[Y3] ? vertices[Y3] : maxy;
+        maxy = maxy < vertices[Y4] ? vertices[Y4] : maxy;
+
+        if (bounds == null) bounds = new Rectangle();
+        bounds.x = minx;
+        bounds.y = miny;
+        bounds.width = maxx - minx;
+        bounds.height = maxy - miny;
+        return bounds;
+    }
+
+    /**
+     * Called when the element is touched or clicked down
+     *
+     * @param button See com.badlogic.gdx.Input.Buttons
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onTouchDown(int button) {
+        return false;
+    }
+
+    /**
+     * Called when the element is untouched or clicked up
+     *
+     * @param button See com.badlogic.gdx.Input.Buttons
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onTouchUp(int button) {
+        return false;
+    }
+
+    /**
+     * Called when the mouse pointer or the finger enters in element bounding area
+     *
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onMouseEnter() {
+        return false;
+    }
+
+    /**
+     * Called when the mouse pointer or the finger leaves in element bounding area
+     *
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onMouseLeave() {
+        return false;
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.thommil.libgdx.runtime.actor.graphics;
 
+import com.badlogic.gdx.math.Rectangle;
+import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -10,7 +12,7 @@ import com.thommil.libgdx.runtime.actor.Actor;
  *
  * @author thommil on 03/02/16.
  */
-public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer> {
+public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer>, TouchListener {
 
     final public TextureSet textureSet;
     final float[] vertices = new float[SpriteActor.SPRITE_SIZE];
@@ -19,6 +21,8 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
     final public float u, v;
     final public float u2, v2;
     final public float color;
+
+    protected Rectangle bound;
 
     /**
      * Default conctructor
@@ -90,6 +94,59 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
         renderer.draw(this.textureSet, this.vertices, 0, SpriteActor.SPRITE_SIZE);
+    }
+
+    /**
+     * Gets the bounding rectangle of this element for touch detection
+     *
+     * @return The bounding Rectangle
+     */
+    @Override
+    public Rectangle getBoundingRectangle() {
+        if(bound == null) bound = new Rectangle(x, y, width, height);
+        return bound;
+    }
+
+    /**
+     * Called when the element is touched or clicked down
+     *
+     * @param button See com.badlogic.gdx.Input.Buttons
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onTouchDown(int button) {
+        return false;
+    }
+
+    /**
+     * Called when the element is untouched or clicked up
+     *
+     * @param button See com.badlogic.gdx.Input.Buttons
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onTouchUp(int button) {
+        return false;
+    }
+
+    /**
+     * Called when the mouse pointer or the finger enters in element bounding area
+     *
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onMouseEnter() {
+        return false;
+    }
+
+    /**
+     * Called when the mouse pointer or the finger leaves in element bounding area
+     *
+     * @return True if the event is considered as treated and stop propagation
+     */
+    @Override
+    public boolean onMouseLeave() {
+        return false;
     }
 
     /**
