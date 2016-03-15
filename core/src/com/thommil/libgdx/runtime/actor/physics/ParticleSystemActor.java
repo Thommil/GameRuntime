@@ -31,34 +31,42 @@ public abstract class ParticleSystemActor extends Actor implements ParticlesBody
      * @param particlesRadius The particles radius
      */
     public ParticleSystemActor(final int id, final float particlesRadius) {
-        this(id, particlesRadius, false);
+        this(id, particlesRadius, false, null);
     }
 
     /**
-     * Constructor with color support enabled (no texture)
+     * Constructor with color support (no texture)
      *
      * @param id The ID of the Actor in the scene
      * @param particlesRadius The particles radius
      * @param colored If true, the colored are sent to the renderer
      */
     public ParticleSystemActor(final int id, final float particlesRadius, boolean colored) {
-        super(id);
-        this.particlesRadius = particlesRadius;
-        this.colored = colored;
-        this.textureSet = null;
+        this(id, particlesRadius, colored, null);
     }
 
     /**
-     * Constructor with texture support enabled (no color)
+     * Constructor with texture support (no color)
      *
      * @param id The ID of the Actor in the scene
      * @param particlesRadius The particles radius
      * @param textureSet The texture set used for rendering
      */
     public ParticleSystemActor(final int id, final float particlesRadius, final TextureSet textureSet) {
+        this(id, particlesRadius, false, textureSet);
+    }
+
+    /**
+     * Full constructor with texture and color support
+     *
+     * @param id The ID of the Actor in the scene
+     * @param particlesRadius The particles radius
+     * @param textureSet The texture set used for rendering
+     */
+    public ParticleSystemActor(final int id, final float particlesRadius, boolean colored, final TextureSet textureSet) {
         super(id);
         this.particlesRadius = particlesRadius;
-        this.colored = false;
+        this.colored = colored;
         this.textureSet = textureSet;
     }
 

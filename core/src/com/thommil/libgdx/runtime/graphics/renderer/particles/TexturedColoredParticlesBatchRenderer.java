@@ -3,20 +3,25 @@ package com.thommil.libgdx.runtime.graphics.renderer.particles;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.thommil.libgdx.runtime.actor.physics.ParticleSystemActor;
+import com.thommil.libgdx.runtime.graphics.TextureSet;
 
 /**
- * Extension of ParticlesBatchRenderer with Colored particles
+ * Extension of ParticlesBatchRenderer with Textured particles
  *
  * @author thommil on 03/02/16.
  */
-public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
+public class TexturedColoredParticlesBatchRenderer extends TexturedParticlesBatchRenderer {
 
+    protected TextureSet lastTextureSet;
+    protected int currentTextureSetSize = 0;
+    protected final TextureSet tmpTextureSet = new TextureSet(1);
 
-    public ColoredParticlesBatchRenderer(final int maxParticles) {
+    public TexturedColoredParticlesBatchRenderer(final int maxParticles) {
         super(maxParticles);
     }
 
@@ -50,31 +55,31 @@ public class ColoredParticlesBatchRenderer extends ParticlesBatchRenderer {
         }
 
         final String vertexShader = "attribute vec4 " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-                + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
-                + "uniform mat4 u_projectionViewMatrix;\n" //
-                + "uniform float radius;\n" //
-                + "\n" //
-                + "varying vec4 v_color;\n" //
-                + "\n" //
-                + "void main()\n" //
-                + "{\n" //
-                + "   v_color = "+ShaderProgram.COLOR_ATTRIBUTE+";\n" //
-                + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
-                + "   gl_PointSize = radius;\n" //
-                + "}\n";
-
-        final String fragmentShader = "#ifdef GL_ES\n" //
-                + "#define LOWP lowp\n" //
-                + "precision mediump float;\n" //
-                + "#else\n" //
-                + "#define LOWP \n" //
-                + "#endif\n" //
-                + "varying vec4 v_color;\n" //
-                + "\n" //
-                + "void main()\n"//
-                + "{\n" //
-                + " gl_FragColor = v_color;\n" //
-                + "}";
+                    + "attribute vec2 " + ShaderProgram.TEXCOORD_ATTRIBUTE + ";\n" //
+                    + "attribute vec4 " + ShaderProgram.COLOR_ATTRIBUTE + ";\n" //
+                    + "uniform mat4 u_projectionViewMatrix;\n" //
+                    + "uniform float radius;\n" //
+                    + "\n" //
+                    + "varying vec4 v_color;\n" //
+                    + "\n" //
+                    + "void main()\n" //
+                    + "{\n" //
+                    + "   v_color = "+ShaderProgram.COLOR_ATTRIBUTE+";\n" //
+                    + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
+                    + "   gl_PointSize = radius;\n" //
+                    + "}\n";
+         final String fragmentShader = "#ifdef GL_ES\n" //
+                    + "#define LOWP lowp\n" //
+                    + "precision mediump float;\n" //
+                    + "#else\n" //
+                    + "#define LOWP \n" //
+                    + "#endif\n" //
+                    + "uniform sampler2D "+TextureSet.UNIFORM_TEXTURE_0+";\n" //
+                    + "varying vec4 v_color;\n" //
+                    + "void main()\n"//
+                    + "{\n" //
+                    + " gl_FragColor = v_color * texture2D("+TextureSet.UNIFORM_TEXTURE_0+", gl_PointCoord);\n" //
+                    + "}";
 
 
         final ShaderProgram shader = new ShaderProgram(prefix + vertexShader, prefix + fragmentShader);
