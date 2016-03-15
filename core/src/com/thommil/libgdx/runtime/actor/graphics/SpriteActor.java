@@ -585,42 +585,38 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     /**
      * Called when the element is touched or clicked down
      *
+     * @param worldX The X coordinate of the event
+     * @param worldY The Y coordinate of the event
      * @param button See com.badlogic.gdx.Input.Buttons
      * @return True if the event is considered as treated and stop propagation
      */
     @Override
-    public boolean onTouchDown(int button) {
+    public boolean onTouchDown(float worldX, float worldY, int button) {
         return false;
     }
 
     /**
      * Called when the element is untouched or clicked up
      *
+     * @param worldX The X coordinate of the event
+     * @param worldY The Y coordinate of the event
      * @param button See com.badlogic.gdx.Input.Buttons
      * @return True if the event is considered as treated and stop propagation
      */
     @Override
-    public boolean onTouchUp(int button) {
+    public boolean onTouchUp(float worldX, float worldY, int button) {
         return false;
     }
 
     /**
-     * Called when the mouse pointer or the finger enters in element bounding area
+     * Called when the element receives mouse (down) or touch move event
      *
+     * @param worldX The X coordinate of the event
+     * @param worldY The Y coordinate of the event
      * @return True if the event is considered as treated and stop propagation
      */
     @Override
-    public boolean onMouseEnter() {
-        return false;
-    }
-
-    /**
-     * Called when the mouse pointer or the finger leaves in element bounding area
-     *
-     * @return True if the event is considered as treated and stop propagation
-     */
-    @Override
-    public boolean onMouseLeave() {
+    public boolean onTouchMove(float worldX, float worldY){
         return false;
     }
 

@@ -2,7 +2,9 @@ package com.thommil.libgdx.runtime.events;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Event dispatcher for touch events, this class is accessed as a Singleton across application.
@@ -11,28 +13,22 @@ import com.badlogic.gdx.utils.Array;
  */
 public class TouchDispatcher implements InputProcessor{
 
-    private static TouchDispatcher instance;
+    private Viewport viewport;
 
-    private InputProcessor decoratedInputProcessor;
+    private final InputProcessor decoratedInputProcessor;
 
     private final Array<TouchListener> listeners;
+
+    private final Vector2 screenVec = new Vector2();
 
     /**
      * Private constructor
      */
-    private TouchDispatcher(){
+    public TouchDispatcher(final Viewport viewport, final InputProcessor inputProcessor){
+        this.viewport = viewport;
+        this.decoratedInputProcessor = inputProcessor;
         this.listeners = new Array<TouchListener>(false,64);
-        update();
-    }
-
-    /**
-     * Singleton access
-     */
-    public static TouchDispatcher getInstance(){
-        if(instance == null){
-            instance = new TouchDispatcher();
-        }
-        return instance;
+        Gdx.input.setInputProcessor(this);
     }
 
     /**
@@ -58,15 +54,6 @@ public class TouchDispatcher implements InputProcessor{
      */
     public void removeListener(final TouchListener touchListener){
         this.listeners.removeValue(touchListener, false);
-    }
-
-    /**
-     * Call this method each time the source InputProcessor has been changed to
-     * synchronize event chaining.
-     */
-    public void update(){
-        decoratedInputProcessor = Gdx.input.getInputProcessor();
-        Gdx.input.setInputProcessor(this);
     }
 
     /**
@@ -113,9 +100,14 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        screenVec.set(screenX, screenY);
+        final Vector2 worldVec = viewport.unproject(screenVec);
         for(final TouchListener touchListener : this.listeners){
-            //if(touchListener.onTouchDown(button)) return true;
-
+            if(touchListener.getBoundingRectangle().contains(worldVec)){
+                if(touchListener.onTouchDown(worldVec.x, worldVec.y, button)){
+                    return true;
+                }
+            }
         }
         return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchDown(screenX,screenY,pointer,button) : false;
     }
@@ -130,10 +122,16 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        screenVec.set(screenX, screenY);
+        final Vector2 worldVec = viewport.unproject(screenVec);
         for(final TouchListener touchListener : this.listeners){
-            //if(touchListener.onTouchUp(button)) return true;
+            if(touchListener.getBoundingRectangle().contains(worldVec)){
+                if(touchListener.onTouchUp(worldVec.x, worldVec.y, button)){
+                    return true;
+                }
+            }
         }
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchUp(screenX, screenY, pointer, button) : false;
+        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchDown(screenX,screenY,pointer,button) : false;
     }
 
     /**
@@ -145,7 +143,15 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-
+        screenVec.set(screenX, screenY);
+        final Vector2 worldVec = viewport.unproject(screenVec);
+        for(final TouchListener touchListener : this.listeners){
+            if(touchListener.getBoundingRectangle().contains(worldVec)){
+                if(touchListener.onTouchMove(worldVec.x, worldVec.y)){
+                    return true;
+                }
+            }
+        }
         return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchDragged(screenX, screenY, pointer) : false;
     }
 
@@ -158,7 +164,6 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-
         return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.mouseMoved(screenX, screenY) : false;
     }
 

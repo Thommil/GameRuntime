@@ -19,30 +19,29 @@ public interface TouchListener {
     /**
      * Called when the element is touched or clicked down
      *
+     * @param worldX The X coordinate of the event
+     * @param worldY The Y coordinate of the event
      * @param button See com.badlogic.gdx.Input.Buttons
      * @return True if the event is considered as treated and stop propagation
      */
-    boolean onTouchDown(int button);
+    boolean onTouchDown(float worldX, float worldY, int button);
 
     /**
      * Called when the element is untouched or clicked up
      *
+     * @param worldX The X coordinate of the event
+     * @param worldY The Y coordinate of the event
      * @param button See com.badlogic.gdx.Input.Buttons
      * @return True if the event is considered as treated and stop propagation
      */
-    boolean onTouchUp(int button);
+    boolean onTouchUp(float worldX, float worldY, int button);
 
     /**
-     * Called when the mouse pointer or the finger enters in element bounding area
+     * Called when the element receives mouse (down) or touch move event
      *
+     * @param worldX The X coordinate of the event
+     * @param worldY The Y coordinate of the event
      * @return True if the event is considered as treated and stop propagation
      */
-    boolean onMouseEnter();
-
-    /**
-     * Called when the mouse pointer or the finger leaves in element bounding area
-     *
-     * @return True if the event is considered as treated and stop propagation
-     */
-    boolean onMouseLeave();
+    boolean onTouchMove(float worldX, float worldY);
 }
