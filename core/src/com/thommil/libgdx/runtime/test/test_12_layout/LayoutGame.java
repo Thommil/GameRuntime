@@ -20,7 +20,7 @@ public class LayoutGame extends Game{
 
     @Override
     protected void onCreate(Settings settings) {
-        settings.viewport.type = Settings.Viewport.FIT;
+        settings.viewport.type = Settings.Viewport.FILL;
         settings.viewport.width = 16;
         settings.viewport.height = 10;
         settings.physics.enabled = false;
@@ -39,7 +39,7 @@ public class LayoutGame extends Game{
 
     @Override
     protected void onResize(int width, int height) {
-        layoutLevel.resize();
+        layoutLevel.resize(width, height);
     }
 
     @Override
