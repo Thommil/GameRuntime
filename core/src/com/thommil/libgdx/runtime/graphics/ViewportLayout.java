@@ -34,11 +34,10 @@ public class ViewportLayout {
      */
     public ViewportLayout(final Viewport viewport){
         this.viewport = viewport;
-        this.update();
     }
 
     /**
-     * Call this method when viewport changes
+     * Call this method when viewport changes, should be called at each resize()
      */
     public void update(){
         if(this.viewport instanceof ScreenViewport || this.viewport instanceof StretchViewport){
@@ -49,9 +48,19 @@ public class ViewportLayout {
 
         }
         else if(this.viewport instanceof FitViewport){
+            if(this.viewport.getScreenX() > 0){
+                
+            }
+            else if(this.viewport.getScreenY() > 0){
 
+            }
+            else{
+                this.width = viewport.getWorldWidth();
+                this.height = viewport.getWorldHeight();
+            }
         }
         else throw new GameRuntimeException("Unsupported Viewport Class : "+this.viewport.getClass().getName());
+
         this.top = this.height/2;
         this.left = -this.width/2;
         this.right = -this.left;

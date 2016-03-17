@@ -20,12 +20,15 @@ public class LayoutLevel implements Disposable {
         this.layoutTextureSet = new TextureSet(new Texture("static/layout.png"));
         this.spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(),10);
         this.viewportLayout = new ViewportLayout(Runtime.getInstance().getViewport());
-        this.doLayout();
         Runtime.getInstance().addLayer(this.spriteBatchLayer);
     }
 
     public void doLayout(){
 
+    }
+
+    public void resize(){
+        this.viewportLayout.update();
     }
 
     /**
