@@ -14,6 +14,7 @@ import com.thommil.libgdx.runtime.test.test_08_liquid.LiquidGame;
 import com.thommil.libgdx.runtime.test.test_09_normalmap.NormalMapGame;
 import com.thommil.libgdx.runtime.test.test_10_fine_offscreen.FineOffscreenGame;
 import com.thommil.libgdx.runtime.test.test_11_events.EventsGame;
+import com.thommil.libgdx.runtime.test.test_12_layout.LayoutGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -54,7 +55,10 @@ public class DesktopLauncher {
 		//game= new FineOffscreenGame();
 
 		// TEST 11 - Events touch dispatcher
-		game= new EventsGame();
+		//game= new EventsGame();
+
+		// TEST 12 - Layout
+		game= new LayoutGame();
 
 		new LwjglApplication(game, config);
 	}
