@@ -123,6 +123,7 @@ public abstract class Game implements ApplicationListener {
                 this.currentScreen.hide();
             }
             this.currentScreen = screen;
+            this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             if(this.currentScreen == this.runtime){
                 this.onShowRuntime();
             }
@@ -140,8 +141,8 @@ public abstract class Game implements ApplicationListener {
     @Override
     public final void resize(int width, int height) {
         this.viewport.update(width, height);
-        this.currentScreen.resize(width, height);
         this.onResize(width, height);
+        this.currentScreen.resize(width, height);
     }
 
     /**
@@ -161,6 +162,7 @@ public abstract class Game implements ApplicationListener {
                 this.assetManager.setErrorListener(null);
                 this.currentScreen.hide();
                 this.currentScreen = this.nextScreen;
+                this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 if(this.currentScreen == this.runtime){
                     this.onShowRuntime();
                 }
