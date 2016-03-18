@@ -37,6 +37,11 @@ public class FineOffscreenGame extends Game{
     }
 
     @Override
+    protected void onShowRuntime() {
+
+    }
+
+    @Override
     protected void onResize(int width, int height) {
         this.fineOffscreenLevel.onResize(width, height);
     }

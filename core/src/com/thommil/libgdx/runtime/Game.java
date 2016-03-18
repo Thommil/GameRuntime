@@ -123,6 +123,9 @@ public abstract class Game implements ApplicationListener {
                 this.currentScreen.hide();
             }
             this.currentScreen = screen;
+            if(this.currentScreen == this.runtime){
+                this.onShowRuntime();
+            }
             this.currentScreen.show();
         }
     }
@@ -158,6 +161,9 @@ public abstract class Game implements ApplicationListener {
                 this.assetManager.setErrorListener(null);
                 this.currentScreen.hide();
                 this.currentScreen = this.nextScreen;
+                if(this.currentScreen == this.runtime){
+                    this.onShowRuntime();
+                }
                 this.currentScreen.show();
             }
             else if(this.currentScreen instanceof LoadingScreen){
@@ -235,6 +241,11 @@ public abstract class Game implements ApplicationListener {
      * @param screen The screen to display
      */
     protected abstract void onShowScreen(final Screen screen);
+
+    /**
+     * Called the runtime is about to be displayed.
+     */
+    protected abstract void onShowRuntime();
 
     /**
      * Called when screen is resized

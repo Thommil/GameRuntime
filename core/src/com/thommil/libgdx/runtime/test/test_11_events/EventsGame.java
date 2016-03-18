@@ -37,6 +37,11 @@ public class EventsGame extends Game{
     }
 
     @Override
+    protected void onShowRuntime() {
+
+    }
+
+    @Override
     protected void onResize(int width, int height) {
 
     }

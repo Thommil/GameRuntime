@@ -63,6 +63,11 @@ public class ScreensGame extends Game implements InputProcessor{
     }
 
     @Override
+    protected void onShowRuntime() {
+
+    }
+
+    @Override
     protected void onResize(int width, int height) {
 
     }
