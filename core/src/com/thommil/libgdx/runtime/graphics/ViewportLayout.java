@@ -25,7 +25,8 @@ public class ViewportLayout {
         RIGHT,
         BOTTOM,
         LEFT,
-        CENTER
+        CENTER,
+        NONE
     }
 
     /**
@@ -152,8 +153,6 @@ public class ViewportLayout {
                 case RIGHT:
                     rectangle.x = this.right - rectangle.width - xMargin;
                     break;
-                default:
-                    throw new GameRuntimeException("bad hAlign value : "+hAlign);
             }
         }
 
@@ -172,8 +171,6 @@ public class ViewportLayout {
                 case BOTTOM:
                     rectangle.y = this.bottom + yMargin;
                     break;
-                default:
-                    throw new GameRuntimeException("bad vAlign value : "+vAlign);
             }
         }
     }

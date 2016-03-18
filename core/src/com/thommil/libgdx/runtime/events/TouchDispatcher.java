@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thommil.libgdx.runtime.Settings;
 
 /**
  * Event dispatcher for touch events, this class is accessed as a Singleton across application.
@@ -22,7 +23,19 @@ public class TouchDispatcher implements InputProcessor{
     private final Vector2 screenVec = new Vector2();
 
     /**
-     * Private constructor
+     * Constructor without decorator pattern on InputProcessor
+     *
+     * @param viewport The viewport owning the listeners
+     */
+    public TouchDispatcher(final Viewport viewport){
+        this(viewport, null);
+    }
+
+    /**
+     * Full constructor with decorator pattern on InputProcessor
+     *
+     * @param viewport The viewport owning the listeners
+     * @param inputProcessor The decorated InputProcessor
      */
     public TouchDispatcher(final Viewport viewport, final InputProcessor inputProcessor){
         this.viewport = viewport;
