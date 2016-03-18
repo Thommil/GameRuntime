@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.viewport.*;
 import com.thommil.libgdx.runtime.GameRuntimeException;
@@ -34,6 +35,7 @@ public class ViewportLayout {
      */
     public ViewportLayout(final Viewport viewport){
         this.viewport = viewport;
+        this.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     /**
