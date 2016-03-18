@@ -35,7 +35,6 @@ public class ViewportLayout {
      */
     public ViewportLayout(final Viewport viewport){
         this.viewport = viewport;
-        this.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     /**

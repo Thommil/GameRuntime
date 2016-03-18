@@ -123,6 +123,7 @@ public abstract class Game implements ApplicationListener {
                 this.currentScreen.hide();
             }
             this.currentScreen = screen;
+            this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             this.currentScreen.show();
         }
     }
@@ -137,8 +138,8 @@ public abstract class Game implements ApplicationListener {
     @Override
     public final void resize(int width, int height) {
         this.viewport.update(width, height);
-        this.currentScreen.resize(width, height);
         this.onResize(width, height);
+        this.currentScreen.resize(width, height);
     }
 
     /**
