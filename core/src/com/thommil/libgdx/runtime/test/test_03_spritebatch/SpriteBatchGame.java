@@ -31,13 +31,14 @@ public class SpriteBatchGame extends Game{
         this.showScreen(Runtime.getInstance());
     }
 
+
     @Override
-    protected void onShowScreen(final Screen screen) {
+    protected void onShowRuntime() {
 
     }
 
     @Override
-    protected void onShowRuntime() {
+    protected void onHideRuntime() {
 
     }
 

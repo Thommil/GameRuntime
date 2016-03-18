@@ -34,12 +34,12 @@ public class LiquidGame extends Game{
     }
 
     @Override
-    protected void onShowScreen(final Screen screen) {
+    protected void onShowRuntime() {
 
     }
 
     @Override
-    protected void onShowRuntime() {
+    protected void onHideRuntime() {
 
     }
 

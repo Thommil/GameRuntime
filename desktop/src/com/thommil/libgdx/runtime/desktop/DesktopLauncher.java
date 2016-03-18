@@ -25,7 +25,7 @@ public class DesktopLauncher {
 		Game game;
 
 		// TEST 01 - Screens Workflow
-		//game = new ScreensGame();
+		game = new ScreensGame();
 
 		// TEST 02 - Sprite Cache
 		//game = new SpriteCacheGame();
@@ -58,7 +58,7 @@ public class DesktopLauncher {
 		//game= new EventsGame();
 
 		// TEST 12 - Layout
-		game= new LayoutGame();
+		//game= new LayoutGame();
 
 		new LwjglApplication(game, config);
 	}

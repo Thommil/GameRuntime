@@ -107,7 +107,6 @@ public abstract class Game implements ApplicationListener {
      * @param screen The screen to display
      */
     public final void showScreen(final Screen screen){
-        this.onShowScreen(screen);
         this.loading = (this.assetManager.getProgress() < 1.0f);
         if(this.loading){
             if(this.currentScreen == null) {
@@ -120,6 +119,9 @@ public abstract class Game implements ApplicationListener {
         }
         else{
             if(this.currentScreen != null) {
+                if(this.currentScreen == this.runtime){
+                    this.onHideRuntime();
+                }
                 this.currentScreen.hide();
             }
             this.currentScreen = screen;
@@ -160,6 +162,9 @@ public abstract class Game implements ApplicationListener {
             if(progress == 1.0f){
                 this.loading = false;
                 this.assetManager.setErrorListener(null);
+                if(this.currentScreen == this.runtime){
+                    this.onHideRuntime();
+                }
                 this.currentScreen.hide();
                 this.currentScreen = this.nextScreen;
                 this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -237,17 +242,14 @@ public abstract class Game implements ApplicationListener {
     protected abstract void onStart(final Viewport viewport);
 
     /**
-     * Called when a screen is asked to be displayed, subclasses can add assets and logic here to
-     * prepare this screen.
-     *
-     * @param screen The screen to display
-     */
-    protected abstract void onShowScreen(final Screen screen);
-
-    /**
      * Called the runtime is about to be displayed.
      */
     protected abstract void onShowRuntime();
+
+    /**
+     * Called the runtime is about to be hidden.
+     */
+    protected abstract void onHideRuntime();
 
     /**
      * Called when screen is resized

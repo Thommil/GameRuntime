@@ -42,28 +42,26 @@ public class ScreensGame extends Game implements InputProcessor{
         this.mainScreen = new MainScreen(viewport);
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                showScreen(loadingScreen);
+                getAssetManager().load("big_textures/stone.png", Texture.class);
+                getAssetManager().load("big_textures/lether.png", Texture.class);
+                sampleLevel = new SampleLevel();
+                showScreen(mainScreen);
+            }
+        },1);
         this.showScreen(this.splashScreen);
     }
 
     @Override
-    protected void onShowScreen(final Screen screen) {
-        //Activate a timer to load loadingScreen
-        if(screen == splashScreen){
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    showScreen(loadingScreen);
-                    getAssetManager().load("big_textures/stone.png", Texture.class);
-                    getAssetManager().load("big_textures/lether.png", Texture.class);
-                    sampleLevel = new SampleLevel();
-                    showScreen(mainScreen);
-                }
-            },1);
-        }
+    protected void onShowRuntime() {
+
     }
 
     @Override
-    protected void onShowRuntime() {
+    protected void onHideRuntime() {
 
     }
 
