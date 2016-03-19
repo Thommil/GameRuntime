@@ -177,6 +177,18 @@ public class ViewportLayout {
     }
 
     /**
+     * Modifies the point in parameter from World coordinates to scaled
+     * ones adapted to the current screen and viewport. This method has sens only
+     * if the world size is limited to the viewport size.
+     *
+     * @param point IN/OUT, point to transform
+     */
+    public void adapt(final Vector2 point){
+        point.x = point.x * this.width / this.viewport.getWorldWidth();
+        point.y = point.y * this.height / this.viewport.getWorldHeight();
+    }
+
+    /**
      * Modifies the list of points in parameter from World coordinates to scaled
      * ones adapted to the current screen and viewport. This method has sens only
      * if the world size is limited to the viewport size.

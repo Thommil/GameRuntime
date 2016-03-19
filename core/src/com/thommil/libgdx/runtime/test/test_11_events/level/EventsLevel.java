@@ -23,7 +23,7 @@ public class EventsLevel implements InputProcessor,Disposable {
     public EventsLevel() {
         textureSet = new TextureSet(new Texture("sprites/planet.png"));
         spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(),10);
-        touchDispatcher = new TouchDispatcher(Runtime.getInstance().getViewport(), this);
+        touchDispatcher = new TouchDispatcher(Runtime.getInstance().getViewport());
 
         spriteBatchLayer.addActor(new PlanetActor(0, textureSet));
         spriteBatchLayer.addActor(new PlanetActor(1, textureSet));

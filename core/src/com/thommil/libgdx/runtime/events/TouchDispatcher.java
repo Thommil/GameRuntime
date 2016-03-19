@@ -16,20 +16,11 @@ public class TouchDispatcher implements InputProcessor{
 
     private Viewport viewport;
 
-    private final InputProcessor decoratedInputProcessor;
+    private InputProcessor decoratedInputProcessor;
 
     private final Array<TouchListener> listeners;
 
     private final Vector2 screenVec = new Vector2();
-
-    /**
-     * Constructor without decorator pattern on InputProcessor
-     *
-     * @param viewport The viewport owning the listeners
-     */
-    public TouchDispatcher(final Viewport viewport){
-        this(viewport, null);
-    }
 
     /**
      * Full constructor with decorator pattern on InputProcessor
@@ -37,10 +28,19 @@ public class TouchDispatcher implements InputProcessor{
      * @param viewport The viewport owning the listeners
      * @param inputProcessor The decorated InputProcessor
      */
-    public TouchDispatcher(final Viewport viewport, final InputProcessor inputProcessor){
+    public TouchDispatcher(final Viewport viewport){
         this.viewport = viewport;
-        this.decoratedInputProcessor = inputProcessor;
         this.listeners = new Array<TouchListener>(false,64);
+        this.bind();
+    }
+
+    /**
+     * Binds the TouchDispatcher to the core InputProcessor
+     */
+    public void bind(){
+        if(Gdx.input.getInputProcessor() != this) {
+            this.decoratedInputProcessor = Gdx.input.getInputProcessor();
+        }
         Gdx.input.setInputProcessor(this);
     }
 
