@@ -1,54 +1,37 @@
 package com.thommil.libgdx.runtime.actor.physics;
 
 import com.badlogic.gdx.physics.box2d.*;
-
-import java.util.List;
+import com.thommil.libgdx.runtime.actor.Actor;
 
 /**
- * Simple sensor implementation
+ * Rigid body actor without graphics
  *
  * @author thommil on 03/02/16.
  */
-public abstract class SensorActor extends AbstractStepable implements RigidBody {
+public abstract class HeadlessBodyActor extends Actor implements RigidBody {
 
     /**
      * The bound body
      */
     public Body body;
 
+    protected float density = 1f;
+
     /**
      * Default constructor
      *
      * @param id The ID of the Actor in the scene
      */
-    public SensorActor(final int id){
+    public HeadlessBodyActor(final int id){
         super(id);
     }
-
-    /**
-     * Gets the Shapes of the Collidable
-     */
-    @Override
-    public abstract List<Shape> getShapes();
 
     /**
      * Gets the density to the RigidBody
      */
     @Override
     public float getDensity() {
-        return 0.0f;
-    }
-
-    /**
-     * Sets the definition of Collidable, implementations
-     * should configure Collidable settings in the passed
-     * definition.
-     *
-     * @param bodyDef The collidable definition (settings)
-     */
-    @Override
-    public void setDefinition(final BodyDef bodyDef) {
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        return this.density;
     }
 
     /**
@@ -59,9 +42,6 @@ public abstract class SensorActor extends AbstractStepable implements RigidBody 
     @Override
     public void setBody(Body body) {
         this.body = body;
-        for(final Fixture fixture : this.body.getFixtureList()){
-            fixture.setSensor(true);
-        }
         this.body.setUserData(this);
     }
 

@@ -39,7 +39,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
     private TextureSet tabTextureSet;
 
     private WaterActor waterActor;
-    private SensorActor garbageCollectorActor;
+    private HeadlessBodyActor garbageCollectorActor;
 
     public LiquidLevel() {
         CacheLayer.setGlobalSize(10);
@@ -80,7 +80,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
 
         //Duck garbage collector bind to bg layer
-        garbageCollectorActor = new SensorActor(MathUtils.random(0x7ffffffe)) {
+        garbageCollectorActor = new HeadlessBodyActor(MathUtils.random(0x7ffffffe)) {
             @Override
             public List<Shape> getShapes() {
                 List<Shape> shapes = new ArrayList<Shape>();
