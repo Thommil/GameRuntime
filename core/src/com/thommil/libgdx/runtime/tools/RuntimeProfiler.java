@@ -70,7 +70,9 @@ public class RuntimeProfiler {
     }
 
     public static void profile(final byte flags, final int frequency){
-        RuntimeProfiler.instance = new RuntimeProfiler(flags, frequency);
+        if(RuntimeProfiler.instance == null) {
+            RuntimeProfiler.instance = new RuntimeProfiler(flags, frequency);
+        }
     }
 
     protected RuntimeProfiler(final byte flags, final int frequency){
