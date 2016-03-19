@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.*;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 
@@ -45,7 +46,7 @@ public class ViewportLayout {
      * @param height The screen height (not the viewport one)
      */
     public void update(final int width, final int height){
-        if(this.viewport instanceof FillViewport){
+        if(viewport instanceof FillViewport){
             if(viewport.getScreenX() < 0){
                 this.width = width * viewport.getWorldWidth() / viewport.getScreenWidth();
                 this.height = viewport.getWorldHeight();
@@ -172,6 +173,22 @@ public class ViewportLayout {
                     rectangle.y = this.bottom + yMargin;
                     break;
             }
+        }
+    }
+
+    /**
+     * Modifies the list of points in parameter from World coordinates to scaled
+     * ones adapted to the current screen and viewport. This method has sens only
+     * if the world size is limited to the viewport size.
+     *
+     * @param points IN/OUT, list of points to transform
+     */
+    public void adapt(final Vector2[] points){
+        final float worldHeight = this.viewport.getWorldHeight();
+        final float worldWidth = this.viewport.getWorldWidth();
+        for(final Vector2 point : points){
+            point.x = point.x * this.width / worldWidth;
+            point.y = point.y * this.height / worldHeight;
         }
     }
 
