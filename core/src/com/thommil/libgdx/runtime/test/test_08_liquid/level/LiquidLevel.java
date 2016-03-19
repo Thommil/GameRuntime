@@ -91,6 +91,11 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
             }
 
             @Override
+            public void setDefinition(BodyDef bodyDef) {
+                //NOP
+            }
+
+            @Override
             public void setBody(Body body) {
                 super.setBody(body);
                 body.setTransform(0f,-10f,0);
