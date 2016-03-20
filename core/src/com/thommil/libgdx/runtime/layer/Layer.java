@@ -69,10 +69,10 @@ public abstract class Layer implements Disposable {
     public Layer(final Viewport viewport, final int initialCapacity) {
         this.runtime = null;
         this.viewport = viewport;
-        actors = new IntMap<Actor>(initialCapacity);
-        renderables = new Array<Renderable>(false, initialCapacity);
-        collidables= new Array<Collidable>(false, initialCapacity);
-        stepables = new Array<Stepable>(false, initialCapacity);
+        this.actors = new IntMap<Actor>(initialCapacity);
+        this.renderables = new Array<Renderable>(false, initialCapacity);
+        this.collidables= new Array<Collidable>(false, initialCapacity);
+        this.stepables = new Array<Stepable>(false, initialCapacity);
     }
 
     private void setCollidablesState(final Collidable collidable, final boolean active){
@@ -120,17 +120,17 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to add
      */
     public void addActor(final Actor actor){
-        actors.put(actor.getId(), actor);
+        this.actors.put(actor.getId(), actor);
         //Adding when not bound
         if(this.runtime == null) {
             if (actor instanceof Renderable) {
-                renderables.add((Renderable)actor);
+                this.renderables.add((Renderable)actor);
             }
             if (actor instanceof Collidable) {
-                collidables.add((Collidable)actor);
+                this.collidables.add((Collidable)actor);
             }
             if (actor instanceof Stepable) {
-                stepables.add((Stepable)actor);
+                this.stepables.add((Stepable)actor);
             }
         }
         //Adding when bound
@@ -139,7 +139,7 @@ public abstract class Layer implements Disposable {
                 this.runtime.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        renderables.add((Renderable)actor);
+                        Layer.this.renderables.add((Renderable)actor);
                     }
                 });
             }
@@ -149,10 +149,10 @@ public abstract class Layer implements Disposable {
                     public void run() {
                         if (actor instanceof Collidable) {
                             bindCollidable((Collidable) actor);
-                            collidables.add((Collidable) actor);
+                            Layer.this.collidables.add((Collidable) actor);
                         }
                         if (actor instanceof Stepable) {
-                            stepables.add((Stepable) actor);
+                            Layer.this.stepables.add((Stepable) actor);
                         }
                     }
                 });
@@ -168,7 +168,7 @@ public abstract class Layer implements Disposable {
      * @return The Actor instance, null if not found
      */
     public Actor getActor(final int id){
-        return actors.get(id);
+        return this.actors.get(id);
     }
 
     /**
@@ -186,17 +186,17 @@ public abstract class Layer implements Disposable {
      * @param renderable The renderable to remove
      */
     public void removeActor(final Actor actor){
-        actors.remove(actor.getId());
+        this.actors.remove(actor.getId());
         //Removing when not bound
         if(this.runtime == null) {
             if (actor instanceof Renderable) {
-                renderables.removeValue((Renderable)actor, true);
+                this.renderables.removeValue((Renderable)actor, true);
             }
             if (actor instanceof Collidable) {
-                collidables.removeValue((Collidable)actor, true);
+                this.collidables.removeValue((Collidable)actor, true);
             }
             if (actor instanceof Stepable) {
-                stepables.removeValue((Stepable)actor, true);
+                this.stepables.removeValue((Stepable)actor, true);
             }
         }
         //Removing when bound
@@ -205,7 +205,7 @@ public abstract class Layer implements Disposable {
                 this.runtime.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
-                        renderables.removeValue((Renderable)actor, true);
+                        Layer.this.renderables.removeValue((Renderable)actor, true);
                     }
                 });
             }
@@ -215,10 +215,10 @@ public abstract class Layer implements Disposable {
                     public void run() {
                         if (actor instanceof Collidable) {
                             unbindCollidable((Collidable) actor);
-                            collidables.removeValue((Collidable)actor, true);
+                            Layer.this.collidables.removeValue((Collidable)actor, true);
                         }
                         if (actor instanceof Stepable) {
-                            stepables.removeValue((Stepable)actor, true);
+                            Layer.this.stepables.removeValue((Stepable)actor, true);
                         }
                     }
                 });
@@ -231,7 +231,7 @@ public abstract class Layer implements Disposable {
      */
     public void bind(final Runtime runtime){
         this.runtime = runtime;
-        for(final Collidable collidable : collidables){
+        for(final Collidable collidable : this.collidables){
             bindCollidable(collidable);
         }
     }
@@ -240,7 +240,7 @@ public abstract class Layer implements Disposable {
      * Unbinds a layer from a Runtime (normaly called by the Runtime itself)
      */
     public void unbind(){
-        for(final Collidable collidable : collidables){
+        for(final Collidable collidable : this.collidables){
             unbindCollidable(collidable);
         }
         this.runtime = null;
@@ -257,7 +257,7 @@ public abstract class Layer implements Disposable {
                     for (final Collidable collidable : collidables) {
                         setCollidablesState(collidable, true);
                     }
-                    hidden = false;
+                    Layer.this.hidden = false;
                     onShow();
                 }
             });
@@ -274,7 +274,7 @@ public abstract class Layer implements Disposable {
      * @return Hidden state
      */
     public boolean isHidden() {
-        return hidden;
+        return this.hidden;
     }
 
     /**
@@ -285,16 +285,16 @@ public abstract class Layer implements Disposable {
             this.runtime.runOnPhysicsThread(new Runnable() {
                 @Override
                 public void run() {
-                    for (final Collidable collidable : collidables) {
+                    for (final Collidable collidable : Layer.this.collidables) {
                         setCollidablesState(collidable, false);
                     }
-                    hidden = true;
+                    Layer.this.hidden = true;
                     onHide();
                 }
             });
         }
         else {
-            hidden = true;
+            this.hidden = true;
             onHide();
         }
     }
@@ -313,7 +313,7 @@ public abstract class Layer implements Disposable {
      */
     public void step(float deltaTime){
         if(!this.isHidden()) {
-            for (final Stepable stepable : stepables) {
+            for (final Stepable stepable : this.stepables) {
                 stepable.step(deltaTime);
             }
         }

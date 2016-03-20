@@ -38,12 +38,12 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
      */
     @Override
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
-        for (int i = particleEffects.size - 1; i >= 0; i--) {
-            final ParticleEffectPool.PooledEffect particleEffect = particleEffects.get(i);
+        for (int i = this.particleEffects.size - 1; i >= 0; i--) {
+            final ParticleEffectPool.PooledEffect particleEffect = this.particleEffects.get(i);
             particleEffect.draw(renderer, deltaTime);
             if (particleEffect.isComplete()) {
                 particleEffect.reset();
-                particleEffects.removeIndex(i);
+                this.particleEffects.removeIndex(i);
                 particleEffect.free();
             }
         }

@@ -131,14 +131,14 @@ public abstract class Game implements ApplicationListener {
      * Get the current displayed screen
      */
     protected Screen getCurrentScreen() {
-        return currentScreen;
+        return this.currentScreen;
     }
 
     /**
      * Get the AssetManager
      */
     protected AssetManager getAssetManager(){
-        return assetManager;
+        return this.assetManager;
     }
 
     /**

@@ -34,14 +34,14 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
     public void draw(Texture texture, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
         if (texture != this.tmpTextureSet.textures[0]) {
-            flush();
+            this.flush();
             this.tmpTextureSet.textures[0] = texture;
             this.lastTextureSet = tmpTextureSet;
         }
         else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
-                flush();
+                this.flush();
                 remainingVertices = this.vertices.length;
             }
         }
@@ -60,13 +60,13 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
     public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
         if (textureSet != this.lastTextureSet) {
-            flush();
+            this.flush();
             this.lastTextureSet = textureSet;
         }
         else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
-                flush();
+                this.flush();
                 remainingVertices = this.vertices.length;
             }
         }
@@ -79,7 +79,7 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
         count -= copyCount;
         while (count > 0) {
             offset += copyCount;
-            flush();
+            this.flush();
             copyCount = Math.min(this.vertices.length, count);
             System.arraycopy(vertices, offset, this.vertices, 0, copyCount);
             this.idx += copyCount;
@@ -92,9 +92,9 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
      */
     @Override
     public void flush() {
-        if(idx == 0) return;
+        if(this.idx == 0) return;
 
-        if(this.lastTextureSet.textures.length != currentTextureSetSize){
+        if(this.lastTextureSet.textures.length != this.currentTextureSetSize){
             this.lastTextureSet.setUniformAll(this.shader);
             this.currentTextureSetSize = this.lastTextureSet.textures.length;
         }

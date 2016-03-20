@@ -53,8 +53,8 @@ public class ParticlesBatchRenderer implements BatchRenderer{
             Gdx.gl.glEnable(GL11.GL_POINT_SPRITE_OES);
         }
 
-        shader.begin();
-        shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
+        this.shader.begin();
+        this.shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ParticlesBatchRenderer implements BatchRenderer{
     @Override
     public void end() {
         if (this.idx > 0) flush();
-        shader.end();
+        this.shader.end();
         if(Gdx.app.getType() == Application.ApplicationType.Desktop) {
             Gdx.gl.glDisable(GL20.GL_VERTEX_PROGRAM_POINT_SIZE);
             Gdx.gl.glDisable(GL11.GL_POINT_SPRITE_OES);
@@ -93,12 +93,12 @@ public class ParticlesBatchRenderer implements BatchRenderer{
     public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
         if (this.currentParticlesRadius != this.lastParticlesRadius) {
-            flush();
+            this.flush();
             this.lastParticlesRadius = this.currentParticlesRadius;
         }else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
-                flush();
+                this.flush();
                 remainingVertices = this.vertices.length;
             }
         }
@@ -109,7 +109,7 @@ public class ParticlesBatchRenderer implements BatchRenderer{
         count -= copyCount;
         while (count > 0) {
             offset += copyCount;
-            flush();
+            this.flush();
             copyCount = Math.min(this.vertices.length, count);
             System.arraycopy(vertices, offset, this.vertices, 0, copyCount);
             this.idx += copyCount;
@@ -129,9 +129,9 @@ public class ParticlesBatchRenderer implements BatchRenderer{
         if (this.idx == 0) return;
         final int count = this.idx / this.verticesSize ;
 
-        shader.setUniformf("radius", this.lastParticlesRadius * 2f * this.particlesScale);
+        this.shader.setUniformf("radius", this.lastParticlesRadius * 2f * this.particlesScale);
         this.mesh.setVertices(this.vertices, 0, this.idx);
-        mesh.render(shader, GL20.GL_POINTS, 0, count);
+        this.mesh.render(shader, GL20.GL_POINTS, 0, count);
         this.idx = 0;
     }
 
@@ -140,8 +140,8 @@ public class ParticlesBatchRenderer implements BatchRenderer{
      */
     @Override
     public void dispose() {
-        mesh.dispose();
-        shader.dispose();
+        this.mesh.dispose();
+        this.shader.dispose();
     }
 
     /**

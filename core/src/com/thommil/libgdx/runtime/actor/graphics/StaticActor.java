@@ -60,29 +60,29 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
         this.v2 = v2;
         this.color = color;
 
-        vertices[SpriteActor.X1] = x;
-        vertices[SpriteActor.Y1] = y;
-        vertices[SpriteActor.C1] = color;
-        vertices[SpriteActor.U1] = u;
-        vertices[SpriteActor.V1] = v;
+        this.vertices[SpriteActor.X1] = x;
+        this.vertices[SpriteActor.Y1] = y;
+        this.vertices[SpriteActor.C1] = color;
+        this.vertices[SpriteActor.U1] = u;
+        this.vertices[SpriteActor.V1] = v;
 
-        vertices[SpriteActor.X2] = x;
-        vertices[SpriteActor.Y2] = y + height;
-        vertices[SpriteActor.C2] = color;
-        vertices[SpriteActor.U2] = u;
-        vertices[SpriteActor.V2] = v2;
+        this.vertices[SpriteActor.X2] = x;
+        this.vertices[SpriteActor.Y2] = y + height;
+        this.vertices[SpriteActor.C2] = color;
+        this.vertices[SpriteActor.U2] = u;
+        this.vertices[SpriteActor.V2] = v2;
 
-        vertices[SpriteActor.X3] = x + width;
-        vertices[SpriteActor.Y3] = y + height;
-        vertices[SpriteActor.C3] = color;
-        vertices[SpriteActor.U3] = u2;
-        vertices[SpriteActor.V3] = v2;
+        this.vertices[SpriteActor.X3] = x + width;
+        this.vertices[SpriteActor.Y3] = y + height;
+        this.vertices[SpriteActor.C3] = color;
+        this.vertices[SpriteActor.U3] = u2;
+        this.vertices[SpriteActor.V3] = v2;
 
-        vertices[SpriteActor.X4] = x + width;
-        vertices[SpriteActor.Y4] = y;
-        vertices[SpriteActor.C4] = color;
-        vertices[SpriteActor.U4] = u2;
-        vertices[SpriteActor.V4] = v;
+        this.vertices[SpriteActor.X4] = x + width;
+        this.vertices[SpriteActor.Y4] = y;
+        this.vertices[SpriteActor.C4] = color;
+        this.vertices[SpriteActor.U4] = u2;
+        this.vertices[SpriteActor.V4] = v;
     }
 
     /**
@@ -103,8 +103,8 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     @Override
     public Rectangle getBoundingRectangle() {
-        if(bound == null) bound = new Rectangle(x, y, width, height);
-        return bound;
+        if(this.bound == null) this.bound = new Rectangle(this.x, this.y, this.width, this.height);
+        return this.bound;
     }
 
     /**

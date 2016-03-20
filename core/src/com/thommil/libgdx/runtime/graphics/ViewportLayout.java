@@ -46,39 +46,39 @@ public class ViewportLayout {
      * @param height The screen height (not the viewport one)
      */
     public void update(final int width, final int height){
-        if(viewport instanceof FillViewport){
-            if(viewport.getScreenX() < 0){
-                this.width = width * viewport.getWorldWidth() / viewport.getScreenWidth();
+        if(this.viewport instanceof FillViewport){
+            if(this.viewport.getScreenX() < 0){
+                this.width = width * this.viewport.getWorldWidth() / this.viewport.getScreenWidth();
                 this.height = viewport.getWorldHeight();
             }
             else if(viewport.getScreenY() < 0){
                 this.width = viewport.getWorldWidth();
-                this.height = height* viewport.getWorldHeight() / viewport.getScreenHeight();
+                this.height = height* this.viewport.getWorldHeight() / this.viewport.getScreenHeight();
             }
             else{
-                this.width = viewport.getWorldWidth();
-                this.height = viewport.getWorldHeight();
+                this.width = this.viewport.getWorldWidth();
+                this.height = this.viewport.getWorldHeight();
             }
         }
-        else if(viewport instanceof FitViewport){
-            if(viewport.getScreenX() > 0){
-                this.width = viewport.getScreenWidth() * viewport.getWorldWidth() / width;
-                this.height = viewport.getWorldHeight();
+        else if(this.viewport instanceof FitViewport){
+            if(this.viewport.getScreenX() > 0){
+                this.width = this.viewport.getScreenWidth() * this.viewport.getWorldWidth() / width;
+                this.height = this.viewport.getWorldHeight();
             }
-            else if(viewport.getScreenY() > 0){
-                this.width = viewport.getWorldWidth();
-                this.height = viewport.getScreenHeight() * viewport.getWorldHeight() / height;
+            else if(this.viewport.getScreenY() > 0){
+                this.width = this.viewport.getWorldWidth();
+                this.height = this.viewport.getScreenHeight() * this.viewport.getWorldHeight() / height;
             }
             else{
-                this.width = viewport.getWorldWidth();
-                this.height = viewport.getWorldHeight();
+                this.width = this.viewport.getWorldWidth();
+                this.height = this.viewport.getWorldHeight();
             }
         }
-        else if (viewport instanceof StretchViewport){
-            this.width = viewport.getWorldWidth();
-            this.height = viewport.getWorldHeight();
+        else if (this.viewport instanceof StretchViewport){
+            this.width = this.viewport.getWorldWidth();
+            this.height = this.viewport.getWorldHeight();
         }
-        else if(viewport instanceof ScreenViewport){
+        else if(this.viewport instanceof ScreenViewport){
             this.width = width;
             this.height = height;
         }
@@ -98,7 +98,7 @@ public class ViewportLayout {
      * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign){
-        layout(rectangle, hAlign, vAlign, 0, 0, false, false);
+        this.layout(rectangle, hAlign, vAlign, 0, 0, false, false);
     }
 
     /**
@@ -111,7 +111,7 @@ public class ViewportLayout {
      * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final float xMargin, final float yMargin){
-        layout(rectangle, hAlign, vAlign, xMargin, yMargin, false, false);
+        this.layout(rectangle, hAlign, vAlign, xMargin, yMargin, false, false);
     }
 
     /**
@@ -124,7 +124,7 @@ public class ViewportLayout {
      * @param yFill If true, the rectangle will be stretched to fill the vertical area
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final boolean xFill, final boolean yFill){
-        layout(rectangle, hAlign, vAlign, 0, 0, xFill, yFill);
+        this.layout(rectangle, hAlign, vAlign, 0, 0, xFill, yFill);
     }
 
     /**

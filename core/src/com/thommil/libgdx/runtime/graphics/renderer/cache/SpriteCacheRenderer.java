@@ -44,40 +44,40 @@ public class SpriteCacheRenderer implements CacheRenderer {
     /** Starts the definition of a new cache, allowing the add and {@link #endCache()} methods to be called. */
     @Override
     public void beginCache () {
-        currentCache = new Cache(caches.size, mesh.getVerticesBuffer().limit());
-        caches.add(currentCache);
-        mesh.getVerticesBuffer().compact();
+        this.currentCache = new Cache(this.caches.size, this.mesh.getVerticesBuffer().limit());
+        this.caches.add(this.currentCache);
+        this.mesh.getVerticesBuffer().compact();
     }
 
     /** Starts the redefinition of an existing cache, allowing the add and {@link #endCache()} methods to be called. If this is not
      * the last cache created, it cannot have more entries added to it than when it was first created. To do that, use*/
     @Override
     public void beginCache (int cacheID) {
-        if (cacheID == caches.size - 1) {
-            Cache oldCache = caches.removeIndex(cacheID);
-            mesh.getVerticesBuffer().limit(oldCache.offset);
+        if (cacheID == this.caches.size - 1) {
+            Cache oldCache = this.caches.removeIndex(cacheID);
+            this.mesh.getVerticesBuffer().limit(oldCache.offset);
             beginCache();
             return;
         }
-        currentCache = caches.get(cacheID);
-        mesh.getVerticesBuffer().position(currentCache.offset);
+        this.currentCache = this.caches.get(cacheID);
+        this.mesh.getVerticesBuffer().position(this.currentCache.offset);
     }
 
     /** Ends the definition of a cache, returning the cache ID to be used with {@link #draw(int)}. */
     @Override
     public int endCache () {
-        final Cache cache = currentCache;
-        int cacheCount = mesh.getVerticesBuffer().position() - cache.offset;
+        final Cache cache = this.currentCache;
+        int cacheCount = this.mesh.getVerticesBuffer().position() - cache.offset;
         if (cache.textureSets == null) {
             // New cache.
             cache.maxCount = cacheCount;
-            cache.textureCount = textureSets.size;
-            cache.textureSets = textureSets.toArray(TextureSet.class);
+            cache.textureCount = this.textureSets.size;
+            cache.textureSets = this.textureSets.toArray(TextureSet.class);
             cache.counts = new int[cache.textureCount];
-            for (int i = 0, n = counts.size; i < n; i++)
-                cache.counts[i] = counts.get(i);
+            for (int i = 0, n = this.counts.size; i < n; i++)
+                cache.counts[i] = this.counts.get(i);
 
-            mesh.getVerticesBuffer().flip();
+            this.mesh.getVerticesBuffer().flip();
         } else {
             // Redefine existing cache.
             if (cacheCount > cache.maxCount) {
@@ -86,25 +86,25 @@ public class SpriteCacheRenderer implements CacheRenderer {
                                 + cacheCount + " (" + cache.maxCount + " max)");
             }
 
-            cache.textureCount = textureSets.size;
+            cache.textureCount = this.textureSets.size;
 
             if (cache.textureSets.length < cache.textureCount) cache.textureSets = new TextureSet[cache.textureCount];
             for (int i = 0, n = cache.textureCount; i < n; i++)
-                cache.textureSets[i] = textureSets.get(i);
+                cache.textureSets[i] = this.textureSets.get(i);
 
             if (cache.counts.length < cache.textureCount) cache.counts = new int[cache.textureCount];
             for (int i = 0, n = cache.textureCount; i < n; i++)
-                cache.counts[i] = counts.get(i);
+                cache.counts[i] = this.counts.get(i);
 
-            FloatBuffer vertices = mesh.getVerticesBuffer();
+            FloatBuffer vertices =this. mesh.getVerticesBuffer();
             vertices.position(0);
-            Cache lastCache = caches.get(caches.size - 1);
+            Cache lastCache = this.caches.get(caches.size - 1);
             vertices.limit(lastCache.offset + lastCache.maxCount);
         }
 
-        currentCache = null;
-        textureSets.clear();
-        counts.clear();
+        this.currentCache = null;
+        this.textureSets.clear();
+        this.counts.clear();
 
         return cache.id;
     }
@@ -112,8 +112,8 @@ public class SpriteCacheRenderer implements CacheRenderer {
     /** Invalidates all cache IDs and resets the CacheRenderer so new caches can be added. */
     @Override
     public void clear () {
-        caches.clear();
-        mesh.getVerticesBuffer().clear().flip();
+        this.caches.clear();
+        this.mesh.getVerticesBuffer().clear().flip();
     }
 
     /** Adds the specified vertices to the cache. Each vertex should have 5 elements, one for each of the attributes: x, y, color,
@@ -122,14 +122,14 @@ public class SpriteCacheRenderer implements CacheRenderer {
     @Override
     public void add (TextureSet textureSet, float[] vertices, int offset, int length) {
         final int count = length / (4 * SpriteActor.VERTEX_SIZE) * 6;
-        final int lastIndex = textureSets.size - 1;
-        if (lastIndex < 0 || textureSets.get(lastIndex) != textureSet) {
-            textureSets.add(textureSet);
-            counts.add(count);
+        final int lastIndex = this.textureSets.size - 1;
+        if (lastIndex < 0 || this.textureSets.get(lastIndex) != textureSet) {
+            this.textureSets.add(textureSet);
+            this.counts.add(count);
         } else
-            counts.incr(lastIndex, count);
+            this.counts.incr(lastIndex, count);
 
-        mesh.getVerticesBuffer().put(vertices, offset, length);
+        this.mesh.getVerticesBuffer().put(vertices, offset, length);
     }
 
     /** Adds the specified texture to the cache. */
@@ -138,30 +138,30 @@ public class SpriteCacheRenderer implements CacheRenderer {
         final float fx2 = x + srcWidth;
         final float fy2 = y + srcHeight;
 
-        tempVertices[0] = x;
-        tempVertices[1] = y;
-        tempVertices[2] = color;
-        tempVertices[3] = u;
-        tempVertices[4] = v;
+        this.tempVertices[0] = x;
+        this.tempVertices[1] = y;
+        this.tempVertices[2] = color;
+        this.tempVertices[3] = u;
+        this.tempVertices[4] = v;
 
-        tempVertices[5] = x;
-        tempVertices[6] = fy2;
-        tempVertices[7] = color;
-        tempVertices[8] = u;
-        tempVertices[9] = v2;
+        this.tempVertices[5] = x;
+        this.tempVertices[6] = fy2;
+        this.tempVertices[7] = color;
+        this.tempVertices[8] = u;
+        this.tempVertices[9] = v2;
 
-        tempVertices[10] = fx2;
-        tempVertices[11] = fy2;
-        tempVertices[12] = color;
-        tempVertices[13] = u2;
-        tempVertices[14] = v2;
+        this.tempVertices[10] = fx2;
+        this.tempVertices[11] = fy2;
+        this.tempVertices[12] = color;
+        this.tempVertices[13] = u2;
+        this.tempVertices[14] = v2;
 
-        tempVertices[15] = fx2;
-        tempVertices[16] = y;
-        tempVertices[17] = color;
-        tempVertices[18] = u2;
-        tempVertices[19] = v;
-        add(textureSet, tempVertices, 0, SpriteActor.SPRITE_SIZE);
+        this.tempVertices[15] = fx2;
+        this.tempVertices[16] = y;
+        this.tempVertices[17] = color;
+        this.tempVertices[18] = u2;
+        this.tempVertices[19] = v;
+        add(textureSet, this.tempVertices, 0, SpriteActor.SPRITE_SIZE);
     }
 
     /** Adds the specified SpriteActor to the cache. */
@@ -188,22 +188,22 @@ public class SpriteCacheRenderer implements CacheRenderer {
     /** Prepares the OpenGL state for CacheRenderer rendering. */
     @Override
     public void begin () {
-        shader.begin();
-        shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
-        mesh.bind(shader);
+        this.shader.begin();
+        this.shader.setUniformMatrix("u_projectionViewMatrix", this.combinedMatrix);
+        this.mesh.bind(shader);
     }
 
     /** Completes rendering for this CacheRenderer. */
     @Override
     public void end () {
-        shader.end();
-        mesh.unbind(shader);
+        this.shader.end();
+        this.mesh.unbind(this.shader);
     }
 
     /** Draws all the images defined for the specified cache ID. */
     @Override
     public void draw (int cacheID) {
-        final Cache cache = caches.get(cacheID);
+        final Cache cache = this.caches.get(cacheID);
         int offset = cache.offset / (4 * SpriteActor.VERTEX_SIZE) * 6;
         final TextureSet[] textureSets = cache.textureSets;
         final int[] counts = cache.counts;
@@ -212,19 +212,19 @@ public class SpriteCacheRenderer implements CacheRenderer {
         for (int i = 0; i < textureCount; i++) {
             int count = counts[i];
             if(textureSets[i].textures.length != lastTextureSetSize){
-                textureSets[i].setUniformAll(shader);
+                textureSets[i].setUniformAll(this.shader);
                 lastTextureSetSize = textureSets[i].textures.length;
             }
             textureSets[i].bindAll();
-            mesh.render(shader, GL20.GL_TRIANGLES, offset, count);
+            this.mesh.render(shader, GL20.GL_TRIANGLES, offset, count);
             offset += count;
         }
     }
 
     @Override
     public void dispose () {
-        mesh.dispose();
-        if (shader != null) shader.dispose();
+        this.mesh.dispose();
+        if (this.shader != null) this.shader.dispose();
     }
 
     static private class Cache {

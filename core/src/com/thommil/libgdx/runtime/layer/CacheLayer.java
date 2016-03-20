@@ -142,8 +142,8 @@ public class CacheLayer extends Layer{
     @Override
     public void dispose() {
         if(this.renderer == CacheLayer.sharedRenderer){
-            currentConsumersCount--;
-            if(currentConsumersCount == 0) {
+            CacheLayer.currentConsumersCount--;
+            if(CacheLayer.currentConsumersCount == 0) {
                 CacheLayer.sharedRenderer.dispose();
                 CacheLayer.sharedRenderer = null;
             }

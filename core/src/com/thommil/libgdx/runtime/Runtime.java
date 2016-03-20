@@ -165,9 +165,9 @@ public class Runtime implements Screen{
      * Starts the instance
      */
     private final void start(){
-        if(settings.physics.enabled) {
+        if(this.settings.physics.enabled) {
             //Start executor
-            executor = Executors.newFixedThreadPool(1, new ThreadFactory() {
+            this.executor = Executors.newFixedThreadPool(1, new ThreadFactory() {
                 @Override
                 public Thread newThread(Runnable r) {
                     Thread thread = new Thread(r);
@@ -177,42 +177,42 @@ public class Runtime implements Screen{
             });
 
             //Aync loop
-            executor.execute(new Runnable() {
+            this.executor.execute(new Runnable() {
 
                 @Override
                 public void run() {
-                    running = true;
-                    paused = true;
-                    while (running) {
-                        final long longAsyncFrequency = (long) (settings.physics.frequency * 1000f);
+                    Runtime.this.running = true;
+                    Runtime.this.paused = true;
+                    while (Runtime.this.running) {
+                        final long longAsyncFrequency = (long) (Runtime.this.settings.physics.frequency * 1000f);
                         final long start = System.currentTimeMillis();
 
-                        if (!paused) {
+                        if (!Runtime.this.paused) {
 
-                            int tasksCount = settings.physics.maxTasks;
-                            while (!physicsQueue.isEmpty() && tasksCount-- > 0) {
-                                physicsQueue.poll().run();
+                            int tasksCount = Runtime.this.settings.physics.maxTasks;
+                            while (!Runtime.this.physicsQueue.isEmpty() && tasksCount-- > 0) {
+                                Runtime.this.physicsQueue.poll().run();
                             }
 
-                            final float lastPhysicsStepDurationFloat = (float)lastPhysicsStepDuration/1000f;
+                            final float lastPhysicsStepDurationFloat = (float)Runtime.this.lastPhysicsStepDuration/1000f;
 
-                            final Object[] items = ((Object[])layers.items);
-                            for(int index=0; index < layers.size; index++){
+                            final Object[] items = ((Object[])Runtime.this.layers.items);
+                            for(int index=0; index < Runtime.this.layers.size; index++){
                                 if (items != null) {
                                     ((Layer)items[index]).step(lastPhysicsStepDurationFloat);
                                 }
                             }
 
-                            physicsWorld.step(settings.physics.frequency * settings.physics.timeFactor
-                                    , settings.physics.velocityIterations
-                                    , settings.physics.positionIterations
-                                    , settings.physics.particleIterations);
+                            Runtime.this.physicsWorld.step(Runtime.this.settings.physics.frequency * Runtime.this.settings.physics.timeFactor
+                                    , Runtime.this.settings.physics.velocityIterations
+                                    , Runtime.this.settings.physics.positionIterations
+                                    , Runtime.this.settings.physics.particleIterations);
 
-                            lastPhysicsStepDuration = System.currentTimeMillis() - start;
+                            Runtime.this.lastPhysicsStepDuration = System.currentTimeMillis() - start;
 
-                            if (lastPhysicsStepDuration < longAsyncFrequency) {
+                            if (Runtime.this.lastPhysicsStepDuration < longAsyncFrequency) {
                                 try {
-                                    Thread.currentThread().sleep(longAsyncFrequency - lastPhysicsStepDuration);
+                                    Thread.currentThread().sleep(longAsyncFrequency - Runtime.this.lastPhysicsStepDuration);
                                 } catch (InterruptedException ie) {
                                     Gdx.app.exit();
                                 }
@@ -239,7 +239,7 @@ public class Runtime implements Screen{
      * @param layer The layer to add
      */
     public void addLayer(final int index, final Layer layer){
-        if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
+        if(!this.paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
         while(index > (this.layers.size-1)){
             this.layers.add(null);
         }
@@ -254,7 +254,7 @@ public class Runtime implements Screen{
      * @param layer The layer to add
      */
     public void addLayer(final Layer layer){
-        if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
+        if(!this.paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
         this.layers.add(layer);
         layer.bind(this);
         layer.show();
@@ -275,7 +275,7 @@ public class Runtime implements Screen{
      * @param index The index of the layer to remove
      */
     public void removeLayer(final int index){
-        if(!paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
+        if(!this.paused) throw new GameRuntimeException("Layers can only be added/removed in paused state");
         this.layers.get(index).hide();
         this.layers.get(index).unbind();
         this.layers.set(index, null);
@@ -287,8 +287,8 @@ public class Runtime implements Screen{
      * @param task The task to run
      */
     public void runOnPhysicsThread(final Runnable task){
-        if(settings.physics.enabled) {
-            physicsQueue.add(task);
+        if(this.settings.physics.enabled) {
+            this.physicsQueue.add(task);
         }
     }
 
@@ -316,16 +316,16 @@ public class Runtime implements Screen{
      */
     @Override
     public void render(float delta) {
-        if(!paused) {
-            final Object[] items = ((Object[]) layers.items);
-            for (int index = 0; index < layers.size; index++) {
+        if(!this.paused) {
+            final Object[] items = ((Object[]) this.layers.items);
+            for (int index = 0; index < this.layers.size; index++) {
                 if (items != null) {
                     ((Layer) items[index]).render(delta);
                 }
             }
 
             if (this.settings.physics.debug) {
-                debugRenderer.render(physicsWorld, viewport.getCamera().combined);
+                this.debugRenderer.render(this.physicsWorld, this.viewport.getCamera().combined);
             }
         }
     }
@@ -337,8 +337,8 @@ public class Runtime implements Screen{
      */
     @Override
     public void resize(int width, int height) {
-        final Object[] items = ((Object[])layers.items);
-        for(int index=0; index < layers.size; index++){
+        final Object[] items = ((Object[])this.layers.items);
+        for(int index=0; index < this.layers.size; index++){
             if (items != null) {
                 ((Layer)items[index]).resize(width, height);
             }
@@ -358,7 +358,7 @@ public class Runtime implements Screen{
      */
     @Override
     public void resume() {
-        paused = false;
+        this.paused = false;
     }
 
     /**
@@ -366,7 +366,7 @@ public class Runtime implements Screen{
      */
     @Override
     public void hide() {
-        paused = true;
+        this.paused = true;
     }
 
     /**
@@ -374,15 +374,15 @@ public class Runtime implements Screen{
      */
     @Override
     public void dispose() {
-        running=false;
-        final Object[] items = ((Object[])layers.items);
-        for(int index=0; index < layers.size; index++){
+        this.running=false;
+        final Object[] items = ((Object[])this.layers.items);
+        for(int index=0; index < this.layers.size; index++){
             if (items != null) {
                 ((Layer)items[index]).dispose();
             }
         }
         if(this.settings.physics.enabled) {
-            executor.shutdown();
+            this.executor.shutdown();
         }
     }
 

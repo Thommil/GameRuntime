@@ -108,8 +108,8 @@ public class SpriteBatchLayer extends Layer{
     @Override
     public void dispose() {
         if(this.renderer == SpriteBatchLayer.sharedRenderer){
-            currentConsumersCount--;
-            if(currentConsumersCount == 0) {
+            SpriteBatchLayer.currentConsumersCount--;
+            if(SpriteBatchLayer.currentConsumersCount == 0) {
                 SpriteBatchLayer.sharedRenderer.dispose();
                 SpriteBatchLayer.sharedRenderer = null;
             }

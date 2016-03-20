@@ -102,8 +102,8 @@ public class OffScreenRenderer implements Disposable{
      * Called at beginning of rendering
      */
     public void begin() {
-        if(mustRedraw) {
-            final boolean mustClearScreen = clearScreen || hasResized;
+        if(this.mustRedraw) {
+            final boolean mustClearScreen = this.clearScreen || this.hasResized;
             this.setupFramebuffer();
             this.frameBuffer.begin();
             if(mustClearScreen) {
@@ -161,7 +161,7 @@ public class OffScreenRenderer implements Disposable{
             this.vertices[16] = this.viewport.getWorldWidth()/2f;
             this.vertices[17] = this.viewport.getWorldHeight()/2f;
 
-            this.mesh.setVertices(vertices);
+            this.mesh.setVertices(this.vertices);
             this.hasResized = false;
         }
     }
@@ -177,7 +177,7 @@ public class OffScreenRenderer implements Disposable{
      * Indicates if the offscreen renderer must be redrawn
      */
     public boolean mustRedraw() {
-        return mustRedraw;
+        return this.mustRedraw;
     }
 
     /**
@@ -186,9 +186,9 @@ public class OffScreenRenderer implements Disposable{
      * @param restoreViewport The viewport to restore at end of rendering
      */
     public void end() {
-        if(mustRedraw) {
+        if(this.mustRedraw) {
             this.frameBuffer.end(this.viewport.getScreenX(), this.viewport.getScreenY(), this.viewport.getScreenWidth(), this.viewport.getScreenHeight());
-            mustRedraw = !singlePass;
+            this.mustRedraw = !this.singlePass;
         }
 
         this.shader.begin();

@@ -57,7 +57,7 @@ public class BitmapFontBatchLayer extends SpriteBatchLayer {
     public void render(float deltaTime) {
         if(!this.isHidden()) {
             this.screenViewport.apply();
-            renderer.setCombinedMatrix(this.screenViewport.getCamera().combined);
+            this.renderer.setCombinedMatrix(this.screenViewport.getCamera().combined);
             this.renderer.begin();
             for (Renderable renderable : this.renderables) {
                 renderable.render(deltaTime, this.renderer);

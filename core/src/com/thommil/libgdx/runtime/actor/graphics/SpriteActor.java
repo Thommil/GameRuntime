@@ -72,9 +72,9 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         if (textureSet == null) throw new IllegalArgumentException("texture cannot be null.");
         this.textureSet = textureSet;
         this.setColor(Color.WHITE.toFloatBits());
-        setRegion(srcX, srcY, srcWidth, srcHeight);
-        setSize(Math.abs(srcWidth), Math.abs(srcHeight));
-        setOrigin(width / 2, height / 2);
+        this.setRegion(srcX, srcY, srcWidth, srcHeight);
+        this.setSize(Math.abs(srcWidth), Math.abs(srcHeight));
+        this.setOrigin(this.width / 2, this.height / 2);
     }
 
     /** Sets the position and size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale
@@ -85,23 +85,23 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         this.width = width;
         this.height = height;
 
-        if (dirty) return;
+        if (this.dirty) return;
 
         final float x2 = x + width;
         final float y2 = y + height;
-        vertices[X1] = x;
-        vertices[Y1] = y;
+        this.vertices[X1] = x;
+        this.vertices[Y1] = y;
 
-        vertices[X2] = x;
-        vertices[Y2] = y2;
+        this.vertices[X2] = x;
+        this.vertices[Y2] = y2;
 
-        vertices[X3] = x2;
-        vertices[Y3] = y2;
+        this.vertices[X3] = x2;
+        this.vertices[Y3] = y2;
 
-        vertices[X4] = x2;
-        vertices[Y4] = y;
+        this.vertices[X4] = x2;
+        this.vertices[Y4] = y;
 
-        if (rotation != 0 || scaleX != 1 || scaleY != 1) dirty = true;
+        if (this.rotation != 0 || this.scaleX != 1 || this.scaleY != 1) this.dirty = true;
     }
 
     /** Sets the size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale are changed,
@@ -111,23 +111,23 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         this.width = width;
         this.height = height;
 
-        if (dirty) return;
+        if (this.dirty) return;
 
-        final float x2 = x + width;
-        final float y2 = y + height;
-        vertices[X1] = x;
-        vertices[Y1] = y;
+        final float x2 = this.x + width;
+        final float y2 = this.y + height;
+        this.vertices[X1] = this.x;
+        this.vertices[Y1] = this.y;
 
-        vertices[X2] = x;
-        vertices[Y2] = y2;
+        this.vertices[X2] = this.x;
+        this.vertices[Y2] = y2;
 
-        vertices[X3] = x2;
-        vertices[Y3] = y2;
+        this.vertices[X3] = x2;
+        this.vertices[Y3] = y2;
 
-        vertices[X4] = x2;
-        vertices[Y4] = y;
+        this.vertices[X4] = x2;
+        this.vertices[Y4] = this.y;
 
-        if (rotation != 0 || scaleX != 1 || scaleY != 1) dirty = true;
+        if (this.rotation != 0 || this.scaleX != 1 || this.scaleY != 1) this.dirty = true;
     }
 
     /** Sets the position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more efficient
@@ -153,12 +153,12 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
     /** Sets the x position so that it is centered on the given x parameter */
     public void setCenterX(float x){
-        setX(x - width / 2);
+        setX(x - this.width / 2);
     }
 
     /** Sets the y position so that it is centered on the given y parameter */
     public void setCenterY(float y){
-        setY(y - height / 2);
+        setY(y - this.height / 2);
     }
 
     /** Sets the position so that the sprite is centered on (x, y) */
@@ -172,112 +172,112 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public void translateX (float xAmount) {
         this.x += xAmount;
 
-        if (dirty) return;
+        if (this.dirty) return;
 
-        vertices[X1] += xAmount;
-        vertices[X2] += xAmount;
-        vertices[X3] += xAmount;
-        vertices[X4] += xAmount;
+        this.vertices[X1] += xAmount;
+        this.vertices[X2] += xAmount;
+        this.vertices[X3] += xAmount;
+        this.vertices[X4] += xAmount;
     }
 
     /** Sets the y position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
      * changed, it is slightly more efficient to translate after those operations. */
     public void translateY (float yAmount) {
-        y += yAmount;
+        this.y += yAmount;
 
         if (dirty) return;
 
-        vertices[Y1] += yAmount;
-        vertices[Y2] += yAmount;
-        vertices[Y3] += yAmount;
-        vertices[Y4] += yAmount;
+        this.vertices[Y1] += yAmount;
+        this.vertices[Y2] += yAmount;
+        this.vertices[Y3] += yAmount;
+        this.vertices[Y4] += yAmount;
     }
 
     /** Sets the position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
      * changed, it is slightly more efficient to translate after those operations. */
     public void translate (float xAmount, float yAmount) {
-        x += xAmount;
-        y += yAmount;
+        this.x += xAmount;
+        this.y += yAmount;
 
-        if (dirty) return;
+        if (this.dirty) return;
 
-        vertices[X1] += xAmount;
-        vertices[Y1] += yAmount;
+        this.vertices[X1] += xAmount;
+        this.vertices[Y1] += yAmount;
 
-        vertices[X2] += xAmount;
-        vertices[Y2] += yAmount;
+        this.vertices[X2] += xAmount;
+        this.vertices[Y2] += yAmount;
 
-        vertices[X3] += xAmount;
-        vertices[Y3] += yAmount;
+        this.vertices[X3] += xAmount;
+        this.vertices[Y3] += yAmount;
 
-        vertices[X4] += xAmount;
-        vertices[Y4] += yAmount;
+        this.vertices[X4] += xAmount;
+        this.vertices[Y4] += yAmount;
     }
 
     /** Sets the origin in relation to the sprite's position for scaling and rotation. */
     public void setOrigin (float originX, float originY) {
         this.originX = originX;
         this.originY = originY;
-        dirty = true;
+        this.dirty = true;
     }
 
     /** Place origin in the center of the sprite */
     public void setOriginCenter() {
-        this.originX = width / 2;
-        this.originY = height / 2;
-        dirty = true;
+        this.originX = this.width / 2;
+        this.originY = this.height / 2;
+        this.dirty = true;
     }
 
     /** Sets the rotation of the sprite in degrees. Rotation is centered on the origin set in {@link #setOrigin(float, float)} */
     public void setRotation (float degrees) {
         this.rotation = degrees;
-        dirty = true;
+        this.dirty = true;
     }
 
     /** Sets the rotation of the sprite in radiants. Rotation is centered on the origin set in {@link #setOrigin(float, float)} */
     public void setRotationRad (float radiants) {
         this.rotation = radiants * MathUtils.radDeg;
-        dirty = true;
+        this.dirty = true;
     }
 
     /** @return the rotation of the sprite in degrees */
     public float getRotation () {
-        return rotation;
+        return this.rotation;
     }
 
     /** @return the rotation of the sprite in radiants */
     public float getRotationRad () {
-        return rotation / MathUtils.radDeg;
+        return this.rotation / MathUtils.radDeg;
     }
 
     /** Sets the sprite's rotation in degrees relative to the current rotation. Rotation is centered on the origin set in
      * {@link #setOrigin(float, float)} */
     public void rotate (float degrees) {
         if (degrees == 0) return;
-        rotation += degrees;
-        dirty = true;
+        this.rotation += degrees;
+        this.dirty = true;
     }
 
     /** Sets the sprite's rotation in radiants relative to the current rotation. Rotation is centered on the origin set in
      * {@link #setOrigin(float, float)} */
     public void rotateRad (float radiants) {
         if (radiants == 0) return;
-        rotation += radiants * MathUtils.radDeg;
-        dirty = true;
+        this.rotation += radiants * MathUtils.radDeg;
+        this.dirty = true;
     }
 
     /** Sets the sprite's scale for both X and Y uniformly. The sprite scales out from the origin. */
     public void setScale (float scaleXY) {
         this.scaleX = scaleXY;
         this.scaleY = scaleXY;
-        dirty = true;
+        this.dirty = true;
     }
 
     /** Sets the sprite's scale for both X and Y. The sprite scales out from the origin.*/
     public void setScale (float scaleX, float scaleY) {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
-        dirty = true;
+        this.dirty = true;
     }
 
     /** Sets the sprite's scale relative to the current scale. for example: original scale 2 -> sprite.scale(4) -> final scale 6.
@@ -285,29 +285,29 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public void scale (float amount) {
         this.scaleX += amount;
         this.scaleY += amount;
-        dirty = true;
+        this.dirty = true;
     }
 
     /** Returns the packed vertices, colors, and texture coordinates for this sprite. */
     public float[] getVertices () {
-        if (dirty) {
-            dirty = false;
+        if (this.dirty) {
+            this.dirty = false;
 
-            float localX = -originX;
-            float localY = -originY;
-            float localX2 = localX + width;
-            float localY2 = localY + height;
+            float localX = -this.originX;
+            float localY = -this.originY;
+            float localX2 = localX + this.width;
+            float localY2 = localY + this.height;
             final float worldOriginX = this.x - localX;
             final float worldOriginY = this.y - localY;
-            if (scaleX != 1 || scaleY != 1) {
-                localX *= scaleX;
-                localY *= scaleY;
-                localX2 *= scaleX;
-                localY2 *= scaleY;
+            if (this.scaleX != 1 || this.scaleY != 1) {
+                localX *= this.scaleX;
+                localY *= this.scaleY;
+                localX2 *= this.scaleX;
+                localY2 *= this.scaleY;
             }
-            if (rotation != 0) {
-                final float cos = MathUtils.cosDeg(rotation);
-                final float sin = MathUtils.sinDeg(rotation);
+            if (this.rotation != 0) {
+                final float cos = MathUtils.cosDeg(this.rotation);
+                final float sin = MathUtils.sinDeg(this.rotation);
                 final float localXCos = localX * cos;
                 final float localXSin = localX * sin;
                 final float localYCos = localY * cos;
@@ -319,50 +319,50 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
                 final float x1 = localXCos - localYSin + worldOriginX;
                 final float y1 = localYCos + localXSin + worldOriginY;
-                vertices[X1] = x1;
-                vertices[Y1] = y1;
+                this.vertices[X1] = x1;
+                this.vertices[Y1] = y1;
 
                 final float x2 = localXCos - localY2Sin + worldOriginX;
                 final float y2 = localY2Cos + localXSin + worldOriginY;
-                vertices[X2] = x2;
-                vertices[Y2] = y2;
+                this.vertices[X2] = x2;
+                this.vertices[Y2] = y2;
 
                 final float x3 = localX2Cos - localY2Sin + worldOriginX;
                 final float y3 = localY2Cos + localX2Sin + worldOriginY;
-                vertices[X3] = x3;
-                vertices[Y3] = y3;
+                this.vertices[X3] = x3;
+                this.vertices[Y3] = y3;
 
-                vertices[X4] = x1 + (x3 - x2);
-                vertices[Y4] = y3 - (y2 - y1);
+                this.vertices[X4] = x1 + (x3 - x2);
+                this.vertices[Y4] = y3 - (y2 - y1);
             } else {
                 final float x1 = localX + worldOriginX;
                 final float y1 = localY + worldOriginY;
                 final float x2 = localX2 + worldOriginX;
                 final float y2 = localY2 + worldOriginY;
 
-                vertices[X1] = x1;
-                vertices[Y1] = y1;
+                this.vertices[X1] = x1;
+                this.vertices[Y1] = y1;
 
-                vertices[X2] = x1;
-                vertices[Y2] = y2;
+                this.vertices[X2] = x1;
+                this.vertices[Y2] = y2;
 
-                vertices[X3] = x2;
-                vertices[Y3] = y2;
+                this.vertices[X3] = x2;
+                this.vertices[Y3] = y2;
 
-                vertices[X4] = x2;
-                vertices[Y4] = y1;
+                this.vertices[X4] = x2;
+                this.vertices[Y4] = y1;
             }
         }
-        return vertices;
+        return this.vertices;
     }
 
     public void setRegion (float u, float v, float u2, float v2) {
-        final int texWidth = textureSet.getWidth(), texHeight = textureSet.getHeight();
-        regionWidth = Math.round(Math.abs(u2 - u) * texWidth);
-        regionHeight = Math.round(Math.abs(v2 - v) * texHeight);
+        final int texWidth = this.textureSet.getWidth(), texHeight = this.textureSet.getHeight();
+        this.regionWidth = Math.round(Math.abs(u2 - u) * texWidth);
+        this.regionHeight = Math.round(Math.abs(v2 - v) * texHeight);
 
         // For a 1x1 region, adjust UVs toward pixel center to avoid filtering artifacts on AMD GPUs when drawing very stretched.
-        if (regionWidth == 1 && regionHeight == 1) {
+        if (this.regionWidth == 1 && this.regionHeight == 1) {
             final float adjustX = 0.25f / texWidth;
             u += adjustX;
             u2 -= adjustX;
@@ -376,45 +376,45 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         this.u2 = u2;
         this.v2 = v2;
 
-        vertices[U1] = u;
-        vertices[V1] = v2;
+        this.vertices[U1] = u;
+        this.vertices[V1] = v2;
 
-        vertices[U2] = u;
-        vertices[V2] = v;
+        this.vertices[U2] = u;
+        this.vertices[V2] = v;
 
-        vertices[U3] = u2;
-        vertices[V3] = v;
+        this.vertices[U3] = u2;
+        this.vertices[V3] = v;
 
-        vertices[U4] = u2;
-        vertices[V4] = v2;
+        this.vertices[U4] = u2;
+        this.vertices[V4] = v2;
     }
 
     public void setU (float u) {
         this.u = u;
-        regionWidth = Math.round(Math.abs(u2 - u) * textureSet.getWidth());
-        vertices[U1] = u;
-        vertices[U2] = u;
+        this.regionWidth = Math.round(Math.abs(this.u2 - u) * this.textureSet.getWidth());
+        this.vertices[U1] = u;
+        this.vertices[U2] = u;
     }
 
     public void setV (float v) {
         this.v = v;
-        regionHeight = Math.round(Math.abs(v2 - v) * textureSet.getHeight());
-        vertices[V2] = v;
-        vertices[V3] = v;
+        this.regionHeight = Math.round(Math.abs(this.v2 - v) * this.textureSet.getHeight());
+        this.vertices[V2] = v;
+        this.vertices[V3] = v;
     }
 
     public void setU2 (float u2) {
         this.u2 = u2;
-        regionWidth = Math.round(Math.abs(u2 - u) * textureSet.getWidth());
-        vertices[U3] = u2;
-        vertices[U4] = u2;
+        this.regionWidth = Math.round(Math.abs(u2 - this.u) * this.textureSet.getWidth());
+        this.vertices[U3] = u2;
+        this.vertices[U4] = u2;
     }
 
     public void setV2 (float v2) {
         this.v2 = v2;
-        regionHeight = Math.round(Math.abs(v2 - v) * textureSet.getHeight());
-        vertices[V1] = v2;
-        vertices[V4] = v2;
+        this.regionHeight = Math.round(Math.abs(v2 - this.v) * this.textureSet.getHeight());
+        this.vertices[V1] = v2;
+        this.vertices[V4] = v2;
     }
 
     /** Set the sprite's flip state regardless of current condition
@@ -429,73 +429,73 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param y perform vertical flip */
     public void flip (boolean x, boolean y) {
         if (x) {
-            float temp = u;
-            u = u2;
-            u2 = temp;
+            float temp = this.u;
+            this.u = this.u2;
+            this.u2 = temp;
         }
         if (y) {
-            float temp = v;
-            v = v2;
-            v2 = temp;
+            float temp = this.v;
+            this.v = this.v2;
+            this.v2 = temp;
         }
 
         if (x) {
-            float temp = vertices[U1];
-            vertices[U1] = vertices[U3];
-            vertices[U3] = temp;
-            temp = vertices[U2];
-            vertices[U2] = vertices[U4];
-            vertices[U4] = temp;
+            float temp = this.vertices[U1];
+            this.vertices[U1] = this.vertices[U3];
+            this.vertices[U3] = temp;
+            temp = this.vertices[U2];
+            this.vertices[U2] = this.vertices[U4];
+            this.vertices[U4] = temp;
         }
         if (y) {
-            float temp = vertices[V1];
-            vertices[V1] = vertices[V3];
-            vertices[V3] = temp;
-            temp = vertices[V2];
-            vertices[V2] = vertices[V4];
-            vertices[V4] = temp;
+            float temp = this.vertices[V1];
+            this.vertices[V1] = this.vertices[V3];
+            this.vertices[V3] = temp;
+            temp = this.vertices[V2];
+            this.vertices[V2] = this.vertices[V4];
+            this.vertices[V4] = temp;
         }
     }
 
     public void scroll (float xAmount, float yAmount) {
         if (xAmount != 0) {
-            final float u = (vertices[U1] + xAmount) % 1;
-            final float u2 = u + width / textureSet.getWidth();
+            final float u = (this.vertices[U1] + xAmount) % 1;
+            final float u2 = u + this.width / this.textureSet.getWidth();
             this.u = u;
             this.u2 = u2;
-            vertices[U1] = u;
-            vertices[U2] = u;
-            vertices[U3] = u2;
-            vertices[U4] = u2;
+            this.vertices[U1] = u;
+            this.vertices[U2] = u;
+            this.vertices[U3] = u2;
+            this.vertices[U4] = u2;
         }
         if (yAmount != 0) {
-            final float v = (vertices[V2] + yAmount) % 1;
-            final float v2 = v + height / textureSet.getHeight();
+            final float v = (this.vertices[V2] + yAmount) % 1;
+            final float v2 = v + this.height / this.textureSet.getHeight();
             this.v = v;
             this.v2 = v2;
-            vertices[V1] = v2;
-            vertices[V2] = v;
-            vertices[V3] = v;
-            vertices[V4] = v2;
+            this.vertices[V1] = v2;
+            this.vertices[V2] = v;
+            this.vertices[V3] = v;
+            this.vertices[V4] = v2;
         }
     }
 
     /** @param width The width of the texture region. May be negative to flip the sprite when drawn.
      * @param height The height of the texture region. May be negative to flip the sprite when drawn. */
     public void setRegion (int x, int y, int width, int height) {
-        final float invTexWidth = 1f / textureSet.getWidth();
-        final float invTexHeight = 1f / textureSet.getHeight();
-        setRegion(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
-        regionWidth = Math.abs(width);
-        regionHeight = Math.abs(height);
+        final float invTexWidth = 1f / this.textureSet.getWidth();
+        final float invTexHeight = 1f / this.textureSet.getHeight();
+        this.setRegion(x * invTexWidth, y * invTexHeight, (x + width) * invTexWidth, (y + height) * invTexHeight);
+        this.regionWidth = Math.abs(width);
+        this.regionHeight = Math.abs(height);
     }
 
     public boolean isFlipX () {
-        return u > u2;
+        return this.u > this.u2;
     }
 
     public boolean isFlipY () {
-        return v > v2;
+        return this.v > this.v2;
     }
 
     public void setColor (Color color) {
@@ -509,10 +509,10 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
     public void setColor (float color) {
         this.color = color;
-        vertices[C1] = color;
-        vertices[C2] = color;
-        vertices[C3] = color;
-        vertices[C4] = color;
+        this.vertices[C1] = color;
+        this.vertices[C2] = color;
+        this.vertices[C3] = color;
+        this.vertices[C4] = color;
     }
 
     public Color getColor () {
@@ -551,35 +551,33 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      */
     @Override
     public Rectangle getBoundingRectangle() {
-        final float[] vertices = getVertices();
+        float minx = this.vertices[X1];
+        float miny = this.vertices[Y1];
+        float maxx = this.vertices[X1];
+        float maxy = this.vertices[Y1];
 
-        float minx = vertices[X1];
-        float miny = vertices[Y1];
-        float maxx = vertices[X1];
-        float maxy = vertices[Y1];
+        minx = minx > this.vertices[X2] ? this.vertices[X2] : minx;
+        minx = minx > this.vertices[X3] ? this.vertices[X3] : minx;
+        minx = minx > this.vertices[X4] ? this.vertices[X4] : minx;
 
-        minx = minx > vertices[X2] ? vertices[X2] : minx;
-        minx = minx > vertices[X3] ? vertices[X3] : minx;
-        minx = minx > vertices[X4] ? vertices[X4] : minx;
+        maxx = maxx < this.vertices[X2] ? this.vertices[X2] : maxx;
+        maxx = maxx < this.vertices[X3] ? this.vertices[X3] : maxx;
+        maxx = maxx < this.vertices[X4] ? this.vertices[X4] : maxx;
 
-        maxx = maxx < vertices[X2] ? vertices[X2] : maxx;
-        maxx = maxx < vertices[X3] ? vertices[X3] : maxx;
-        maxx = maxx < vertices[X4] ? vertices[X4] : maxx;
+        miny = miny > this.vertices[Y2] ? this.vertices[Y2] : miny;
+        miny = miny > this.vertices[Y3] ? this.vertices[Y3] : miny;
+        miny = miny > this.vertices[Y4] ? this.vertices[Y4] : miny;
 
-        miny = miny > vertices[Y2] ? vertices[Y2] : miny;
-        miny = miny > vertices[Y3] ? vertices[Y3] : miny;
-        miny = miny > vertices[Y4] ? vertices[Y4] : miny;
+        maxy = maxy < this.vertices[Y2] ? this.vertices[Y2] : maxy;
+        maxy = maxy < this.vertices[Y3] ? this.vertices[Y3] : maxy;
+        maxy = maxy < this.vertices[Y4] ? this.vertices[Y4] : maxy;
 
-        maxy = maxy < vertices[Y2] ? vertices[Y2] : maxy;
-        maxy = maxy < vertices[Y3] ? vertices[Y3] : maxy;
-        maxy = maxy < vertices[Y4] ? vertices[Y4] : maxy;
-
-        if (bounds == null) bounds = new Rectangle();
-        bounds.x = minx;
-        bounds.y = miny;
-        bounds.width = maxx - minx;
-        bounds.height = maxy - miny;
-        return bounds;
+        if (this.bounds == null) this.bounds = new Rectangle();
+        this.bounds.x = minx;
+        this.bounds.y = miny;
+        this.bounds.width = maxx - minx;
+        this.bounds.height = maxy - miny;
+        return this.bounds;
     }
 
     /**

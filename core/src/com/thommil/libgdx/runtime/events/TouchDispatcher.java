@@ -135,8 +135,8 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        screenVec.set(screenX, screenY);
-        final Vector2 worldVec = viewport.unproject(screenVec);
+        this.screenVec.set(screenX, screenY);
+        final Vector2 worldVec = this.viewport.unproject(this.screenVec);
         for(final TouchListener touchListener : this.listeners){
             if(touchListener.getBoundingRectangle().contains(worldVec)){
                 if(touchListener.onTouchUp(worldVec.x, worldVec.y, button)){
@@ -156,8 +156,8 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        screenVec.set(screenX, screenY);
-        final Vector2 worldVec = viewport.unproject(screenVec);
+        this.screenVec.set(screenX, screenY);
+        final Vector2 worldVec = this.viewport.unproject(this.screenVec);
         for(final TouchListener touchListener : this.listeners){
             if(touchListener.getBoundingRectangle().contains(worldVec)){
                 if(touchListener.onTouchMove(worldVec.x, worldVec.y)){

@@ -118,8 +118,8 @@ public class ParticlesBatchLayer extends Layer{
     @Override
     public void dispose() {
         if(this.renderer == ParticlesBatchLayer.sharedRenderer){
-            currentConsumersCount--;
-            if(currentConsumersCount == 0) {
+            ParticlesBatchLayer.currentConsumersCount--;
+            if(ParticlesBatchLayer.currentConsumersCount == 0) {
                 ParticlesBatchLayer.sharedRenderer.dispose();
                 ParticlesBatchLayer.sharedRenderer = null;
             }

@@ -97,14 +97,14 @@ public class SpriteBatchRenderer implements BatchRenderer{
     public void draw(Texture texture, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
         if (texture != this.tmpTextureSet.textures[0]) {
-            flush();
+            this.flush();
             this.tmpTextureSet.textures[0] = texture;
             this.lastTextureSet = tmpTextureSet;
         }
         else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
-                flush();
+                this.flush();
                 remainingVertices = this.vertices.length;
             }
         }
@@ -123,13 +123,13 @@ public class SpriteBatchRenderer implements BatchRenderer{
     public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
         if (textureSet != this.lastTextureSet) {
-            flush();
+            this.flush();
             this.lastTextureSet = textureSet;
         }
         else {
             remainingVertices -= this.idx;
             if (remainingVertices == 0) {
-                flush();
+                this.flush();
                 remainingVertices = this.vertices.length;
             }
         }
@@ -142,7 +142,7 @@ public class SpriteBatchRenderer implements BatchRenderer{
         count -= copyCount;
         while (count > 0) {
             offset += copyCount;
-            flush();
+            this.flush();
             copyCount = Math.min(this.vertices.length, count);
             System.arraycopy(vertices, offset, this.vertices, 0, copyCount);
             this.idx += copyCount;
@@ -178,8 +178,8 @@ public class SpriteBatchRenderer implements BatchRenderer{
      */
     @Override
     public void dispose() {
-        mesh.dispose();
-        shader.dispose();
+        this.mesh.dispose();
+        this.shader.dispose();
     }
 
     /**
