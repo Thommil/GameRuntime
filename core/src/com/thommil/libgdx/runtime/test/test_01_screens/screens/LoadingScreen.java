@@ -1,26 +1,28 @@
 package com.thommil.libgdx.runtime.test.test_01_screens.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.graphics.BitmapFontActor;
 import com.thommil.libgdx.runtime.layer.BitmapFontBatchLayer;
 import com.thommil.libgdx.runtime.screen.AbstractScreen;
+import com.thommil.libgdx.runtime.test.test_01_screens.ScreensGameAPI;
 
 /**
  * Loading screen
  *
  * @author Thommil on 3/4/16.
  */
-public class LoadingScreen extends AbstractScreen implements com.thommil.libgdx.runtime.screen.LoadingScreen {
+public class LoadingScreen extends AbstractScreen{
 
+    final ScreensGameAPI screensGameAPI;
     final BitmapFontBatchLayer bitmapFontBatchLayer;
     final BitmapFontActor fontActor;
     final String textTemplate = "Loading - PROGRESS%";
 
-    public LoadingScreen(Viewport viewport) {
+    public LoadingScreen(Viewport viewport, ScreensGameAPI screensGameAPI) {
         super(viewport);
+        this.screensGameAPI = screensGameAPI;
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/OpenSans-Bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 28;
@@ -49,28 +51,16 @@ public class LoadingScreen extends AbstractScreen implements com.thommil.libgdx.
      */
     @Override
     public void render(float delta) {
-        bitmapFontBatchLayer.render(delta);
-    }
-
-    /**
-     * Indicates the loading progress (0.0 - 1.0)
-     *
-     * @param progress The loading progress
-     */
-    @Override
-    public void onLoadProgress(float progress) {
-        progress *= 100f;
+        this.screensGameAPI.load();
+        final float progress = this.screensGameAPI.getLoadingProgress() * 100f;
         if(progress < 10){
             fontActor.setText(this.textTemplate.replaceAll("PROGRESS", "0"+progress));
         }
         else{
             fontActor.setText(this.textTemplate.replaceAll("PROGRESS", String.valueOf(progress)));
         }
-    }
-
-    @Override
-    public void error(AssetDescriptor asset, Throwable throwable) {
-
+        bitmapFontBatchLayer.render(delta);
+        if(progress == 100) this.screensGameAPI.onLoad();
     }
 
     /**

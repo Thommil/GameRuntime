@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.viewport.*;
-import com.thommil.libgdx.runtime.screen.LoadingScreen;
 
 /**
  * Main entry point of a application/game instance
@@ -20,11 +19,6 @@ public abstract class Game implements ApplicationListener {
      * Current screen displayed
      */
     private Screen currentScreen;
-
-    /**
-     * Next screen displayed
-     */
-    private Screen nextScreen;
 
     /**
      * The global settings
@@ -47,11 +41,6 @@ public abstract class Game implements ApplicationListener {
     private Viewport viewport;
 
     /**
-     * Indicates the loading state of the game
-     */
-    private boolean loading = true;
-
-    /**
      * Called when the {@link Application} is first created.
      */
     @Override
@@ -60,8 +49,6 @@ public abstract class Game implements ApplicationListener {
         this.assetManager = new AssetManager();
 
         this.onCreate(this.settings);
-
-        this.loading = (this.assetManager.getProgress() < 1.0f);
 
         switch(this.settings.viewport.type){
             case Settings.Viewport.SCREEN :
@@ -100,37 +87,18 @@ public abstract class Game implements ApplicationListener {
     }
 
     /**
-     * Display the specified screen. If current displayed screen implements LoadingScreen,
-     * it will be called to display loading feedbacks. Subclasses should implement onShowScreen()
-     * to prepare the screen to display (assets, logic ...)
+     * Display the specified screen.
      *
      * @param screen The screen to display
      */
     public final void showScreen(final Screen screen){
-        this.loading = (this.assetManager.getProgress() < 1.0f);
-        if(this.loading){
-            if(this.currentScreen == null) {
-                throw new GameRuntimeException("Current screen cannot be null when AssetManager is loading");
-            }
-            this.nextScreen = screen;
-            if(this.currentScreen instanceof LoadingScreen) {
-                this.assetManager.setErrorListener((LoadingScreen) this.currentScreen);
-            }
+        this.currentScreen = screen;
+        this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if(this.currentScreen == this.runtime){
+            this.onShowRuntime();
         }
-        else{
-            if(this.currentScreen != null) {
-                if(this.currentScreen == this.runtime){
-                    this.onHideRuntime();
-                }
-                this.currentScreen.hide();
-            }
-            this.currentScreen = screen;
-            this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            if(this.currentScreen == this.runtime){
-                this.onShowRuntime();
-            }
-            this.currentScreen.show();
-        }
+        this.currentScreen.show();
+
     }
 
     /**
@@ -156,27 +124,6 @@ public abstract class Game implements ApplicationListener {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         }
 
-        if(this.loading){
-            this.assetManager.update();
-            final float progress = this.assetManager.getProgress();
-            if(progress == 1.0f){
-                this.loading = false;
-                this.assetManager.setErrorListener(null);
-                if(this.currentScreen == this.runtime){
-                    this.onHideRuntime();
-                }
-                this.currentScreen.hide();
-                this.currentScreen = this.nextScreen;
-                this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-                if(this.currentScreen == this.runtime){
-                    this.onShowRuntime();
-                }
-                this.currentScreen.show();
-            }
-            else if(this.currentScreen instanceof LoadingScreen){
-                ((LoadingScreen)this.currentScreen).onLoadProgress(progress);
-            }
-        }
         this.currentScreen.render(Gdx.graphics.getDeltaTime());
     }
 

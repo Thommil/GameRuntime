@@ -20,12 +20,32 @@ import com.thommil.libgdx.runtime.test.test_01_screens.screens.SplashScreen;
  *
  * @author  thommil on 3/4/16.
  */
-public class ScreensGame extends Game implements InputProcessor{
+public class ScreensGame extends Game implements InputProcessor, ScreensGameAPI{
+
+    Screen nextScreen = null;
 
     Screen splashScreen;
     LoadingScreen loadingScreen;
     MainScreen mainScreen;
     SampleLevel sampleLevel;
+
+    @Override
+    public void load() {
+        this.getAssetManager().update();
+    }
+
+    @Override
+    public float getLoadingProgress() {
+        return this.getAssetManager().getProgress();
+    }
+
+    @Override
+    public void onLoad() {
+        if(sampleLevel == null){
+            this.sampleLevel = new SampleLevel();
+        }
+        this.showScreen(nextScreen);
+    }
 
     @Override
     protected void onCreate(Settings settings) {
@@ -38,7 +58,7 @@ public class ScreensGame extends Game implements InputProcessor{
     @Override
     protected void onStart(final Viewport viewport) {
         this.splashScreen = new SplashScreen(viewport);
-        this.loadingScreen = new LoadingScreen(viewport);
+        this.loadingScreen = new LoadingScreen(viewport, this);
         this.mainScreen = new MainScreen(viewport);
         Gdx.input.setInputProcessor(this);
         Gdx.input.setCatchBackKey(true);
@@ -48,12 +68,12 @@ public class ScreensGame extends Game implements InputProcessor{
                 showScreen(loadingScreen);
                 getAssetManager().load("big_textures/stone.png", Texture.class);
                 getAssetManager().load("big_textures/lether.png", Texture.class);
-                sampleLevel = new SampleLevel();
-                showScreen(mainScreen);
+                nextScreen = Runtime.getInstance();
             }
         },1);
         this.showScreen(this.splashScreen);
     }
+
 
     @Override
     protected void onShowRuntime() {
@@ -97,7 +117,7 @@ public class ScreensGame extends Game implements InputProcessor{
             getAssetManager().clear();
             getAssetManager().load("big_textures/stone.png", Texture.class);
             getAssetManager().load("big_textures/lether.png", Texture.class);
-            this.showScreen(Runtime.getInstance());
+            nextScreen = Runtime.getInstance();
         }
         else if(this.getCurrentScreen() == Runtime.getInstance()){
             this.showScreen(mainScreen);
