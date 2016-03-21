@@ -205,10 +205,8 @@ public class OffScreenRenderer implements Disposable{
      * Subclasses should override this method to use their specific Mesh
      */
     protected Mesh createMesh() {
-        final Mesh mesh = new Mesh(false, VERTEX_COUNT, 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
+        return new Mesh(false, VERTEX_COUNT, 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
                 ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
-
-        return mesh;
     }
 
     /**
@@ -247,7 +245,7 @@ public class OffScreenRenderer implements Disposable{
                 + "}";
 
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-        if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
 

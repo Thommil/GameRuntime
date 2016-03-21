@@ -10,7 +10,7 @@ import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
  *
  * Any coordinate in this layer is relative ti the current screen size.
  *
- * @autor Thommil on 3/4/16.
+ * @author Thommil on 3/4/16.
  */
 public class BitmapFontBatchLayer extends SpriteBatchLayer {
 
@@ -60,7 +60,7 @@ public class BitmapFontBatchLayer extends SpriteBatchLayer {
             this.screenViewport.apply();
             this.renderer.setCombinedMatrix(this.screenViewport.getCamera().combined);
             this.renderer.begin();
-            for (Renderable renderable : this.renderables) {
+            for (final Renderable renderable : this.renderables) {
                 renderable.render(deltaTime, this.renderer);
             }
             this.renderer.end();

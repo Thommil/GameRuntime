@@ -44,8 +44,6 @@ public abstract class AbstractScreen implements Screen {
     }
 
     /**
-     * @param width
-     * @param height
      * @see ApplicationListener#resize(int, int)
      */
     @Override

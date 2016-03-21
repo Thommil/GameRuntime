@@ -24,11 +24,6 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
     /**
      * Draws a rectangle using the given vertices. There must be 4 vertices, each made up of 5 elements in this order: x, y, color,
      * u, v. The {@link #getColor()} from the Batch is not applied.
-     *
-     * @param texture
-     * @param spriteVertices
-     * @param offset
-     * @param count
      */
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
@@ -137,7 +132,7 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
 
 
         final ShaderProgram shader = new ShaderProgram(prefix + vertexShader, prefix + fragmentShader);
-        if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
 }

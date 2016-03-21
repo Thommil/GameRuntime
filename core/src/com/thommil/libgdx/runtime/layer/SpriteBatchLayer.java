@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.layer;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
@@ -43,7 +42,7 @@ public class SpriteBatchLayer extends Layer{
             SpriteBatchLayer.sharedRenderer = new SpriteBatchRenderer(SpriteBatchLayer.size);
         }
         this.renderer = SpriteBatchLayer.sharedRenderer;
-        this.currentConsumersCount++;
+        SpriteBatchLayer.currentConsumersCount++;
     }
 
     /**
@@ -93,9 +92,6 @@ public class SpriteBatchLayer extends Layer{
 
     /**
      * Called when layer is resized
-     *
-     * @param width
-     * @param height
      */
     @Override
     protected void onResize(int width, int height) {

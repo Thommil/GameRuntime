@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Disposable;
@@ -88,12 +89,15 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             PolygonShape groundBodyShape = new PolygonShape();
             groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
-            shapes.add(groundBodyShape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 1.0f;
+            fixtureDef.shape = groundBodyShape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
 
     }
@@ -109,12 +113,15 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             PolygonShape dynamicPolygonShape = new PolygonShape();
             dynamicPolygonShape.setAsBox(1f,1f);
-            shapes.add(dynamicPolygonShape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 1.0f;
+            fixtureDef.shape = dynamicPolygonShape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
     }
 

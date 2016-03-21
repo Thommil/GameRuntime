@@ -15,8 +15,6 @@ public abstract class HeadlessBodyActor extends Actor implements RigidBody {
      */
     public Body body;
 
-    protected float density = 1f;
-
     /**
      * Default constructor
      *
@@ -24,14 +22,6 @@ public abstract class HeadlessBodyActor extends Actor implements RigidBody {
      */
     public HeadlessBodyActor(final int id){
         super(id);
-    }
-
-    /**
-     * Gets the density to the RigidBody
-     */
-    @Override
-    public float getDensity() {
-        return this.density;
     }
 
     /**
@@ -47,7 +37,7 @@ public abstract class HeadlessBodyActor extends Actor implements RigidBody {
     /**
      * Set body instance of the Collidable
      *
-     * @param body
+     * @param body The Body instance
      */
     @Override
     public void setBody(Body body) {

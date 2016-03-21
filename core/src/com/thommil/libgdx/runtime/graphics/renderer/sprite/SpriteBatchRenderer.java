@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
-import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 
 /**
@@ -87,11 +86,6 @@ public class SpriteBatchRenderer implements BatchRenderer{
     /**
      * Draws a rectangle using the given vertices. There must be 4 vertices, each made up of 5 elements in this order: x, y, color,
      * u, v. The {@link #getColor()} from the Batch is not applied.
-     *
-     * @param texture
-     * @param spriteVertices
-     * @param offset
-     * @param count
      */
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
@@ -253,7 +247,7 @@ public class SpriteBatchRenderer implements BatchRenderer{
                 + "}";
 
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-        if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
 

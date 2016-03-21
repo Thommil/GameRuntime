@@ -58,7 +58,6 @@ public class ExtendedMesh extends Mesh {
      * @param maxIndices     the maximum number of indices this mesh can hold
      * @param attributes     the {@link VertexAttributes}. Each vertex attribute defines one property of a vertex such as position,
      *                       normal or texture coordinate
-     * @author Jaroslaw Wisniewski <j.wisniewski@appsisle.com>
      **/
     public ExtendedMesh(boolean staticVertices, boolean staticIndices, int maxVertices, int maxIndices, VertexAttributes attributes) {
         super(staticVertices, staticIndices, maxVertices, maxIndices, attributes);

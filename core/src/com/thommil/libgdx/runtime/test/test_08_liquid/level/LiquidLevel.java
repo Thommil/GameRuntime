@@ -81,13 +81,17 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
         //Duck garbage collector bind to bg layer
         garbageCollectorActor = new HeadlessBodyActor(MathUtils.random(0x7ffffffe)) {
+
             @Override
-            public List<Shape> getShapes() {
-                List<Shape> shapes = new ArrayList<Shape>();
+            public List<FixtureDef> getFixturesDefinition() {
+                List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(100f,4f);
-                shapes.add(shape);
-                return shapes;
+                FixtureDef fixtureDef = new FixtureDef();
+                fixtureDef.density = 1.0f;
+                fixtureDef.shape = shape;
+                fixtureDefs.add(fixtureDef);
+                return fixtureDefs;
             }
 
             @Override
@@ -163,13 +167,17 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
             super(MathUtils.random(0x7ffffffe), textureSet, x, y, width, height, u, v, u2, v2, color);
         }
 
+
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             PolygonShape shape = new PolygonShape();
             shape.setAsBox(this.width/2 - 0.05f,this.height/2, new Vector2(this.width/2,this.height/2 - 0.05f),0f);
-            shapes.add(shape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 1.0f;
+            fixtureDef.shape = shape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
     }
 
@@ -181,19 +189,18 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
             this.setSize(0.5f,0.5f);
             this.setOriginCenter();
             this.setPosition(x, y);
-            this.density = 0.4f;
         }
 
-        /**
-         * Gets the Shapes of the Collidable
-         */
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             CircleShape circleShape = new CircleShape();
             circleShape.setRadius(0.25f);
-            shapes.add(circleShape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 0.4f;
+            fixtureDef.shape = circleShape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
 
         /**
@@ -220,9 +227,20 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
         public WaterActor() {
             super(MathUtils.random(0x7ffffffe), 0.05f);
-            this.density = 1f;
             particleDef = new ParticleDef();
             this.particleDef.flags.add(ParticleDef.ParticleType.b2_waterParticle);
+        }
+
+        /**
+         * Gets the definition of Collidable.
+         *
+         * @return definition The collidable definition (settings)
+         */
+        @Override
+        public ParticleSystemDef getDefinition() {
+            final ParticleSystemDef particleSystemDef = super.getDefinition();
+            particleSystemDef.density = 1.0f;
+            return particleSystemDef;
         }
 
         public void createGroup(float x, float y, float w, float h){

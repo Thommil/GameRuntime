@@ -19,7 +19,6 @@ public abstract class ParticleSystemActor extends Actor implements ParticlesBody
 
     public ParticleSystem particleSystem;
 
-    protected float density = 1f;
     protected final float particlesRadius;
     protected final boolean colored;
     protected final TextureSet textureSet;
@@ -71,42 +70,24 @@ public abstract class ParticleSystemActor extends Actor implements ParticlesBody
     }
 
     /**
-     * Gets teh radius of particles
-     */
-    @Override
-    public float getParticlesRadius(){
-        return this.particlesRadius;
-    }
-
-    /**
-     * Gets the density to the particles
-     */
-    @Override
-    public float getDensity() {
-        return this.density;
-    }
-
-    /**
      * Gets the definition of Collidable.
      *
      * @return definition The collidable definition (settings)
      */
     @Override
     public ParticleSystemDef getDefinition() {
-        final ParticleSystemDef particleSystemDef = new ParticleSystemDef();
-        particleSystemDef.radius = this.getParticlesRadius();
-        particleSystemDef.density = this.getDensity();
-        return particleSystemDef;
+        return new ParticleSystemDef();
     }
 
     /**
      * Set body instance of the Collidable
      *
-     * @param particleSystem
+     * @param particleSystem The Body instance
      */
     @Override
     public void setBody(ParticleSystem particleSystem) {
         this.particleSystem = particleSystem;
+        this.particleSystem.setParticleRadius(this.particlesRadius);
     }
 
     /**
@@ -126,7 +107,7 @@ public abstract class ParticleSystemActor extends Actor implements ParticlesBody
     @Override
     public void render(float deltaTime, ParticlesBatchRenderer renderer) {
         if(this.particleSystem != null) {
-            renderer.setParticlesRadius(this.getParticlesRadius());
+            renderer.setParticlesRadius(this.particlesRadius);
             final float[] vertices;
             if (this.colored) {
                 vertices = this.particleSystem.getParticlePositionAndColorBufferArray(true);

@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.BatchRenderer;
-import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.actor.physics.ParticleSystemActor;
 import com.thommil.libgdx.runtime.tools.GL11;
 
@@ -220,7 +219,7 @@ public class ParticlesBatchRenderer implements BatchRenderer{
 
 
         final ShaderProgram shader = new ShaderProgram(prefix + vertexShader, prefix + fragmentShader);
-        if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
 

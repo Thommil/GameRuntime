@@ -2,7 +2,7 @@ package com.thommil.libgdx.runtime.actor.physics;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import java.util.List;
 
@@ -14,22 +14,17 @@ import java.util.List;
 public interface RigidBody extends Collidable<BodyDef,Body> {
 
     /**
-     * Gets the Shapes of the Collidable
-     */
-    List<Shape> getShapes();
-
-    /**
-     * Gets the density to the shapes
-     */
-    float getDensity();
-
-    /**
      * Gets the definition of Collidable.
      *
      * @return definition The collidable definition (settings)
      */
     @Override
     BodyDef getDefinition();
+
+    /**
+     * Gets the fixtures definition of the Collidable
+     */
+    List<FixtureDef> getFixturesDefinition();
 
     /**
      * Called at body creation, implementations can add

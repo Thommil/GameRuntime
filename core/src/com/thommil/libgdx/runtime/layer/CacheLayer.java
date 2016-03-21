@@ -46,7 +46,7 @@ public class CacheLayer extends Layer{
             CacheLayer.sharedRenderer = new SpriteCacheRenderer(CacheLayer.size);
         }
         this.renderer = CacheLayer.sharedRenderer;
-        this.currentConsumersCount++;
+        CacheLayer.currentConsumersCount++;
     }
 
     /**
@@ -63,8 +63,6 @@ public class CacheLayer extends Layer{
 
     /**
      * Add an renderable to the layer
-     *
-     * @param actor
      */
     @Override
     public void addActor(Actor actor) {
@@ -74,8 +72,6 @@ public class CacheLayer extends Layer{
 
     /**
      * Remove a renderable from the layer
-     *
-     * @param actor
      */
     @Override
     public void removeActor(Actor actor) {
@@ -127,9 +123,6 @@ public class CacheLayer extends Layer{
 
     /**
      * Called when layer is resized
-     *
-     * @param width
-     * @param height
      */
     @Override
     protected void onResize(int width, int height) {

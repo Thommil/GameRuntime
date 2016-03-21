@@ -1,8 +1,7 @@
 package com.thommil.libgdx.runtime.layer;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.IntMap;
@@ -15,7 +14,6 @@ import com.thommil.libgdx.runtime.actor.physics.RigidBody;
 import com.thommil.libgdx.runtime.actor.physics.Stepable;
 import com.thommil.libgdx.runtime.Runtime;
 import finnstr.libgdx.liquidfun.ParticleSystem;
-import finnstr.libgdx.liquidfun.ParticleSystemDef;
 
 /**
  * Represents a rendering layer (mainly for batch purpose)
@@ -88,9 +86,9 @@ public abstract class Layer implements Disposable {
         if(collidable instanceof RigidBody){
             final RigidBody rigidBody = (RigidBody)collidable;
             final Body body = Layer.this.runtime.getPhysicsWorld().createBody(rigidBody.getDefinition());
-            for(final Shape shape : rigidBody.getShapes()){
-                body.createFixture(shape, rigidBody.getDensity());
-                shape.dispose();
+            for(final FixtureDef fixtureDef : rigidBody.getFixturesDefinition()){
+                body.createFixture(fixtureDef);
+                fixtureDef.shape.dispose();
             }
             rigidBody.setBody(body);
         }

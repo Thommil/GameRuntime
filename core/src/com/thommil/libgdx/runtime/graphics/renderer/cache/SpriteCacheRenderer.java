@@ -25,8 +25,8 @@ public class SpriteCacheRenderer implements CacheRenderer {
     protected final ShaderProgram shader;
 
     protected final float[] tempVertices = new float[SpriteActor.VERTEX_SIZE * 6];
-    protected final Array<Cache> caches = new Array();
-    protected final Array<TextureSet> textureSets = new Array(8);
+    protected final Array<Cache> caches = new Array<Cache>();
+    protected final Array<TextureSet> textureSets = new Array<TextureSet>(8);
     protected final IntArray counts = new IntArray(8);
     protected Cache currentCache;
 
@@ -260,7 +260,7 @@ public class SpriteCacheRenderer implements CacheRenderer {
         short[] indices = new short[length];
         short j = 0;
         for (int i = 0; i < length; i += 6, j += 4) {
-            indices[i + 0] = j;
+            indices[i] = j;
             indices[i + 1] = (short)(j + 1);
             indices[i + 2] = (short)(j + 2);
             indices[i + 3] = (short)(j + 2);
@@ -300,7 +300,7 @@ public class SpriteCacheRenderer implements CacheRenderer {
                 + "  gl_FragColor = v_color * texture2D("+TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
                 + "}";
         final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
-        if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
 

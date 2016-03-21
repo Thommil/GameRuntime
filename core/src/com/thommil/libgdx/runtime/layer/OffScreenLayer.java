@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.layer;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -40,8 +39,6 @@ public class OffScreenLayer<T extends Layer> extends Layer {
 
     /**
      * Add an renderable to the layer
-     *
-     * @param actor
      */
     @Override
     public void addActor(Actor actor) {
@@ -50,8 +47,6 @@ public class OffScreenLayer<T extends Layer> extends Layer {
 
     /**
      * Remove a renderable from the layer
-     *
-     * @param actor
      */
     @Override
     public void removeActor(Actor actor) {
@@ -80,8 +75,6 @@ public class OffScreenLayer<T extends Layer> extends Layer {
 
     /**
      * Binds a layer to a Runtime (normaly called by the Runtime itself)
-     *
-     * @param runtime
      */
     @Override
     public void bind(Runtime runtime) {
@@ -116,9 +109,6 @@ public class OffScreenLayer<T extends Layer> extends Layer {
 
     /**
      * Called when layer is resized
-     *
-     * @param width
-     * @param height
      */
     @Override
     protected void onResize(int width, int height) {

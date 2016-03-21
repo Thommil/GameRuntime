@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thommil.libgdx.runtime.Settings;
 
 /**
  * Event dispatcher for touch events, this class is accessed as a Singleton across application.
@@ -77,7 +76,7 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean keyDown(int keycode) {
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.keyDown(keycode) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.keyDown(keycode);
     }
 
     /**
@@ -88,7 +87,7 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean keyUp(int keycode) {
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.keyUp(keycode) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.keyUp(keycode);
     }
 
     /**
@@ -99,7 +98,7 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean keyTyped(char character) {
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.keyTyped(character) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.keyTyped(character);
     }
 
     /**
@@ -122,14 +121,14 @@ public class TouchDispatcher implements InputProcessor{
                 }
             }
         }
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchDown(screenX,screenY,pointer,button) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.touchDown(screenX,screenY,pointer,button);
     }
 
     /**
      * Called when a finger was lifted or a mouse button was released. The button parameter will be {@link Buttons#LEFT} on iOS.
      *
-     * @param screenX
-     * @param screenY
+     * @param screenX The screen X coordinates
+     * @param screenY The screen Y coordinates
      * @param pointer the pointer for the event.
      * @param button  the button   @return whether the input was processed
      */
@@ -144,14 +143,14 @@ public class TouchDispatcher implements InputProcessor{
                 }
             }
         }
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchDown(screenX,screenY,pointer,button) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.touchDown(screenX,screenY,pointer,button);
     }
 
     /**
      * Called when a finger or the mouse was dragged.
      *
-     * @param screenX
-     * @param screenY
+     * @param screenX The screen X coordinates
+     * @param screenY The screen Y coordinates
      * @param pointer the pointer for the event.  @return whether the input was processed
      */
     @Override
@@ -165,19 +164,19 @@ public class TouchDispatcher implements InputProcessor{
                 }
             }
         }
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.touchDragged(screenX, screenY, pointer) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.touchDragged(screenX, screenY, pointer);
     }
 
     /**
      * Called when the mouse was moved without any buttons being pressed. Will not be called on iOS.
      *
-     * @param screenX
-     * @param screenY
+     * @param screenX The screen X coordinates
+     * @param screenY The screen Y coordinates
      * @return whether the input was processed
      */
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.mouseMoved(screenX, screenY) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.mouseMoved(screenX, screenY);
     }
 
     /**
@@ -188,6 +187,6 @@ public class TouchDispatcher implements InputProcessor{
      */
     @Override
     public boolean scrolled(int amount) {
-        return (this.decoratedInputProcessor != null) ? this.decoratedInputProcessor.scrolled(amount) : false;
+        return (this.decoratedInputProcessor != null) && this.decoratedInputProcessor.scrolled(amount);
     }
 }

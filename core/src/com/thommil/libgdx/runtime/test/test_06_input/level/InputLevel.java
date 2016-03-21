@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.physics.SpriteBodyActor;
@@ -115,12 +112,15 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             CircleShape shape = new CircleShape();
             shape.setRadius(0.9f);
-            shapes.add(shape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 1.0f;
+            fixtureDef.shape = shape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
 
         public void setTargetPosition(final float x, final float y){
@@ -149,12 +149,15 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             PolygonShape groundBodyShape = new PolygonShape();
             groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
-            shapes.add(groundBodyShape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 1.0f;
+            fixtureDef.shape = groundBodyShape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
     }
 
@@ -169,12 +172,15 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<Shape> getShapes() {
-            List<Shape> shapes = new ArrayList<Shape>();
+        public List<FixtureDef> getFixturesDefinition() {
+            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
             CircleShape planetShape = new CircleShape();
             planetShape.setRadius(radius);
-            shapes.add(planetShape);
-            return shapes;
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.density = 1.0f;
+            fixtureDef.shape = planetShape;
+            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
 
         /**

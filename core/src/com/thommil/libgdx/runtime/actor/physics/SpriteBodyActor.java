@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
@@ -20,8 +20,6 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
 
     public Body body;
 
-    protected float density = 1f;
-
     public SpriteBodyActor(final int id, TextureSet textureSet) {
         super(id, textureSet);
     }
@@ -34,21 +32,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
         super(id, textureSet, srcX, srcY, srcWidth, srcHeight);
     }
 
-    /**
-     * Gets the Shapes of the Collidable
-     */
-    @Override
-    public abstract List<Shape> getShapes();
-
-    /**
-     * Gets the density to the RigidBody
-     */
-    @Override
-    public float getDensity() {
-        return this.density;
-    }
-
-    /**
+     /**
      * Gets the definition of Collidable.
      *
      * @return definition The collidable definition (settings)
@@ -63,9 +47,15 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
     }
 
     /**
+     * Gets the fixtures definition of the Collidable
+     */
+    @Override
+    public abstract List<FixtureDef> getFixturesDefinition();
+
+    /**
      * Set body instance of the Collidable
      *
-     * @param body
+     * @param body The Body instance
      */
     @Override
     public void setBody(final Body body) {

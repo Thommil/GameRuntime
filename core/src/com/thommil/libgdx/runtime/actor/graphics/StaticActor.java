@@ -34,11 +34,11 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param y The Y coord
      * @param width The width of the renderable
      * @param height The height of the renderable
-     * @param u
-     * @param v
-     * @param u2
-     * @param v2
-     * @param color
+     * @param u u Texture coordinates
+     * @param v v Texture coordinates
+     * @param u2 u2 Texture coordinates
+     * @param v2 v2 Texture coordinates
+     * @param color The color modifier
      */
     public StaticActor(final int id,
                         final TextureSet textureSet,

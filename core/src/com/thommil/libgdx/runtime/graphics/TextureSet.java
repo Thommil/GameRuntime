@@ -61,10 +61,10 @@ public class TextureSet implements Disposable{
     /**
      * Constructor
      *
-     * @param texture
+     * @param texture The list of texture to add
      */
-    public TextureSet(final Texture... texture){
-        this.textures = texture;
+    public TextureSet(final Texture... textures){
+        this.textures = textures;
     }
 
     /**

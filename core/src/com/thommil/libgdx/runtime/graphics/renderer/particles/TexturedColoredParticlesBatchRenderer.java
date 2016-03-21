@@ -3,7 +3,6 @@ package com.thommil.libgdx.runtime.graphics.renderer.particles;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Mesh;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -83,7 +82,7 @@ public class TexturedColoredParticlesBatchRenderer extends TexturedParticlesBatc
 
 
         final ShaderProgram shader = new ShaderProgram(prefix + vertexShader, prefix + fragmentShader);
-        if (shader.isCompiled() == false) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
+        if (!shader.isCompiled()) throw new IllegalArgumentException("Error compiling shader: " + shader.getLog());
         return shader;
     }
 }

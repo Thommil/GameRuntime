@@ -11,16 +11,6 @@ import finnstr.libgdx.liquidfun.ParticleSystemDef;
 public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSystem> {
 
     /**
-     * Gets the radius of particles
-     */
-    float getParticlesRadius();
-
-    /**
-     * Gets the density to the particles
-     */
-    float getDensity();
-
-    /**
      * Gets the definition of Collidable.
      *
      * @return definition The collidable definition (settings)

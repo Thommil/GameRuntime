@@ -44,7 +44,7 @@ public class ParticlesBatchLayer extends Layer{
             ParticlesBatchLayer.sharedRenderer = new ParticlesBatchRenderer(ParticlesBatchLayer.size);
         }
         this.renderer = ParticlesBatchLayer.sharedRenderer;
-        this.currentConsumersCount++;
+        ParticlesBatchLayer.currentConsumersCount++;
     }
 
     /**
@@ -103,9 +103,6 @@ public class ParticlesBatchLayer extends Layer{
 
     /**
      * Called when layer is resized
-     *
-     * @param width
-     * @param height
      */
     @Override
     protected void onResize(int width, int height) {
