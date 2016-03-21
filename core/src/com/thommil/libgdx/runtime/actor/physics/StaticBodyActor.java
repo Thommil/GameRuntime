@@ -3,10 +3,9 @@ package com.thommil.libgdx.runtime.actor.physics;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.utils.Array;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.actor.graphics.StaticActor;
-
-import java.util.List;
 
 /**
  * Defines a static renderable actor which can interact with physic world
@@ -41,7 +40,7 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
      * Gets the fixtures definition of the Collidable
      */
     @Override
-    public abstract List<FixtureDef> getFixturesDefinition();
+    public abstract Array<FixtureDef> getFixturesDefinition();
 
     /**
      * Set body instance of the Collidable

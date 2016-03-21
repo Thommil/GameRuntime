@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.physics.SpriteBodyActor;
@@ -112,8 +113,8 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             CircleShape shape = new CircleShape();
             shape.setRadius(0.9f);
             FixtureDef fixtureDef = new FixtureDef();
@@ -149,8 +150,8 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             PolygonShape groundBodyShape = new PolygonShape();
             groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
             FixtureDef fixtureDef = new FixtureDef();
@@ -172,8 +173,8 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             CircleShape planetShape = new CircleShape();
             planetShape.setRadius(radius);
             FixtureDef fixtureDef = new FixtureDef();

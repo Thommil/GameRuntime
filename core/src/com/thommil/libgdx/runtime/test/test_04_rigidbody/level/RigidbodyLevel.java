@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -89,8 +90,8 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             PolygonShape groundBodyShape = new PolygonShape();
             groundBodyShape.setAsBox(this.width/2,this.height/2, new Vector2(this.width/2,this.height/2),0);
             FixtureDef fixtureDef = new FixtureDef();
@@ -113,8 +114,8 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
         }
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             PolygonShape dynamicPolygonShape = new PolygonShape();
             dynamicPolygonShape.setAsBox(1f,1f);
             FixtureDef fixtureDef = new FixtureDef();

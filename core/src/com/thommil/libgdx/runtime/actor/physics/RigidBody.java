@@ -3,8 +3,7 @@ package com.thommil.libgdx.runtime.actor.physics;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-
-import java.util.List;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Defines a physics actor with a rigid body
@@ -24,7 +23,7 @@ public interface RigidBody extends Collidable<BodyDef,Body> {
     /**
      * Gets the fixtures definition of the Collidable
      */
-    List<FixtureDef> getFixturesDefinition();
+    Array<FixtureDef> getFixturesDefinition();
 
     /**
      * Called at body creation, implementations can add

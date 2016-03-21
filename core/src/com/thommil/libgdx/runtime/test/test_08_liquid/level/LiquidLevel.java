@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -83,8 +84,8 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
         garbageCollectorActor = new HeadlessBodyActor(MathUtils.random(0x7ffffffe)) {
 
             @Override
-            public List<FixtureDef> getFixturesDefinition() {
-                List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+            public Array<FixtureDef> getFixturesDefinition() {
+                Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
                 PolygonShape shape = new PolygonShape();
                 shape.setAsBox(100f,4f);
                 FixtureDef fixtureDef = new FixtureDef();
@@ -169,8 +170,8 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             PolygonShape shape = new PolygonShape();
             shape.setAsBox(this.width/2 - 0.05f,this.height/2, new Vector2(this.width/2,this.height/2 - 0.05f),0f);
             FixtureDef fixtureDef = new FixtureDef();
@@ -192,8 +193,8 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
         }
 
         @Override
-        public List<FixtureDef> getFixturesDefinition() {
-            List<FixtureDef> fixtureDefs = new ArrayList<FixtureDef>();
+        public Array<FixtureDef> getFixturesDefinition() {
+            Array<FixtureDef> fixtureDefs = new Array<FixtureDef>();
             CircleShape circleShape = new CircleShape();
             circleShape.setRadius(0.25f);
             FixtureDef fixtureDef = new FixtureDef();

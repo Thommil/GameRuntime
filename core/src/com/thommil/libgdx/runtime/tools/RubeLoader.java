@@ -78,6 +78,12 @@ public class RubeLoader {
     public BodyDef getBodyDefinition(final int index){
         final BodyDef bodyDef = new BodyDef();
         final JsonValue jsonBody = this.rubeScene.get("body").get(index);
+        if(jsonBody.has("active")) {
+            bodyDef.active = jsonBody.getBoolean("active");
+        }
+        if(jsonBody.has("allowSleep")) {
+            bodyDef.allowSleep = jsonBody.getBoolean("allowSleep");
+        }
         if(jsonBody.has("angle")) {
             bodyDef.angle = jsonBody.getFloat("angle");
         }
@@ -86,6 +92,15 @@ public class RubeLoader {
         }
         if(jsonBody.has("awake")) {
             bodyDef.awake = jsonBody.getBoolean("awake");
+        }
+        if(jsonBody.has("bullet")) {
+            bodyDef.bullet = jsonBody.getBoolean("bullet");
+        }
+        if(jsonBody.has("fixedRotation")) {
+            bodyDef.fixedRotation = jsonBody.getBoolean("fixedRotation");
+        }
+        if(jsonBody.has("gravityScale")) {
+            bodyDef.gravityScale = jsonBody.getFloat("gravityScale");
         }
         if(jsonBody.has("linearVelocity")) {
             if (jsonBody.get("linearVelocity").isObject()) {
@@ -126,6 +141,37 @@ public class RubeLoader {
     }
 
     /**
+     * Gets a Box2D Body image from its index in the Scene
+     *
+     * @param index The body index
+     *
+     * @return The body image in a BodyImage
+     */
+    public BodyImage getBodyImage(final int index){
+        final JsonValue jsonImages = this.rubeScene.get("image");
+        for(final JsonValue jsonImage : jsonImages){
+            if(jsonImage.has("body") && jsonImage.getInt("body") == index){
+                final BodyImage bodyImage = new BodyImage();
+                bodyImage.body = index;
+                if(jsonImage.has("file")) {
+                    bodyImage.file = jsonImage.getString("file");
+                }
+                if(jsonImage.has("width")) {
+                    bodyImage.width = jsonImage.getFloat("width");
+                }
+                if(jsonImage.has("height")) {
+                    bodyImage.height = jsonImage.getFloat("height");
+                }
+                if(jsonImage.has("uv")) {
+                    bodyImage.uv = jsonImage.get("uv").asFloatArray();
+                }
+                return bodyImage;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets the list of fixtures definition for the body at specified index
      *
      * @param bodyIndex The body index
@@ -146,15 +192,47 @@ public class RubeLoader {
             if(jsonFixture.has("restitution")) {
                 fixtureDef.restitution = jsonFixture.getFloat("restitution");
             }
+            if(jsonFixture.has("filter-maskBits")) {
+                fixtureDef.filter.maskBits = jsonFixture.getShort("filter-maskBits");
+            }
+            if(jsonFixture.has("filter-categoryBits")) {
+                fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-categoryBits");
+            }
+            if(jsonFixture.has("filter-groupIndex")) {
+                fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-groupIndex");
+            }
+            if(jsonFixture.has("sensor")) {
+                fixtureDef.isSensor = jsonFixture.getBoolean("sensor");
+            }
 
             if(jsonFixture.has("polygon")) {
                 final PolygonShape polygonShape = new PolygonShape();
-
+                final float[] xVertices = jsonFixture.get("polygon").get("vertices").get("x").asFloatArray();
+                final float[] yVertices = jsonFixture.get("polygon").get("vertices").get("y").asFloatArray();
+                final float[] vertices = new float[xVertices.length + yVertices.length];
+                for(int inIndex=0, outIndex=0; inIndex < xVertices.length; inIndex++, outIndex+=2){
+                    vertices[outIndex] = xVertices[inIndex];
+                    vertices[outIndex+1] = yVertices[inIndex];
+                }
+                polygonShape.set(vertices);
                 fixtureDef.shape = polygonShape;
             }
             else if(jsonFixture.has("chain")) {
                 final ChainShape chainShape = new ChainShape();
-
+                final float[] xVertices = jsonFixture.get("chain").get("vertices").get("x").asFloatArray();
+                final float[] yVertices = jsonFixture.get("chain").get("vertices").get("y").asFloatArray();
+                final float[] vertices = new float[xVertices.length + yVertices.length];
+                for(int inIndex=0, outIndex=0; inIndex < xVertices.length; inIndex++, outIndex+=2){
+                    vertices[outIndex] = xVertices[inIndex];
+                    vertices[outIndex+1] = yVertices[inIndex];
+                }
+                if(jsonFixture.get("chain").has("hasPrevVertex") && jsonFixture.get("chain").getBoolean("hasPrevVertex")
+                        && jsonFixture.get("chain").has("hasNextVertex") && jsonFixture.get("chain").getBoolean("hasNextVertex")){
+                    chainShape.createLoop(vertices);
+                }
+                else{
+                    chainShape.createChain(vertices);
+                }
                 fixtureDef.shape = chainShape;
             }
             else if(jsonFixture.has("circle")) {
@@ -167,6 +245,31 @@ public class RubeLoader {
         }
 
         return fixtureDefs;
+    }
+
+    /**
+     * Image for a Rube Body (custom properties):
+     * {
+     *  "file" : "path/to/image",
+     *  "body" : bodyId,
+     *  "width" : width,
+     *  "height" : height,
+     *  "uv" : [u,v,u2,v2]
+     * }
+     */
+    public static class BodyImage{
+
+        public static final int U = 0;
+        public static final int V = 1;
+        public static final int U2 = 2;
+        public static final int V2 = 3;
+
+        public String file;
+        public int body;
+        public float width;
+        public float height;
+        public float[] uv;
+
     }
 
 }

@@ -5,11 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.utils.Array;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
-
-import java.util.List;
 
 /**
  * Defines a dynamic SpriteActor actor which can interact with physic world
@@ -50,7 +49,7 @@ public abstract class SpriteBodyActor extends SpriteActor implements RigidBody {
      * Gets the fixtures definition of the Collidable
      */
     @Override
-    public abstract List<FixtureDef> getFixturesDefinition();
+    public abstract Array<FixtureDef> getFixturesDefinition();
 
     /**
      * Set body instance of the Collidable
