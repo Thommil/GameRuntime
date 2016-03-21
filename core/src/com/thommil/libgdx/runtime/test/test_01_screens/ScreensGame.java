@@ -87,7 +87,8 @@ public class ScreensGame extends Game implements InputProcessor, ScreensGameAPI{
 
     @Override
     protected void onResize(int width, int height) {
-
+        if(this.loadingScreen != null) this.loadingScreen.resize(width, height);
+        if(this.mainScreen != null) this.mainScreen.resize(width, height);
     }
 
     @Override

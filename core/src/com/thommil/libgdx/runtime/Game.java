@@ -92,8 +92,15 @@ public abstract class Game implements ApplicationListener {
      * @param screen The screen to display
      */
     public final void showScreen(final Screen screen){
+        if(this.currentScreen != null){
+            if(this.currentScreen == this.runtime){
+                this.onHideRuntime();
+            }
+            this.currentScreen.hide();
+        }
+
         this.currentScreen = screen;
-        this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         if(this.currentScreen == this.runtime){
             this.onShowRuntime();
         }
@@ -112,6 +119,9 @@ public abstract class Game implements ApplicationListener {
     public final void resize(int width, int height) {
         this.viewport.update(width, height);
         this.onResize(width, height);
+        if(this.currentScreen != this.runtime){
+            this.runtime.resize(width, height);
+        }
         this.currentScreen.resize(width, height);
     }
 
