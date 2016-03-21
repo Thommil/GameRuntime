@@ -21,14 +21,12 @@ public interface ParticlesBody extends Collidable<ParticleSystemDef, ParticleSys
     float getDensity();
 
     /**
-     * Sets the definition of Collidable, implementations
-     * should configure Collidable settings in the passed
-     * definition.
+     * Gets the definition of Collidable.
      *
-     * @param particleSystemDef The collidable definition (settings)
+     * @return definition The collidable definition (settings)
      */
     @Override
-    void setDefinition(final ParticleSystemDef particleSystemDef);
+    ParticleSystemDef getDefinition();
 
     /**
      * Called at body creation, implementations can add

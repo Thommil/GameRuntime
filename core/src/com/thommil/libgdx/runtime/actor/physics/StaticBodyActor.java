@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.actor.physics;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -41,16 +42,16 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
     }
 
     /**
-     * Sets the definition of Collidable, implementations
-     * should configure Collidable settings in the passed
-     * definition.
+     * Gets the definition of Collidable.
      *
-     * @param bodyDef The collidable definition (settings)
+     * @return definition The collidable definition (settings)
      */
     @Override
-    public void setDefinition(final BodyDef bodyDef) {
+    public BodyDef getDefinition() {
+        final BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(this.x, this.y);
+        return bodyDef;
     }
 
     /**

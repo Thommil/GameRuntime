@@ -24,14 +24,12 @@ public interface RigidBody extends Collidable<BodyDef,Body> {
     float getDensity();
 
     /**
-     * Sets the definition of Collidable, implementations
-     * should configure Collidable settings in the passed
-     * definition.
+     * Gets the definition of Collidable.
      *
-     * @param bodyDef The collidable definition (settings)
+     * @return definition The collidable definition (settings)
      */
     @Override
-    void setDefinition(final BodyDef bodyDef);
+    BodyDef getDefinition();
 
     /**
      * Called at body creation, implementations can add

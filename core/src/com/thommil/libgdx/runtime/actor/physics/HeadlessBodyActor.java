@@ -35,6 +35,16 @@ public abstract class HeadlessBodyActor extends Actor implements RigidBody {
     }
 
     /**
+     * Gets the definition of Collidable.
+     *
+     * @return definition The collidable definition (settings)
+     */
+    @Override
+    public BodyDef getDefinition() {
+        return new BodyDef();
+    }
+
+    /**
      * Set body instance of the Collidable
      *
      * @param body

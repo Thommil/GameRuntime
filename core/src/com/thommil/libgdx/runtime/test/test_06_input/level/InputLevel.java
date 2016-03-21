@@ -178,16 +178,15 @@ public class InputLevel implements InputProcessor, Disposable {
         }
 
         /**
-         * Sets the definition of Collidable, implementations
-         * should configure Collidable settings in the passed
-         * definition.
+         * Gets the definition of Collidable.
          *
-         * @param bodyDef The collidable definition (settings)
+         * @return definition The collidable definition (settings)
          */
         @Override
-        public void setDefinition(BodyDef bodyDef) {
-            super.setDefinition(bodyDef);
+        public BodyDef getDefinition() {
+            final BodyDef bodyDef = super.getDefinition();
             bodyDef.position.set(this.x + this.radius, this.y + radius);
+            return bodyDef;
         }
     }
 

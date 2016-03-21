@@ -87,9 +87,7 @@ public abstract class Layer implements Disposable {
     private void bindCollidable(final Collidable collidable){
         if(collidable instanceof RigidBody){
             final RigidBody rigidBody = (RigidBody)collidable;
-            final BodyDef bodyDef = new BodyDef();
-            rigidBody.setDefinition(bodyDef);
-            final Body body = Layer.this.runtime.getPhysicsWorld().createBody(bodyDef);
+            final Body body = Layer.this.runtime.getPhysicsWorld().createBody(rigidBody.getDefinition());
             for(final Shape shape : rigidBody.getShapes()){
                 body.createFixture(shape, rigidBody.getDensity());
                 shape.dispose();
@@ -98,9 +96,7 @@ public abstract class Layer implements Disposable {
         }
         else if(collidable instanceof ParticlesBody){
             final ParticlesBody particlesBody = (ParticlesBody)collidable;
-            final ParticleSystemDef particleSystemDef = new ParticleSystemDef();
-            particlesBody.setDefinition(particleSystemDef);
-            final ParticleSystem particleSystem = new ParticleSystem(Layer.this.runtime.getPhysicsWorld(),particleSystemDef);
+            final ParticleSystem particleSystem = new ParticleSystem(Layer.this.runtime.getPhysicsWorld(),particlesBody.getDefinition());
             particlesBody.setBody(particleSystem);
         }
     }

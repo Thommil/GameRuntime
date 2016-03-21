@@ -8,13 +8,11 @@ package com.thommil.libgdx.runtime.actor.physics;
 public interface Collidable<Definition, Body>{
 
     /**
-     * Sets the definition of Collidable, implementations
-     * should configure Collidable settings in the passed
-     * definition.
+     * Gets the definition of Collidable.
      *
-     * @param definition The collidable definition (settings)
+     * @return definition The collidable definition (settings)
      */
-    void setDefinition(final Definition definition);
+    Definition getDefinition();
 
     /**
      * Called at body creation, implementations can add

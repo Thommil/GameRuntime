@@ -87,16 +87,16 @@ public abstract class ParticleSystemActor extends Actor implements ParticlesBody
     }
 
     /**
-     * Sets the definition of Collidable, implementations
-     * should configure Collidable settings in the passed
-     * definition.
+     * Gets the definition of Collidable.
      *
-     * @param particleSystemDef The collidable definition (settings)
+     * @return definition The collidable definition (settings)
      */
     @Override
-    public void setDefinition(ParticleSystemDef particleSystemDef) {
+    public ParticleSystemDef getDefinition() {
+        final ParticleSystemDef particleSystemDef = new ParticleSystemDef();
         particleSystemDef.radius = this.getParticlesRadius();
         particleSystemDef.density = this.getDensity();
+        return particleSystemDef;
     }
 
     /**

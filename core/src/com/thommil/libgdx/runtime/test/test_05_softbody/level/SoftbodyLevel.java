@@ -98,10 +98,16 @@ public class SoftbodyLevel implements InputProcessor, Disposable {
             this.density = 0.2f;
         }
 
+        /**
+         * Gets the definition of Collidable.
+         *
+         * @return definition The collidable definition (settings)
+         */
         @Override
-        public void setDefinition(ParticleSystemDef particleSystemDef) {
-            super.setDefinition(particleSystemDef);
+        public ParticleSystemDef getDefinition() {
+            final ParticleSystemDef particleSystemDef = super.getDefinition();
             particleSystemDef.viscousStrength = 2f;
+            return particleSystemDef;
         }
 
         /**
