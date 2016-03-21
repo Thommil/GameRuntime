@@ -46,6 +46,7 @@ public class BitmapFontBatchLayer extends SpriteBatchLayer {
     protected void onResize(int width, int height) {
         super.onResize(width, height);
         this.screenViewport.update(width, height);
+        this.viewport.apply();
     }
 
     /**
