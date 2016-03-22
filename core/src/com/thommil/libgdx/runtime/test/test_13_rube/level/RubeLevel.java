@@ -45,7 +45,9 @@ public class RubeLevel implements Disposable {
             spriteBatchLayer.addActor(new HeadlessBodyActor(i) {
                 @Override
                 public BodyDef getDefinition() {
-                    return rubeLoader.getBodyDefinition(bodyIndex);
+                    RubeLoader.BodyDef bodyDef = rubeLoader.getBodyDefinition(bodyIndex);
+                    Gdx.app.log("","Adding "+bodyDef.name);
+                    return bodyDef;
                 }
 
                 @Override

@@ -107,6 +107,9 @@ public class RubeLoader {
                 bodyDef.linearVelocity.set(jsonBody.get("linearVelocity").getFloat("x"), jsonBody.get("linearVelocity").getFloat("y"));
             }
         }
+        if(jsonBody.has("name")) {
+            bodyDef.name = jsonBody.getString("name");
+        }
         if(jsonBody.has("position")) {
             if (jsonBody.get("position").isObject()) {
                 bodyDef.position.set(jsonBody.get("position").getFloat("x"), jsonBody.get("position").getFloat("y"));
@@ -147,11 +150,11 @@ public class RubeLoader {
      *
      * @return The body image in a BodyImage
      */
-    public BodyImage getBodyImage(final int index){
+    public ImageDef getImageDefinition(final int index){
         final JsonValue jsonImages = this.rubeScene.get("image");
         for(final JsonValue jsonImage : jsonImages){
             if(jsonImage.has("body") && jsonImage.getInt("body") == index){
-                final BodyImage bodyImage = new BodyImage();
+                final ImageDef bodyImage = new ImageDef();
                 bodyImage.body = index;
                 if(jsonImage.has("file")) {
                     bodyImage.file = jsonImage.getString("file");
@@ -237,7 +240,9 @@ public class RubeLoader {
             }
             else if(jsonFixture.has("circle")) {
                 final CircleShape circleShape = new CircleShape();
-                circleShape.setPosition(new Vector2(jsonFixture.get("circle").get("center").getFloat("x"),jsonFixture.get("circle").get("center").getFloat("y")));
+                if(jsonFixture.get("circle").get("center").has("x")) {
+                    circleShape.setPosition(new Vector2(jsonFixture.get("circle").get("center").getFloat("x"), jsonFixture.get("circle").get("center").getFloat("y")));
+                }
                 circleShape.setRadius(jsonFixture.get("circle").getFloat("radius"));
                 fixtureDef.shape = circleShape;
             }
@@ -245,6 +250,13 @@ public class RubeLoader {
         }
 
         return fixtureDefs;
+    }
+
+    /**
+     * BodyDef extension to support name
+     */
+    public static class BodyDef extends com.badlogic.gdx.physics.box2d.BodyDef{
+        public String name;
     }
 
     /**
@@ -257,7 +269,7 @@ public class RubeLoader {
      *  "uv" : [u,v,u2,v2]
      * }
      */
-    public static class BodyImage{
+    public static class ImageDef {
 
         public static final int U = 0;
         public static final int V = 1;
