@@ -25,7 +25,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
     protected Rectangle bound;
 
     /**
-     * Default conctructor
+     * Default conctructor with UV
      *
      * @param id The ID of the Actor in the scene
      * @param layer The layer ID of the renderable in the scene
@@ -83,6 +83,41 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
         this.vertices[SpriteActor.C4] = color;
         this.vertices[SpriteActor.U4] = u2;
         this.vertices[SpriteActor.V4] = v;
+    }
+
+    /**
+     * Default conctructor with Region
+     *
+     * @param id The ID of the Actor in the scene
+     * @param layer The layer ID of the renderable in the scene
+     * @param textureSet The TextureSet to use
+     * @param x The X coord
+     * @param y The Y coord
+     * @param width The width of the renderable
+     * @param height The height of the renderable
+     * @param regionX The X coordinate of the region
+     * @param regionY The Y coordinate of the region
+     * @param regionWidth The width of the region
+     * @param regionHeight The height coordinate of the region
+     * @param color The color modifier
+     */
+    public StaticActor(final int id,
+                       final TextureSet textureSet,
+                       final float x, final float y,
+                       final float width, final float height,
+                       final int regionX, final int regionY,
+                       final int regionWidth, final int regionHeight,
+                       final float color){
+        this(id,
+                textureSet,
+                x, y,
+                width, height,
+                (float)regionX/(float)textureSet.textures[0].getWidth(),
+                1f - (float)regionY/(float)textureSet.textures[0].getHeight(),
+                (float)regionWidth/(float)textureSet.textures[0].getWidth(),
+                1f - (float)regionHeight/(float)textureSet.textures[0].getHeight(),
+                color
+        );
     }
 
     /**

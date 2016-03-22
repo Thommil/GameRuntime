@@ -23,6 +23,10 @@ public abstract class StaticBodyActor extends StaticActor implements RigidBody {
         super(id, textureSet, x, y, width, height, u, v, u2, v2, color);
     }
 
+    public StaticBodyActor(int id, TextureSet textureSet, float x, float y, float width, float height, int regionX, int regionY, int regionWidth, int regionHeight, float color) {
+        super(id, textureSet, x, y, width, height, regionX, regionY, regionWidth, regionHeight, color);
+    }
+
     /**
      * Gets the definition of Collidable.
      *

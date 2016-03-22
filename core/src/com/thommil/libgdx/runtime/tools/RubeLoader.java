@@ -151,18 +151,18 @@ public class RubeLoader {
     }
 
     /**
-     * Gets a Box2D Body image from its index in the Scene
+     * Gets a Box2D Body image from body index in the Scene
      *
      * @param index The body index
      *
      * @return The body image in a BodyImage
      */
-    public ImageDef getImageDefinition(final int index){
+    public ImageDef getImageDefinition(final int bodyIndex){
         final JsonValue jsonImages = this.rubeScene.get("image");
         for(final JsonValue jsonImage : jsonImages){
-            if(jsonImage.has("body") && jsonImage.getInt("body") == index){
+            if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex){
                 final ImageDef bodyImage = new ImageDef();
-                bodyImage.body = index;
+                bodyImage.body = bodyIndex;
                 if(jsonImage.has("file")) {
                     bodyImage.file = jsonImage.getString("file");
                 }
@@ -175,16 +175,16 @@ public class RubeLoader {
                             bodyImage.height = jsonCustomProperty.getFloat("float");
                         }
                         else if(jsonCustomProperty.getString("name").equals("regionX")){
-                            bodyImage.regionX = jsonCustomProperty.getInt("regionX");
+                            bodyImage.regionX = jsonCustomProperty.getInt("int");
                         }
                         else if(jsonCustomProperty.getString("name").equals("regionY")){
-                            bodyImage.regionY = jsonCustomProperty.getInt("regionY");
+                            bodyImage.regionY = jsonCustomProperty.getInt("int");
                         }
                         else if(jsonCustomProperty.getString("name").equals("regionWidth")){
-                            bodyImage.regionWidth = jsonCustomProperty.getInt("regionWidth");
+                            bodyImage.regionWidth = jsonCustomProperty.getInt("int");
                         }
                         else if(jsonCustomProperty.getString("name").equals("regionHeight")){
-                            bodyImage.regionHeight = jsonCustomProperty.getInt("regionHeight");
+                            bodyImage.regionHeight = jsonCustomProperty.getInt("int");
                         }
                     }
                 }
