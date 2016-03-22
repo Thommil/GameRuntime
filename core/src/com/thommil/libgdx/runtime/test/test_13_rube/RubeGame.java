@@ -19,7 +19,7 @@ public class RubeGame extends Game{
 
     @Override
     protected void onCreate(Settings settings) {
-        settings.viewport.type = Settings.Viewport.FILL;
+        settings.viewport.type = Settings.Viewport.STRECTCH;
         settings.viewport.width = 45;
         settings.viewport.height = 25;
         settings.physics.enabled = true;
