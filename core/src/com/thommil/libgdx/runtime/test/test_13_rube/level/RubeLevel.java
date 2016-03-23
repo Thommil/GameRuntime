@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.physics.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
+import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.RubeLoader;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
@@ -41,6 +43,7 @@ public class RubeLevel implements Disposable {
         final int bodyCount = this.rubeLoader.getBodyCount();
         for(int i=0; i < bodyCount; i++){
             final RubeLoader.BodyDef bodyDef = rubeLoader.getBodyDefinition(i);
+            final MassData massData = rubeLoader.getBodyMassData(i);
             final Array<FixtureDef> fixtureDefs = rubeLoader.getFixturesDefinition(i);
             final RubeLoader.ImageDef imageDef = this.rubeLoader.getImageDefinition(i);
             if(imageDef != null) {
@@ -60,6 +63,18 @@ public class RubeLevel implements Disposable {
                         public Array<FixtureDef> getFixturesDefinition() {
                             return fixtureDefs;
                         }
+
+                        @Override
+                        public void render(float deltaTime, SpriteBatchRenderer renderer) {
+                            super.render(deltaTime, renderer);
+                            Runtime.getInstance().runOnPhysicsThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Runtime.getInstance().getPhysicsWorld().setGravity(new Vector2(-Gdx.input.getPitch()/10, -10f));
+                                }
+                            });
+
+                        }
                     });
                 }
                 else{
@@ -77,11 +92,19 @@ public class RubeLevel implements Disposable {
                         public Array<FixtureDef> getFixturesDefinition() {
                             return fixtureDefs;
                         }
+
+                        @Override
+                        public void setBody(Body body) {
+                            if(massData != null) {
+                                body.setMassData(massData);
+                            }
+                            super.setBody(body);
+                        }
                     });
                 }
             }
             else {
-                spriteBatchLayer.addActor(new HeadlessBodyActor(i) {
+                spriteBatchLayer.addActor(new HeadlessBodyActor(i){
                     @Override
                     public BodyDef getDefinition() {
                         return bodyDef;
