@@ -14,7 +14,7 @@ public class ViewportLayout {
 
     private final Viewport viewport;
 
-    public float height , width;
+    public float width, height;
     public float top , right, bottom, left;
 
     /**
@@ -178,7 +178,7 @@ public class ViewportLayout {
     /**
      * Modifies the point in parameter from World coordinates to scaled
      * ones adapted to the current screen and viewport. This method has sens only
-     * if the world size is limited to the viewport size.
+     * if the world size is limited by the viewport size c.
      *
      * @param point IN/OUT, point to transform
      */
@@ -190,7 +190,7 @@ public class ViewportLayout {
     /**
      * Modifies the list of points in parameter from World coordinates to scaled
      * ones adapted to the current screen and viewport. This method has sens only
-     * if the world size is limited to the viewport size.
+     * if the world size is limited by the viewport size (FILL).
      *
      * @param points IN/OUT, list of points to transform
      */
@@ -200,6 +200,22 @@ public class ViewportLayout {
         for(final Vector2 point : points){
             point.x = point.x * this.width / worldWidth;
             point.y = point.y * this.height / worldHeight;
+        }
+    }
+
+    /**
+     * Modifies the list of points in parameter from World coordinates to scaled
+     * ones adapted to the current screen and viewport. This method has sens only
+     * if the world size is limited by the viewport size (FILL).
+     *
+     * @param points IN/OUT, list of points to transform [x,y,x1,Y1...]
+     */
+    public void adapt(final float[] points){
+        final float worldHeight = this.viewport.getWorldHeight();
+        final float worldWidth = this.viewport.getWorldWidth();
+        for(int index=0; index < points.length; index+=2){
+            points[index] = points[index] * this.width / worldWidth;
+            points[index+1] = points[index+1] * this.height / worldHeight;
         }
     }
 

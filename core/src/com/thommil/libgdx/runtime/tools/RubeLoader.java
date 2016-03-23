@@ -3,7 +3,6 @@ package com.thommil.libgdx.runtime.tools;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -163,8 +162,14 @@ public class RubeLoader {
             if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex){
                 final ImageDef bodyImage = new ImageDef();
                 bodyImage.body = bodyIndex;
-                if(jsonImage.has("file")) {
-                    bodyImage.file = jsonImage.getString("file");
+                if(jsonImage.has("name")) {
+                    bodyImage.name = jsonImage.getString("name");
+                }
+                if(jsonImage.has("path")) {
+                    bodyImage.path = jsonImage.getString("path");
+                }
+                else if(jsonImage.has("file")) {
+                    bodyImage.path = jsonImage.getString("file");
                 }
                 if(jsonImage.has("customProperties")) {
                     for(final JsonValue jsonCustomProperty : jsonImage.get("customProperties")){
@@ -283,6 +288,9 @@ public class RubeLoader {
                 final String jointType = jsonJoint.getString("type");
                 if(jointType.equals("revolute")){
                     final RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
+                    if(jsonJoint.has("name")){
+                        revoluteJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         revoluteJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -313,6 +321,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("distance")){
                     final DistanceJointDef distanceJointDef = new DistanceJointDef();
+                    if(jsonJoint.has("name")){
+                        distanceJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         distanceJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -335,6 +346,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("prismatic")){
                     final PrismaticJointDef prismaticJointDef = new PrismaticJointDef();
+                    if(jsonJoint.has("name")){
+                        prismaticJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         prismaticJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -368,6 +382,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("wheel")){
                     final WheelJointDef wheelJointDef = new WheelJointDef();
+                    if(jsonJoint.has("name")){
+                        wheelJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         wheelJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -397,6 +414,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("rope")){
                     final RopeJointDef ropeJointDef = new RopeJointDef();
+                    if(jsonJoint.has("name")){
+                        ropeJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         ropeJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -413,6 +433,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("motor")){
                     final MotorJointDef motorJointDef = new MotorJointDef();
+                    if(jsonJoint.has("name")){
+                        motorJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         motorJointDef.linearOffset.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -432,6 +455,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("weld")){
                     final WeldJointDef weldJointDef = new WeldJointDef();
+                    if(jsonJoint.has("name")){
+                        weldJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         weldJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -454,6 +480,9 @@ public class RubeLoader {
                 }
                 else  if(jointType.equals("friction")){
                     final FrictionJointDef frictionJointDef = new FrictionJointDef();
+                    if(jsonJoint.has("name")){
+                        frictionJointDef.name = jsonJoint.getString("name");
+                    }
                     if(jsonJoint.get("anchorA").isObject()){
                         frictionJointDef.localAnchorA.set(jsonJoint.get("anchorA").getFloat("x"),jsonJoint.get("anchorA").getFloat("y"));
                     }
@@ -487,6 +516,7 @@ public class RubeLoader {
      * RevoluteJointDef extension to support body ids
      */
     public static class RevoluteJointDef extends com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -495,6 +525,7 @@ public class RubeLoader {
      * DistanceJointDef extension to support body ids
      */
     public static class DistanceJointDef extends com.badlogic.gdx.physics.box2d.joints.DistanceJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -503,6 +534,7 @@ public class RubeLoader {
      * PrismaticJointDef extension to support body ids
      */
     public static class PrismaticJointDef extends com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -511,6 +543,7 @@ public class RubeLoader {
      * WheelJointDef extension to support body ids
      */
     public static class WheelJointDef extends com.badlogic.gdx.physics.box2d.joints.WheelJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -519,6 +552,7 @@ public class RubeLoader {
      * RopeJointDef extension to support body ids
      */
     public static class RopeJointDef extends com.badlogic.gdx.physics.box2d.joints.RopeJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -527,6 +561,7 @@ public class RubeLoader {
      * MotorJointDef extension to support body ids
      */
     public static class MotorJointDef extends com.badlogic.gdx.physics.box2d.joints.MotorJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -535,6 +570,7 @@ public class RubeLoader {
      * WeldJointDef extension to support body ids
      */
     public static class WeldJointDef extends com.badlogic.gdx.physics.box2d.joints.WeldJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -543,6 +579,7 @@ public class RubeLoader {
      * FrictionJointDef extension to support body ids
      */
     public static class FrictionJointDef extends com.badlogic.gdx.physics.box2d.joints.FrictionJointDef{
+        public String name;
         public int bodyIdA;
         public int bodyIdB;
     }
@@ -550,7 +587,9 @@ public class RubeLoader {
     /**
      * Image for a Rube Body (custom properties):
      * {
-     *  "file" : "path/to/image",
+     *  "name" : name,
+     *  "path" : "path/to/image",
+     *  "file" : "path/to/image", (fallback)
      *  "body" : bodyId,
      *  "customProperties" : [
      *      {
@@ -581,7 +620,8 @@ public class RubeLoader {
      * }
      */
     public static class ImageDef {
-        public String file;
+        public String name;
+        public String path;
         public int body;
         public float width;
         public float height;

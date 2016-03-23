@@ -1,22 +1,15 @@
 package com.thommil.libgdx.runtime.test.test_13_rube.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
-import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
-import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.actor.physics.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.ViewportLayout;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.RubeLoader;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
@@ -52,7 +45,7 @@ public class RubeLevel implements Disposable {
             final RubeLoader.ImageDef imageDef = this.rubeLoader.getImageDefinition(i);
             if(imageDef != null) {
                 if(bodyDef.type == BodyDef.BodyType.StaticBody){
-                    spriteBatchLayer.addActor(new StaticBodyActor(i, new TextureSet(assetManager.get(imageDef.file,Texture.class)),
+                    spriteBatchLayer.addActor(new StaticBodyActor(i, new TextureSet(assetManager.get(imageDef.path,Texture.class)),
                                                                     bodyDef.position.x-imageDef.width/2,bodyDef.position.y-imageDef.height/2,
                                                                     imageDef.width,imageDef.height,
                                                                     imageDef.regionX,imageDef.regionY,
@@ -70,7 +63,7 @@ public class RubeLevel implements Disposable {
                     });
                 }
                 else{
-                    spriteBatchLayer.addActor(new SpriteBodyActor(i, new TextureSet(assetManager.get(imageDef.file,Texture.class)),imageDef.regionX,imageDef.regionY,
+                    spriteBatchLayer.addActor(new SpriteBodyActor(i, new TextureSet(assetManager.get(imageDef.path,Texture.class)),imageDef.regionX,imageDef.regionY,
                             imageDef.regionWidth,imageDef.regionHeight) {
 
                         @Override
