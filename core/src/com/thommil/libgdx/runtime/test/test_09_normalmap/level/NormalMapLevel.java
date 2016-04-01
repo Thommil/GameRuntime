@@ -31,7 +31,7 @@ public class NormalMapLevel implements InputProcessor, Disposable {
         textureSet = new TextureSet(new Texture(Gdx.files.internal("static/weave_diffuse.png"))
                                     ,new Texture(Gdx.files.internal("static/weave_normal.png")));
         textureSet.setWrapAll(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        cacheLayer.addActor(new StaticActor(0,textureSet,-10,-10,20,20,0,1,1,0, Color.WHITE.toFloatBits()));
+        cacheLayer.addActor(new StaticActor(0,textureSet,-10f,-10f,20f,20f,0f,1f,1f,0f, Color.WHITE.toFloatBits()));
         Runtime.getInstance().addLayer(cacheLayer);
 
         Gdx.input.setInputProcessor(this);

@@ -51,7 +51,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
         bgCacheLayer = new CacheLayer(Runtime.getInstance().getViewport(), 1);
         bgTextureSet = new TextureSet(new Texture("static/wall_tiles.png"));
         bgTextureSet.setWrapAll(Texture.TextureWrap.Repeat,Texture.TextureWrap.Repeat);
-        bgCacheLayer.addActor(new StaticActor(0,bgTextureSet,-5,-5,10,10,0,1,1,0, Color.WHITE.toFloatBits()));
+        bgCacheLayer.addActor(new StaticActor(0,bgTextureSet,-5f,-5f,10f,10f,0f,1f,1f,0f, Color.WHITE.toFloatBits()));
         Runtime.getInstance().addLayer(bgCacheLayer);
 
         //Ducks - 1

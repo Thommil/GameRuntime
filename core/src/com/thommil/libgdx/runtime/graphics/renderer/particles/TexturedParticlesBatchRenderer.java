@@ -28,7 +28,7 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
-        if (texture != this.lastTextureSet.textures[0]) {
+        if (this.lastTextureSet == null || texture != this.lastTextureSet.textures[0]) {
             this.flush();
             this.tmpTextureSet.textures[0] = texture;
             this.lastTextureSet = tmpTextureSet;
