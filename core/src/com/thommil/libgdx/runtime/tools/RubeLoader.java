@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonValue;
  */
 public class RubeLoader {
 
-    private JsonValue rubeScene;
+    protected JsonValue rubeScene;
     private final JsonReader jsonReader;
 
     /**
