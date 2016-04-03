@@ -165,9 +165,6 @@ public class RubeLoader {
                 if(jsonImage.has("name")) {
                     bodyImage.name = jsonImage.getString("name");
                 }
-                if(jsonImage.has("path")) {
-                    bodyImage.path = jsonImage.getString("path");
-                }
                 else if(jsonImage.has("file")) {
                     bodyImage.path = jsonImage.getString("file");
                 }
@@ -588,8 +585,7 @@ public class RubeLoader {
      * Image for a Rube Body (custom properties):
      * {
      *  "name" : name,
-     *  "path" : "path/to/image",
-     *  "file" : "path/to/image", (fallback)
+     *  "file" : "path/to/image",
      *  "body" : bodyId,
      *  "customProperties" : [
      *      {
