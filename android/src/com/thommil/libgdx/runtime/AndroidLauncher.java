@@ -16,6 +16,7 @@ import com.thommil.libgdx.runtime.test.test_10_fine_offscreen.FineOffscreenGame;
 import com.thommil.libgdx.runtime.test.test_11_events.EventsGame;
 import com.thommil.libgdx.runtime.test.test_12_layout.LayoutGame;
 import com.thommil.libgdx.runtime.test.test_13_rube.RubeGame;
+import com.thommil.libgdx.runtime.test.test_14_sunset.SunsetGame;
 
 public class AndroidLauncher extends AndroidApplication {
 
@@ -63,7 +64,10 @@ public class AndroidLauncher extends AndroidApplication {
 		//game= new LayoutGame();
 
 		// TEST 13 - Rube loader
-		game= new RubeGame();
+		//game= new RubeGame();
+
+		// TEST 14 - Sunset
+		game= new SunsetGame();
 
 		initialize(game, config);
 
