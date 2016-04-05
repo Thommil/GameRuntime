@@ -9,10 +9,10 @@ import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
  */
 public class SunsetLevel implements Disposable {
 
-    final SunsetLayer sunsetLayer;
+    final SkyLayer sunsetLayer;
 
     public SunsetLevel() {
-        sunsetLayer = new SunsetLayer(Runtime.getInstance().getViewport());
+        sunsetLayer = new SkyLayer(Runtime.getInstance().getViewport());
         Runtime.getInstance().addLayer(sunsetLayer);
 
         RuntimeProfiler.profile();

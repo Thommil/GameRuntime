@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.test.test_14_sunset.level;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -8,16 +7,16 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.layer.Layer;
-import com.thommil.libgdx.runtime.tools.GL11;
 
 
-public class SunsetLayer extends Layer {
+public class SkyLayer extends Layer {
 
-    protected SunsetRenderer sunsetRenderer;
+    protected SkyRenderer sunsetRenderer;
+    float time=0;
 
-    public SunsetLayer(Viewport viewport) {
+    public SkyLayer(Viewport viewport) {
         super(viewport, 1);
-        this.sunsetRenderer = new SunsetRenderer(-viewport.getWorldWidth()/2,-viewport.getWorldHeight()/2,viewport.getWorldWidth(), viewport.getWorldHeight());
+        this.sunsetRenderer = new SkyRenderer(-viewport.getWorldWidth()/2,-viewport.getWorldHeight()/2,viewport.getWorldWidth(), viewport.getWorldHeight());
     }
 
     public void setTime(final float time){
@@ -33,13 +32,11 @@ public class SunsetLayer extends Layer {
     @Override
     protected void onHide() {}
 
-    float time=0;
-
     @Override
     public void render(float deltaTime) {
         this.sunsetRenderer.setTime(time);
         this.sunsetRenderer.render(this.viewport.getCamera().combined);
-            time+=0.001;
+        time+=0.001;
     }
 
     @Override
@@ -47,7 +44,7 @@ public class SunsetLayer extends Layer {
         sunsetRenderer.dispose();
     }
 
-    public static class SunsetRenderer implements Disposable{
+    public static class SkyRenderer implements Disposable{
 
         public static final int VERTEX_SIZE = 3;
         public static final int VERTEX_COUNT = 4;
@@ -61,11 +58,10 @@ public class SunsetLayer extends Layer {
         protected final Color bottomColor = new Color();
 
         public static final float MIDNIGHT = 0f;
-        public static final float SUNRISE = 0.5f;
         public static final float NOON = 1f;
 
         private static final Color midnightTopColor = new Color(0x090a0fff);
-        private static final Color midnightBottomColor = new Color(0x0f204bff);
+        private static final Color midnightBottomColor = new Color(0x061029ff);
 
         private static final Color noonTopColor = new Color(0x7aacf1ff);
         private static final Color noonBottomColor = new Color(0xffffffff);
@@ -74,7 +70,7 @@ public class SunsetLayer extends Layer {
         protected float starsAlpha = 1f;
 
 
-        public SunsetRenderer(final float x, final float y, final float width, final float height) {
+        public SkyRenderer(final float x, final float y, final float width, final float height) {
             this.shader = this.createShader();
             this.mesh = this.createMesh();
             this.vertices = this.createVertices();
@@ -103,7 +99,7 @@ public class SunsetLayer extends Layer {
                 bottomColor.set(midnightBottomColor);
                 topColor.lerp(noonTopColor, time);
                 bottomColor.lerp(noonBottomColor, time);
-                this.starsAlpha = 1 - time ;
+                this.starsAlpha = Math.max(1 - 2*time, 0f);
             }
             this.vertices[2] = this.vertices[11] = topColor.toFloatBits();
             this.vertices[5] = this.vertices[8] = bottomColor.toFloatBits();
@@ -113,7 +109,7 @@ public class SunsetLayer extends Layer {
         public void render(final Matrix4 combined){
             this.shader.begin();
             this.shader.setUniformMatrix("u_projectionViewMatrix", combined);
-            //this.shader.setUniformf("u_starsAlpha", starsAlpha);
+            this.shader.setUniformf("u_starsAlpha", starsAlpha);
             this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, 6);
             this.shader.end();
         }
@@ -158,18 +154,29 @@ public class SunsetLayer extends Layer {
                     + "   gl_Position =  u_projectionViewMatrix * " + ShaderProgram.POSITION_ATTRIBUTE + ";\n" //
                     + "}\n";
             final String fragmentShader = "#ifdef GL_ES\n" //
-                    + "#define LOWP lowp\n" //
-                    + "precision mediump float;\n" //
-                    + "#else\n" //
-                    + "#define LOWP \n" //
+                    + "precision highp float;\n" //
                     + "#endif\n" //
                     + "uniform float u_starsAlpha;\n" //
+                    + "const float STARS_TRESHOLD=0.99;\n" //
                     + "\n" //
                     + "varying vec4 v_color;\n" //
                     + "\n" //
+                    + "float snoise(vec2 co){\n"
+                    + "    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);\n"
+                    + "}\n"
+                    + "\n" //
                     + "void main()\n"//
                     + "{\n" //
-                    + "   gl_FragColor = v_color;\n" //
+                    + "   vec3 vColor  = v_color.rgb;\n" //
+                    + "   if(u_starsAlpha > 0.0){\n" //
+                    + "     float StarVal = snoise( gl_FragCoord.xy/100.0);\n" //
+                    + "     if ( StarVal >= STARS_TRESHOLD )\n" //
+                    + "     {\n" //
+                    + "         StarVal = pow( (StarVal - STARS_TRESHOLD)/(1.0 - STARS_TRESHOLD), 6.0 );\n" //
+                    + "         vColor += u_starsAlpha * vec3( StarVal);\n" //
+                    + "     }\n" //
+                    + "   }\n" //
+                    + "   gl_FragColor = vec4(vColor, 1.0);\n" //
                     + "}";
 
             final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
