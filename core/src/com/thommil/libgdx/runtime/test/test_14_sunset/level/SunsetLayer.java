@@ -39,8 +39,7 @@ public class SunsetLayer extends Layer {
     public void render(float deltaTime) {
         this.sunsetRenderer.setTime(time);
         this.sunsetRenderer.render(this.viewport.getCamera().combined);
-        if(time < 1)
-        time+=0.01;
+            time+=0.001;
     }
 
     @Override
@@ -60,6 +59,17 @@ public class SunsetLayer extends Layer {
 
         protected final Color topColor = new Color();
         protected final Color bottomColor = new Color();
+
+        public static final float MIDNIGHT = 0f;
+        public static final float SUNRISE = 0.5f;
+        public static final float NOON = 1f;
+
+        private static final Color midnightTopColor = new Color(0x090a0fff);
+        private static final Color midnightBottomColor = new Color(0x0f204bff);
+
+        private static final Color noonTopColor = new Color(0x7aacf1ff);
+        private static final Color noonBottomColor = new Color(0xffffffff);
+
 
         protected float starsAlpha = 1f;
 
@@ -84,25 +94,26 @@ public class SunsetLayer extends Layer {
             this.vertices[10] = y + height;
             this.vertices[11] = 0;
 
-            this.setTime(0);
+            this.setTime(MIDNIGHT);
         }
 
-        public void setTime(final float time){
-            final float topColorDelta = time-0.4f;
-            final float bottomColorDelta = time * 2;
-            topColor.set(0.1f + topColorDelta, 0.2f + topColorDelta, 0.4f + topColorDelta, 1f);
-            bottomColor.set(0.05f * bottomColorDelta, 0.1f * bottomColorDelta, 0.3f * bottomColorDelta, 1f);
+        public void setTime(final float time) {
+            if (time < NOON){
+                topColor.set(midnightTopColor);
+                bottomColor.set(midnightBottomColor);
+                topColor.lerp(noonTopColor, time);
+                bottomColor.lerp(noonBottomColor, time);
+                this.starsAlpha = 1 - time ;
+            }
             this.vertices[2] = this.vertices[11] = topColor.toFloatBits();
             this.vertices[5] = this.vertices[8] = bottomColor.toFloatBits();
             this.mesh.setVertices(this.vertices);
-
-            this.starsAlpha = 1 - time ;
         }
 
         public void render(final Matrix4 combined){
             this.shader.begin();
             this.shader.setUniformMatrix("u_projectionViewMatrix", combined);
-            this.shader.setUniformf("u_starsAlpha", starsAlpha);
+            //this.shader.setUniformf("u_starsAlpha", starsAlpha);
             this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, 6);
             this.shader.end();
         }
@@ -153,33 +164,12 @@ public class SunsetLayer extends Layer {
                     + "#define LOWP \n" //
                     + "#endif\n" //
                     + "uniform float u_starsAlpha;\n" //
-                    + "const float STARS_TRESHOLD = 0.99;\n" //
                     + "\n" //
                     + "varying vec4 v_color;\n" //
                     + "\n" //
-                    + "float Hash( float n )\n" //
-                    + "{\n" //
-                    + "   return fract( (1.0 + cos(n)) * 415.92653);\n" //
-                    + "}\n" //
-                    + "\n" //
-                    + "float Noise2d( in vec2 x )\n" //
-                    + "{\n" //
-                    + "   float xhash = Hash( x.x * 37.0 );\n" //
-                    + "   float yhash = Hash( x.y * 57.0 );\n" //
-                    + "   return fract( xhash + yhash );\n" //
-                    + "}\n" //
-                    + "\n" //
                     + "void main()\n"//
                     + "{\n" //
-                    + "   float StarVal = Noise2d( gl_FragCoord.xy);\n" //
-                    + "   vec3 vColor  = v_color.rgb;\n" //
-                    + "   if ( StarVal >= STARS_TRESHOLD )\n" //
-                    + "   {\n" //
-                    + "      StarVal = pow( (StarVal - STARS_TRESHOLD)/(1.0 - STARS_TRESHOLD), 6.0 );\n" //
-                    + "      vColor += u_starsAlpha * vec3( StarVal);\n" //
-                    + "   }\n" //
-                    + "\n" //
-                    + "   gl_FragColor = vec4(vColor, 1.0);\n" //
+                    + "   gl_FragColor = v_color;\n" //
                     + "}";
 
             final ShaderProgram shader = new ShaderProgram(vertexShader, fragmentShader);
