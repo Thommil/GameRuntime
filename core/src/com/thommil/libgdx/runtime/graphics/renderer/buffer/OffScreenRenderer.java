@@ -16,12 +16,11 @@ import com.thommil.libgdx.runtime.graphics.TextureSet;
 public class OffScreenRenderer implements Disposable{
 
     public static final int VERTEX_SIZE = 4;
-    public static final int VERTEX_COUNT = 6;
+    public static final int VERTEX_COUNT = 4;
     public static final int SIZE = VERTEX_COUNT * VERTEX_SIZE;
 
     protected final Mesh mesh;
     protected final float[] vertices;
-    protected int verticesSize;
     protected final ShaderProgram shader;
 
     /**
@@ -131,17 +130,17 @@ public class OffScreenRenderer implements Disposable{
         if(this.frameBuffer == null){
             //Vertices UV
             //0 & 5
-            this.vertices[2] = this.vertices[22] = 0f;
-            this.vertices[3] = this.vertices[23] = 1f;
+            this.vertices[2] = 0f;
+            this.vertices[3] = 1f;
             //1
             this.vertices[6] = 0f;
             this.vertices[7] = 0f;
             //2 & 3
-            this.vertices[10] = this.vertices[14] = 1f;
-            this.vertices[11] = this.vertices[15] = 0f;
+            this.vertices[10] = 1f;
+            this.vertices[11] = 0f;
             //4
-            this.vertices[18] = 1f;
-            this.vertices[19] = 1f;
+            this.vertices[14] = 1f;
+            this.vertices[15] = 1f;
         }
         //Resize
         if(this.hasResized) {
@@ -149,17 +148,17 @@ public class OffScreenRenderer implements Disposable{
 
             //Vertices XY
             //0 & 5
-            this.vertices[0] = this.vertices[20] = -this.viewport.getWorldWidth()/2f;
-            this.vertices[1] = this.vertices[21] = this.viewport.getWorldHeight()/2f;
+            this.vertices[0] = -this.viewport.getWorldWidth()/2f;
+            this.vertices[1] = this.viewport.getWorldHeight()/2f;
             //1
             this.vertices[4] = -this.viewport.getWorldWidth()/2f;
             this.vertices[5] = -this.viewport.getWorldHeight()/2f;
             //2 & 3
-            this.vertices[8] = this.vertices[12] = this.viewport.getWorldWidth()/2f;
-            this.vertices[9] = this.vertices[13] = -this.viewport.getWorldHeight()/2f;
+            this.vertices[8] = this.viewport.getWorldWidth()/2f;
+            this.vertices[9] = -this.viewport.getWorldHeight()/2f;
             //4
-            this.vertices[16] = this.viewport.getWorldWidth()/2f;
-            this.vertices[17] = this.viewport.getWorldHeight()/2f;
+            this.vertices[12] = this.viewport.getWorldWidth()/2f;
+            this.vertices[13] = this.viewport.getWorldHeight()/2f;
 
             this.mesh.setVertices(this.vertices);
             this.hasResized = false;
@@ -195,7 +194,7 @@ public class OffScreenRenderer implements Disposable{
         this.shader.setUniformMatrix("u_projectionViewMatrix", this.viewport.getCamera().combined);
         this.frameBuffer.getColorBufferTexture().bind(0);
         this.shader.setUniformi(TextureSet.UNIFORM_TEXTURE_0, 0);
-        this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, VERTEX_COUNT);
+        this.mesh.render(this.shader, GL20.GL_TRIANGLES, 0, 6);
 
         this.shader.end();
     }
@@ -205,15 +204,33 @@ public class OffScreenRenderer implements Disposable{
      * Subclasses should override this method to use their specific Mesh
      */
     protected Mesh createMesh() {
-        return new Mesh(false, VERTEX_COUNT, 0, new VertexAttribute(VertexAttributes.Usage.Position, 2,
-                ShaderProgram.POSITION_ATTRIBUTE), new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+        Mesh.VertexDataType vertexDataType = Mesh.VertexDataType.VertexArray;
+        if (Gdx.gl30 != null) {
+            vertexDataType = Mesh.VertexDataType.VertexBufferObjectWithVAO;
+        }
+        final Mesh mesh = new Mesh(vertexDataType, true, 4, 6,
+                new VertexAttribute(VertexAttributes.Usage.Position, 2, ShaderProgram.POSITION_ATTRIBUTE),
+                new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
+
+        final short[] indices = new short[6];
+        short j = 0;
+        for (int i = 0; i < 6; i += 6, j += 4) {
+            indices[i] = j;
+            indices[i + 1] = (short)(j + 1);
+            indices[i + 2] = (short)(j + 2);
+            indices[i + 3] = (short)(j + 2);
+            indices[i + 4] = (short)(j + 3);
+            indices[i + 5] = j;
+        }
+        mesh.setIndices(indices);
+
+        return mesh;
     }
 
     /**
      * Subclasses should override this method to use their specific vertices
      */
     protected float[] createVertices() {
-        this.verticesSize = VERTEX_SIZE;
         return new float[SIZE];
     }
 

@@ -51,7 +51,7 @@ public class DesktopLauncher {
 		//game= new LiquidGame();
 
 		// TEST 09 - NormalMap
-		game= new NormalMapGame();
+		//game= new NormalMapGame();
 
 		// TEST 10 - Fine Offscreen rendering
 		//game= new FineOffscreenGame();
@@ -66,7 +66,7 @@ public class DesktopLauncher {
 		//game= new RubeGame();
 
 		// TEST 14 - Sunset
-		//game= new SunsetGame();
+		game= new SunsetGame();
 
 		new LwjglApplication(game, config);
 	}

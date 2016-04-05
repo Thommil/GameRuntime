@@ -19,7 +19,7 @@ public class SunsetGame extends Game{
 
     @Override
     protected void onCreate(Settings settings) {
-        settings.viewport.type = Settings.Viewport.FILL;
+        settings.viewport.type = Settings.Viewport.STRECTCH;
         settings.viewport.width = 10;
         settings.viewport.height = 10;
         settings.physics.enabled = false;
