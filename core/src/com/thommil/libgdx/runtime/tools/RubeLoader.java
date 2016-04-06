@@ -1,54 +1,15 @@
 package com.thommil.libgdx.runtime.tools;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 /**
  * Helper class to load Rube files.
  * @author Thommil on 19/03/16.
  */
-public class RubeLoader {
-
-    protected JsonValue rubeScene;
-    private final JsonReader jsonReader;
-
-    /**
-     * Default constructor
-     */
-    public RubeLoader(){
-        this.jsonReader = new JsonReader();
-    }
-
-    /**
-     * Sets the inner Rube Scene from a file
-     *
-     * @param rubeFileHandle The Rube JSON file
-     */
-    public void parse(final FileHandle rubeFileHandle){
-        this.rubeScene = this.jsonReader.parse(rubeFileHandle);
-    }
-
-    /**
-     * Sets the inner Rube Scene from a string
-     *
-     * @param rubeString The Rube JSON file
-     */
-    public void parse(final String rubeString){
-        this.rubeScene = this.jsonReader.parse(rubeString);
-    }
-
-    /**
-     * Sets the inner Rube Scene from an JSONValue
-     *
-     * @param fileHandle The Rube JSON file
-     */
-    public void parse(final JsonValue rubeScene){
-        this.rubeScene = rubeScene;
-    }
+public class RubeLoader extends JSONLoader{
 
     /**
      * Get the gravity
@@ -56,7 +17,7 @@ public class RubeLoader {
      * @return The gravity in in Vec2
      */
     public Vector2 getGravity(){
-        return new Vector2(this.rubeScene.get("gravity").getFloat("x"),this.rubeScene.get("gravity").getFloat("y"));
+        return new Vector2(this.jsonRoot.get("gravity").getFloat("x"),this.jsonRoot.get("gravity").getFloat("y"));
     }
 
     /**
@@ -65,7 +26,7 @@ public class RubeLoader {
      * @return The number of bodis in the scene
      */
     public int getBodyCount(){
-        return this.rubeScene.get("body").size;
+        return this.jsonRoot.get("body").size;
     }
 
     /**
@@ -77,7 +38,7 @@ public class RubeLoader {
      */
     public BodyDef getBodyDefinition(final int index){
         final BodyDef bodyDef = new BodyDef();
-        final JsonValue jsonBody = this.rubeScene.get("body").get(index);
+        final JsonValue jsonBody = this.jsonRoot.get("body").get(index);
         if(jsonBody.has("name")) {
             bodyDef.name = jsonBody.getString("name");
         }
@@ -136,7 +97,7 @@ public class RubeLoader {
      */
     public MassData getBodyMassData(final int index){
         final MassData massData = new MassData();
-        final JsonValue jsonBody = this.rubeScene.get("body").get(index);
+        final JsonValue jsonBody = this.jsonRoot.get("body").get(index);
         if(jsonBody.has("massData-I")) {
             massData.I = jsonBody.getFloat("massData-I");
         }
@@ -157,7 +118,7 @@ public class RubeLoader {
      * @return The body image in a BodyImage
      */
     public ImageDef getImageDefinition(final int bodyIndex){
-        final JsonValue jsonImages = this.rubeScene.get("image");
+        final JsonValue jsonImages = this.jsonRoot.get("image");
         for(final JsonValue jsonImage : jsonImages){
             if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex){
                 final ImageDef bodyImage = new ImageDef();
@@ -165,7 +126,7 @@ public class RubeLoader {
                 if(jsonImage.has("name")) {
                     bodyImage.name = jsonImage.getString("name");
                 }
-                else if(jsonImage.has("file")) {
+                if(jsonImage.has("file")) {
                     bodyImage.path = jsonImage.getString("file");
                 }
                 if(jsonImage.has("customProperties")) {
@@ -204,7 +165,7 @@ public class RubeLoader {
      * @return A list of FixtureDef
      */
     public Array<FixtureDef> getFixturesDefinition(final int bodyIndex){
-        final JsonValue jsonBody = this.rubeScene.get("body").get(bodyIndex);
+        final JsonValue jsonBody = this.jsonRoot.get("body").get(bodyIndex);
         final Array<FixtureDef> fixtureDefs = new Array<FixtureDef>(true, 16);
         for(final JsonValue jsonFixture : jsonBody.get("fixture")){
             final FixtureDef fixtureDef = new FixtureDef();
@@ -280,8 +241,8 @@ public class RubeLoader {
      */
     public Array<JointDef> getJointsDefinition(){
         final Array<JointDef> jointDefs = new Array<JointDef>(true,16);
-        if(this.rubeScene.has("joint")) {
-            for(final JsonValue jsonJoint : this.rubeScene.get("joint")){
+        if(this.jsonRoot.has("joint")) {
+            for(final JsonValue jsonJoint : this.jsonRoot.get("joint")){
                 final String jointType = jsonJoint.getString("type");
                 if(jointType.equals("revolute")){
                     final RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
