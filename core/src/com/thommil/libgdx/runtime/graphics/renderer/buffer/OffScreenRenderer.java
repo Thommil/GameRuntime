@@ -213,15 +213,12 @@ public class OffScreenRenderer implements Disposable{
                 new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE + "0"));
 
         final short[] indices = new short[6];
-        short j = 0;
-        for (int i = 0; i < 6; i += 6, j += 4) {
-            indices[i] = j;
-            indices[i + 1] = (short)(j + 1);
-            indices[i + 2] = (short)(j + 2);
-            indices[i + 3] = (short)(j + 2);
-            indices[i + 4] = (short)(j + 3);
-            indices[i + 5] = j;
-        }
+        indices[0] = 0;
+        indices[1] = 1;
+        indices[2] = 2;
+        indices[3] = 2;
+        indices[4] = 3;
+        indices[5] = 0;
         mesh.setIndices(indices);
 
         return mesh;

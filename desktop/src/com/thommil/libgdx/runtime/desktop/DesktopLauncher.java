@@ -48,7 +48,7 @@ public class DesktopLauncher {
 		//game= new ParticlesEffectGame();
 
 		// TEST 08 - Liquid
-		//game= new LiquidGame();
+		game= new LiquidGame();
 
 		// TEST 09 - NormalMap
 		//game= new NormalMapGame();
@@ -63,7 +63,7 @@ public class DesktopLauncher {
 		//game= new LayoutGame();
 
 		// TEST 13 - Rube loader
-		game= new RubeGame();
+		//game= new RubeGame();
 
 		// TEST 14 - Sunset
 		//game= new SunsetGame();

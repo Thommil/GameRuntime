@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.*;
@@ -217,6 +218,17 @@ public class ViewportLayout {
             points[index] = points[index] * this.width / worldWidth;
             points[index+1] = points[index+1] * this.height / worldHeight;
         }
+    }
+
+    /**
+     * Adapt a point from a reference screen (DEV) to current screen
+     *
+     * @param referenceScreen The reference screen width and height
+     * @param point The point to adapt
+     */
+    public static void adaptToScreen(final Vector2 referenceScreen, final Vector2 point){
+        point.x = point.x * Gdx.graphics.getWidth() / referenceScreen.x;
+        point.y = point.y * Gdx.graphics.getHeight() / referenceScreen.y;
     }
 
 }

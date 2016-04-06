@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.layer;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.graphics.Renderable;
