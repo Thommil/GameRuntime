@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thommil.libgdx.runtime.layer.BitmapFontBatchLayer;
 import com.thommil.libgdx.runtime.layer.Layer;
 
 import java.util.ArrayDeque;
@@ -246,6 +247,9 @@ public class Runtime implements Screen{
         this.layers.set(index, layer);
         layer.bind(this);
         layer.show();
+        if(layer instanceof BitmapFontBatchLayer){
+            layer.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
     /**
@@ -258,6 +262,9 @@ public class Runtime implements Screen{
         this.layers.add(layer);
         layer.bind(this);
         layer.show();
+        if(layer instanceof BitmapFontBatchLayer){
+            layer.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
     /**
