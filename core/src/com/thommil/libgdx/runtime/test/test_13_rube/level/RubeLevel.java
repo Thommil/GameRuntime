@@ -40,9 +40,8 @@ public class RubeLevel implements Disposable {
         assetManager.load("scene/truck.png",Texture.class);
         assetManager.finishLoading();
 
-        final int bodyCount = this.rubeLoader.getBodyCount();
-        for(int i=0; i < bodyCount; i++){
-            final RubeLoader.BodyDef bodyDef = rubeLoader.getBodyDefinition(i);
+        int i =0;
+        for(final RubeLoader.BodyDef bodyDef : this.rubeLoader.getBodiesDefintion()){
             final MassData massData = rubeLoader.getBodyMassData(i);
             final Array<FixtureDef> fixtureDefs = rubeLoader.getFixturesDefinition(i);
             final RubeLoader.ImageDef imageDef = this.rubeLoader.getImageDefinition(i);
@@ -116,6 +115,7 @@ public class RubeLevel implements Disposable {
                     }
                 });
             }
+            i++;
         }
 
         Runtime.getInstance().addLayer(spriteBatchLayer);

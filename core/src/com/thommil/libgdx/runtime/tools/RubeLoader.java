@@ -21,12 +21,17 @@ public class RubeLoader extends JSONLoader{
     }
 
     /**
-     * Get the number of bodies in the scene
+     * Gets this list of Box2D Body Definition in the Scene
      *
-     * @return The number of bodis in the scene
+     * @return The list of bodies definition
      */
-    public int getBodyCount(){
-        return this.jsonRoot.get("body").size;
+    public Array<BodyDef> getBodiesDefintion(){
+        final int bodyCount = this.jsonRoot.get("body").size;
+        final Array<BodyDef> bodyDefs = new Array<BodyDef>(true,bodyCount);
+        for(int index=0 ; index < bodyCount; index++){
+            bodyDefs.add(this.getBodyDefinition(index));
+        }
+        return bodyDefs;
     }
 
     /**
@@ -111,55 +116,75 @@ public class RubeLoader extends JSONLoader{
     }
 
     /**
+     * Gets the list of Box2D Body image in the Scene
+     *
+     * @return The lis of images
+     */
+    public Array<ImageDef> getImagesDefinition(){
+        final int imagesCount = this.jsonRoot.get("image").size;
+        final Array<ImageDef> imageDefs = new Array<ImageDef>(true, this.jsonRoot.get("image").size);
+        for(final JsonValue jsonImage : this.jsonRoot.get("image")){
+            imageDefs.add(this.getImageDefintion(jsonImage));
+        }
+        return imageDefs;
+    }
+
+    /**
      * Gets a Box2D Body image from body index in the Scene
      *
      * @param index The body index
      *
-     * @return The body image in a BodyImage
+     * @return The body image
      */
     public ImageDef getImageDefinition(final int bodyIndex){
         final JsonValue jsonImages = this.jsonRoot.get("image");
         for(final JsonValue jsonImage : jsonImages){
-            if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex){
-                final ImageDef bodyImage = new ImageDef();
-                bodyImage.body = bodyIndex;
-                if(jsonImage.has("name")) {
-                    bodyImage.name = jsonImage.getString("name");
-                }
-                if(jsonImage.has("file")) {
-                    bodyImage.path = jsonImage.getString("file");
-                }
-                if(jsonImage.has("customProperties")) {
-                    for(final JsonValue jsonCustomProperty : jsonImage.get("customProperties")){
-                        if(jsonCustomProperty.getString("name").equals("width")){
-                            bodyImage.width = jsonCustomProperty.getFloat("float");
-                        }
-                        else if(jsonCustomProperty.getString("name").equals("height")){
-                            bodyImage.height = jsonCustomProperty.getFloat("float");
-                        }
-                        else if(jsonCustomProperty.getString("name").equals("regionX")){
-                            bodyImage.regionX = jsonCustomProperty.getInt("int");
-                        }
-                        else if(jsonCustomProperty.getString("name").equals("regionY")){
-                            bodyImage.regionY = jsonCustomProperty.getInt("int");
-                        }
-                        else if(jsonCustomProperty.getString("name").equals("regionWidth")){
-                            bodyImage.regionWidth = jsonCustomProperty.getInt("int");
-                        }
-                        else if(jsonCustomProperty.getString("name").equals("regionHeight")){
-                            bodyImage.regionHeight = jsonCustomProperty.getInt("int");
-                        }
-                        else if(jsonCustomProperty.getString("name").equals("normalOffset")){
-                            bodyImage.normalOffset = new float[2];
-                            bodyImage.normalOffset[0] = jsonCustomProperty.get("vec2").getFloat("x");
-                            bodyImage.normalOffset[1] = jsonCustomProperty.get("vec2").getFloat("y");
-                        }
-                    }
-                }
-                return bodyImage;
+            if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex) {
+                return this.getImageDefintion(jsonImage);
             }
         }
         return null;
+    }
+
+    private ImageDef getImageDefintion(final JsonValue jsonImage){
+        final ImageDef imageDef = new ImageDef();
+        if(jsonImage.has("body")) {
+            imageDef.body = jsonImage.getInt("body");
+        }
+        if(jsonImage.has("name")) {
+            imageDef.name = jsonImage.getString("name");
+        }
+        if(jsonImage.has("file")) {
+            imageDef.path = jsonImage.getString("file");
+        }
+        if(jsonImage.has("customProperties")) {
+            for(final JsonValue jsonCustomProperty : jsonImage.get("customProperties")){
+                if(jsonCustomProperty.getString("name").equals("width")){
+                    imageDef.width = jsonCustomProperty.getFloat("float");
+                }
+                else if(jsonCustomProperty.getString("name").equals("height")){
+                    imageDef.height = jsonCustomProperty.getFloat("float");
+                }
+                else if(jsonCustomProperty.getString("name").equals("regionX")){
+                    imageDef.regionX = jsonCustomProperty.getInt("int");
+                }
+                else if(jsonCustomProperty.getString("name").equals("regionY")){
+                    imageDef.regionY = jsonCustomProperty.getInt("int");
+                }
+                else if(jsonCustomProperty.getString("name").equals("regionWidth")){
+                    imageDef.regionWidth = jsonCustomProperty.getInt("int");
+                }
+                else if(jsonCustomProperty.getString("name").equals("regionHeight")){
+                    imageDef.regionHeight = jsonCustomProperty.getInt("int");
+                }
+                else if(jsonCustomProperty.getString("name").equals("normalOffset")){
+                    imageDef.normalOffset = new float[2];
+                    imageDef.normalOffset[0] = jsonCustomProperty.get("vec2").getFloat("x");
+                    imageDef.normalOffset[1] = jsonCustomProperty.get("vec2").getFloat("y");
+                }
+            }
+        }
+        return imageDef;
     }
 
     /**
