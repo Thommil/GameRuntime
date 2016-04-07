@@ -149,6 +149,11 @@ public class RubeLoader extends JSONLoader{
                         else if(jsonCustomProperty.getString("name").equals("regionHeight")){
                             bodyImage.regionHeight = jsonCustomProperty.getInt("int");
                         }
+                        else if(jsonCustomProperty.getString("name").equals("normalOffset")){
+                            bodyImage.normalOffset = new float[2];
+                            bodyImage.normalOffset[0] = jsonCustomProperty.get("vec2").getFloat("x");
+                            bodyImage.normalOffset[1] = jsonCustomProperty.get("vec2").getFloat("y");
+                        }
                     }
                 }
                 return bodyImage;
@@ -572,6 +577,14 @@ public class RubeLoader extends JSONLoader{
      *      {
      *          "name": "regionHeight",
      *          "int": regionHeight
+     *      },
+     *      {
+     *          "name" : "normalOffset",
+     *          "vec2" :
+     *          {
+     *              "x" : 512.0,
+     *              "y" : 0
+     *          }
      *      }
      *   ]
      * }
@@ -586,7 +599,7 @@ public class RubeLoader extends JSONLoader{
         public int regionY;
         public int regionWidth;
         public int regionHeight;
-
+        public float[] normalOffset;
     }
 
 }
