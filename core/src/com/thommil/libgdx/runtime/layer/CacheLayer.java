@@ -145,8 +145,5 @@ public class CacheLayer extends Layer{
                 this.renderer.endCache();
             }
         }
-        else{
-            this.renderer.dispose();
-        }
     }
 }

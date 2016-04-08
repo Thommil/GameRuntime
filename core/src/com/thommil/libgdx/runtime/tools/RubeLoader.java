@@ -42,10 +42,14 @@ public class RubeLoader extends JSONLoader{
      * @return The body definition in a BodyDef
      */
     public BodyDef getBodyDefintion(final String name){
+        int index = 0;
         for(final JsonValue jsonBody : this.jsonRoot.get("body")){
             if(jsonBody.has("name") && jsonBody.getString("name").equals(name)) {
-                return this.getBodyDefintion(jsonBody);
+                final BodyDef bodyDef = this.getBodyDefintion(jsonBody);
+                bodyDef.index = index;
+                return bodyDef;
             }
+            index++;
         }
         return null;
     }
@@ -58,11 +62,16 @@ public class RubeLoader extends JSONLoader{
      * @return The body definition in a BodyDef
      */
     public BodyDef getBodyDefinition(final int index){
-        return this.getBodyDefintion(this.jsonRoot.get("body").get(index));
+        final BodyDef bodyDef = this.getBodyDefintion(this.jsonRoot.get("body").get(index));
+        if(bodyDef != null){
+            bodyDef.index = index;
+        }
+        return bodyDef;
     }
 
     private BodyDef getBodyDefintion(final JsonValue jsonBody){
         final BodyDef bodyDef = new BodyDef();
+
         if(jsonBody.has("name")) {
             bodyDef.name = jsonBody.getString("name");
         }
@@ -537,6 +546,7 @@ public class RubeLoader extends JSONLoader{
      * BodyDef extension to support name
      */
     public static class BodyDef extends com.badlogic.gdx.physics.box2d.BodyDef{
+        public int index;
         public String name;
     }
 

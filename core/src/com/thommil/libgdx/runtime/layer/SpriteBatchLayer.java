@@ -110,8 +110,5 @@ public class SpriteBatchLayer extends Layer{
                 SpriteBatchLayer.sharedRenderer = null;
             }
         }
-        else{
-            this.renderer.dispose();
-        }
     }
 }

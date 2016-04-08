@@ -121,7 +121,6 @@ public class OffScreenLayer<T extends Layer> extends Layer {
      */
     @Override
     public void dispose() {
-        this.offScreenRenderer.dispose();
-        this.decoratedLayer.dispose();
+        //NOP
     }
 }

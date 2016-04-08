@@ -121,8 +121,5 @@ public class ParticlesBatchLayer extends Layer{
                 ParticlesBatchLayer.sharedRenderer = null;
             }
         }
-        else{
-            this.renderer.dispose();
-        }
     }
 }
