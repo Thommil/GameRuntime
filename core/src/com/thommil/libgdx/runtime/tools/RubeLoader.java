@@ -35,6 +35,22 @@ public class RubeLoader extends JSONLoader{
     }
 
     /**
+     * Gets a Box2D Body Definition from its name in the Scene
+     *
+     * @param name The body name
+     *
+     * @return The body definition in a BodyDef
+     */
+    public BodyDef getBodyDefintion(final String name){
+        for(final JsonValue jsonBody : this.jsonRoot.get("body")){
+            if(jsonBody.has("name") && jsonBody.getString("name").equals(name)) {
+                return this.getBodyDefintion(jsonBody);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets a Box2D Body Definition from its index in the Scene
      *
      * @param index The body index
@@ -42,8 +58,11 @@ public class RubeLoader extends JSONLoader{
      * @return The body definition in a BodyDef
      */
     public BodyDef getBodyDefinition(final int index){
+        return this.getBodyDefintion(this.jsonRoot.get("body").get(index));
+    }
+
+    private BodyDef getBodyDefintion(final JsonValue jsonBody){
         final BodyDef bodyDef = new BodyDef();
-        final JsonValue jsonBody = this.jsonRoot.get("body").get(index);
         if(jsonBody.has("name")) {
             bodyDef.name = jsonBody.getString("name");
         }
@@ -130,11 +149,28 @@ public class RubeLoader extends JSONLoader{
     }
 
     /**
+     * Gets a Box2D Body image its name in the Scene
+     *
+     * @param name The image name
+     *
+     * @return The image definition
+     */
+    public ImageDef getImageDefinition(final String name){
+        final JsonValue jsonImages = this.jsonRoot.get("image");
+        for(final JsonValue jsonImage : jsonImages){
+            if(jsonImage.has("name") && jsonImage.getString("name").equals(name)) {
+                return this.getImageDefintion(jsonImage);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Gets a Box2D Body image from body index in the Scene
      *
      * @param index The body index
      *
-     * @return The body image
+     * @return The image definition
      */
     public ImageDef getImageDefinition(final int bodyIndex){
         final JsonValue jsonImages = this.jsonRoot.get("image");
@@ -150,6 +186,12 @@ public class RubeLoader extends JSONLoader{
         final ImageDef imageDef = new ImageDef();
         if(jsonImage.has("body")) {
             imageDef.body = jsonImage.getInt("body");
+        }
+
+        if(jsonImage.has("center")) {
+            if (jsonImage.get("center").isObject()) {
+                imageDef.center.set(jsonImage.get("center").getFloat("x"),jsonImage.get("center").getFloat("y"));
+            }
         }
         if(jsonImage.has("name")) {
             imageDef.name = jsonImage.getString("name");
@@ -178,9 +220,7 @@ public class RubeLoader extends JSONLoader{
                     imageDef.regionHeight = jsonCustomProperty.getInt("int");
                 }
                 else if(jsonCustomProperty.getString("name").equals("normalOffset")){
-                    imageDef.normalOffset = new float[2];
-                    imageDef.normalOffset[0] = jsonCustomProperty.get("vec2").getFloat("x");
-                    imageDef.normalOffset[1] = jsonCustomProperty.get("vec2").getFloat("y");
+                    imageDef.normalOffset.set(jsonCustomProperty.get("vec2").getFloat("x"), jsonCustomProperty.get("vec2").getFloat("y"));
                 }
             }
         }
@@ -578,6 +618,10 @@ public class RubeLoader extends JSONLoader{
      *  "name" : name,
      *  "file" : "path/to/image",
      *  "body" : bodyId,
+     *  "center" : {
+     *      "x" : body xOffset or world xOffset,
+     *      "y" : body yOffset or world yOffset
+     *  },
      *  "customProperties" : [
      *      {
      *          "name": "width",
@@ -618,13 +662,14 @@ public class RubeLoader extends JSONLoader{
         public String name;
         public String path;
         public int body;
+        public Vector2 center = new Vector2();
         public float width;
         public float height;
         public int regionX;
         public int regionY;
         public int regionWidth;
         public int regionHeight;
-        public float[] normalOffset;
+        public Vector2 normalOffset = new Vector2();
     }
 
 }
