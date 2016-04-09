@@ -199,7 +199,7 @@ public class Runtime implements Screen{
 
                             final Object[] items = ((Object[])Runtime.this.layers.items);
                             for(int index=0; index < Runtime.this.layers.size; index++){
-                                if (items != null) {
+                                if (items[index] != null) {
                                     ((Layer)items[index]).step(lastPhysicsStepDurationFloat);
                                 }
                             }
@@ -326,7 +326,7 @@ public class Runtime implements Screen{
         if(!this.paused) {
             final Object[] items = ((Object[]) this.layers.items);
             for (int index = 0; index < this.layers.size; index++) {
-                if (items != null) {
+                if (items[index] != null) {
                     ((Layer) items[index]).render(delta);
                 }
             }
@@ -346,7 +346,7 @@ public class Runtime implements Screen{
     public void resize(int width, int height) {
         final Object[] items = ((Object[])this.layers.items);
         for(int index=0; index < this.layers.size; index++){
-            if (items != null) {
+            if (items[index] != null) {
                 ((Layer)items[index]).resize(width, height);
             }
         }
@@ -384,7 +384,7 @@ public class Runtime implements Screen{
         this.running=false;
         final Object[] items = ((Object[])this.layers.items);
         for(int index=0; index < this.layers.size; index++){
-            if (items != null) {
+            if (items[index] != null) {
                 ((Layer)items[index]).dispose();
             }
         }
