@@ -1,10 +1,8 @@
 package com.thommil.libgdx.runtime.tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -173,12 +171,11 @@ public class SceneLoader extends JSONLoader{
     }
 
     /**
-     * Gets the list of Box2D Body image in the Scene
+     * Gets the list of images in the Scene
      *
      * @return The lis of images
      */
     public Array<ImageDef> getImagesDefinition(){
-        final int imagesCount = this.jsonRoot.get("image").size;
         final Array<ImageDef> imageDefs = new Array<ImageDef>(true, this.jsonRoot.get("image").size);
         for(final JsonValue jsonImage : this.jsonRoot.get("image")){
             imageDefs.add(this.getImageDefintion(jsonImage));
@@ -187,7 +184,7 @@ public class SceneLoader extends JSONLoader{
     }
 
     /**
-     * Gets a Box2D Body image its name in the Scene
+     * Gets an image its name in the Scene
      *
      * @param name The image name
      *
@@ -204,7 +201,7 @@ public class SceneLoader extends JSONLoader{
     }
 
     /**
-     * Gets a Box2D Body image from body index in the Scene
+     * Gets an image from body index in the Scene
      *
      * @param index The body index
      *
@@ -263,6 +260,47 @@ public class SceneLoader extends JSONLoader{
             }
         }
         return imageDef;
+    }
+
+    /**
+     * Gets the list of particles effects in the Scene
+     *
+     * @return The lis of particles effects
+     */
+    public Array<ParticlesEffectDef> getParticlesEffectsDefinition(){
+        final Array<ParticlesEffectDef> particlesEffectDefs = new Array<ParticlesEffectDef>(true, this.jsonRoot.get("particles_effect").size);
+        for(final JsonValue jsonParticlesEffect : this.jsonRoot.get("particles_effect")){
+            particlesEffectDefs.add(this.getParticlesEffectDefinition(jsonParticlesEffect));
+        }
+        return particlesEffectDefs;
+    }
+
+    /**
+     * Gets a particles effect from its name in the Scene
+     *
+     * @param name The particles effects name
+     *
+     * @return The particle effects definition
+     */
+    public ParticlesEffectDef getParticlesEffectDefinition(final String name){
+        final JsonValue jsonParticlesEffects = this.jsonRoot.get("particles_effect");
+        for(final JsonValue jsonParticlesEffect : jsonParticlesEffects){
+            if(jsonParticlesEffect.has("name") && jsonParticlesEffect.getString("name").equals(name)) {
+                return this.getParticlesEffectDefinition(jsonParticlesEffect);
+            }
+        }
+        return null;
+    }
+
+    private ParticlesEffectDef getParticlesEffectDefinition(final JsonValue jsonParticlesEffect){
+        final ParticlesEffectDef particlesEffectDef = new ParticlesEffectDef();
+        if(jsonParticlesEffect.has("name")) {
+            particlesEffectDef.name = jsonParticlesEffect.getString("name");
+        }
+        if(jsonParticlesEffect.has("file")) {
+            particlesEffectDef.path = jsonParticlesEffect.getString("file");
+        }
+        return particlesEffectDef;
     }
 
     /**
@@ -694,7 +732,7 @@ public class SceneLoader extends JSONLoader{
     }
 
     /**
-     * Image for a Rube Body (custom properties):
+     * Image defintion (in "images"):
      * {
      *  "name" : name,
      *  "file" : "path/to/image",
@@ -753,4 +791,16 @@ public class SceneLoader extends JSONLoader{
         public Vector2 normalOffset = new Vector2();
     }
 
+    /**
+     *  Particles effects definition (in "particles_effect")
+     *  {
+     *  "name" : name,
+     *  "file" : "path/to/particle_effect"
+     *  }
+     *
+     */
+    public static class ParticlesEffectDef{
+        public String name;
+        public String path;
+    }
 }
