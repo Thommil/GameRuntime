@@ -221,6 +221,31 @@ public abstract class Layer implements Disposable {
     }
 
     /**
+     * Dispose layer with optional inner cleaning
+     *
+     * @param disposeActors If true, all innner actors are disposed too
+     */
+    public void dispose(boolean disposeActors){
+        if(disposeActors){
+            for(final Actor actor : this.listActors()){
+                actor.dispose();
+            }
+        }
+        this.dispose();
+    }
+
+    /**
+     * Releases all resources of this object.
+     */
+    @Override
+    public void dispose() {
+        this.actors.clear();
+        this.renderables.clear();
+        this.collidables.clear();
+        this.stepables.clear();
+    }
+
+    /**
      * Binds a layer to a Runtime (normaly called by the Runtime itself)
      */
     public void bind(final Runtime runtime){

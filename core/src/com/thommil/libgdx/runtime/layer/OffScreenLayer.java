@@ -115,12 +115,4 @@ public class OffScreenLayer<T extends Layer> extends Layer {
         this.decoratedLayer.resize(width, height);
         this.offScreenRenderer.onResize(width, height);
     }
-
-    /**
-     * Releases all resources of this object.
-     */
-    @Override
-    public void dispose() {
-        //NOP
-    }
 }

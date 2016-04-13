@@ -110,5 +110,6 @@ public class SpriteBatchLayer extends Layer{
                 SpriteBatchLayer.sharedRenderer = null;
             }
         }
+        super.dispose();
     }
 }
