@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.graphics.ParticleEffectActor;
+import com.thommil.libgdx.runtime.layer.ParticlesEffectBatchLayer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
 
@@ -18,18 +19,19 @@ public class ParticlesEffectLevel implements InputProcessor, Disposable {
     ParticleEffect particleEffect;
     ParticleEffectActor particleEffectActor;
 
-    SpriteBatchLayer spriteBatchLayer;
+    ParticlesEffectBatchLayer particlesEffectBatchLayer;
 
     public ParticlesEffectLevel() {
         SpriteBatchLayer.setGlobalSize(1000);
-        spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(), 1000);
+        particlesEffectBatchLayer = new ParticlesEffectBatchLayer(Runtime.getInstance().getViewport(), 1000);
+        particlesEffectBatchLayer.setAdditive(true);
 
         particleEffect = new ParticleEffect();
         particleEffect.load(Gdx.files.internal("effects/particles.p"), Gdx.files.internal("effects"));
         particleEffectActor = new ParticleEffectActor(0, particleEffect, 10);
-        spriteBatchLayer.addActor(particleEffectActor);
+        particlesEffectBatchLayer.addActor(particleEffectActor);
 
-        Runtime.getInstance().addLayer(spriteBatchLayer);
+        Runtime.getInstance().addLayer(particlesEffectBatchLayer);
         RuntimeProfiler.profile();
         Gdx.input.setInputProcessor(this);
     }
@@ -39,7 +41,7 @@ public class ParticlesEffectLevel implements InputProcessor, Disposable {
      */
     @Override
     public void dispose() {
-        this.spriteBatchLayer.dispose();
+        this.particlesEffectBatchLayer.dispose();
         this.particleEffect.dispose();
     }
 

@@ -24,7 +24,6 @@ public class ParticlesEffectGame extends Game{
         settings.viewport.type = Settings.Viewport.FILL;
         settings.viewport.width = 5;
         settings.viewport.height = 5;
-        settings.graphics.blendDstFunc = GL20.GL_ONE;
         settings.physics.enabled = false;
     }
 
