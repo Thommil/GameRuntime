@@ -65,6 +65,15 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
     }
 
     /**
+     * Releases a previously spawned ParticleEffect
+     */
+    public void release(final ParticleEffect particleEffect){
+        particleEffect.reset();
+        this.particleEffects.removeValue((ParticleEffectPool.PooledEffect)particleEffect, true);
+        ((ParticleEffectPool.PooledEffect)particleEffect).free();
+    }
+
+    /**
      * Releases all resources of this object.
      */
     @Override
