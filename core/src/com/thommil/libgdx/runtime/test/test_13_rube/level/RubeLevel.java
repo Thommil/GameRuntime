@@ -13,10 +13,8 @@ import com.thommil.libgdx.runtime.actor.physics.*;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
-import com.thommil.libgdx.runtime.tools.RubeLoader;
+import com.thommil.libgdx.runtime.tools.SceneLoader;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
-
-import java.util.List;
 
 /**
  * @author  Thommil on 04/03/16.
@@ -24,12 +22,11 @@ import java.util.List;
 public class RubeLevel implements Disposable {
 
     final SpriteBatchLayer spriteBatchLayer;
-    final RubeLoader rubeLoader;
+    final SceneLoader rubeLoader;
     final AssetManager assetManager;
-    int currentLayout = 0;
 
     public RubeLevel() {
-        this.rubeLoader = new RubeLoader();
+        this.rubeLoader = new SceneLoader();
         this.rubeLoader.parse(Gdx.files.internal("scene/sample.json"));
 
         this.spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(),10);
@@ -41,10 +38,10 @@ public class RubeLevel implements Disposable {
         assetManager.finishLoading();
 
         int i =0;
-        for(final RubeLoader.BodyDef bodyDef : this.rubeLoader.getBodiesDefintion()){
+        for(final SceneLoader.BodyDef bodyDef : this.rubeLoader.getBodiesDefintion()){
             final MassData massData = rubeLoader.getBodyMassData(i);
             final Array<FixtureDef> fixtureDefs = rubeLoader.getFixturesDefinition(i);
-            final RubeLoader.ImageDef imageDef = this.rubeLoader.getImageDefinition(i);
+            final SceneLoader.ImageDef imageDef = this.rubeLoader.getImageDefinition(i);
             if(imageDef != null) {
                 if(bodyDef.type == BodyDef.BodyType.StaticBody){
                     spriteBatchLayer.addActor(new StaticBodyActor(i, new TextureSet(assetManager.get(imageDef.path,Texture.class)),
@@ -123,7 +120,7 @@ public class RubeLevel implements Disposable {
 
         final Array<JointDef> joints = this.rubeLoader.getJointsDefinition();
         for(final JointDef jointDef : joints){
-            final RubeLoader.WheelJointDef wheelJointDef = (RubeLoader.WheelJointDef) jointDef;
+            final SceneLoader.WheelJointDef wheelJointDef = (SceneLoader.WheelJointDef) jointDef;
             wheelJointDef.bodyA = ((RigidBody) spriteBatchLayer.getActor(wheelJointDef.bodyIdA)).getBody();
             wheelJointDef.bodyB = ((RigidBody) spriteBatchLayer.getActor(wheelJointDef.bodyIdB)).getBody();
             Runtime.getInstance().getPhysicsWorld().createJoint(wheelJointDef);

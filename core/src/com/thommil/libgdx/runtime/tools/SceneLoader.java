@@ -1,15 +1,27 @@
 package com.thommil.libgdx.runtime.tools;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 
 /**
- * Helper class to load Rube files.
+ * Helper class to load extended Rube files.
+ *
  * @author Thommil on 19/03/16.
  */
-public class RubeLoader extends JSONLoader{
+public class SceneLoader extends JSONLoader{
+
+    /**
+     * Inner TextureAtlas representation of images
+     */
+    protected TextureAtlas textureAtlas;
 
     /**
      * Get the gravity
@@ -141,6 +153,23 @@ public class RubeLoader extends JSONLoader{
             massData.center.set(jsonBody.get("massData-center").getFloat("x"),jsonBody.get("massData-center").getFloat("y"));
         }
         return massData;
+    }
+
+    /**
+     * Gets the inner images in a TextureAtlas
+     *
+     * @param assetManager The asset manager used to load the Textures (not directly the TextureAtlas)
+     *
+     * @return A TextureAtlas containing the inner images
+     */
+    public TextureAtlas getTextureAtlas(final AssetManager assetManager){
+        if(this.textureAtlas == null){
+            this.textureAtlas = new TextureAtlas();
+            for(final ImageDef imageDef : this.getImagesDefinition()){
+                this.textureAtlas.addRegion(imageDef.name, assetManager.get(imageDef.path, Texture.class), imageDef.regionX, imageDef.regionY, imageDef.regionWidth, imageDef.regionHeight);
+            }
+        }
+        return this.textureAtlas;
     }
 
     /**
@@ -540,6 +569,48 @@ public class RubeLoader extends JSONLoader{
             }
         }
         return jointDefs;
+    }
+
+    /**
+     * Sets the inner JSON root from a file
+     *
+     * @param fileHandle The JSON file
+     */
+    @Override
+    public void parse(FileHandle fileHandle) {
+        if(this.textureAtlas != null) {
+            this.textureAtlas.getRegions().clear();
+            this.textureAtlas.getTextures().clear();
+        }
+        super.parse(fileHandle);
+    }
+
+    /**
+     * Sets the inner JSON from a string
+     *
+     * @param jsonString The JSON string
+     */
+    @Override
+    public void parse(String jsonString) {
+        if(this.textureAtlas != null) {
+            this.textureAtlas.getRegions().clear();
+            this.textureAtlas.getTextures().clear();
+        }
+        super.parse(jsonString);
+    }
+
+    /**
+     * Sets the inner JSON root from an JSONValue
+     *
+     * @param jsonRoot The JSON root
+     */
+    @Override
+    public void parse(JsonValue jsonRoot) {
+        if(this.textureAtlas != null) {
+            this.textureAtlas.getRegions().clear();
+            this.textureAtlas.getTextures().clear();
+        }
+        super.parse(jsonRoot);
     }
 
     /**
