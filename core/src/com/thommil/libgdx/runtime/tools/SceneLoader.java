@@ -1,10 +1,13 @@
 package com.thommil.libgdx.runtime.tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -263,14 +266,30 @@ public class SceneLoader extends JSONLoader{
     }
 
     /**
+     * Helper method to build an animation from its name and the AssetManager containing the resources
+     *
+     * @param name The name of the animation
+     * @param assetManager The asset manager containing the animation resources
+     * @return A new created animation
+     */
+    public Animation getAnimation(final String name, final AssetManager assetManager){
+        final AnimationDef animationDef = this.getAnimationDefinition(name);
+        final Array<TextureRegion> textureRegions = new Array<TextureRegion>(true, animationDef.keyFrames.length);
+        for(final AnimationDef.KeyFrame keyFrame : animationDef.keyFrames){
+            textureRegions.add(new TextureRegion(assetManager.get(animationDef.path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
+        }
+        return new Animation(animationDef.frameDuration, textureRegions, animationDef.playMode);
+    }
+
+    /**
      * Gets the list of animations in the Scene
      *
      * @return The lis of animations
      */
-    public Array<AnimationDef> getAnimationsDefintion(){
+    public Array<AnimationDef> getAnimationsDefinition(){
         final Array<AnimationDef> animationDefs = new Array<AnimationDef>(true, this.jsonRoot.get("animation").size);
         for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
-            animationDefs.add(this.getAnimationDefintion(jsonAnimation));
+            animationDefs.add(this.getAnimationDefinition(jsonAnimation));
         }
         return animationDefs;
     }
@@ -282,38 +301,22 @@ public class SceneLoader extends JSONLoader{
      *
      * @return The animation definition
      */
-    public AnimationDef getAnimationDefintion(final String name){
+    public AnimationDef getAnimationDefinition(final String name){
         for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
             if(jsonAnimation.has("name") && jsonAnimation.getString("name").equals(name)) {
-                return this.getAnimationDefintion(jsonAnimation);
+                return this.getAnimationDefinition(jsonAnimation);
             }
         }
         return null;
     }
 
-    /**
-     * Gets an animation from its image in the Scene
-     *
-     * @param imageDef The image used fot the animation
-     *
-     * @return The animation definition
-     */
-    public AnimationDef getAnimationDefintion(final ImageDef imageDef){
-        for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
-            if(jsonAnimation.has("image") && jsonAnimation.getString("image").equals(imageDef.name)) {
-                return this.getAnimationDefintion(jsonAnimation);
-            }
-        }
-        return null;
-    }
-
-    private AnimationDef getAnimationDefintion(final JsonValue jsonAnimation){
+    private AnimationDef getAnimationDefinition(final JsonValue jsonAnimation){
         final AnimationDef animationDef = new AnimationDef();
         if(jsonAnimation.has("name")) {
             animationDef.name = jsonAnimation.getString("name");
         }
-        if(jsonAnimation.has("image")) {
-            animationDef.image = jsonAnimation.getString("image");
+        if(jsonAnimation.has("file")) {
+            animationDef.path = jsonAnimation.getString("file");
         }
         if(jsonAnimation.has("playMode")) {
             animationDef.playMode = Animation.PlayMode.valueOf(jsonAnimation.getString("playMode"));
@@ -321,17 +324,38 @@ public class SceneLoader extends JSONLoader{
         if(jsonAnimation.has("frameDuration")) {
             animationDef.frameDuration = jsonAnimation.getFloat("frameDuration");
         }
-        if(jsonAnimation.has("regions")) {
-            animationDef.regions = new int[jsonAnimation.get("regions").size][4];
-            for(int index=0; index < animationDef.regions.length; index++){
-                final JsonValue jsonRegion = jsonAnimation.get("regions").get(index);
-                animationDef.regions[index][AnimationDef.X] = jsonRegion.getInt("x");
-                animationDef.regions[index][AnimationDef.Y] = jsonRegion.getInt("y");
-                animationDef.regions[index][AnimationDef.WIDTH] = jsonRegion.getInt("width");
-                animationDef.regions[index][AnimationDef.HEIGHT] = jsonRegion.getInt("height");
+        if(jsonAnimation.has("keyFrames")) {
+            animationDef.keyFrames = new AnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+            for(int index=0; index < animationDef.keyFrames.length; index++){
+                final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
+                animationDef.keyFrames[index] = new AnimationDef.KeyFrame();
+                animationDef.keyFrames[index].regionX = jsonKeyFrame.getInt("regionX");
+                animationDef.keyFrames[index].regionY = jsonKeyFrame.getInt("regionY");
+                animationDef.keyFrames[index].regionWidth = jsonKeyFrame.getInt("regionWidth");
+                animationDef.keyFrames[index].regionHeight = jsonKeyFrame.getInt("regionHeight");
+                if(jsonKeyFrame.has("width")) {
+                    animationDef.keyFrames[index].width = jsonKeyFrame.getFloat("width");
+                }
+                if(jsonKeyFrame.has("height")) {
+                    animationDef.keyFrames[index].height = jsonKeyFrame.getFloat("height");
+                }
             }
         }
         return animationDef;
+    }
+
+    /**
+     * Helper method to build a ParticleEffect from its name and the asset manager owning the resources
+     *
+     * @param name The name of the particles effect
+     * @param assetManager The asset manager contaning the resources
+     * @return A newly created ParticleEffect
+     */
+    public ParticleEffect getParticleEffect(final String name, final AssetManager assetManager){
+        final ParticlesEffectDef particlesEffectDef = this.getParticlesEffectDefinition(name);
+        final ParticleEffect particleEffect = new ParticleEffect();
+        particleEffect.load(Gdx.files.internal(particlesEffectDef.path), this.getTextureAtlas(assetManager));
+        return particleEffect;
     }
 
     /**
@@ -879,15 +903,17 @@ public class SceneLoader extends JSONLoader{
      *  Animation definition (in "animation")
      *  {
      *  "name" : name,
-     *  "image" : image,
+     *  "file" : path/to/image,
      *  "playMode" : "LOOP" | "REVERSED" | "LOOP" | "LOOP_REVERSED" | "LOOP_PINGPONG" | "LOOP_RANDOM",
      *  frameDuration : frame duration (seconds)
-     *  regions : [
+     *  keyFrames : [
      *      {
-     *          "x" : x,
-     *          "y" : y,
-     *          "width" : width,
-     *          "height" : height
+     *          "regionX" : region x,
+     *          "regionY" : region y,
+     *          "regionWidth" : region width,
+     *          "regionHeight" : region height,
+     *          "width" : width (optional),
+     *          "height" : height (optional)
      *      }
      *      ...
      *  ]
@@ -895,15 +921,19 @@ public class SceneLoader extends JSONLoader{
      *
      */
     public static class AnimationDef{
-        public static final int X = 0;
-        public static final int Y = 0;
-        public static final int WIDTH = 0;
-        public static final int HEIGHT = 0;
-
         public String name;
-        public String image;
+        public String path;
         public Animation.PlayMode playMode;
         public float frameDuration;
-        public int[][] regions;
+        public KeyFrame[] keyFrames;
+
+        public static class KeyFrame{
+            public int regionX;
+            public int regionY;
+            public int regionWidth;
+            public int regionHeight;
+            public float width;
+            public float height;
+        }
     }
 }
