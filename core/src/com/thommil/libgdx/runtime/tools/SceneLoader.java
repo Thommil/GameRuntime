@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.tools;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -208,8 +209,7 @@ public class SceneLoader extends JSONLoader{
      * @return The image definition
      */
     public ImageDef getImageDefinition(final int bodyIndex){
-        final JsonValue jsonImages = this.jsonRoot.get("image");
-        for(final JsonValue jsonImage : jsonImages){
+        for(final JsonValue jsonImage : this.jsonRoot.get("image")){
             if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex) {
                 return this.getImageDefintion(jsonImage);
             }
@@ -263,6 +263,78 @@ public class SceneLoader extends JSONLoader{
     }
 
     /**
+     * Gets the list of animations in the Scene
+     *
+     * @return The lis of animations
+     */
+    public Array<AnimationDef> getAnimationsDefintion(){
+        final Array<AnimationDef> animationDefs = new Array<AnimationDef>(true, this.jsonRoot.get("animation").size);
+        for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
+            animationDefs.add(this.getAnimationDefintion(jsonAnimation));
+        }
+        return animationDefs;
+    }
+
+    /**
+     * Gets an animation from its name in the Scene
+     *
+     * @param name The animation name
+     *
+     * @return The animation definition
+     */
+    public AnimationDef getAnimationDefintion(final String name){
+        for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
+            if(jsonAnimation.has("name") && jsonAnimation.getString("name").equals(name)) {
+                return this.getAnimationDefintion(jsonAnimation);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets an animation from its image in the Scene
+     *
+     * @param imageDef The image used fot the animation
+     *
+     * @return The animation definition
+     */
+    public AnimationDef getAnimationDefintion(final ImageDef imageDef){
+        for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
+            if(jsonAnimation.has("image") && jsonAnimation.getString("image").equals(imageDef.name)) {
+                return this.getAnimationDefintion(jsonAnimation);
+            }
+        }
+        return null;
+    }
+
+    private AnimationDef getAnimationDefintion(final JsonValue jsonAnimation){
+        final AnimationDef animationDef = new AnimationDef();
+        if(jsonAnimation.has("name")) {
+            animationDef.name = jsonAnimation.getString("name");
+        }
+        if(jsonAnimation.has("image")) {
+            animationDef.image = jsonAnimation.getString("image");
+        }
+        if(jsonAnimation.has("playMode")) {
+            animationDef.playMode = Animation.PlayMode.valueOf(jsonAnimation.getString("playMode"));
+        }
+        if(jsonAnimation.has("frameDuration")) {
+            animationDef.frameDuration = jsonAnimation.getFloat("frameDuration");
+        }
+        if(jsonAnimation.has("regions")) {
+            animationDef.regions = new int[jsonAnimation.get("regions").size][4];
+            for(int index=0; index < animationDef.regions.length; index++){
+                final JsonValue jsonRegion = jsonAnimation.get("regions").get(index);
+                animationDef.regions[index][AnimationDef.X] = jsonRegion.getInt("x");
+                animationDef.regions[index][AnimationDef.Y] = jsonRegion.getInt("y");
+                animationDef.regions[index][AnimationDef.WIDTH] = jsonRegion.getInt("width");
+                animationDef.regions[index][AnimationDef.HEIGHT] = jsonRegion.getInt("height");
+            }
+        }
+        return animationDef;
+    }
+
+    /**
      * Gets the list of particles effects in the Scene
      *
      * @return The lis of particles effects
@@ -283,8 +355,7 @@ public class SceneLoader extends JSONLoader{
      * @return The particle effects definition
      */
     public ParticlesEffectDef getParticlesEffectDefinition(final String name){
-        final JsonValue jsonParticlesEffects = this.jsonRoot.get("particles_effect");
-        for(final JsonValue jsonParticlesEffect : jsonParticlesEffects){
+        for(final JsonValue jsonParticlesEffect : this.jsonRoot.get("particles_effect")){
             if(jsonParticlesEffect.has("name") && jsonParticlesEffect.getString("name").equals(name)) {
                 return this.getParticlesEffectDefinition(jsonParticlesEffect);
             }
@@ -802,5 +873,37 @@ public class SceneLoader extends JSONLoader{
     public static class ParticlesEffectDef{
         public String name;
         public String path;
+    }
+
+    /**
+     *  Animation definition (in "animation")
+     *  {
+     *  "name" : name,
+     *  "image" : image,
+     *  "playMode" : "LOOP" | "REVERSED" | "LOOP" | "LOOP_REVERSED" | "LOOP_PINGPONG" | "LOOP_RANDOM",
+     *  frameDuration : frame duration (seconds)
+     *  regions : [
+     *      {
+     *          "x" : x,
+     *          "y" : y,
+     *          "width" : width,
+     *          "height" : height
+     *      }
+     *      ...
+     *  ]
+     *  }
+     *
+     */
+    public static class AnimationDef{
+        public static final int X = 0;
+        public static final int Y = 0;
+        public static final int WIDTH = 0;
+        public static final int HEIGHT = 0;
+
+        public String name;
+        public String image;
+        public Animation.PlayMode playMode;
+        public float frameDuration;
+        public int[][] regions;
     }
 }
