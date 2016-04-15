@@ -60,9 +60,14 @@ public class ParticlesEffectBatchLayer extends SpriteBatchLayer {
      */
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-        super.render(deltaTime);
-        Gdx.gl.glBlendFunc(Runtime.getInstance().getSettings().graphics.blendSrcFunc,
-                Runtime.getInstance().getSettings().graphics.blendDstFunc);
+        if(this.additive) {
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+            super.render(deltaTime);
+            Gdx.gl.glBlendFunc(Runtime.getInstance().getSettings().graphics.blendSrcFunc,
+                    Runtime.getInstance().getSettings().graphics.blendDstFunc);
+        }
+        else{
+            super.render(deltaTime);
+        }
     }
 }

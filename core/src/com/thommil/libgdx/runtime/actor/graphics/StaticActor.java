@@ -44,11 +44,24 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
                         final TextureSet textureSet,
                         final float x, final float y,
                         final float width, final float height,
-                        final float u, final float v,
-                        final float u2, final float v2,
+                        float u, float v,
+                        float u2, float v2,
                         final float color){
         super(id);
         this.textureSet = textureSet;
+
+        final int texWidth = this.textureSet.getWidth(), texHeight = this.textureSet.getHeight();
+        final int regionWidth = Math.round(Math.abs(u2 - u) * texWidth);
+        final int regionHeight = Math.round(Math.abs(v2 - v) * texHeight);
+
+        if (regionWidth == 1 && regionHeight == 1) {
+            final float adjustX = 0.25f / texWidth;
+            u += adjustX;
+            u2 -= adjustX;
+            final float adjustY = 0.25f / texHeight;
+            v += adjustY;
+            v2 -= adjustY;
+        }
 
         this.x = x;
         this.y = y;
@@ -64,25 +77,25 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
         this.vertices[SpriteActor.Y1] = y;
         this.vertices[SpriteActor.C1] = color;
         this.vertices[SpriteActor.U1] = u;
-        this.vertices[SpriteActor.V1] = v;
+        this.vertices[SpriteActor.V1] = v2;
 
         this.vertices[SpriteActor.X2] = x;
         this.vertices[SpriteActor.Y2] = y + height;
         this.vertices[SpriteActor.C2] = color;
         this.vertices[SpriteActor.U2] = u;
-        this.vertices[SpriteActor.V2] = v2;
+        this.vertices[SpriteActor.V2] = v;
 
         this.vertices[SpriteActor.X3] = x + width;
         this.vertices[SpriteActor.Y3] = y + height;
         this.vertices[SpriteActor.C3] = color;
         this.vertices[SpriteActor.U3] = u2;
-        this.vertices[SpriteActor.V3] = v2;
+        this.vertices[SpriteActor.V3] = v;
 
         this.vertices[SpriteActor.X4] = x + width;
         this.vertices[SpriteActor.Y4] = y;
         this.vertices[SpriteActor.C4] = color;
         this.vertices[SpriteActor.U4] = u2;
-        this.vertices[SpriteActor.V4] = v;
+        this.vertices[SpriteActor.V4] = v2;
     }
 
     /**
@@ -112,10 +125,8 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
                 textureSet,
                 x, y,
                 width, height,
-                (float)regionX/(float)textureSet.textures[0].getWidth(),
-                1f - (float)regionY/(float)textureSet.textures[0].getHeight(),
-                (float)regionWidth/(float)textureSet.textures[0].getWidth(),
-                1f - (float)regionHeight/(float)textureSet.textures[0].getHeight(),
+                regionX * 1f / textureSet.getWidth(), regionY * 1f / textureSet.getHeight(),
+                (regionX + regionWidth) * 1f / textureSet.getWidth(), (regionY + regionHeight) * 1f / textureSet.getHeight(),
                 color
         );
     }
@@ -141,6 +152,7 @@ public class StaticActor extends Actor implements Renderable<SpriteBatchRenderer
         if(this.bound == null) this.bound = new Rectangle(this.x, this.y, this.width, this.height);
         return this.bound;
     }
+
 
     /**
      * Called when the element is touched or clicked down

@@ -2,6 +2,7 @@ package com.thommil.libgdx.runtime;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -324,6 +325,10 @@ public class Runtime implements Screen{
     @Override
     public void render(float delta) {
         if(!this.paused) {
+            if(this.settings.graphics.clearScreen) {
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            }
+
             final Object[] items = ((Object[]) this.layers.items);
             for (int index = 0; index < this.layers.size; index++) {
                 if (items[index] != null) {

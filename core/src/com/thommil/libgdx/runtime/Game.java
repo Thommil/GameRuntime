@@ -130,10 +130,6 @@ public abstract class Game implements ApplicationListener {
      */
     @Override
     public final void render() {
-        if(settings.graphics.clearScreen) {
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        }
-
         this.currentScreen.render(Gdx.graphics.getDeltaTime());
     }
 

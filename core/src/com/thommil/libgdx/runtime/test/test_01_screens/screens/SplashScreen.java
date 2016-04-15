@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.test_01_screens.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.actor.graphics.BitmapFontActor;
@@ -47,6 +48,7 @@ public class SplashScreen extends AbstractScreen {
      */
     @Override
     public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         bitmapFontBatchLayer.render(delta);
     }
 
