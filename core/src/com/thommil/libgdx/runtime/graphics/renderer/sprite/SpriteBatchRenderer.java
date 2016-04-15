@@ -115,19 +115,23 @@ public class SpriteBatchRenderer implements BatchRenderer{
      */
     @Override
     public void draw(TextureSet textureSet, float[] vertices, int offset, int count) {
-        int remainingVertices = this.vertices.length;
-        if (textureSet != this.lastTextureSet) {
-            this.flush();
-            this.lastTextureSet = textureSet;
+        if(textureSet.textures.length == 1) {
+            this.draw(textureSet.textures[0], vertices, offset, count);
         }
-        else {
-            remainingVertices -= this.idx;
-            if (remainingVertices == 0) {
+        else{
+            int remainingVertices = this.vertices.length;
+            if (textureSet != this.lastTextureSet) {
                 this.flush();
-                remainingVertices = this.vertices.length;
+                this.lastTextureSet = textureSet;
+            } else {
+                remainingVertices -= this.idx;
+                if (remainingVertices == 0) {
+                    this.flush();
+                    remainingVertices = this.vertices.length;
+                }
             }
+            this.copyAndFlush(vertices, Math.min(remainingVertices, count), offset, count);
         }
-        this.copyAndFlush(vertices, Math.min(remainingVertices, count), offset, count);
     }
 
     private void copyAndFlush(float[] vertices, int copyCount, int offset, int count){

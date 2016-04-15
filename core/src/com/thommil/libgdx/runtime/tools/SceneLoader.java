@@ -225,42 +225,38 @@ public class SceneLoader extends JSONLoader{
         if(jsonImage.has("body")) {
             imageDef.body = jsonImage.getInt("body");
         }
-
-        if(jsonImage.has("center")) {
-            if (jsonImage.get("center").isObject()) {
-                imageDef.center.set(jsonImage.get("center").getFloat("x"),jsonImage.get("center").getFloat("y"));
-            }
-        }
         if(jsonImage.has("name")) {
             imageDef.name = jsonImage.getString("name");
         }
         if(jsonImage.has("file")) {
             imageDef.path = jsonImage.getString("file");
         }
-        if(jsonImage.has("customProperties")) {
-            for(final JsonValue jsonCustomProperty : jsonImage.get("customProperties")){
-                if(jsonCustomProperty.getString("name").equals("width")){
-                    imageDef.width = jsonCustomProperty.getFloat("float");
-                }
-                else if(jsonCustomProperty.getString("name").equals("height")){
-                    imageDef.height = jsonCustomProperty.getFloat("float");
-                }
-                else if(jsonCustomProperty.getString("name").equals("regionX")){
-                    imageDef.regionX = jsonCustomProperty.getInt("int");
-                }
-                else if(jsonCustomProperty.getString("name").equals("regionY")){
-                    imageDef.regionY = jsonCustomProperty.getInt("int");
-                }
-                else if(jsonCustomProperty.getString("name").equals("regionWidth")){
-                    imageDef.regionWidth = jsonCustomProperty.getInt("int");
-                }
-                else if(jsonCustomProperty.getString("name").equals("regionHeight")){
-                    imageDef.regionHeight = jsonCustomProperty.getInt("int");
-                }
-                else if(jsonCustomProperty.getString("name").equals("normalOffset")){
-                    imageDef.normalOffset.set(jsonCustomProperty.get("vec2").getFloat("x"), jsonCustomProperty.get("vec2").getFloat("y"));
-                }
-            }
+        if(jsonImage.has("x")) {
+            imageDef.x = jsonImage.getFloat("x");
+        }
+        if(jsonImage.has("y")) {
+            imageDef.y = jsonImage.getFloat("y");
+        }
+        if(jsonImage.has("width")) {
+            imageDef.width = jsonImage.getFloat("width");
+        }
+        if(jsonImage.has("height")) {
+            imageDef.height = jsonImage.getFloat("height");
+        }
+        if(jsonImage.has("regionX")) {
+            imageDef.regionX = jsonImage.getInt("regionX");
+        }
+        if(jsonImage.has("regionY")) {
+            imageDef.regionY = jsonImage.getInt("regionY");
+        }
+        if(jsonImage.has("regionWidth")) {
+            imageDef.regionWidth = jsonImage.getInt("regionWidth");
+        }
+        if(jsonImage.has("regionHeight")) {
+            imageDef.regionHeight = jsonImage.getInt("regionHeight");
+        }
+        if(jsonImage.has("normalOffset")) {
+            imageDef.normalOffset.set(jsonImage.get("normalOffset").getFloat("x"), jsonImage.get("normalOffset").getFloat("y"));
         }
         return imageDef;
     }
@@ -832,51 +828,26 @@ public class SceneLoader extends JSONLoader{
      *  "name" : name,
      *  "file" : "path/to/image",
      *  "body" : bodyId,
-     *  "center" : {
-     *      "x" : body xOffset or world xOffset,
-     *      "y" : body yOffset or world yOffset
-     *  },
-     *  "customProperties" : [
-     *      {
-     *          "name": "width",
-     *          "float": width
-     *      },
-     *      {
-     *          "name": "height",
-     *          "float": height
-     *      },
-     *      {
-     *          "name": "regionX",
-     *          "int": regionX
-     *      },
-     *      {
-     *          "name": "regionY",
-     *          "int": regionY
-     *      },
-     *      {
-     *          "name": "regionWidth",
-     *          "int": regionWidth
-     *      },
-     *      {
-     *          "name": "regionHeight",
-     *          "int": regionHeight
-     *      },
-     *      {
-     *          "name" : "normalOffset",
-     *          "vec2" :
-     *          {
-     *              "x" : 512.0,
-     *              "y" : 0
-     *          }
-     *      }
-     *   ]
+     *  "regionX" : region x,
+     *  "regionY" : region y,
+     *  "regionWidth" : region width,
+     *  "regionHeight" : region height,
+     *  "width" : width (optional),
+     *  "height" : height (optional)
+     *  "x" : body xOffset or world xOffset (optional),
+     *  "y" : body yOffset or world yOffset (optional),
+     *  "normalOffset" : {
+     *      "x" : normal X offset
+     *      "y" : normal Y offset
+     *  }
      * }
      */
     public static class ImageDef {
         public String name;
         public String path;
         public int body;
-        public Vector2 center = new Vector2();
+        public float x;
+        public float y;
         public float width;
         public float height;
         public int regionX;

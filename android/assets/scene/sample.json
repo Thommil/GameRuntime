@@ -1330,653 +1330,110 @@
     },
     "image": [
         {
-            "aspectScale": 1,
             "body": 0,
-            "center": {
-                "x": 0,
-                "y": 0
-            },
-            "corners": {
-                "x": [
-                    -18.0,
-                    18.0,
-                    18.0,
-                    -18.0
-                ],
-                "y": [
-                    -10.0,
-                    -10.0,
-                    10.0,
-                    10.0
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 500,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 900,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 20.0,
-                    "name": "height"
-                },
-                {
-                    "float": 36.0,
-                    "name": "width"
-                }
-            ],
+            "x": 0,
+            "y": 0,
+            "width" : 36.0,
+            "height" : 20.0,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 900,
+            "regionHeight" : 500,
             "file": "scene/mcclory.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -18.0,
-                -10.0,
-                18.0,
-                -10.0,
-                18.0,
-                10.0,
-                -18.0,
-                10.0
-            ],
-            "name": "image1",
-            "opacity": 1,
-            "scale": 20.0
+            "name": "background"
         },
         {
-            "aspectScale": 1,
-            "body": 2,
-            "center": {
-                "x": 2.899938067457697e-08,
-                "y": -4.759545220167638e-07
-            },
-            "corners": {
-                "x": [
-                    -0.4972165524959564,
-                    0.4972166121006012,
-                    0.4972166121006012,
-                    -0.4972165524959564
-                ],
-                "y": [
-                    -0.497217059135437,
-                    -0.497217059135437,
-                    0.4972161054611206,
-                    0.4972161054611206
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 32,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 32,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 1,
-                    "name": "height"
-                },
-                {
-                    "float": 1,
-                    "name": "width"
-                }
-            ],
-            "file": "scene/crate.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -0.4972165524959564,
-                -0.497217059135437,
-                0.4972166121006012,
-                -0.497217059135437,
-                0.4972166121006012,
-                0.4972161054611206,
-                -0.4972165524959564,
-                0.4972161054611206
-            ],
-            "name": "image3",
-            "opacity": 1,
-            "scale": 0.9944331645965576
-        },
-        {
-            "aspectScale": 1,
-            "body": 4,
-            "center": {
-                "x": 9.374093679070938e-07,
-                "y": 2.959760081466811e-07
-            },
-            "corners": {
-                "x": [
-                    -0.4972156584262848,
-                    0.4972175061702728,
-                    0.4972175061702728,
-                    -0.4972156584262848
-                ],
-                "y": [
-                    -0.4972162842750549,
-                    -0.4972162842750549,
-                    0.4972168803215027,
-                    0.4972168803215027
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 32,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 32,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 1,
-                    "name": "height"
-                },
-                {
-                    "float": 1,
-                    "name": "width"
-                }
-            ],
-            "file": "scene/crate.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -0.4972156584262848,
-                -0.4972162842750549,
-                0.4972175061702728,
-                -0.4972162842750549,
-                0.4972175061702728,
-                0.4972168803215027,
-                -0.4972156584262848,
-                0.4972168803215027
-            ],
-            "name": "image3",
-            "opacity": 1,
-            "scale": 0.9944331645965576
-        },
-        {
-            "aspectScale": 1,
-            "body": 3,
-            "center": {
-                "x": 0,
-                "y": 0
-            },
-            "corners": {
-                "x": [
-                    -0.4972165822982788,
-                    0.4972165822982788,
-                    0.4972165822982788,
-                    -0.4972165822982788
-                ],
-                "y": [
-                    -0.4972165822982788,
-                    -0.4972165822982788,
-                    0.4972165822982788,
-                    0.4972165822982788
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 32,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 32,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 1,
-                    "name": "height"
-                },
-                {
-                    "float": 1,
-                    "name": "width"
-                }
-            ],
-            "file": "scene/crate.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -0.4972165822982788,
-                -0.4972165822982788,
-                0.4972165822982788,
-                -0.4972165822982788,
-                0.4972165822982788,
-                0.4972165822982788,
-                -0.4972165822982788,
-                0.4972165822982788
-            ],
-            "name": "image3",
-            "opacity": 1,
-            "scale": 0.9944331645965576
-        },
-        {
-            "aspectScale": 1,
-            "body": 6,
-            "center": {
-                "x": 9.333901971331215e-07,
-                "y": 1.956461517238495e-07
-            },
-            "corners": {
-                "x": [
-                    -3.800140857696533,
-                    3.800142765045166,
-                    3.800142765045166,
-                    -3.800140857696533
-                ],
-                "y": [
-                    -1.293381333351135,
-                    -1.293381333351135,
-                    1.293381810188293,
-                    1.293381810188293
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 97,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 285,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 3.0,
-                    "name": "height"
-                },
-                {
-                    "float": 7.5,
-                    "name": "width"
-                }
-            ],
-            "file": "scene/truck.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -3.800140857696533,
-                -1.293381333351135,
-                3.800142765045166,
-                -1.293381333351135,
-                3.800142765045166,
-                1.293381810188293,
-                -3.800140857696533,
-                1.293381810188293
-            ],
-            "name": "image2",
-            "opacity": 1,
-            "scale": 2.586763143539429
-        },
-        {
-            "aspectScale": 1,
-            "body": 7,
-            "center": {
-                "x": 6.01439896854572e-05,
-                "y": 4.995095892468271e-08
-            },
-            "corners": {
-                "x": [
-                    -0.8715599775314331,
-                    0.8716802597045898,
-                    0.8716802597045898,
-                    -0.8715599775314331
-                ],
-                "y": [
-                    -0.8716200590133667,
-                    -0.8716200590133667,
-                    0.8716201782226562,
-                    0.8716201782226562
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 64,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 64,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 1.75,
-                    "name": "height"
-                },
-                {
-                    "float": 1.75,
-                    "name": "width"
-                }
-            ],
-            "file": "scene/tire.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -0.8715599775314331,
-                -0.8716200590133667,
-                0.8716802597045898,
-                -0.8716200590133667,
-                0.8716802597045898,
-                0.8716201782226562,
-                -0.8715599775314331,
-                0.8716201782226562
-            ],
-            "name": "image0",
-            "opacity": 1,
-            "scale": 1.743240237236023
-        },
-        {
-            "aspectScale": 1,
             "body": 1,
-            "center": {
-                "x": 0,
-                "y": 0
-            },
-            "corners": {
-                "x": [
-                    -0.5105608701705933,
-                    0.5105608701705933,
-                    0.5105608701705933,
-                    -0.5105608701705933
-                ],
-                "y": [
-                    -0.5105608701705933,
-                    -0.5105608701705933,
-                    0.5105608701705933,
-                    0.5105608701705933
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 32,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 32,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 1,
-                    "name": "height"
-                },
-                {
-                    "float": 1,
-                    "name": "width"
-                }
-            ],
+            "x": 0,
+            "y": 0,
+            "width" : 1.0,
+            "height" : 1.0,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 32,
+            "regionHeight" : 32,
             "file": "scene/crate.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -0.5105608701705933,
-                -0.5105608701705933,
-                0.5105608701705933,
-                -0.5105608701705933,
-                0.5105608701705933,
-                0.5105608701705933,
-                -0.5105608701705933,
-                0.5105608701705933
-            ],
-            "name": "image3",
-            "opacity": 1,
-            "scale": 1.021121740341187
+            "name": "crate"
         },
         {
-            "aspectScale": 1,
-            "body": 5,
-            "center": {
-                "x": 6.109110108809546e-05,
-                "y": 2.132985770231244e-07
-            },
-            "corners": {
-                "x": [
-                    -0.8715590238571167,
-                    0.8716812133789062,
-                    0.8716812133789062,
-                    -0.8715590238571167
-                ],
-                "y": [
-                    -0.8716198801994324,
-                    -0.8716198801994324,
-                    0.8716203570365906,
-                    0.8716203570365906
-                ]
-            },
-            "customProperties": [
-                {
-                    "int": 64,
-                    "name": "regionHeight"
-                },
-                {
-                    "int": 64,
-                    "name": "regionWidth"
-                },
-                {
-                    "int": 0,
-                    "name": "regionX"
-                },
-                {
-                    "int": 0,
-                    "name": "regionY"
-                },
-                {
-                    "float": 1.75,
-                    "name": "height"
-                },
-                {
-                    "float": 1.75,
-                    "name": "width"
-                }
-            ],
+            "body": 2,
+            "x": 0,
+            "y": 0,
+            "width" : 1.0,
+            "height" : 1.0,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 32,
+            "regionHeight" : 32,
+            "file": "scene/crate.png",
+            "name": "crate"
+        },
+        {
+            "body": 3,
+            "x": 0,
+            "y": 0,
+            "width" : 1.0,
+            "height" : 1.0,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 32,
+            "regionHeight" : 32,
+            "file": "scene/crate.png",
+            "name": "crate"
+        },
+        {
+            "body": 4,
+            "x": 0,
+            "y": 0,
+            "width" : 1.0,
+            "height" : 1.0,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 32,
+            "regionHeight" : 32,
+            "file": "scene/crate.png",
+            "name": "crate"
+        },
+        {
+            "body": 6,
+            "x": 0,
+            "y": 0,
+            "width" : 7.5,
+            "height" : 3.0,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 285,
+            "regionHeight" : 97,
+            "file": "scene/truck.png",
+            "name": "truck"
+        },
+        {
+            "body": 7,
+            "x": 0,
+            "y": 0,
+            "width" : 1.75,
+            "height" : 1.75,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 64,
+            "regionHeight" : 64,
             "file": "scene/tire.png",
-            "filter": 1,
-            "glDrawElements": [
-                0,
-                1,
-                2,
-                2,
-                3,
-                0
-            ],
-            "glTexCoordPointer": [
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                1.0,
-                1.0,
-                0.0,
-                1.0
-            ],
-            "glVertexPointer": [
-                -0.8715590238571167,
-                -0.8716198801994324,
-                0.8716812133789062,
-                -0.8716198801994324,
-                0.8716812133789062,
-                0.8716203570365906,
-                -0.8715590238571167,
-                0.8716203570365906
-            ],
-            "name": "image0",
-            "opacity": 1,
-            "scale": 1.743240237236023
+            "name": "tire"
+        },
+        {
+            "body": 5,
+            "x": 0,
+            "y": 0,
+            "width" : 1.75,
+            "height" : 1.75,
+            "regionX" : 0,
+            "regionY" : 0,
+            "regionWidth" : 64,
+            "regionHeight" : 64,
+            "file": "scene/tire.png",
+            "name": "tire"
         }
+
     ],
     "joint": [
         {
