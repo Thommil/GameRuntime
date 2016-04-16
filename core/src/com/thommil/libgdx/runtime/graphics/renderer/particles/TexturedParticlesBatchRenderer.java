@@ -28,7 +28,15 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
     @Override
     public void draw(Texture texture, float[] vertices, int offset, int count) {
         int remainingVertices = this.vertices.length;
-        if (this.lastTextureSet == null || texture != this.lastTextureSet.textures[0]) {
+        if (this.currentParticlesRadius != this.lastParticlesRadius) {
+            if(this.lastTextureSet == null){
+                this.tmpTextureSet.textures[0] = texture;
+                this.lastTextureSet = tmpTextureSet;
+            }
+            this.flush();
+            this.lastParticlesRadius = this.currentParticlesRadius;
+        }
+        else if (this.lastTextureSet == null || texture != this.lastTextureSet.textures[0]) {
             this.flush();
             this.tmpTextureSet.textures[0] = texture;
             this.lastTextureSet = tmpTextureSet;
@@ -58,7 +66,14 @@ public class TexturedParticlesBatchRenderer extends ParticlesBatchRenderer {
         }
         else {
             int remainingVertices = this.vertices.length;
-            if (textureSet != this.lastTextureSet) {
+            if (this.currentParticlesRadius != this.lastParticlesRadius) {
+                if(this.lastTextureSet == null){
+                    this.lastTextureSet = textureSet;
+                }
+                this.flush();
+                this.lastParticlesRadius = this.currentParticlesRadius;
+            }
+            else if (textureSet != this.lastTextureSet) {
                 this.flush();
                 this.lastTextureSet = textureSet;
             } else {
