@@ -45,7 +45,7 @@ public class DesktopLauncher {
 		//game= new InputGame();
 
 		// TEST 07 - Particles effect
-		//game= new ParticlesEffectGame();
+		game= new ParticlesEffectGame();
 
 		// TEST 08 - Liquid
 		//game= new LiquidGame();
@@ -66,7 +66,7 @@ public class DesktopLauncher {
 		//game= new RubeGame();
 
 		// TEST 14 - Sunset
-		game= new SunsetGame();
+		//game= new SunsetGame();
 
 		new LwjglApplication(game, config);
 	}

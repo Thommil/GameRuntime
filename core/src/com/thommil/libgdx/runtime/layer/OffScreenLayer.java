@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.layer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -14,11 +15,21 @@ public class OffScreenLayer<T extends Layer> extends Layer {
 
     final protected OffScreenRenderer offScreenRenderer;
     final protected T decoratedLayer;
+    boolean offScreenRendering = true;
 
     public OffScreenLayer(final Viewport viewport, final T decoratedLayer, final OffScreenRenderer offScreenRenderer) {
         super(viewport,1);
         this.decoratedLayer = decoratedLayer;
         this.offScreenRenderer = offScreenRenderer;
+    }
+
+    /**
+     * Enable/disable offscreen rendering
+     *
+     * @param offScreenRendering true to enable offscreen rendering, false otherwise
+     */
+    public void setOffScreenRendering(boolean offScreenRendering) {
+        this.offScreenRendering = offScreenRendering;
     }
 
     /**
@@ -29,11 +40,16 @@ public class OffScreenLayer<T extends Layer> extends Layer {
     @Override
     public void render(float deltaTime) {
         if(!this.isHidden()) {
-            this.offScreenRenderer.begin();
-            if(this.offScreenRenderer.mustRedraw()) {
+            if(this.offScreenRendering) {
+                this.offScreenRenderer.begin();
+                if (this.offScreenRenderer.mustRedraw()) {
+                    this.decoratedLayer.render(deltaTime);
+                }
+                this.offScreenRenderer.end();
+            }
+            else{
                 this.decoratedLayer.render(deltaTime);
             }
-            this.offScreenRenderer.end();
         }
     }
 

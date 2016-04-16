@@ -72,7 +72,7 @@ public class Settings{
         /**
          * Color buffer clear color
          */
-        public float[] clearColor = {0f, 0f, 0f, 1f};
+        public float[] clearColor = {0f, 0f, 0f, 0f};
 
         /**
          * Allows to enabled depth mask
