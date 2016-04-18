@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.test_08_liquid.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.MathUtils;
@@ -157,7 +158,10 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
     @Override
     public boolean keyDown(int keycode) {
-
+        if(keycode == Input.Keys.SPACE){
+            if(Runtime.getInstance().isPaused()) Runtime.getInstance().resume();
+            else Runtime.getInstance().pause();
+        }
         return false;
     }
 

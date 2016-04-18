@@ -222,7 +222,7 @@ public class Runtime implements Screen{
 
                         } else {
                             try {
-                                Thread.currentThread().sleep(500);
+                                Thread.currentThread().sleep((int)(settings.physics.frequency * 1000));
                             } catch (InterruptedException ie) {
                                 Gdx.app.exit();
                             }

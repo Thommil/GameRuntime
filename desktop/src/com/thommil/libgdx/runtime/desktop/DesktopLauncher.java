@@ -39,7 +39,7 @@ public class DesktopLauncher {
 		//game = new RigidbodyGame();
 
 		// TEST 05 - SoftBody
-		game= new SoftbodyGame();
+		//game= new SoftbodyGame();
 
 		// TEST 06 - Input
 		//game= new InputGame();
@@ -48,7 +48,7 @@ public class DesktopLauncher {
 		//game= new ParticlesEffectGame();
 
 		// TEST 08 - Liquid
-		//game= new LiquidGame();
+		game= new LiquidGame();
 
 		// TEST 09 - NormalMap
 		//game= new NormalMapGame();
