@@ -1,6 +1,8 @@
 package com.thommil.libgdx.runtime.actor.graphics;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
@@ -578,6 +580,28 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         this.bounds.width = maxx - minx;
         this.bounds.height = maxy - miny;
         return this.bounds;
+    }
+
+    /**
+     * Play a given animation in current sprite actor at specified state time
+     *
+     * @param animation The animation to use
+     * @param stateTime The state time in seconds
+     */
+    public void playAnimation(final Animation animation, final float stateTime){
+        final TextureRegion textureRegion = animation.getKeyFrame(stateTime);
+        this.setRegion(textureRegion.getU(), textureRegion.getV(), textureRegion.getU2(), textureRegion.getV2());
+    }
+
+    /**
+     * Play a given animation in current sprite actor at specified key
+     *
+     * @param animation The animation to use
+     * @param keyframe The keyframe to use
+     */
+    public void playAnimation(final Animation animation, final int keyframe){
+        final TextureRegion textureRegion = animation.getKeyFrames()[keyframe];
+        this.setRegion(textureRegion.getU(), textureRegion.getV(), textureRegion.getU2(), textureRegion.getV2());
     }
 
     /**
