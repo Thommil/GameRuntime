@@ -1,13 +1,13 @@
 package com.thommil.libgdx.runtime.actor.graphics;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
+import com.thommil.libgdx.runtime.graphics.animation.TextureRegionAnimation;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
 
@@ -588,20 +588,10 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param animation The animation to use
      * @param stateTime The state time in seconds
      */
-    public void playAnimation(final Animation animation, final float stateTime){
+    public SpriteActor playAnimation(final TextureRegionAnimation animation, final float stateTime){
         final TextureRegion textureRegion = animation.getKeyFrame(stateTime);
         this.setRegion(textureRegion.getU(), textureRegion.getV(), textureRegion.getU2(), textureRegion.getV2());
-    }
-
-    /**
-     * Play a given animation in current sprite actor at specified key
-     *
-     * @param animation The animation to use
-     * @param keyframe The keyframe to use
-     */
-    public void playAnimation(final Animation animation, final int keyframe){
-        final TextureRegion textureRegion = animation.getKeyFrames()[keyframe];
-        this.setRegion(textureRegion.getU(), textureRegion.getV(), textureRegion.getU2(), textureRegion.getV2());
+        return this;
     }
 
     /**

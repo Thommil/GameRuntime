@@ -8,10 +8,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
+import com.thommil.libgdx.runtime.GameRuntimeException;
+import com.thommil.libgdx.runtime.graphics.animation.AbstractAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.TextureRegionAnimation;
 
 /**
  * Helper class to load extended Rube files.
@@ -268,13 +272,16 @@ public class SceneLoader extends JSONLoader{
      * @param assetManager The asset manager containing the animation resources
      * @return A new created animation
      */
-    public Animation getAnimation(final String name, final AssetManager assetManager){
+    public AbstractAnimation getAnimation(final String name, final AssetManager assetManager){
         final AnimationDef animationDef = this.getAnimationDefinition(name);
-        final Array<TextureRegion> textureRegions = new Array<TextureRegion>(true, animationDef.keyFrames.length);
-        for(final AnimationDef.KeyFrame keyFrame : animationDef.keyFrames){
-            textureRegions.add(new TextureRegion(assetManager.get(animationDef.path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
+        if(animationDef instanceof TextureRegionAnimationDef){
+            final Array<TextureRegion> textureRegions = new Array<TextureRegion>(true, animationDef.keyFrames.length);
+            for(final TextureRegionAnimationDef.KeyFrame keyFrame : ((TextureRegionAnimationDef)animationDef).keyFrames){
+                textureRegions.add(new TextureRegion(assetManager.get(((TextureRegionAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
+            }
+            return new TextureRegionAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, textureRegions.toArray());
         }
-        return new Animation(animationDef.frameDuration, textureRegions, animationDef.playMode);
+        return null;
     }
 
     /**
@@ -303,16 +310,26 @@ public class SceneLoader extends JSONLoader{
                 return this.getAnimationDefinition(jsonAnimation);
             }
         }
-        return null;
+
+        throw new GameRuntimeException("Unknown animation type for : " + name);
     }
 
     private AnimationDef getAnimationDefinition(final JsonValue jsonAnimation){
-        final AnimationDef animationDef = new AnimationDef();
+        AnimationDef animationDef = null;
+        if(jsonAnimation.has("type")) {
+            final AnimationDef.Type type = AnimationDef.Type.valueOf(jsonAnimation.getString("type"));
+            switch(type){
+                case TEXTURE : animationDef = new TextureRegionAnimationDef(); break;
+                case TRANSLATE : animationDef = new TextureRegionAnimationDef(); break;
+                case ROTATE : animationDef = new TextureRegionAnimationDef(); break;
+                case SCALE : animationDef = new TextureRegionAnimationDef(); break;
+                case COLOR : animationDef = new TextureRegionAnimationDef(); break;
+            }
+        }
+        else throw new GameRuntimeException("Missing type in animation definition : " + jsonAnimation.getString("name"));
+
         if(jsonAnimation.has("name")) {
             animationDef.name = jsonAnimation.getString("name");
-        }
-        if(jsonAnimation.has("file")) {
-            animationDef.path = jsonAnimation.getString("file");
         }
         if(jsonAnimation.has("playMode")) {
             animationDef.playMode = Animation.PlayMode.valueOf(jsonAnimation.getString("playMode"));
@@ -320,24 +337,49 @@ public class SceneLoader extends JSONLoader{
         if(jsonAnimation.has("frameDuration")) {
             animationDef.frameDuration = jsonAnimation.getFloat("frameDuration");
         }
-        if(jsonAnimation.has("keyFrames")) {
-            animationDef.keyFrames = new AnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
-            for(int index=0; index < animationDef.keyFrames.length; index++){
-                final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
-                animationDef.keyFrames[index] = new AnimationDef.KeyFrame();
-                animationDef.keyFrames[index].regionX = jsonKeyFrame.getInt("regionX");
-                animationDef.keyFrames[index].regionY = jsonKeyFrame.getInt("regionY");
-                animationDef.keyFrames[index].regionWidth = jsonKeyFrame.getInt("regionWidth");
-                animationDef.keyFrames[index].regionHeight = jsonKeyFrame.getInt("regionHeight");
-                if(jsonKeyFrame.has("width")) {
-                    animationDef.keyFrames[index].width = jsonKeyFrame.getFloat("width");
-                }
-                if(jsonKeyFrame.has("height")) {
-                    animationDef.keyFrames[index].height = jsonKeyFrame.getFloat("height");
-                }
+        if(jsonAnimation.has("interpolator")) {
+            final AnimationDef.Interpolator interpolator = AnimationDef.Interpolator.valueOf(jsonAnimation.getString("interpolator"));
+            switch(interpolator){
+                case FADE : animationDef.interpolator = Interpolation.linear; break;
+                case POW2 : animationDef.interpolator = Interpolation.pow2; break;
+                case POW3 : animationDef.interpolator = Interpolation.pow3; break;
+                case POW4 : animationDef.interpolator = Interpolation.pow4; break;
+                case POW5 : animationDef.interpolator = Interpolation.pow5; break;
+                case SINE : animationDef.interpolator = Interpolation.sine; break;
+                case EXP5 : animationDef.interpolator = Interpolation.exp5; break;
+                case EXP10 : animationDef.interpolator = Interpolation.exp10; break;
+                case CIRCLE : animationDef.interpolator = Interpolation.circle; break;
+                case ELASTIC : animationDef.interpolator = Interpolation.elastic; break;
+                case SWING : animationDef.interpolator = Interpolation.swing; break;
+                case BOUNCE : animationDef.interpolator = Interpolation.bounce; break;
             }
         }
-        return animationDef;
+        if(animationDef instanceof TextureRegionAnimationDef){
+            final TextureRegionAnimationDef textureRegionAnimationDef = ((TextureRegionAnimationDef)animationDef);
+            if(jsonAnimation.has("file")) {
+                textureRegionAnimationDef.path = jsonAnimation.getString("file");
+            }
+            if(jsonAnimation.has("keyFrames")) {
+                animationDef.keyFrames = new TextureRegionAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+                for(int index=0; index < animationDef.keyFrames.length; index++){
+                    final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
+                    textureRegionAnimationDef.keyFrames[index] = new TextureRegionAnimationDef.KeyFrame();
+                    textureRegionAnimationDef.keyFrames[index].regionX = jsonKeyFrame.getInt("regionX");
+                    textureRegionAnimationDef.keyFrames[index].regionY = jsonKeyFrame.getInt("regionY");
+                    textureRegionAnimationDef.keyFrames[index].regionWidth = jsonKeyFrame.getInt("regionWidth");
+                    textureRegionAnimationDef.keyFrames[index].regionHeight = jsonKeyFrame.getInt("regionHeight");
+                    if(jsonKeyFrame.has("width")) {
+                        textureRegionAnimationDef.keyFrames[index].width = jsonKeyFrame.getFloat("width");
+                    }
+                    if(jsonKeyFrame.has("height")) {
+                        textureRegionAnimationDef.keyFrames[index].height = jsonKeyFrame.getFloat("height");
+                    }
+                }
+            }
+            return textureRegionAnimationDef;
+        }
+
+        throw new GameRuntimeException("Unknown animation type for : " + jsonAnimation.getString("name"));
     }
 
     /**
@@ -870,12 +912,15 @@ public class SceneLoader extends JSONLoader{
         public String path;
     }
 
+
     /**
-     *  Animation definition (in "animation")
+     *  TextureRegionAnimation definition (in "animation")
      *  {
      *  "name" : name,
+     *  "type" : "TEXTURE" | "TRANSLATE" | "ROTATE" | "SCALE" | "COLOR",
      *  "file" : path/to/image,
      *  "playMode" : "LOOP" | "REVERSED" | "LOOP" | "LOOP_REVERSED" | "LOOP_PINGPONG" | "LOOP_RANDOM",
+     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE",
      *  frameDuration : frame duration (seconds)
      *  keyFrames : [
      *      {
@@ -891,13 +936,8 @@ public class SceneLoader extends JSONLoader{
      *  }
      *
      */
-    public static class AnimationDef{
-        public String name;
+    public static class TextureRegionAnimationDef extends AnimationDef<TextureRegionAnimationDef.KeyFrame>{
         public String path;
-        public Animation.PlayMode playMode;
-        public float frameDuration;
-        public KeyFrame[] keyFrames;
-
         public static class KeyFrame{
             public int regionX;
             public int regionY;
@@ -906,5 +946,38 @@ public class SceneLoader extends JSONLoader{
             public float width;
             public float height;
         }
+    }
+
+    public static class AnimationDef<T>{
+        public enum Type{
+            TEXTURE,
+            TRANSLATE,
+            ROTATE,
+            SCALE,
+            COLOR
+        }
+
+        public enum Interpolator{
+            LINEAR,
+            FADE,
+            POW2,
+            POW3,
+            POW4,
+            POW5,
+            SINE,
+            EXP5,
+            EXP10,
+            CIRCLE,
+            ELASTIC,
+            SWING,
+            BOUNCE
+        }
+
+        public String name;
+        public String type;
+        public Animation.PlayMode playMode = Animation.PlayMode.NORMAL;
+        public Interpolation interpolator = Interpolation.linear;
+        public float frameDuration;
+        public T[] keyFrames;
     }
 }
