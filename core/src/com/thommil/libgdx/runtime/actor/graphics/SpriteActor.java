@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
@@ -89,7 +90,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
         this.setRegion(srcX, srcY, srcWidth, srcHeight);
         this.setSize(width, height);
         this.setOrigin(width / 2, height / 2);
-        this.getVertices();
+        this.setPosition(0,0);
     }
 
     /** Sets the position and size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale
@@ -149,63 +150,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      * to set the position after those operations. If both position and size are to be changed, it is better to use
      * {@link #setBounds(float, float, float, float)}. */
     public void setPosition (float x, float y) {
-        translate(x - this.x, y - this.y);
-    }
-
-    /** Sets the x position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more efficient
-     * to set the position after those operations. If both position and size are to be changed, it is better to use
-     * {@link #setBounds(float, float, float, float)}. */
-    public void setX (float x) {
-        translateX(x - this.x);
-    }
-
-    /** Sets the y position where the sprite will be drawn. If origin, rotation, or scale are changed, it is slightly more efficient
-     * to set the position after those operations. If both position and size are to be changed, it is better to use
-     * {@link #setBounds(float, float, float, float)}. */
-    public void setY (float y) {
-        translateY(y - this.y);
-    }
-
-    /** Sets the x position so that it is centered on the given x parameter */
-    public void setCenterX(float x){
-        setX(x - this.width / 2);
-    }
-
-    /** Sets the y position so that it is centered on the given y parameter */
-    public void setCenterY(float y){
-        setY(y - this.height / 2);
-    }
-
-    /** Sets the position so that the sprite is centered on (x, y) */
-    public void setCenter(float x, float y){
-        setCenterX(x);
-        setCenterY(y);
-    }
-
-    /** Sets the x position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
-     * changed, it is slightly more efficient to translate after those operations. */
-    public void translateX (float xAmount) {
-        this.x += xAmount;
-
-        if (this.dirty) return;
-
-        this.vertices[X1] += xAmount;
-        this.vertices[X2] += xAmount;
-        this.vertices[X3] += xAmount;
-        this.vertices[X4] += xAmount;
-    }
-
-    /** Sets the y position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are
-     * changed, it is slightly more efficient to translate after those operations. */
-    public void translateY (float yAmount) {
-        this.y += yAmount;
-
-        if (dirty) return;
-
-        this.vertices[Y1] += yAmount;
-        this.vertices[Y2] += yAmount;
-        this.vertices[Y3] += yAmount;
-        this.vertices[Y4] += yAmount;
+        translate(x - this.originX - this.x, y - this.originY - this.y);
     }
 
     /** Sets the position relative to the current position where the sprite will be drawn. If origin, rotation, or scale are

@@ -26,11 +26,8 @@ public class AnimationLevel implements Disposable {
         spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(),10);
 
         //IDLE
-        idleActor = new SpriteActor(0, new TextureSet(animationTexture), 5f, 5f);
-
+        idleActor = new SpriteActor(0, new TextureSet(animationTexture), 10f, 10f);
         spriteBatchLayer.addActor(idleActor);
-
-
         Runtime.getInstance().addLayer(spriteBatchLayer);
 
         RuntimeProfiler.profile();

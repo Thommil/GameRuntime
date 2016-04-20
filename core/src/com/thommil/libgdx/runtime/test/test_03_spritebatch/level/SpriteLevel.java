@@ -72,7 +72,7 @@ public class SpriteLevel implements InputProcessor, Disposable {
         public ShipActor(TextureSet textureSet, float maxPosition) {
             super(MathUtils.random(0x7ffffffe), textureSet, 2.6f,2.3f);
             this.maxPosition = maxPosition;
-            this.setCenter(MathUtils.random(-maxPosition, maxPosition),MathUtils.random(-maxPosition, maxPosition));
+            this.setPosition(MathUtils.random(-maxPosition, maxPosition),MathUtils.random(-maxPosition, maxPosition));
         }
 
         /**

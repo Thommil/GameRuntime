@@ -32,17 +32,17 @@ public class EventsLevel implements InputProcessor,Disposable {
         spriteBatchLayer.addActor(new PlanetActor(4, textureSet));
         spriteBatchLayer.addActor(new PlanetActor(5, textureSet));
 
-        ((PlanetActor)spriteBatchLayer.getActor(0)).setCenter(-40,25);
+        ((PlanetActor)spriteBatchLayer.getActor(0)).setPosition(-40,25);
         touchDispatcher.addListener((PlanetActor)spriteBatchLayer.getActor(0));
-        ((PlanetActor)spriteBatchLayer.getActor(1)).setCenter(0,25);
+        ((PlanetActor)spriteBatchLayer.getActor(1)).setPosition(0,25);
         touchDispatcher.addListener((PlanetActor)spriteBatchLayer.getActor(1));
-        ((PlanetActor)spriteBatchLayer.getActor(2)).setCenter(40,25);
+        ((PlanetActor)spriteBatchLayer.getActor(2)).setPosition(40,25);
         touchDispatcher.addListener((PlanetActor)spriteBatchLayer.getActor(2));
-        ((PlanetActor)spriteBatchLayer.getActor(3)).setCenter(-40,-25);
+        ((PlanetActor)spriteBatchLayer.getActor(3)).setPosition(-40,-25);
         touchDispatcher.addListener((PlanetActor)spriteBatchLayer.getActor(3));
-        ((PlanetActor)spriteBatchLayer.getActor(4)).setCenter(0,-25);
+        ((PlanetActor)spriteBatchLayer.getActor(4)).setPosition(0,-25);
         touchDispatcher.addListener((PlanetActor)spriteBatchLayer.getActor(4));
-        ((PlanetActor)spriteBatchLayer.getActor(5)).setCenter(40,-25);
+        ((PlanetActor)spriteBatchLayer.getActor(5)).setPosition(40,-25);
         touchDispatcher.addListener((PlanetActor)spriteBatchLayer.getActor(5));
 
         Runtime.getInstance().addLayer(spriteBatchLayer);
@@ -89,7 +89,7 @@ public class EventsLevel implements InputProcessor,Disposable {
         @Override
         public boolean onTouchMove(float worldX, float worldY) {
             if(dragging < 0 || dragging == this.getId()) {
-                this.setCenter(worldX, worldY);
+                this.setPosition(worldX, worldY);
                 dragging = this.getId();
             }
             return false;
