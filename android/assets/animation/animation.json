@@ -1,0 +1,35 @@
+{
+  "image": [
+    {
+      "x": 0,
+      "y": 0,
+      "width" : 10.0,
+      "height" : 10.0,
+      "regionX" : 0,
+      "regionY" : 0,
+      "regionWidth" : 1005,
+      "regionHeight" : 591,
+      "file" : "animation/averagemale.png",
+      "name": "averagemale"
+    }
+  ],
+  "animation":[
+    {
+      "name" : "idle",
+      "type" : "TEXTURE",
+      "file" : "animation/averagemale.png",
+      "playMode" : "LOOP",
+      "interpolator" : "LINEAR",
+      "frameDuration" : 1.0,
+      "keyFrames" : [
+          {
+              "regionX" : 0,
+              "regionY" : 0,
+              "regionWidth" : 0,
+              "regionHeight" : 0
+          }
+      ]
+    }
+
+  ]
+}

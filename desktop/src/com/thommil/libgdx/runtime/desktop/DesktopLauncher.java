@@ -17,6 +17,7 @@ import com.thommil.libgdx.runtime.test.test_11_events.EventsGame;
 import com.thommil.libgdx.runtime.test.test_12_layout.LayoutGame;
 import com.thommil.libgdx.runtime.test.test_13_rube.RubeGame;
 import com.thommil.libgdx.runtime.test.test_14_sunset.SunsetGame;
+import com.thommil.libgdx.runtime.test.test_15_animation.AnimationGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -48,7 +49,7 @@ public class DesktopLauncher {
 		//game= new ParticlesEffectGame();
 
 		// TEST 08 - Liquid
-		game= new LiquidGame();
+		//game= new LiquidGame();
 
 		// TEST 09 - NormalMap
 		//game= new NormalMapGame();
@@ -63,10 +64,13 @@ public class DesktopLauncher {
 		//game= new LayoutGame();
 
 		// TEST 13 - Rube loader
-		//game= new RubeGame();
+		game= new RubeGame();
 
 		// TEST 14 - Sunset
 		//game= new SunsetGame();
+
+		// TEST 15 - Animation
+		//game= new AnimationGame();
 
 		new LwjglApplication(game, config);
 	}

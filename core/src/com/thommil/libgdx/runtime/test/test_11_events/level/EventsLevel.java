@@ -56,10 +56,7 @@ public class EventsLevel implements InputProcessor,Disposable {
         static int dragging = -1;
 
         public PlanetActor(int id, TextureSet textureSet) {
-            super(id, textureSet);
-            this.setRegion(0,1,1/6f,0);
-            this.setSize(20f,20f);
-            this.setOriginCenter();
+            super(id, textureSet, 0, 0, 150, 150, 20f,20f);
         }
 
         /**

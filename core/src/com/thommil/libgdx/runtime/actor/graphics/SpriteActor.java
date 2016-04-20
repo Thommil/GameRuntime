@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.actor.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -62,21 +63,33 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     protected boolean dirty = true;
 
     public SpriteActor (final int id, final TextureSet textureSet) {
-        this(id, textureSet, 0, 0, textureSet.getWidth(), textureSet.getHeight());
+        this(id, textureSet, 0, 0, textureSet.getWidth(), textureSet.getHeight(), Math.abs(textureSet.getWidth()), Math.abs(textureSet.getHeight()));
+    }
+    public SpriteActor (final int id, final TextureSet textureSet, float width, float height) {
+        this(id, textureSet, 0, 0, textureSet.getWidth(), textureSet.getHeight(), width, height);
     }
 
     public SpriteActor (final int id, final TextureSet textureSet, final int srcWidth, final int srcHeight) {
-        this(id, textureSet, 0, 0, srcWidth, srcHeight);
+        this(id, textureSet, 0, 0, srcWidth, srcHeight, Math.abs(srcWidth), Math.abs(srcHeight));
+    }
+
+    public SpriteActor (final int id, final TextureSet textureSet, final int srcWidth, final int srcHeight, float width, float height) {
+        this(id, textureSet, 0, 0, srcWidth, srcHeight, width, height);
     }
 
     public SpriteActor (final int id, final TextureSet textureSet, final int srcX, final int srcY, final int srcWidth, final int srcHeight) {
+        this(id, textureSet, srcX, srcY, srcWidth, srcHeight, Math.abs(srcWidth), Math.abs(srcHeight));
+    }
+
+    public SpriteActor (final int id, final TextureSet textureSet, final int srcX, final int srcY, final int srcWidth, final int srcHeight, float width, float height){
         super(id);
         if (textureSet == null) throw new IllegalArgumentException("texture cannot be null.");
         this.textureSet = textureSet;
         this.setColor(Color.WHITE.toFloatBits());
         this.setRegion(srcX, srcY, srcWidth, srcHeight);
-        this.setSize(Math.abs(srcWidth), Math.abs(srcHeight));
-        this.setOrigin(this.width / 2, this.height / 2);
+        this.setSize(width, height);
+        this.setOrigin(width / 2, height / 2);
+        this.getVertices();
     }
 
     /** Sets the position and size of the sprite when drawn, before scaling and rotation are applied. If origin, rotation, or scale

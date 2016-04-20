@@ -106,9 +106,7 @@ public class RigidbodyLevel implements InputProcessor, Disposable {
     public static class CuriosityActor extends SpriteBodyActor {
 
         public CuriosityActor(TextureSet textureSet) {
-            super(MathUtils.random(0x7ffffffe), textureSet);
-            this.setSize(2.6f,2.3f);
-            this.setOriginCenter();
+            super(MathUtils.random(0x7ffffffe), textureSet,2.6f,2.3f);
             this.setPosition(MathUtils.random(-20f,20f),MathUtils.random(100,150f));
             this.setRotation(MathUtils.random(0f,90f));
         }

@@ -75,12 +75,10 @@ public class RubeLevel implements Disposable {
                 }
                 else{
                     spriteBatchLayer.addActor(new SpriteBodyActor(i, new TextureSet(assetManager.get(imageDef.path,Texture.class)),imageDef.regionX,imageDef.regionY,
-                            imageDef.regionWidth,imageDef.regionHeight) {
+                            imageDef.regionWidth,imageDef.regionHeight, imageDef.width, imageDef.height) {
 
                         @Override
                         public BodyDef getDefinition() {
-                            this.setSize(imageDef.width, imageDef.height);
-                            this.setOriginCenter();
                             return bodyDef;
                         }
 

@@ -1,34 +1,32 @@
 
-package com.thommil.libgdx.runtime.test.test_13_rube;
+package com.thommil.libgdx.runtime.test.test_15_animation;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thommil.libgdx.runtime.Game;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.Settings;
-import com.thommil.libgdx.runtime.test.test_12_layout.level.LayoutLevel;
-import com.thommil.libgdx.runtime.test.test_13_rube.level.RubeLevel;
+import com.thommil.libgdx.runtime.test.test_15_animation.level.AnimationLevel;
 
 /**
- * Events TEST
+ * Animation TEST
  *
  * @author  thommil on 3/4/16.
  */
-public class RubeGame extends Game{
+public class AnimationGame extends Game{
 
-    RubeLevel rubeLevel;
+    AnimationLevel animationLevel;
 
     @Override
     protected void onCreate(Settings settings) {
-        settings.viewport.type = Settings.Viewport.FILL;
-        settings.viewport.width = 36;
-        settings.viewport.height = 20;
-        settings.physics.enabled = true;
-        //settings.physics.debug = true;
+        settings.viewport.type = Settings.Viewport.STRECTCH;
+        settings.viewport.width = 10;
+        settings.viewport.height = 10;
+        settings.physics.enabled = false;
     }
 
     @Override
     protected void onStart(final Viewport viewport) {
-        rubeLevel = new RubeLevel();
+        animationLevel = new AnimationLevel();
         showScreen(Runtime.getInstance());
     }
 
@@ -43,7 +41,8 @@ public class RubeGame extends Game{
     }
 
     @Override
-    protected void onResize(int width, int height){
+    protected void onResize(int width, int height) {
+
     }
 
     @Override

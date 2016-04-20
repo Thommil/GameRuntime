@@ -190,9 +190,7 @@ public class LiquidLevel implements InputProcessor, ContactListener ,Disposable 
 
 
         public DuckActor(TextureSet textureSet, float x, float y) {
-            super(MathUtils.random(0x7ffffffe), textureSet);
-            this.setSize(0.5f,0.5f);
-            this.setOriginCenter();
+            super(MathUtils.random(0x7ffffffe), textureSet, 0.5f,0.5f);
             this.setPosition(x, y);
         }
 

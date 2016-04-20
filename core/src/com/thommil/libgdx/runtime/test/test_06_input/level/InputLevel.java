@@ -107,9 +107,7 @@ public class InputLevel implements InputProcessor, Disposable {
         private boolean moving = false;
 
         public ShipActor(TextureSet textureSet) {
-            super(0, textureSet);
-            this.setSize(2.6f,2.3f);
-            this.setOriginCenter();
+            super(0, textureSet, 2.6f,2.3f);
         }
 
         @Override
