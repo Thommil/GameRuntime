@@ -3,12 +3,12 @@
     {
       "x": 0,
       "y": 0,
-      "width" : 10.0,
-      "height" : 10.0,
+      "width" : 1,
+      "height" : 1.6,
       "regionX" : 0,
       "regionY" : 0,
-      "regionWidth" : 1005,
-      "regionHeight" : 591,
+      "regionWidth" : 50,
+      "regionHeight" : 80,
       "file" : "animation/averagemale.png",
       "name": "averagemale"
     }
@@ -19,14 +19,34 @@
       "type" : "TEXTURE",
       "file" : "animation/averagemale.png",
       "playMode" : "LOOP",
-      "interpolator" : "LINEAR",
-      "frameDuration" : 1.0,
+      "interpolator" : "SWING",
+      "frameDuration" : 2,
       "keyFrames" : [
           {
-              "regionX" : 0,
+              "regionX" : 148,
               "regionY" : 0,
-              "regionWidth" : 0,
-              "regionHeight" : 0
+              "regionWidth" : 50,
+              "regionHeight" : 80,
+              "width" : 0.5,
+              "height" : 0.8
+          },
+          {
+            "regionX" : 199,
+            "regionY" : 0,
+            "regionWidth" : 50,
+            "regionHeight" : 80
+          },
+          {
+            "regionX" : 248,
+            "regionY" : 0,
+            "regionWidth" : 50,
+            "regionHeight" : 80
+          },
+          {
+            "regionX" : 295,
+            "regionY" : 0,
+            "regionWidth" : 50,
+            "regionHeight" : 80
           }
       ]
     }

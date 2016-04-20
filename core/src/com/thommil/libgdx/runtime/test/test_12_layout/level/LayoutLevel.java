@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
+import com.thommil.libgdx.runtime.actor.Actor;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.ViewportLayout;
@@ -50,6 +51,10 @@ public class LayoutLevel implements Disposable, InputProcessor {
 
         //Middle
         spriteBatchLayer.addActor(new SpriteActor(8,layoutTextureSet,52,52,136,66));
+
+        for(final Actor actor : spriteBatchLayer.listActors()){
+            ((SpriteActor)actor).setOrigin(0,0);
+        }
 
         Runtime.getInstance().addLayer(this.spriteBatchLayer);
 

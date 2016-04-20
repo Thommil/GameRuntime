@@ -72,7 +72,7 @@ public abstract class AbstractAnimation<T> {
      * @return the object state at the given time
      */
     public T getKeyFrame (float stateTime){
-        return this.calculateKeyFrame(this.interpolator.apply(0, this.animationDuration, stateTime));
+        return this.calculateKeyFrame(this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration)/this.animationDuration));
     }
 
     /**

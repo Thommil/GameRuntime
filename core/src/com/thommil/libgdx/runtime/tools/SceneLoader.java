@@ -35,7 +35,10 @@ public class SceneLoader extends JSONLoader{
      * @return The gravity in in Vec2
      */
     public Vector2 getGravity(){
-        return new Vector2(this.jsonRoot.get("gravity").getFloat("x"),this.jsonRoot.get("gravity").getFloat("y"));
+        if(this.jsonRoot.has("gravity")) {
+            return new Vector2(this.jsonRoot.get("gravity").getFloat("x"), this.jsonRoot.get("gravity").getFloat("y"));
+        }
+        return null;
     }
 
     /**
@@ -44,12 +47,15 @@ public class SceneLoader extends JSONLoader{
      * @return The list of bodies definition
      */
     public Array<BodyDef> getBodiesDefintion(){
-        final int bodyCount = this.jsonRoot.get("body").size;
-        final Array<BodyDef> bodyDefs = new Array<BodyDef>(true,bodyCount);
-        for(int index=0 ; index < bodyCount; index++){
-            bodyDefs.add(this.getBodyDefinition(index));
+        if(this.jsonRoot.has("body")) {
+            final int bodyCount = this.jsonRoot.get("body").size;
+            final Array<BodyDef> bodyDefs = new Array<BodyDef>(true, bodyCount);
+            for (int index = 0; index < bodyCount; index++) {
+                bodyDefs.add(this.getBodyDefinition(index));
+            }
+            return bodyDefs;
         }
-        return bodyDefs;
+        return new Array<BodyDef>(true,0);
     }
 
     /**
@@ -60,14 +66,16 @@ public class SceneLoader extends JSONLoader{
      * @return The body definition in a BodyDef
      */
     public BodyDef getBodyDefintion(final String name){
-        int index = 0;
-        for(final JsonValue jsonBody : this.jsonRoot.get("body")){
-            if(jsonBody.has("name") && jsonBody.getString("name").equals(name)) {
-                final BodyDef bodyDef = this.getBodyDefintion(jsonBody);
-                bodyDef.index = index;
-                return bodyDef;
+        if(this.jsonRoot.has("body")) {
+            int index = 0;
+            for (final JsonValue jsonBody : this.jsonRoot.get("body")) {
+                if (jsonBody.has("name") && jsonBody.getString("name").equals(name)) {
+                    final BodyDef bodyDef = this.getBodyDefintion(jsonBody);
+                    bodyDef.index = index;
+                    return bodyDef;
+                }
+                index++;
             }
-            index++;
         }
         return null;
     }
@@ -80,11 +88,14 @@ public class SceneLoader extends JSONLoader{
      * @return The body definition in a BodyDef
      */
     public BodyDef getBodyDefinition(final int index){
-        final BodyDef bodyDef = this.getBodyDefintion(this.jsonRoot.get("body").get(index));
-        if(bodyDef != null){
-            bodyDef.index = index;
+        if(this.jsonRoot.has("body")) {
+            final BodyDef bodyDef = this.getBodyDefintion(this.jsonRoot.get("body").get(index));
+            if (bodyDef != null) {
+                bodyDef.index = index;
+            }
+            return bodyDef;
         }
-        return bodyDef;
+        return null;
     }
 
     private BodyDef getBodyDefintion(final JsonValue jsonBody){
@@ -147,18 +158,21 @@ public class SceneLoader extends JSONLoader{
      * @return The body mass data in a MassData
      */
     public MassData getBodyMassData(final int index){
-        final MassData massData = new MassData();
-        final JsonValue jsonBody = this.jsonRoot.get("body").get(index);
-        if(jsonBody.has("massData-I")) {
-            massData.I = jsonBody.getFloat("massData-I");
+        if(this.jsonRoot.has("body")) {
+            final MassData massData = new MassData();
+            final JsonValue jsonBody = this.jsonRoot.get("body").get(index);
+            if (jsonBody.has("massData-I")) {
+                massData.I = jsonBody.getFloat("massData-I");
+            }
+            if (jsonBody.has("massData-mass")) {
+                massData.mass = jsonBody.getFloat("massData-mass");
+            }
+            if (jsonBody.has("massData-center")) {
+                massData.center.set(jsonBody.get("massData-center").getFloat("x"), jsonBody.get("massData-center").getFloat("y"));
+            }
+            return massData;
         }
-        if(jsonBody.has("massData-mass")) {
-            massData.mass = jsonBody.getFloat("massData-mass");
-        }
-        if(jsonBody.has("massData-center")) {
-            massData.center.set(jsonBody.get("massData-center").getFloat("x"),jsonBody.get("massData-center").getFloat("y"));
-        }
-        return massData;
+        return null;
     }
 
     /**
@@ -184,11 +198,14 @@ public class SceneLoader extends JSONLoader{
      * @return The lis of images
      */
     public Array<ImageDef> getImagesDefinition(){
-        final Array<ImageDef> imageDefs = new Array<ImageDef>(true, this.jsonRoot.get("image").size);
-        for(final JsonValue jsonImage : this.jsonRoot.get("image")){
-            imageDefs.add(this.getImageDefintion(jsonImage));
+        if(this.jsonRoot.has("image")) {
+            final Array<ImageDef> imageDefs = new Array<ImageDef>(true, this.jsonRoot.get("image").size);
+            for (final JsonValue jsonImage : this.jsonRoot.get("image")) {
+                imageDefs.add(this.getImageDefintion(jsonImage));
+            }
+            return imageDefs;
         }
-        return imageDefs;
+        return new Array<ImageDef>(true,0);
     }
 
     /**
@@ -199,10 +216,12 @@ public class SceneLoader extends JSONLoader{
      * @return The image definition
      */
     public ImageDef getImageDefinition(final String name){
-        final JsonValue jsonImages = this.jsonRoot.get("image");
-        for(final JsonValue jsonImage : jsonImages){
-            if(jsonImage.has("name") && jsonImage.getString("name").equals(name)) {
-                return this.getImageDefintion(jsonImage);
+        if(this.jsonRoot.has("image")) {
+            final JsonValue jsonImages = this.jsonRoot.get("image");
+            for (final JsonValue jsonImage : jsonImages) {
+                if (jsonImage.has("name") && jsonImage.getString("name").equals(name)) {
+                    return this.getImageDefintion(jsonImage);
+                }
             }
         }
         return null;
@@ -216,9 +235,11 @@ public class SceneLoader extends JSONLoader{
      * @return The image definition
      */
     public ImageDef getImageDefinition(final int bodyIndex){
-        for(final JsonValue jsonImage : this.jsonRoot.get("image")){
-            if(jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex) {
-                return this.getImageDefintion(jsonImage);
+        if(this.jsonRoot.has("image")) {
+            for (final JsonValue jsonImage : this.jsonRoot.get("image")) {
+                if (jsonImage.has("body") && jsonImage.getInt("body") == bodyIndex) {
+                    return this.getImageDefintion(jsonImage);
+                }
             }
         }
         return null;
@@ -279,7 +300,8 @@ public class SceneLoader extends JSONLoader{
             for(final TextureRegionAnimationDef.KeyFrame keyFrame : ((TextureRegionAnimationDef)animationDef).keyFrames){
                 textureRegions.add(new TextureRegion(assetManager.get(((TextureRegionAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
             }
-            return new TextureRegionAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, textureRegions.toArray());
+
+            return new TextureRegionAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
         }
         return null;
     }
@@ -290,11 +312,14 @@ public class SceneLoader extends JSONLoader{
      * @return The lis of animations
      */
     public Array<AnimationDef> getAnimationsDefinition(){
-        final Array<AnimationDef> animationDefs = new Array<AnimationDef>(true, this.jsonRoot.get("animation").size);
-        for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
-            animationDefs.add(this.getAnimationDefinition(jsonAnimation));
+        if(this.jsonRoot.has("animation")) {
+            final Array<AnimationDef> animationDefs = new Array<AnimationDef>(true, this.jsonRoot.get("animation").size);
+            for (final JsonValue jsonAnimation : this.jsonRoot.get("animation")) {
+                animationDefs.add(this.getAnimationDefinition(jsonAnimation));
+            }
+            return animationDefs;
         }
-        return animationDefs;
+        return new Array<AnimationDef>(true,0);
     }
 
     /**
@@ -305,13 +330,14 @@ public class SceneLoader extends JSONLoader{
      * @return The animation definition
      */
     public AnimationDef getAnimationDefinition(final String name){
-        for(final JsonValue jsonAnimation : this.jsonRoot.get("animation")){
-            if(jsonAnimation.has("name") && jsonAnimation.getString("name").equals(name)) {
-                return this.getAnimationDefinition(jsonAnimation);
+        if(this.jsonRoot.has("animation")) {
+            for (final JsonValue jsonAnimation : this.jsonRoot.get("animation")) {
+                if (jsonAnimation.has("name") && jsonAnimation.getString("name").equals(name)) {
+                    return this.getAnimationDefinition(jsonAnimation);
+                }
             }
         }
-
-        throw new GameRuntimeException("Unknown animation type for : " + name);
+        return null;
     }
 
     private AnimationDef getAnimationDefinition(final JsonValue jsonAnimation){
@@ -402,11 +428,14 @@ public class SceneLoader extends JSONLoader{
      * @return The lis of particles effects
      */
     public Array<ParticlesEffectDef> getParticlesEffectsDefinition(){
-        final Array<ParticlesEffectDef> particlesEffectDefs = new Array<ParticlesEffectDef>(true, this.jsonRoot.get("particles_effect").size);
-        for(final JsonValue jsonParticlesEffect : this.jsonRoot.get("particles_effect")){
-            particlesEffectDefs.add(this.getParticlesEffectDefinition(jsonParticlesEffect));
+        if(this.jsonRoot.has("particles_effect")) {
+            final Array<ParticlesEffectDef> particlesEffectDefs = new Array<ParticlesEffectDef>(true, this.jsonRoot.get("particles_effect").size);
+            for (final JsonValue jsonParticlesEffect : this.jsonRoot.get("particles_effect")) {
+                particlesEffectDefs.add(this.getParticlesEffectDefinition(jsonParticlesEffect));
+            }
+            return particlesEffectDefs;
         }
-        return particlesEffectDefs;
+        return new Array<ParticlesEffectDef>(true, 0);
     }
 
     /**
@@ -417,9 +446,11 @@ public class SceneLoader extends JSONLoader{
      * @return The particle effects definition
      */
     public ParticlesEffectDef getParticlesEffectDefinition(final String name){
-        for(final JsonValue jsonParticlesEffect : this.jsonRoot.get("particles_effect")){
-            if(jsonParticlesEffect.has("name") && jsonParticlesEffect.getString("name").equals(name)) {
-                return this.getParticlesEffectDefinition(jsonParticlesEffect);
+        if(this.jsonRoot.has("particles_effect")) {
+            for(final JsonValue jsonParticlesEffect : this.jsonRoot.get("particles_effect")){
+                if(jsonParticlesEffect.has("name") && jsonParticlesEffect.getString("name").equals(name)) {
+                    return this.getParticlesEffectDefinition(jsonParticlesEffect);
+                }
             }
         }
         return null;
@@ -444,73 +475,74 @@ public class SceneLoader extends JSONLoader{
      * @return A list of FixtureDef
      */
     public Array<FixtureDef> getFixturesDefinition(final int bodyIndex){
-        final JsonValue jsonBody = this.jsonRoot.get("body").get(bodyIndex);
-        final Array<FixtureDef> fixtureDefs = new Array<FixtureDef>(true, 16);
-        for(final JsonValue jsonFixture : jsonBody.get("fixture")){
-            final FixtureDef fixtureDef = new FixtureDef();
-            if(jsonFixture.has("density")) {
-                fixtureDef.density = jsonFixture.getFloat("density");
-            }
-            if(jsonFixture.has("filter-categoryBits")) {
-                fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-categoryBits");
-            }
-            if(jsonFixture.has("filter-groupIndex")) {
-                fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-groupIndex");
-            }
-            if(jsonFixture.has("filter-maskBits")) {
-                fixtureDef.filter.maskBits = jsonFixture.getShort("filter-maskBits");
-            }
-            if(jsonFixture.has("friction")) {
-                fixtureDef.friction = jsonFixture.getFloat("friction");
-            }
-            if(jsonFixture.has("restitution")) {
-                fixtureDef.restitution = jsonFixture.getFloat("restitution");
-            }
+        if(this.jsonRoot.has("fixture") && this.jsonRoot.has("body")) {
+            final JsonValue jsonBody = this.jsonRoot.get("body").get(bodyIndex);
+            final Array<FixtureDef> fixtureDefs = new Array<FixtureDef>(true, 16);
+            for (final JsonValue jsonFixture : jsonBody.get("fixture")) {
+                final FixtureDef fixtureDef = new FixtureDef();
+                if (jsonFixture.has("density")) {
+                    fixtureDef.density = jsonFixture.getFloat("density");
+                }
+                if (jsonFixture.has("filter-categoryBits")) {
+                    fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-categoryBits");
+                }
+                if (jsonFixture.has("filter-groupIndex")) {
+                    fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-groupIndex");
+                }
+                if (jsonFixture.has("filter-maskBits")) {
+                    fixtureDef.filter.maskBits = jsonFixture.getShort("filter-maskBits");
+                }
+                if (jsonFixture.has("friction")) {
+                    fixtureDef.friction = jsonFixture.getFloat("friction");
+                }
+                if (jsonFixture.has("restitution")) {
+                    fixtureDef.restitution = jsonFixture.getFloat("restitution");
+                }
 
-            if(jsonFixture.has("sensor")) {
-                fixtureDef.isSensor = jsonFixture.getBoolean("sensor");
+                if (jsonFixture.has("sensor")) {
+                    fixtureDef.isSensor = jsonFixture.getBoolean("sensor");
+                }
+                if (jsonFixture.has("polygon")) {
+                    final PolygonShape polygonShape = new PolygonShape();
+                    final float[] xVertices = jsonFixture.get("polygon").get("vertices").get("x").asFloatArray();
+                    final float[] yVertices = jsonFixture.get("polygon").get("vertices").get("y").asFloatArray();
+                    final float[] vertices = new float[xVertices.length + yVertices.length];
+                    for (int inIndex = 0, outIndex = 0; inIndex < xVertices.length; inIndex++, outIndex += 2) {
+                        vertices[outIndex] = xVertices[inIndex];
+                        vertices[outIndex + 1] = yVertices[inIndex];
+                    }
+                    polygonShape.set(vertices);
+                    fixtureDef.shape = polygonShape;
+                } else if (jsonFixture.has("chain")) {
+                    final ChainShape chainShape = new ChainShape();
+                    final float[] xVertices = jsonFixture.get("chain").get("vertices").get("x").asFloatArray();
+                    final float[] yVertices = jsonFixture.get("chain").get("vertices").get("y").asFloatArray();
+                    final float[] vertices = new float[xVertices.length + yVertices.length];
+                    for (int inIndex = 0, outIndex = 0; inIndex < xVertices.length; inIndex++, outIndex += 2) {
+                        vertices[outIndex] = xVertices[inIndex];
+                        vertices[outIndex + 1] = yVertices[inIndex];
+                    }
+                    if (jsonFixture.get("chain").has("hasPrevVertex") && jsonFixture.get("chain").getBoolean("hasPrevVertex")) {
+                        chainShape.setPrevVertex(jsonFixture.get("chain").get("prevVertex").getFloat("x"), jsonFixture.get("chain").get("prevVertex").getFloat("y"));
+                    }
+                    if (jsonFixture.get("chain").has("hasNextVertex") && jsonFixture.get("chain").getBoolean("hasNextVertex")) {
+                        chainShape.setPrevVertex(jsonFixture.get("chain").get("nextVertex").getFloat("x"), jsonFixture.get("chain").get("nextVertex").getFloat("y"));
+                    }
+                    chainShape.createChain(vertices);
+                    fixtureDef.shape = chainShape;
+                } else if (jsonFixture.has("circle")) {
+                    final CircleShape circleShape = new CircleShape();
+                    if (jsonFixture.get("circle").get("center").has("x")) {
+                        circleShape.setPosition(new Vector2(jsonFixture.get("circle").get("center").getFloat("x"), jsonFixture.get("circle").get("center").getFloat("y")));
+                    }
+                    circleShape.setRadius(jsonFixture.get("circle").getFloat("radius"));
+                    fixtureDef.shape = circleShape;
+                }
+                fixtureDefs.add(fixtureDef);
             }
-            if(jsonFixture.has("polygon")) {
-                final PolygonShape polygonShape = new PolygonShape();
-                final float[] xVertices = jsonFixture.get("polygon").get("vertices").get("x").asFloatArray();
-                final float[] yVertices = jsonFixture.get("polygon").get("vertices").get("y").asFloatArray();
-                final float[] vertices = new float[xVertices.length + yVertices.length];
-                for(int inIndex=0, outIndex=0; inIndex < xVertices.length; inIndex++, outIndex+=2){
-                    vertices[outIndex] = xVertices[inIndex];
-                    vertices[outIndex+1] = yVertices[inIndex];
-                }
-                polygonShape.set(vertices);
-                fixtureDef.shape = polygonShape;
-            }
-            else if(jsonFixture.has("chain")) {
-                final ChainShape chainShape = new ChainShape();
-                final float[] xVertices = jsonFixture.get("chain").get("vertices").get("x").asFloatArray();
-                final float[] yVertices = jsonFixture.get("chain").get("vertices").get("y").asFloatArray();
-                final float[] vertices = new float[xVertices.length + yVertices.length];
-                for(int inIndex=0, outIndex=0; inIndex < xVertices.length; inIndex++, outIndex+=2){
-                    vertices[outIndex] = xVertices[inIndex];
-                    vertices[outIndex+1] = yVertices[inIndex];
-                }
-                if(jsonFixture.get("chain").has("hasPrevVertex") && jsonFixture.get("chain").getBoolean("hasPrevVertex")){
-                    chainShape.setPrevVertex(jsonFixture.get("chain").get("prevVertex").getFloat("x"),jsonFixture.get("chain").get("prevVertex").getFloat("y"));
-                }
-                if(jsonFixture.get("chain").has("hasNextVertex") && jsonFixture.get("chain").getBoolean("hasNextVertex")){
-                    chainShape.setPrevVertex(jsonFixture.get("chain").get("nextVertex").getFloat("x"),jsonFixture.get("chain").get("nextVertex").getFloat("y"));
-                }
-                chainShape.createChain(vertices);
-                fixtureDef.shape = chainShape;
-            }
-            else if(jsonFixture.has("circle")) {
-                final CircleShape circleShape = new CircleShape();
-                if(jsonFixture.get("circle").get("center").has("x")) {
-                    circleShape.setPosition(new Vector2(jsonFixture.get("circle").get("center").getFloat("x"), jsonFixture.get("circle").get("center").getFloat("y")));
-                }
-                circleShape.setRadius(jsonFixture.get("circle").getFloat("radius"));
-                fixtureDef.shape = circleShape;
-            }
-            fixtureDefs.add(fixtureDef);
+            return fixtureDefs;
         }
-        return fixtureDefs;
+        return new Array<FixtureDef>(true, 0);
     }
 
     /**
@@ -519,8 +551,8 @@ public class SceneLoader extends JSONLoader{
      * @return A list of JointDef
      */
     public Array<JointDef> getJointsDefinition(){
-        final Array<JointDef> jointDefs = new Array<JointDef>(true,16);
         if(this.jsonRoot.has("joint")) {
+            final Array<JointDef> jointDefs = new Array<JointDef>(true,16);
             for(final JsonValue jsonJoint : this.jsonRoot.get("joint")){
                 final String jointType = jsonJoint.getString("type");
                 if(jointType.equals("revolute")){
@@ -738,8 +770,9 @@ public class SceneLoader extends JSONLoader{
                     jointDefs.add(frictionJointDef);
                 }
             }
+            return jointDefs;
         }
-        return jointDefs;
+        return new Array<JointDef>(true, 0);
     }
 
     /**
