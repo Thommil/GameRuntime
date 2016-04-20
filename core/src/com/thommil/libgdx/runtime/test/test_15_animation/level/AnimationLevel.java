@@ -3,13 +3,12 @@ package com.thommil.libgdx.runtime.test.test_15_animation.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.animation.TextureRegionAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.layer.Layer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
@@ -21,7 +20,8 @@ public class AnimationLevel implements Disposable {
 
     final SpriteBatchLayer spriteBatchLayer;
 
-    final SpriteActor idleActor;
+    final SpriteActor imageAnimationActor;
+    final SpriteActor translateAnimationActor;
 
     float time =0;
 
@@ -34,22 +34,33 @@ public class AnimationLevel implements Disposable {
 
         spriteBatchLayer = new SpriteBatchLayer(Runtime.getInstance().getViewport(),10);
 
-        //IDLE
-        final TextureRegionAnimation idleAnimation = (TextureRegionAnimation)sceneLoader.getAnimation("idle",assetManager);
-        idleActor = new SpriteActor(0, new TextureSet(idleAnimation.getKeyFrame(0).getTexture())
-                , idleAnimation.getKeyFrame(0).getRegionX(), idleAnimation.getKeyFrame(0).getRegionY()
-                , idleAnimation.getKeyFrame(0).getRegionWidth(), idleAnimation.getKeyFrame(0).getRegionHeight()
+        //IMAGE
+        final ImageAnimation imageAnimation = (ImageAnimation)sceneLoader.getAnimation("image",assetManager);
+        imageAnimationActor = new SpriteActor(0, new TextureSet(assetManager.get(imageDef.path, Texture.class))
+                , imageDef.regionX, imageDef.regionY
+                , imageDef.regionWidth, imageDef.regionHeight
                 , imageDef.width, imageDef.height
         );
-        idleActor.setPosition(-4,4);
-        spriteBatchLayer.addActor(idleActor);
+        imageAnimationActor.setPosition(-4,4);
+        spriteBatchLayer.addActor(imageAnimationActor);
+
+        //TRANSLATE
+        final TranslateAnimation translateAnimation = (TranslateAnimation)sceneLoader.getAnimation("translate",assetManager);
+        translateAnimationActor = new SpriteActor(1, new TextureSet(assetManager.get(imageDef.path, Texture.class))
+                , imageDef.regionX, imageDef.regionY
+                , imageDef.regionWidth, imageDef.regionHeight
+                , imageDef.width, imageDef.height
+        );
+        translateAnimationActor.setPosition(-2,4);
+        spriteBatchLayer.addActor(translateAnimationActor);
+
 
         Runtime.getInstance().addLayer(spriteBatchLayer);
 
         Runtime.getInstance().addLayer(new Layer(Runtime.getInstance().getViewport(), 1) {
             @Override
             protected void onShow() {
-
+                imageAnimationActor.playAnimation(imageAnimation,0);
             }
 
             @Override
@@ -65,7 +76,8 @@ public class AnimationLevel implements Disposable {
             @Override
             public void render(float deltaTime) {
                 time+=deltaTime;
-                idleActor.playAnimation(idleAnimation,time);
+                imageAnimationActor.playAnimation(imageAnimation,time);
+                //translateAnimationActor.playAnimation(translateAnimation, time);
             }
         });
 
@@ -79,7 +91,8 @@ public class AnimationLevel implements Disposable {
     @Override
     public void dispose() {
         spriteBatchLayer.dispose();
-        idleActor.dispose();
+        imageAnimationActor.dispose();
+        translateAnimationActor.dispose();
         assetManager.dispose();
     }
 

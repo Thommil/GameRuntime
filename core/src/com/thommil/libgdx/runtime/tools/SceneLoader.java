@@ -15,7 +15,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.animation.AbstractAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.TextureRegionAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 
 /**
  * Helper class to load extended Rube files.
@@ -295,13 +296,21 @@ public class SceneLoader extends JSONLoader{
      */
     public AbstractAnimation getAnimation(final String name, final AssetManager assetManager){
         final AnimationDef animationDef = this.getAnimationDefinition(name);
-        if(animationDef instanceof TextureRegionAnimationDef){
+        if(animationDef instanceof ImageAnimationDef){
             final Array<TextureRegion> textureRegions = new Array<TextureRegion>(true, animationDef.keyFrames.length);
-            for(final TextureRegionAnimationDef.KeyFrame keyFrame : ((TextureRegionAnimationDef)animationDef).keyFrames){
-                textureRegions.add(new TextureRegion(assetManager.get(((TextureRegionAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
+            for(final ImageAnimationDef.KeyFrame keyFrame : ((ImageAnimationDef)animationDef).keyFrames){
+                textureRegions.add(new TextureRegion(assetManager.get(((ImageAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
             }
 
-            return new TextureRegionAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
+            return new ImageAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
+        }
+        else if(animationDef instanceof TranslateAnimationDef){
+            final Array<Vector2> vectors = new Array<Vector2>(true, animationDef.keyFrames.length);
+            for(final TranslateAnimationDef.KeyFrame keyFrame : ((TranslateAnimationDef)animationDef).keyFrames){
+                vectors.add(new Vector2(keyFrame.xOffset, keyFrame.yOffset));
+            }
+
+            return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, (Vector2[]) vectors.toArray(Vector2.class));
         }
         return null;
     }
@@ -345,11 +354,11 @@ public class SceneLoader extends JSONLoader{
         if(jsonAnimation.has("type")) {
             final AnimationDef.Type type = AnimationDef.Type.valueOf(jsonAnimation.getString("type"));
             switch(type){
-                case TEXTURE : animationDef = new TextureRegionAnimationDef(); break;
-                case TRANSLATE : animationDef = new TextureRegionAnimationDef(); break;
-                case ROTATE : animationDef = new TextureRegionAnimationDef(); break;
-                case SCALE : animationDef = new TextureRegionAnimationDef(); break;
-                case COLOR : animationDef = new TextureRegionAnimationDef(); break;
+                case IMAGE: animationDef = new ImageAnimationDef(); break;
+                case TRANSLATE : animationDef = new TranslateAnimationDef(); break;
+                case ROTATE : animationDef = new ImageAnimationDef(); break;
+                case SCALE : animationDef = new ImageAnimationDef(); break;
+                case COLOR : animationDef = new ImageAnimationDef(); break;
             }
         }
         else throw new GameRuntimeException("Missing type in animation definition : " + jsonAnimation.getString("name"));
@@ -380,32 +389,45 @@ public class SceneLoader extends JSONLoader{
                 case BOUNCE : animationDef.interpolator = Interpolation.bounce; break;
             }
         }
-        if(animationDef instanceof TextureRegionAnimationDef){
-            final TextureRegionAnimationDef textureRegionAnimationDef = ((TextureRegionAnimationDef)animationDef);
+        if(animationDef instanceof ImageAnimationDef){
+            final ImageAnimationDef imageAnimationDef = ((ImageAnimationDef)animationDef);
             if(jsonAnimation.has("file")) {
-                textureRegionAnimationDef.path = jsonAnimation.getString("file");
+                imageAnimationDef.path = jsonAnimation.getString("file");
             }
             if(jsonAnimation.has("keyFrames")) {
-                animationDef.keyFrames = new TextureRegionAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+                animationDef.keyFrames = new ImageAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
                 for(int index=0; index < animationDef.keyFrames.length; index++){
                     final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
-                    textureRegionAnimationDef.keyFrames[index] = new TextureRegionAnimationDef.KeyFrame();
-                    textureRegionAnimationDef.keyFrames[index].regionX = jsonKeyFrame.getInt("regionX");
-                    textureRegionAnimationDef.keyFrames[index].regionY = jsonKeyFrame.getInt("regionY");
-                    textureRegionAnimationDef.keyFrames[index].regionWidth = jsonKeyFrame.getInt("regionWidth");
-                    textureRegionAnimationDef.keyFrames[index].regionHeight = jsonKeyFrame.getInt("regionHeight");
+                    imageAnimationDef.keyFrames[index] = new ImageAnimationDef.KeyFrame();
+                    imageAnimationDef.keyFrames[index].regionX = jsonKeyFrame.getInt("regionX");
+                    imageAnimationDef.keyFrames[index].regionY = jsonKeyFrame.getInt("regionY");
+                    imageAnimationDef.keyFrames[index].regionWidth = jsonKeyFrame.getInt("regionWidth");
+                    imageAnimationDef.keyFrames[index].regionHeight = jsonKeyFrame.getInt("regionHeight");
                     if(jsonKeyFrame.has("width")) {
-                        textureRegionAnimationDef.keyFrames[index].width = jsonKeyFrame.getFloat("width");
+                        imageAnimationDef.keyFrames[index].width = jsonKeyFrame.getFloat("width");
                     }
                     if(jsonKeyFrame.has("height")) {
-                        textureRegionAnimationDef.keyFrames[index].height = jsonKeyFrame.getFloat("height");
+                        imageAnimationDef.keyFrames[index].height = jsonKeyFrame.getFloat("height");
                     }
                 }
             }
-            return textureRegionAnimationDef;
+            return imageAnimationDef;
+        }
+        else if(animationDef instanceof TranslateAnimationDef){
+            final TranslateAnimationDef translateAnimationDef = ((TranslateAnimationDef) animationDef);
+            if(jsonAnimation.has("keyFrames")) {
+                animationDef.keyFrames = new TranslateAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+                for(int index=0; index < animationDef.keyFrames.length; index++){
+                    final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
+                    translateAnimationDef.keyFrames[index] = new TranslateAnimationDef.KeyFrame();
+                    translateAnimationDef.keyFrames[index].xOffset = jsonKeyFrame.getFloat("xOffset");
+                    translateAnimationDef.keyFrames[index].yOffset = jsonKeyFrame.getFloat("yOffset");
+                }
+            }
+            return translateAnimationDef;
         }
 
-        throw new GameRuntimeException("Unknown animation type for : " + jsonAnimation.getString("name"));
+        return null;
     }
 
     /**
@@ -947,10 +969,10 @@ public class SceneLoader extends JSONLoader{
 
 
     /**
-     *  TextureRegionAnimation definition (in "animation")
+     *  ImageAnimation definition (in "animation")
      *  {
      *  "name" : name,
-     *  "type" : "TEXTURE" | "TRANSLATE" | "ROTATE" | "SCALE" | "COLOR",
+     *  "type" : "IMAGE"
      *  "file" : path/to/image,
      *  "playMode" : "LOOP" | "REVERSED" | "LOOP" | "LOOP_REVERSED" | "LOOP_PINGPONG" | "LOOP_RANDOM",
      *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE",
@@ -969,7 +991,7 @@ public class SceneLoader extends JSONLoader{
      *  }
      *
      */
-    public static class TextureRegionAnimationDef extends AnimationDef<TextureRegionAnimationDef.KeyFrame>{
+    public static class ImageAnimationDef extends AnimationDef<ImageAnimationDef.KeyFrame>{
         public String path;
         public static class KeyFrame{
             public int regionX;
@@ -981,9 +1003,34 @@ public class SceneLoader extends JSONLoader{
         }
     }
 
+    /**
+     *  TranslateAnimation definition (in "animation")
+     *  {
+     *  "name" : name,
+     *  "type" : "TRANSLATE",
+     *  "playMode" : "LOOP" | "REVERSED" | "LOOP_REVERSED" | "LOOP_PINGPONG", (optional -> default : NORMAL)
+     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : NORMAL)
+     *  frameDuration : frame duration (seconds)
+     *  keyFrames : [
+     *      {
+     *          "xOffset" : x offset,
+     *          "yOffset" : y offset,
+     *      }
+     *      ...
+     *  ]
+     *  }
+     *
+     */
+    public static class TranslateAnimationDef extends AnimationDef<TranslateAnimationDef.KeyFrame>{
+        public static class KeyFrame{
+            public float xOffset;
+            public float yOffset;
+        }
+    }
+
     public static class AnimationDef<T>{
         public enum Type{
-            TEXTURE,
+            IMAGE,
             TRANSLATE,
             ROTATE,
             SCALE,

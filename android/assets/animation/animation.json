@@ -15,12 +15,12 @@
   ],
   "animation":[
     {
-      "name" : "idle",
-      "type" : "TEXTURE",
+      "name" : "image",
+      "type" : "IMAGE",
       "file" : "animation/averagemale.png",
-      "playMode" : "LOOP",
-      "interpolator" : "SWING",
-      "frameDuration" : 2,
+      "playMode" : "LOOP_PINGPONG",
+      "interpolator" : "CIRCLE",
+      "frameDuration" : 1,
       "keyFrames" : [
           {
               "regionX" : 148,
@@ -31,23 +31,30 @@
               "height" : 0.8
           },
           {
-            "regionX" : 199,
-            "regionY" : 0,
-            "regionWidth" : 50,
-            "regionHeight" : 80
-          },
-          {
             "regionX" : 248,
             "regionY" : 0,
             "regionWidth" : 50,
             "regionHeight" : 80
           },
           {
-            "regionX" : 295,
+            "regionX" : 199,
             "regionY" : 0,
             "regionWidth" : 50,
             "regionHeight" : 80
           }
+      ]
+    },
+    {
+      "name" : "translate",
+      "type" : "TRANSLATE",
+      "playMode" : "NORMAL",
+      "interpolator" : "LINEAR",
+      "frameDuration" : 1,
+      "keyFrames" : [
+        {
+          "xOffset" : 0.1,
+          "yOffset" : 0
+        }
       ]
     }
 

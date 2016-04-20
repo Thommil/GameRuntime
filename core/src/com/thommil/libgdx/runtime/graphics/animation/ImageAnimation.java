@@ -1,19 +1,20 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.thommil.libgdx.runtime.GameRuntimeException;
 
 /**
  * Animation implementation based on TextureRegion (sprite)
  *
  * Created by thommil on 4/19/16.
  */
-public class TextureRegionAnimation extends AbstractAnimation<TextureRegion> {
+public class ImageAnimation extends AbstractAnimation<TextureRegion> {
 
     private int lastFrameNumber;
-    private float lastStateTime;
 
     /**
      * Simplified constructor (PlayMode NORMAL and Linear interpolation)
@@ -21,7 +22,7 @@ public class TextureRegionAnimation extends AbstractAnimation<TextureRegion> {
      * @param frameDuration the time between frames in seconds.
      * @param keyFrames     the objects representing the frames.
      */
-    public TextureRegionAnimation(float frameDuration, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, TextureRegion... keyFrames) {
         super(frameDuration, keyFrames);
     }
 
@@ -32,7 +33,7 @@ public class TextureRegionAnimation extends AbstractAnimation<TextureRegion> {
      * @param playMode      The animation playmode
      * @param keyFrames     the objects representing the frames.
      */
-    public TextureRegionAnimation(float frameDuration, Animation.PlayMode playMode, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, Animation.PlayMode playMode, TextureRegion... keyFrames) {
         super(frameDuration, playMode, keyFrames);
     }
 
@@ -43,7 +44,7 @@ public class TextureRegionAnimation extends AbstractAnimation<TextureRegion> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public TextureRegionAnimation(float frameDuration, Interpolation interpolator, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, Interpolation interpolator, TextureRegion... keyFrames) {
         super(frameDuration, interpolator, keyFrames);
     }
 
@@ -55,7 +56,7 @@ public class TextureRegionAnimation extends AbstractAnimation<TextureRegion> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public TextureRegionAnimation(float frameDuration, Animation.PlayMode playMode, Interpolation interpolator, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, Animation.PlayMode playMode, Interpolation interpolator, TextureRegion... keyFrames) {
         super(frameDuration, playMode, interpolator, keyFrames);
     }
 
@@ -70,37 +71,46 @@ public class TextureRegionAnimation extends AbstractAnimation<TextureRegion> {
     protected TextureRegion calculateKeyFrame(float interpolatedStateTime) {
         if (keyFrames.length == 1) return this.keyFrames[0];
 
-        int frameNumber = (int)(interpolatedStateTime / frameDuration);
+        int frameNumber = 0;
         switch (playMode) {
             case NORMAL:
-                frameNumber = Math.min(keyFrames.length - 1, frameNumber);
-                break;
-            case LOOP:
-                frameNumber = frameNumber % keyFrames.length;
-                break;
-            case LOOP_PINGPONG:
-                frameNumber = frameNumber % ((keyFrames.length * 2) - 2);
-                if (frameNumber >= keyFrames.length) frameNumber = keyFrames.length - 2 - (frameNumber - keyFrames.length);
-                break;
-            case LOOP_RANDOM:
-                int lastFrameNumber = (int) ((interpolatedStateTime) / frameDuration);
-                if (lastFrameNumber != frameNumber) {
-                    frameNumber = MathUtils.random(keyFrames.length - 1);
-                } else {
-                    frameNumber = this.lastFrameNumber;
+                switch (this.iteration){
+                    case 0:
+                        frameNumber = Math.min(keyFrames.length - 1, (int)(interpolatedStateTime / frameDuration));
+                        break;
+                    default :
+                        frameNumber = keyFrames.length - 1;
                 }
                 break;
             case REVERSED:
-                frameNumber = Math.max(keyFrames.length - frameNumber - 1, 0);
+                switch (this.iteration){
+                    case 0:
+                        frameNumber = Math.max(keyFrames.length - (int)(interpolatedStateTime / frameDuration) - 1, 0);
+                        break;
+                    default :
+                        frameNumber = 0;
+                }
+                break;
+            case LOOP:
+                frameNumber = (int)(interpolatedStateTime / frameDuration) % keyFrames.length;
                 break;
             case LOOP_REVERSED:
-                frameNumber = frameNumber % keyFrames.length;
-                frameNumber = keyFrames.length - frameNumber - 1;
+                frameNumber = keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1;
                 break;
-        }
+            case LOOP_PINGPONG:
+                switch (this.iteration % 2){
+                    case 0:
+                        frameNumber = (int)(interpolatedStateTime / frameDuration) % keyFrames.length;
+                        break;
+                    case 1 :
+                        frameNumber = keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1;
+                        break;
+                }
+                break;
+            case LOOP_RANDOM:
+                throw new GameRuntimeException("LOOP_RANDOM playmode not supported");
 
-        lastFrameNumber = frameNumber;
-        lastStateTime = interpolatedStateTime;
+        }
 
         return this.keyFrames[frameNumber];
     }

@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.actor.graphics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -9,7 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.animation.TextureRegionAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
 
@@ -541,14 +541,26 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     }
 
     /**
-     * Play a given animation in current sprite actor at specified state time
+     * Play a given image animation in current sprite actor at specified state time
      *
-     * @param animation The animation to use
+     * @param animation The image animation to use
      * @param stateTime The state time in seconds
      */
-    public SpriteActor playAnimation(final TextureRegionAnimation animation, final float stateTime){
+    public SpriteActor playAnimation(final ImageAnimation animation, final float stateTime){
         final TextureRegion textureRegion = animation.getKeyFrame(stateTime);
         this.setRegion(textureRegion.getU(), textureRegion.getV(), textureRegion.getU2(), textureRegion.getV2());
+        return this;
+    }
+
+    /**
+     * Play a given translate animation in current sprite actor at specified state time
+     *
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public SpriteActor playAnimation(final TranslateAnimation animation, final float stateTime){
+        final Vector2 translation = animation.getKeyFrame(stateTime);
+        this.translate(translation.x, translation.y);
         return this;
     }
 

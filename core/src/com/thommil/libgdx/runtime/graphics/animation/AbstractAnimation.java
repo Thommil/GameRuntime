@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Interpolation;
 
@@ -14,6 +15,7 @@ public abstract class AbstractAnimation<T> {
 
     protected float frameDuration;
     protected float animationDuration;
+    protected int iteration = 0;
     protected Animation.PlayMode playMode;
     protected Interpolation interpolator;
 
@@ -72,7 +74,8 @@ public abstract class AbstractAnimation<T> {
      * @return the object state at the given time
      */
     public T getKeyFrame (float stateTime){
-        return this.calculateKeyFrame(this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration)/this.animationDuration));
+        this.iteration = (int)(stateTime / this.animationDuration);
+        return this.calculateKeyFrame(this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration));
     }
 
     /**
