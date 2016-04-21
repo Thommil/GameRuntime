@@ -14,8 +14,6 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
  */
 public class ImageAnimation extends AbstractAnimation<TextureRegion> {
 
-    private int lastFrameNumber;
-
     /**
      * Simplified constructor (PlayMode NORMAL and Linear interpolation)
      *
