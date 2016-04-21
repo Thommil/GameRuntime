@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.thommil.libgdx.runtime.GameRuntimeException;
@@ -10,7 +9,7 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
  *
  * Created by thommil on 4/19/16.
  */
-public class ImageAnimation extends AbstractAnimation<TextureRegion> {
+public class ImageAnimation extends Animation<TextureRegion> {
 
     protected int iteration = 0;
 
@@ -31,7 +30,7 @@ public class ImageAnimation extends AbstractAnimation<TextureRegion> {
      * @param playMode      The animation playmode
      * @param keyFrames     the objects representing the frames.
      */
-    public ImageAnimation(float frameDuration, Animation.PlayMode playMode, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, PlayMode playMode, TextureRegion... keyFrames) {
         super(frameDuration, playMode, keyFrames);
     }
 
@@ -54,8 +53,16 @@ public class ImageAnimation extends AbstractAnimation<TextureRegion> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public ImageAnimation(float frameDuration, Animation.PlayMode playMode, Interpolation interpolator, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, PlayMode playMode, Interpolation interpolator, TextureRegion... keyFrames) {
         super(frameDuration, playMode, interpolator, keyFrames);
+    }
+
+    /**
+     * Initialize the animation
+     */
+    @Override
+    public void initialize() {
+        this.iteration = 0;
     }
 
     /**
@@ -79,47 +86,31 @@ public class ImageAnimation extends AbstractAnimation<TextureRegion> {
 
         if (keyFrames.length == 1) return this.keyFrames[0];
 
-        int frameNumber = 0;
         switch (playMode) {
             case NORMAL:
-                switch (this.iteration){
-                    case 0:
-                        frameNumber = Math.min(keyFrames.length - 1, (int)(interpolatedStateTime / frameDuration));
-                        break;
-                    default :
-                        frameNumber = keyFrames.length - 1;
+                if(this.iteration == 0) {
+                    return this.keyFrames[Math.min(keyFrames.length - 1, (int) (interpolatedStateTime / frameDuration))];
                 }
-                break;
+                return this.keyFrames[keyFrames.length - 1];
             case REVERSED:
-                switch (this.iteration){
-                    case 0:
-                        frameNumber = Math.max(keyFrames.length - (int)(interpolatedStateTime / frameDuration) - 1, 0);
-                        break;
-                    default :
-                        frameNumber = 0;
+                if(this.iteration == 0) {
+                    return this.keyFrames[Math.max(keyFrames.length - (int)(interpolatedStateTime / frameDuration) - 1, 0)];
                 }
-                break;
+                return this.keyFrames[0];
             case LOOP:
-                frameNumber = (int)(interpolatedStateTime / frameDuration) % keyFrames.length;
-                break;
+                return this.keyFrames[(int)(interpolatedStateTime / frameDuration) % keyFrames.length];
             case LOOP_REVERSED:
-                frameNumber = keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1;
-                break;
+                return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
             case LOOP_PINGPONG:
                 switch (this.iteration % 2){
                     case 0:
-                        frameNumber = (int)(interpolatedStateTime / frameDuration) % keyFrames.length;
-                        break;
+                        return this.keyFrames[(int)(interpolatedStateTime / frameDuration) % keyFrames.length];
                     case 1 :
-                        frameNumber = keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1;
-                        break;
+                        return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
                 }
-                break;
-            case LOOP_RANDOM:
-                throw new GameRuntimeException("LOOP_RANDOM playmode not supported");
+            default:
+                throw new GameRuntimeException(playMode.toString()+" playmode not supported");
 
         }
-
-        return this.keyFrames[frameNumber];
     }
 }

@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Interpolation;
 
 /**
@@ -8,13 +7,24 @@ import com.badlogic.gdx.math.Interpolation;
  *
  * @author thommil on 4/19/16.
  */
-public abstract class AbstractAnimation<T> {
+public abstract class Animation<T> {
+
+    /**
+     * Based on LibGDX Animation play modes
+     */
+    public enum PlayMode {
+        NORMAL,
+        REVERSED,
+        LOOP,
+        LOOP_REVERSED,
+        LOOP_PINGPONG
+    }
 
     final protected T[] keyFrames;
 
     protected float frameDuration;
     protected float animationDuration;
-    protected Animation.PlayMode playMode;
+    protected PlayMode playMode;
     protected Interpolation interpolator;
 
     /**
@@ -23,8 +33,8 @@ public abstract class AbstractAnimation<T> {
      * @param frameDuration the time between frames in seconds.
      * @param keyFrames the objects representing the frames.
      */
-    public AbstractAnimation (final float frameDuration, T... keyFrames) {
-        this(frameDuration, Animation.PlayMode.NORMAL, Interpolation.linear, keyFrames);
+    public Animation(final float frameDuration, T... keyFrames) {
+        this(frameDuration, PlayMode.NORMAL, Interpolation.linear, keyFrames);
     }
 
     /**
@@ -34,7 +44,7 @@ public abstract class AbstractAnimation<T> {
      * @param playMode The animation playmode
      * @param keyFrames the objects representing the frames.
      */
-    public AbstractAnimation (final float frameDuration, final Animation.PlayMode playMode, T... keyFrames) {
+    public Animation(final float frameDuration, final PlayMode playMode, T... keyFrames) {
         this(frameDuration, playMode, Interpolation.linear, keyFrames);
     }
 
@@ -45,8 +55,8 @@ public abstract class AbstractAnimation<T> {
      * @param interpolator The interpolator to use
      * @param keyFrames the objects representing the frames.
      */
-    public AbstractAnimation (float frameDuration, final Interpolation interpolator , T... keyFrames) {
-        this(frameDuration, Animation.PlayMode.NORMAL, interpolator, keyFrames);
+    public Animation(float frameDuration, final Interpolation interpolator , T... keyFrames) {
+        this(frameDuration, PlayMode.NORMAL, interpolator, keyFrames);
     }
 
     /**
@@ -57,13 +67,19 @@ public abstract class AbstractAnimation<T> {
      * @param interpolator The interpolator to use
      * @param keyFrames the objects representing the frames.
      */
-    public AbstractAnimation (float frameDuration, final Animation.PlayMode playMode, final Interpolation interpolator , T... keyFrames) {
+    public Animation(float frameDuration, final PlayMode playMode, final Interpolation interpolator , T... keyFrames) {
         this.frameDuration = frameDuration;
         this.animationDuration = keyFrames.length * frameDuration;
         this.keyFrames = keyFrames;
         this.playMode = playMode;
         this.interpolator = interpolator;
+        this.initialize();
     }
+
+    /**
+     * Initialize the animation
+     */
+    public abstract void initialize();
 
     /**
      * Gets the object state at a given time
@@ -114,11 +130,11 @@ public abstract class AbstractAnimation<T> {
         return animationDuration;
     }
 
-    public Animation.PlayMode getPlayMode() {
+    public PlayMode getPlayMode() {
         return playMode;
     }
 
-    public void setPlayMode(Animation.PlayMode playMode) {
+    public void setPlayMode(PlayMode playMode) {
         this.playMode = playMode;
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.thommil.libgdx.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.graphics.animation.AbstractAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.Animation;
 import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 
@@ -294,7 +293,7 @@ public class SceneLoader extends JSONLoader{
      * @param assetManager The asset manager containing the animation resources
      * @return A new created animation
      */
-    public AbstractAnimation getAnimation(final String name, final AssetManager assetManager){
+    public Animation getAnimation(final String name, final AssetManager assetManager){
         final AnimationDef animationDef = this.getAnimationDefinition(name);
         if(animationDef instanceof ImageAnimationDef){
             final Array<TextureRegion> textureRegions = new Array<TextureRegion>(true, animationDef.keyFrames.length);

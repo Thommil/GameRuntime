@@ -51,7 +51,7 @@ public class AnimationLevel implements Disposable {
                 , imageDef.regionWidth, imageDef.regionHeight
                 , imageDef.width, imageDef.height
         );
-        translateAnimationActor.setPosition(-2,4);
+        translateAnimationActor.setPosition(-3,4);
         spriteBatchLayer.addActor(translateAnimationActor);
 
 
