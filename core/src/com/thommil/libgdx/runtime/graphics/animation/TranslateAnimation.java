@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.thommil.libgdx.runtime.GameRuntimeException;
+
+import java.util.Arrays;
 
 /**
  * Animation implementation based on TextureRegion (sprite)
@@ -14,9 +17,12 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class TranslateAnimation extends AbstractAnimation<Vector2> {
 
-    private final Vector2 tmpVector = new Vector2();
+    protected int iteration = 0;
+
+    private final Vector2 translateVector = new Vector2();
+    private final Vector2 totalTranslateVector = new Vector2();
+    private float[] interpolatedStateTimes;
     private int lastFrameNumber;
-    private float lastStateTime;
 
     /**
      * Simplified constructor (PlayMode NORMAL and Linear interpolation)
@@ -26,6 +32,8 @@ public class TranslateAnimation extends AbstractAnimation<Vector2> {
      */
     public TranslateAnimation(float frameDuration, Vector2... keyFrames) {
         super(frameDuration, keyFrames);
+        interpolatedStateTimes = new float[keyFrames.length];
+        this.reset();
     }
 
     /**
@@ -37,6 +45,8 @@ public class TranslateAnimation extends AbstractAnimation<Vector2> {
      */
     public TranslateAnimation(float frameDuration, Animation.PlayMode playMode, Vector2... keyFrames) {
         super(frameDuration, playMode, keyFrames);
+        interpolatedStateTimes = new float[keyFrames.length];
+        this.reset();
     }
 
     /**
@@ -48,6 +58,8 @@ public class TranslateAnimation extends AbstractAnimation<Vector2> {
      */
     public TranslateAnimation(float frameDuration, Interpolation interpolator, Vector2... keyFrames) {
         super(frameDuration, interpolator, keyFrames);
+        interpolatedStateTimes = new float[keyFrames.length];
+        this.reset();
     }
 
     /**
@@ -60,59 +72,86 @@ public class TranslateAnimation extends AbstractAnimation<Vector2> {
      */
     public TranslateAnimation(float frameDuration, Animation.PlayMode playMode, Interpolation interpolator, Vector2... keyFrames) {
         super(frameDuration, playMode, interpolator, keyFrames);
+        interpolatedStateTimes = new float[keyFrames.length];
+        this.reset();
     }
 
     /**
-     * Main method to override in subclasses to calculate/deduce the key frame to return on getKeyFrame() calls.
-     * This method is called after application of interpolator.
-     *
-     * @param interpolatedStateTime The interpolated state time
-     * @return The key frame at wanted state time
+     * Reset animation
      */
     @Override
-    protected Vector2 calculateKeyFrame(float interpolatedStateTime) {
-        /*if (keyFrames.length == 1){
-            final float frameStateTime = frameNumber * this.frameDuration - ;
-            this.tmpVector.set(keyFrames[frameNumber].x * frameStateTime, keyFrames[frameNumber].y * frameStateTime);
-            this.tmpVector.set(keyFrames[0].x * interpolatedStateTime, keyFrames[0].y * interpolatedStateTime);
+    public void reset() {
+        this.iteration = 0;
+        this.translateVector.set(0,0);
+        this.totalTranslateVector.set(0,0);
+        this.lastFrameNumber = (this.playMode == Animation.PlayMode.LOOP_REVERSED || this.playMode == Animation.PlayMode.REVERSED) ? this.keyFrames.length - 1 : 0;
+        for(int index = 0; index < this.interpolatedStateTimes.length ; index++){
+            this.interpolatedStateTimes[index] = this.interpolator.apply(0, this.animationDuration, ((index + 1) * this.frameDuration) / this.animationDuration);
         }
-        else{
-            int frameNumber = (int) (interpolatedStateTime / frameDuration);
-            switch (playMode) {
-                case NORMAL:
-                    frameNumber = Math.min(keyFrames.length - 1, frameNumber);
-                    break;
-                case LOOP:
-                    frameNumber = frameNumber % keyFrames.length;
-                    break;
-                case LOOP_PINGPONG:
-                    frameNumber = frameNumber % ((keyFrames.length * 2) - 2);
-                    if (frameNumber >= keyFrames.length)
-                        frameNumber = keyFrames.length - 2 - (frameNumber - keyFrames.length);
-                    break;
-                case LOOP_RANDOM:
-                    int lastFrameNumber = (int) ((interpolatedStateTime) / frameDuration);
-                    if (lastFrameNumber != frameNumber) {
-                        frameNumber = MathUtils.random(keyFrames.length - 1);
-                    } else {
-                        frameNumber = this.lastFrameNumber;
-                    }
-                    break;
-                case REVERSED:
-                    frameNumber = Math.max(keyFrames.length - frameNumber - 1, 0);
-                    break;
-                case LOOP_REVERSED:
-                    frameNumber = frameNumber % keyFrames.length;
-                    frameNumber = keyFrames.length - frameNumber - 1;
-                    break;
-            }
+    }
 
-            lastFrameNumber = frameNumber;
-            lastStateTime = interpolatedStateTime;
+    /**
+     * Gets the object state at a given time
+     *
+     * @param stateTime The time of animation state in seconds
+     * @return the object state at the given time
+     */
+    @Override
+    public Vector2 getKeyFrame(float stateTime) {
+        this.translateVector.set(0,0);
+        this.iteration = (int)(stateTime / this.animationDuration);
+        final float interpolatedStateTime = this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration);
 
+        switch (playMode) {
+            case NORMAL:
+               if(this.iteration == 0) {
+                   int toIndex= 0;
+                   float passedTime = 0;
+                   for(int index=0; index < this.interpolatedStateTimes.length; index ++){
+                       if (interpolatedStateTime < this.interpolatedStateTimes[index]){
+                           toIndex = index;
+                           if(toIndex > 0){
+                               this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - this.interpolatedStateTimes[toIndex])/this.frameDuration);
+                               this.translateVector.sub(this.totalTranslateVector);
+                               this.totalTranslateVector.add(this.translateVector);
+                           }
+                           else{
+                               this.translateVector.lerp(keyFrames[toIndex],interpolatedStateTime/this.interpolatedStateTimes[0]);
+                               this.translateVector.sub(this.totalTranslateVector);
+                               this.totalTranslateVector.add(this.translateVector);
+                           }
+                           break;
+                       }
+                   }
+                }
+                break;
+            case REVERSED:
+                if(this.iteration == 0) {
+                        //fromIndex = Math.max(keyFrames.length - (int) (interpolatedStateTime / frameDuration) - 1, 0);
+                }
+                break;
+            case LOOP:
+                //fromIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                break;
+            case LOOP_REVERSED:
+                //fromIndex = keyFrames.length - (int) (interpolatedStateTime / frameDuration) % keyFrames.length - 1;
+                break;
+            case LOOP_PINGPONG:
+                switch (this.iteration % 2) {
+                    case 0:
+                        //fromIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                        break;
+                    case 1:
+                        //fromIndex = keyFrames.length - (int) (interpolatedStateTime / frameDuration) % keyFrames.length - 1;
+                        break;
+                }
+                break;
+            case LOOP_RANDOM:
+                throw new GameRuntimeException("LOOP_RANDOM playmode not supported");
 
         }
-        Gdx.app.log("",""+this.tmpVector);*/
-        return this.tmpVector;
+
+
+        return this.translateVector;
     }
 }

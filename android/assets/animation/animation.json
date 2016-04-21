@@ -52,8 +52,20 @@
       "frameDuration" : 1,
       "keyFrames" : [
         {
-          "xOffset" : 0.1,
+          "xOffset" : 3,
           "yOffset" : 0
+        },
+        {
+          "xOffset" : 0,
+          "yOffset" : -3
+        },
+        {
+          "xOffset" : -3,
+          "yOffset" : 0
+        },
+        {
+          "xOffset" : 0,
+          "yOffset" : 3
         }
       ]
     }

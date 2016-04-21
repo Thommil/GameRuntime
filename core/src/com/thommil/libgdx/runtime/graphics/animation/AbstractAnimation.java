@@ -1,6 +1,5 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Interpolation;
 
@@ -15,7 +14,6 @@ public abstract class AbstractAnimation<T> {
 
     protected float frameDuration;
     protected float animationDuration;
-    protected int iteration = 0;
     protected Animation.PlayMode playMode;
     protected Interpolation interpolator;
 
@@ -73,20 +71,12 @@ public abstract class AbstractAnimation<T> {
      * @param stateTime The time of animation state in seconds
      * @return the object state at the given time
      */
-    public T getKeyFrame (float stateTime){
-        this.iteration = (int)(stateTime / this.animationDuration);
-        return this.calculateKeyFrame(this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration));
-    }
+    public abstract T getKeyFrame (float stateTime);
 
     /**
-     * Main method to override in sublcass to calculate/deduce the key frame to return on getKeyFrame() calls.
-     * This method is called after application of interpolator.
-     *
-     * @param interpolatedStateTime The interpolated state time
-     *
-     * @return The key frame at wanted state time
+     * Reset animation
      */
-    protected abstract T calculateKeyFrame(float interpolatedStateTime);
+    public abstract void reset();
 
     /**
      * Gets the object state at the given index in key frames

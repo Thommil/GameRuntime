@@ -1,10 +1,8 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 
 /**
@@ -13,6 +11,8 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
  * Created by thommil on 4/19/16.
  */
 public class ImageAnimation extends AbstractAnimation<TextureRegion> {
+
+    protected int iteration = 0;
 
     /**
      * Simplified constructor (PlayMode NORMAL and Linear interpolation)
@@ -59,14 +59,24 @@ public class ImageAnimation extends AbstractAnimation<TextureRegion> {
     }
 
     /**
-     * Main method to override in subclasses to calculate/deduce the key frame to return on getKeyFrame() calls.
-     * This method is called after application of interpolator.
-     *
-     * @param interpolatedStateTime The interpolated state time
-     * @return The key frame at wanted state time
+     * Reset animation
      */
     @Override
-    protected TextureRegion calculateKeyFrame(float interpolatedStateTime) {
+    public void reset() {
+        this.iteration = 0;
+    }
+
+    /**
+     * Gets the object state at a given time
+     *
+     * @param stateTime The time of animation state in seconds
+     * @return the object state at the given time
+     */
+    @Override
+    public TextureRegion getKeyFrame(float stateTime) {
+        this.iteration = (int)(stateTime / this.animationDuration);
+        final float interpolatedStateTime = this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration);
+
         if (keyFrames.length == 1) return this.keyFrames[0];
 
         int frameNumber = 0;

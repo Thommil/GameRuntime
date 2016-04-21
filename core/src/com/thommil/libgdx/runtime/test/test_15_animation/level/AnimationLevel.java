@@ -77,7 +77,7 @@ public class AnimationLevel implements Disposable {
             public void render(float deltaTime) {
                 time+=deltaTime;
                 imageAnimationActor.playAnimation(imageAnimation,time);
-                //translateAnimationActor.playAnimation(translateAnimation, time);
+                translateAnimationActor.playAnimation(translateAnimation, time);
             }
         });
 
