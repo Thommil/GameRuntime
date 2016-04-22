@@ -56,6 +56,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public float rotation;
     public float scaleX = 1, scaleY = 1;
     public float color;
+    public final Color tmpColor = new Color();
     public  Rectangle bounds;
 
     protected int regionWidth, regionHeight;
@@ -484,12 +485,11 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
 
     public Color getColor () {
         final int intBits = NumberUtils.floatToIntColor(color);
-        Color color = new Color();
-        color.r = (intBits & 0xff) / 255f;
-        color.g = ((intBits >>> 8) & 0xff) / 255f;
-        color.b = ((intBits >>> 16) & 0xff) / 255f;
-        color.a = ((intBits >>> 24) & 0xff) / 255f;
-        return color;
+        this.tmpColor.r = (intBits & 0xff) / 255f;
+        this.tmpColor.g = ((intBits >>> 8) & 0xff) / 255f;
+        this.tmpColor.b = ((intBits >>> 16) & 0xff) / 255f;
+        this.tmpColor.a = ((intBits >>> 24) & 0xff) / 255f;
+        return this.tmpColor;
     }
 
     /**
