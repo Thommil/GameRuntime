@@ -117,8 +117,19 @@
           "interpolator" : "LINEAR"
         }
       ]
+    },
+    {
+      "name" : "color",
+      "type" : "COLOR",
+      "playMode" : "NORMAL",
+      "interpolator" : "LINEAR",
+      "frameDuration" : 10,
+      "keyFrames" : [
+        {
+          "color" : [1,1,1,1],
+          "interpolator" : "POW5"
+        }
+      ]
     }
-
-
   ]
 }

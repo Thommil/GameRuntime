@@ -2,15 +2,13 @@ package com.thommil.libgdx.runtime.test.test_15_animation.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
 import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.ScaleAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.*;
 import com.thommil.libgdx.runtime.layer.Layer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
@@ -26,6 +24,7 @@ public class AnimationLevel implements Disposable {
     final SpriteActor translateAnimationActor;
     final SpriteActor rotateAnimationActor;
     final SpriteActor scaleAnimationActor;
+    final SpriteActor colorAnimationActor;
 
     float time =0;
 
@@ -68,7 +67,7 @@ public class AnimationLevel implements Disposable {
         rotateAnimationActor.setPosition(-2,4);
         spriteBatchLayer.addActor(rotateAnimationActor);
 
-        //ROTATE
+        //SCALE
         final ScaleAnimation scaleAnimation = (ScaleAnimation)sceneLoader.getAnimation("scale",assetManager);
         scaleAnimationActor = new SpriteActor(3, new TextureSet(assetManager.get(imageDef.path, Texture.class))
                 , imageDef.regionX, imageDef.regionY
@@ -77,6 +76,17 @@ public class AnimationLevel implements Disposable {
         );
         scaleAnimationActor.setPosition(2,4);
         spriteBatchLayer.addActor(scaleAnimationActor);
+
+        //COLOR
+        final ColorAnimation colorAnimation = (ColorAnimation)sceneLoader.getAnimation("color",assetManager);
+        colorAnimationActor = new SpriteActor(4, new TextureSet(assetManager.get(imageDef.path, Texture.class))
+                , imageDef.regionX, imageDef.regionY
+                , imageDef.regionWidth, imageDef.regionHeight
+                , imageDef.width, imageDef.height
+        );
+        colorAnimationActor.setPosition(4,4);
+        colorAnimationActor.setColor(0,0,0,0);
+        spriteBatchLayer.addActor(colorAnimationActor);
 
 
         Runtime.getInstance().addLayer(spriteBatchLayer);
@@ -104,6 +114,7 @@ public class AnimationLevel implements Disposable {
                 translateAnimationActor.playAnimation(translateAnimation, time);
                 rotateAnimationActor.playAnimation(rotateAnimation, time);
                 scaleAnimationActor.playAnimation(scaleAnimation, time);
+                colorAnimationActor.playAnimation(colorAnimation, time);
             }
         });
 

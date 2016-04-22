@@ -3,6 +3,7 @@ package com.thommil.libgdx.runtime.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -321,6 +322,13 @@ public class SceneLoader extends JSONLoader{
             }
             return new ScaleAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (ScaleAnimation.KeyFrame[]) keyFrames.toArray(ScaleAnimation.KeyFrame.class));
         }
+        else if(animationDef instanceof ColorAnimationDef){
+            final Array<ColorAnimation.KeyFrame> keyFrames = new Array<ColorAnimation.KeyFrame>(true, animationDef.keyFrames.length);
+            for(final ColorAnimationDef.KeyFrame keyFrame : ((ColorAnimationDef)animationDef).keyFrames){
+                keyFrames.add(new ColorAnimation.KeyFrame(keyFrame.color, keyFrame.interpolator.toInterpolation()));
+            }
+            return new ColorAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (ColorAnimation.KeyFrame[]) keyFrames.toArray(ColorAnimation.KeyFrame.class));
+        }
         return null;
     }
 
@@ -367,7 +375,7 @@ public class SceneLoader extends JSONLoader{
                 case TRANSLATE : animationDef = new TranslateAnimationDef(); break;
                 case ROTATE : animationDef = new RotateAnimationDef(); break;
                 case SCALE : animationDef = new ScaleAnimationDef(); break;
-                case COLOR : animationDef = new ImageAnimationDef(); break;
+                case COLOR : animationDef = new ColorAnimationDef(); break;
             }
         }
         else throw new GameRuntimeException("Missing type in animation definition : " + jsonAnimation.getString("name"));
@@ -454,6 +462,22 @@ public class SceneLoader extends JSONLoader{
                 }
             }
             return scaleAnimationDef;
+        }
+        else if(animationDef instanceof ColorAnimationDef){
+            final ColorAnimationDef colorAnimationDef = ((ColorAnimationDef) animationDef);
+            if(jsonAnimation.has("keyFrames")) {
+                animationDef.keyFrames = new ColorAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+                for(int index=0; index < animationDef.keyFrames.length; index++){
+                    final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
+                    colorAnimationDef.keyFrames[index] = new ColorAnimationDef.KeyFrame();
+                    final float[] floatColor = jsonKeyFrame.get("color").asFloatArray();
+                    colorAnimationDef.keyFrames[index].color = new Color(floatColor[0],floatColor[1],floatColor[2],floatColor[3]);
+                    if(jsonKeyFrame.has("interpolator")) {
+                        colorAnimationDef.keyFrames[index].interpolator = AnimationDef.Interpolator.valueOf(jsonKeyFrame.getString("interpolator"));
+                    }
+                }
+            }
+            return colorAnimationDef;
         }
 
         return null;
@@ -1082,6 +1106,31 @@ public class SceneLoader extends JSONLoader{
         public static class KeyFrame{
             public float xOffset;
             public float yOffset;
+            public Interpolator interpolator = Interpolator.LINEAR;
+        }
+    }
+
+    /**
+     *  ColorAnimation definition (in "animation")
+     *  {
+     *  "name" : name,
+     *  "type" : "SCALE",
+     *  "playMode" : "LOOP" | "REVERSED" | "LOOP_REVERSED" | "LOOP_PINGPONG", (optional -> default : NORMAL)
+     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
+     *  frameDuration : frame duration (seconds)
+     *  keyFrames : [
+     *      {
+     *          "color" : [r,g,b,a] (float format),
+     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
+     *      }
+     *      ...
+     *  ]
+     *  }
+     *
+     */
+    public static class ColorAnimationDef extends AnimationDef<ColorAnimationDef.KeyFrame>{
+        public static class KeyFrame{
+            public Color color;
             public Interpolator interpolator = Interpolator.LINEAR;
         }
     }

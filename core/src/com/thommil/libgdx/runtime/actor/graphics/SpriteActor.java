@@ -8,10 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.NumberUtils;
 import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
-import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.ScaleAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.*;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
 
@@ -595,6 +592,18 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public SpriteActor playAnimation(final ScaleAnimation animation, final float stateTime){
         final ScaleAnimation.KeyFrame scale = animation.getKeyFrame(stateTime);
         this.scale(scale.x, scale.y);
+        return this;
+    }
+
+    /**
+     * Play a given color animation in current sprite actor at specified state time
+     *
+     * @param animation The color animation to use
+     * @param stateTime The state time in seconds
+     */
+    public SpriteActor playAnimation(final ColorAnimation animation, final float stateTime){
+        final ColorAnimation.KeyFrame color = animation.getKeyFrame(stateTime);
+        this.setColor(this.getColor().add(color));
         return this;
     }
 
