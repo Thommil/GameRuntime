@@ -602,8 +602,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param stateTime The state time in seconds
      */
     public SpriteActor playAnimation(final ColorAnimation animation, final float stateTime){
-        final ColorAnimation.KeyFrame color = animation.getKeyFrame(stateTime);
-        this.setColor(this.getColor().add(color));
+        this.setColor(animation.getKeyFrame(stateTime));
         return this;
     }
 

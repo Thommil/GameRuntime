@@ -323,11 +323,11 @@ public class SceneLoader extends JSONLoader{
             return new ScaleAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (ScaleAnimation.KeyFrame[]) keyFrames.toArray(ScaleAnimation.KeyFrame.class));
         }
         else if(animationDef instanceof ColorAnimationDef){
-            final Array<ColorAnimation.KeyFrame> keyFrames = new Array<ColorAnimation.KeyFrame>(true, animationDef.keyFrames.length);
+            final Array<Color> keyFrames = new Array<Color>(true, animationDef.keyFrames.length);
             for(final ColorAnimationDef.KeyFrame keyFrame : ((ColorAnimationDef)animationDef).keyFrames){
-                keyFrames.add(new ColorAnimation.KeyFrame(keyFrame.color, keyFrame.interpolator.toInterpolation()));
+                keyFrames.add(new Color(keyFrame.color));
             }
-            return new ColorAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (ColorAnimation.KeyFrame[]) keyFrames.toArray(ColorAnimation.KeyFrame.class));
+            return new ColorAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (Color[]) keyFrames.toArray(Color.class));
         }
         return null;
     }
@@ -472,9 +472,6 @@ public class SceneLoader extends JSONLoader{
                     colorAnimationDef.keyFrames[index] = new ColorAnimationDef.KeyFrame();
                     final float[] floatColor = jsonKeyFrame.get("color").asFloatArray();
                     colorAnimationDef.keyFrames[index].color = new Color(floatColor[0],floatColor[1],floatColor[2],floatColor[3]);
-                    if(jsonKeyFrame.has("interpolator")) {
-                        colorAnimationDef.keyFrames[index].interpolator = AnimationDef.Interpolator.valueOf(jsonKeyFrame.getString("interpolator"));
-                    }
                 }
             }
             return colorAnimationDef;
@@ -1121,7 +1118,6 @@ public class SceneLoader extends JSONLoader{
      *  keyFrames : [
      *      {
      *          "color" : [r,g,b,a] (float format),
-     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
      *      }
      *      ...
      *  ]
@@ -1131,7 +1127,6 @@ public class SceneLoader extends JSONLoader{
     public static class ColorAnimationDef extends AnimationDef<ColorAnimationDef.KeyFrame>{
         public static class KeyFrame{
             public Color color;
-            public Interpolator interpolator = Interpolator.LINEAR;
         }
     }
 

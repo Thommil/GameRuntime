@@ -85,12 +85,12 @@
           "interpolator" : "FADE"
         },
         {
-          "angle" : -180,
-          "interpolator" : "EXP10"
+          "angle" : -720,
+          "interpolator" : "SWING"
         },
         {
           "angle" : 90,
-          "interpolator" : "SWING"
+          "interpolator" : "BOUNCE"
         }
       ]
     },
@@ -121,13 +121,24 @@
     {
       "name" : "color",
       "type" : "COLOR",
-      "playMode" : "NORMAL",
-      "interpolator" : "LINEAR",
-      "frameDuration" : 5,
+      "playMode" : "LOOP_PINGPONG",
+      "interpolator" : "FADE",
+      "frameDuration" : 2,
       "keyFrames" : [
         {
-          "color" : [1,1,1,1],
-          "interpolator" : "LINEAR"
+          "color" : [0,0,0,0]
+        },
+        {
+          "color" : [0,0,1,1]
+        },
+        {
+          "color" : [0,1,0,1]
+        },
+        {
+          "color" : [1,0,0,1]
+        },
+        {
+          "color" : [1,1,1,1]
         }
       ]
     }
