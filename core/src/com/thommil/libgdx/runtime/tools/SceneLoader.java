@@ -295,11 +295,11 @@ public class SceneLoader extends JSONLoader{
     public Animation getAnimation(final String name, final AssetManager assetManager){
         final AnimationDef animationDef = this.getAnimationDefinition(name);
         if(animationDef instanceof ImageAnimationDef){
-            final Array<TextureRegion> textureRegions = new Array<TextureRegion>(true, animationDef.keyFrames.length);
+            final Array<ImageAnimation.KeyFrame> keyFrames = new Array<ImageAnimation.KeyFrame>(true, animationDef.keyFrames.length);
             for(final ImageAnimationDef.KeyFrame keyFrame : ((ImageAnimationDef)animationDef).keyFrames){
-                textureRegions.add(new TextureRegion(assetManager.get(((ImageAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
+                keyFrames.add(new ImageAnimation.KeyFrame(assetManager.get(((ImageAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight, keyFrame.width, keyFrame.height));
             }
-            return new ImageAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
+            return new ImageAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (ImageAnimation.KeyFrame[]) keyFrames.toArray(ImageAnimation.KeyFrame.class));
         }
         else if(animationDef instanceof TranslateAnimationDef){
             final Array<TranslateAnimation.KeyFrame> keyFrames = new Array<TranslateAnimation.KeyFrame>(true, animationDef.keyFrames.length);

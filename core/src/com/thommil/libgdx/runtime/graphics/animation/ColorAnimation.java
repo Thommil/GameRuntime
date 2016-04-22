@@ -5,9 +5,11 @@ import com.badlogic.gdx.math.Interpolation;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 
 /**
- * Animation implementation based on interpolated vector translation
+ * Animation implementation based on interpolated vector translation.
  *
- * Created by thommil on 4/19/16.
+ * This implementation CAN be shared among actors.
+ *
+ * @author thommil on 4/19/16.
  */
 public class ColorAnimation extends Animation<Color> {
 

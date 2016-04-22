@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.actor.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -554,8 +555,9 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param stateTime The state time in seconds
      */
     public SpriteActor playAnimation(final ImageAnimation animation, final float stateTime){
-        final TextureRegion textureRegion = animation.getKeyFrame(stateTime);
-        this.setRegion(textureRegion.getU(), textureRegion.getV(), textureRegion.getU2(), textureRegion.getV2());
+        final ImageAnimation.KeyFrame keyFrame = animation.getKeyFrame(stateTime);
+        this.setRegion(keyFrame.getU(), keyFrame.getV(), keyFrame.getU2(), keyFrame.getV2());
+        this.setScale((keyFrame.width > 0) ? keyFrame.width / this.width : 1f, (keyFrame.height > 0) ? keyFrame.height / this.height : 1f);
         return this;
     }
 

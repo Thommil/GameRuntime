@@ -7,7 +7,9 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
 /**
  * Animation implementation based on interpolated vector scaling
  *
- * Created by thommil on 4/19/16.
+ * This implementation CANNOT be shared among actors.
+ *
+ * @author thommil on 4/19/16.
  */
 public class ScaleAnimation extends Animation<ScaleAnimation.KeyFrame> {
 

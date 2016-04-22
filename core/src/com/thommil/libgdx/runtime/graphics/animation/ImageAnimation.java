@@ -1,5 +1,6 @@
 package com.thommil.libgdx.runtime.graphics.animation;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.thommil.libgdx.runtime.GameRuntimeException;
@@ -7,9 +8,11 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
 /**
  * Animation implementation based on TextureRegion (sprite)
  *
- * Created by thommil on 4/19/16.
+ * This implementation CAN be shared among actors.
+ *
+ * @author thommil on 4/19/16.
  */
-public class ImageAnimation extends Animation<TextureRegion> {
+public class ImageAnimation extends Animation<ImageAnimation.KeyFrame> {
 
     protected int iteration = 0;
 
@@ -19,7 +22,7 @@ public class ImageAnimation extends Animation<TextureRegion> {
      * @param frameDuration the time between frames in seconds.
      * @param keyFrames     the objects representing the frames.
      */
-    public ImageAnimation(float frameDuration, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, ImageAnimation.KeyFrame... keyFrames) {
         super(frameDuration, keyFrames);
     }
 
@@ -30,7 +33,7 @@ public class ImageAnimation extends Animation<TextureRegion> {
      * @param playMode      The animation playmode
      * @param keyFrames     the objects representing the frames.
      */
-    public ImageAnimation(float frameDuration, PlayMode playMode, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, PlayMode playMode, ImageAnimation.KeyFrame... keyFrames) {
         super(frameDuration, playMode, keyFrames);
     }
 
@@ -41,7 +44,7 @@ public class ImageAnimation extends Animation<TextureRegion> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public ImageAnimation(float frameDuration, Interpolation interpolator, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, Interpolation interpolator, ImageAnimation.KeyFrame... keyFrames) {
         super(frameDuration, interpolator, keyFrames);
     }
 
@@ -53,7 +56,7 @@ public class ImageAnimation extends Animation<TextureRegion> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public ImageAnimation(float frameDuration, PlayMode playMode, Interpolation interpolator, TextureRegion... keyFrames) {
+    public ImageAnimation(float frameDuration, PlayMode playMode, Interpolation interpolator, ImageAnimation.KeyFrame... keyFrames) {
         super(frameDuration, playMode, interpolator, keyFrames);
     }
 
@@ -80,7 +83,7 @@ public class ImageAnimation extends Animation<TextureRegion> {
      * @return the object state at the given time
      */
     @Override
-    public TextureRegion getKeyFrame(float stateTime) {
+    public ImageAnimation.KeyFrame getKeyFrame(float stateTime) {
         this.iteration = (int)(stateTime / this.animationDuration);
         final float interpolatedStateTime = this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration);
 
@@ -112,5 +115,40 @@ public class ImageAnimation extends Animation<TextureRegion> {
                 throw new GameRuntimeException(this.playMode.toString()+" playmode not supported");
 
         }
+    }
+
+    public static class KeyFrame extends TextureRegion{
+
+        public float width;
+        public float height;
+
+        /**
+         * @param texture The region texture
+         * @param regionX The region X coord
+         * @param regionY The region Y coord
+         * @param regionWidth   The width of the texture region. May be negative to flip the sprite when drawn.
+         * @param regionHeight  The height of the texture region. May be negative to flip the sprite when drawn.
+         */
+        public KeyFrame(Texture texture, int regionX, int regionY, int regionWidth, int regionHeight) {
+            super(texture, regionX, regionY, regionWidth, regionHeight);
+            this.width = 0f;
+            this.height = 0f;
+        }
+
+        /**
+         * @param texture The region texture
+         * @param regionX The region X coord
+         * @param regionY The region Y coord
+         * @param regionWidth   The width of the texture region. May be negative to flip the sprite when drawn.
+         * @param regionHeight  The height of the texture region. May be negative to flip the sprite when drawn.
+         * @param width The key frame width
+         * @param height The key frame height
+         */
+        public KeyFrame(Texture texture, int regionX, int regionY, int regionWidth, int regionHeight, float width, float height) {
+            super(texture, regionX, regionY, regionWidth, regionHeight);
+            this.width = width;
+            this.height = height;
+        }
+
     }
 }
