@@ -142,10 +142,10 @@ public class AnimationLevel implements Disposable {
                 rotateAnimationActor.playAnimation(rotateAnimation, time);
                 scaleAnimationActor.playAnimation(scaleAnimation, time);
                 colorAnimationActor.playAnimation(colorAnimation, time);
-                blendedAnimationActor.playAnimation(imageAnimation2,time)
-                                    .playAnimation(colorAnimation2, time)
-                                    .playAnimation(rotateAnimation2, time)
-                                     .playAnimation(scaleAnimation2, time);
+                blendedAnimationActor.playAnimation(imageAnimation2,time+1f)
+                                    .playAnimation(colorAnimation2, time+1f)
+                                    .playAnimation(rotateAnimation2, time+1f)
+                                     .playAnimation(scaleAnimation2, time+1f);
 
                 translateAnimationActor.playAnimation(translateAnimation, time);
                 runningActor.playAnimation(runImageAnimation, time).playAnimation(runTranslateAnimation, time).playAnimation(jumpTranslateAnimation, time);

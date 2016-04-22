@@ -557,7 +557,9 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public SpriteActor playAnimation(final ImageAnimation animation, final float stateTime){
         final ImageAnimation.KeyFrame keyFrame = animation.getKeyFrame(stateTime);
         this.setRegion(keyFrame.getU(), keyFrame.getV(), keyFrame.getU2(), keyFrame.getV2());
-        this.setScale((keyFrame.width > 0) ? keyFrame.width / this.width : 1f, (keyFrame.height > 0) ? keyFrame.height / this.height : 1f);
+        if(keyFrame.width + keyFrame.height > 0) {
+            this.setScale((keyFrame.width > 0) ? keyFrame.width / this.width : 1f, (keyFrame.height > 0) ? keyFrame.height / this.height : 1f);
+        }
         return this;
     }
 
