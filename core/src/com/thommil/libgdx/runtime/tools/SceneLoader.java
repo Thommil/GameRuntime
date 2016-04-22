@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -347,6 +348,94 @@ public class SceneLoader extends JSONLoader{
         }
         return null;
     }
+
+    /*
+    static public final Pow pow2 = new Pow(2);
+
+    static public final Interpolation.PowIn pow2In = new Interpolation.PowIn(2);
+
+    static public final Interpolation.PowOut pow2Out = new Interpolation.PowOut(2);
+
+    static public final Interpolation.Pow pow3 = new Interpolation.Pow(3);
+    static public final Interpolation.PowIn pow3In = new Interpolation.PowIn(3);
+    static public final Interpolation.PowOut pow3Out = new Interpolation.PowOut(3);
+
+    static public final Interpolation.Pow pow4 = new Interpolation.Pow(4);
+    static public final Interpolation.PowIn pow4In = new Interpolation.PowIn(4);
+    static public final Interpolation.PowOut pow4Out = new Interpolation.PowOut(4);
+
+    static public final Interpolation.Pow pow5 = new Interpolation.Pow(5);
+    static public final Interpolation.PowIn pow5In = new Interpolation.PowIn(5);
+    static public final Interpolation.PowOut pow5Out = new Interpolation.PowOut(5);
+
+    static public final Interpolation sine = new Interpolation() {
+        public float apply (float a) {
+            return (1 - MathUtils.cos(a * MathUtils.PI)) / 2;
+        }
+    };
+
+    static public final Interpolation sineIn = new Interpolation() {
+        public float apply (float a) {
+            return 1 - MathUtils.cos(a * MathUtils.PI / 2);
+        }
+    };
+
+    static public final Interpolation sineOut = new Interpolation() {
+        public float apply (float a) {
+            return MathUtils.sin(a * MathUtils.PI / 2);
+        }
+    };
+
+    static public final Interpolation.Exp exp10 = new Interpolation.Exp(2, 10);
+    static public final Interpolation.ExpIn exp10In = new Interpolation.ExpIn(2, 10);
+    static public final Interpolation.ExpOut exp10Out = new Interpolation.ExpOut(2, 10);
+
+    static public final Interpolation.Exp exp5 = new Interpolation.Exp(2, 5);
+    static public final Interpolation.ExpIn exp5In = new Interpolation.ExpIn(2, 5);
+    static public final Interpolation.ExpOut exp5Out = new Interpolation.ExpOut(2, 5);
+
+    static public final Interpolation circle = new Interpolation() {
+        public float apply (float a) {
+            if (a <= 0.5f) {
+                a *= 2;
+                return (1 - (float)Math.sqrt(1 - a * a)) / 2;
+            }
+            a--;
+            a *= 2;
+            return ((float)Math.sqrt(1 - a * a) + 1) / 2;
+        }
+    };
+
+    static public final Interpolation circleIn = new Interpolation() {
+        public float apply (float a) {
+            return 1 - (float)Math.sqrt(1 - a * a);
+        }
+    };
+
+    static public final Interpolation circleOut = new Interpolation() {
+        public float apply (float a) {
+            a--;
+            return (float)Math.sqrt(1 - a * a);
+        }
+    };
+
+    static public final Interpolation.Elastic elastic = new Interpolation.Elastic(2, 10, 7, 1);
+    static public final Interpolation.ElasticIn elasticIn = new Interpolation.ElasticIn(2, 10, 6, 1);
+    static public final Interpolation.ElasticOut elasticOut = new Interpolation.ElasticOut(2, 10, 7, 1);
+
+    static public final Interpolation.Swing swing = new Interpolation.Swing(1.5f);
+    static public final Interpolation.SwingIn swingIn = new Interpolation.SwingIn(2f);
+    static public final Interpolation.SwingOut swingOut = new Interpolation.SwingOut(2f);
+
+    static public final Interpolation.Bounce bounce = new Interpolation.Bounce(4);
+    static public final Interpolation.BounceIn bounceIn = new Interpolation.BounceIn(4);
+    static public final Interpolation.BounceOut bounceOut = new Interpolation.BounceOut(4);
+     */
+
+    private Interpolation getInterpolationFromString(final String interpolationName){
+
+    }
+
 
     private AnimationDef getAnimationDefinition(final JsonValue jsonAnimation){
         AnimationDef animationDef = null;
@@ -1040,12 +1129,26 @@ public class SceneLoader extends JSONLoader{
             LINEAR,
             FADE,
             POW2,
+            POW2_IN,
+            POW2_OUT,
             POW3,
+            POW3_IN,
+            POW3_OUT,
             POW4,
+            POW4_IN,
+            POW4_OUT,
             POW5,
+            POW5_IN,
+            POW5_OUT,
             SINE,
+            SINE_IN,
+            SINE_OUT,
             EXP5,
+            EXP5_IN,
+            EXP5_OUT,
             EXP10,
+            EXP10_IN,
+            EXP10_OUT,
             CIRCLE,
             ELASTIC,
             SWING,
@@ -1060,3 +1163,53 @@ public class SceneLoader extends JSONLoader{
         public T[] keyFrames;
     }
 }
+
+/*
+
+
+
+    static public final Interpolation.Exp exp10 = new Interpolation.Exp(2, 10);
+    static public final Interpolation.ExpIn exp10In = new Interpolation.ExpIn(2, 10);
+    static public final Interpolation.ExpOut exp10Out = new Interpolation.ExpOut(2, 10);
+
+    static public final Interpolation.Exp exp5 = new Interpolation.Exp(2, 5);
+    static public final Interpolation.ExpIn exp5In = new Interpolation.ExpIn(2, 5);
+    static public final Interpolation.ExpOut exp5Out = new Interpolation.ExpOut(2, 5);
+
+    static public final Interpolation circle = new Interpolation() {
+        public float apply (float a) {
+            if (a <= 0.5f) {
+                a *= 2;
+                return (1 - (float)Math.sqrt(1 - a * a)) / 2;
+            }
+            a--;
+            a *= 2;
+            return ((float)Math.sqrt(1 - a * a) + 1) / 2;
+        }
+    };
+
+    static public final Interpolation circleIn = new Interpolation() {
+        public float apply (float a) {
+            return 1 - (float)Math.sqrt(1 - a * a);
+        }
+    };
+
+    static public final Interpolation circleOut = new Interpolation() {
+        public float apply (float a) {
+            a--;
+            return (float)Math.sqrt(1 - a * a);
+        }
+    };
+
+    static public final Interpolation.Elastic elastic = new Interpolation.Elastic(2, 10, 7, 1);
+    static public final Interpolation.ElasticIn elasticIn = new Interpolation.ElasticIn(2, 10, 6, 1);
+    static public final Interpolation.ElasticOut elasticOut = new Interpolation.ElasticOut(2, 10, 7, 1);
+
+    static public final Interpolation.Swing swing = new Interpolation.Swing(1.5f);
+    static public final Interpolation.SwingIn swingIn = new Interpolation.SwingIn(2f);
+    static public final Interpolation.SwingOut swingOut = new Interpolation.SwingOut(2f);
+
+    static public final Interpolation.Bounce bounce = new Interpolation.Bounce(4);
+    static public final Interpolation.BounceIn bounceIn = new Interpolation.BounceIn(4);
+    static public final Interpolation.BounceOut bounceOut = new Interpolation.BounceOut(4);
+     */
