@@ -10,6 +10,7 @@ import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ScaleAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -246,6 +247,14 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public void scale (float amount) {
         this.scaleX += amount;
         this.scaleY += amount;
+        this.dirty = true;
+    }
+
+    /** Sets the sprite's scale relative to the current scale. for example: original scale 2 -> sprite.scale(4) -> final scale 6.
+     * The sprite scales out from the origin.*/
+    public void scale (float xAmount, float yAmount) {
+        this.scaleX += xAmount;
+        this.scaleY += yAmount;
         this.dirty = true;
     }
 
@@ -574,6 +583,18 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public SpriteActor playAnimation(final RotateAnimation animation, final float stateTime){
         final RotateAnimation.KeyFrame rotation = animation.getKeyFrame(stateTime);
         this.rotate(rotation.angle);
+        return this;
+    }
+
+    /**
+     * Play a given scale animation in current sprite actor at specified state time
+     *
+     * @param animation The scale animation to use
+     * @param stateTime The state time in seconds
+     */
+    public SpriteActor playAnimation(final ScaleAnimation animation, final float stateTime){
+        final ScaleAnimation.KeyFrame scale = animation.getKeyFrame(stateTime);
+        this.scale(scale.x, scale.y);
         return this;
     }
 

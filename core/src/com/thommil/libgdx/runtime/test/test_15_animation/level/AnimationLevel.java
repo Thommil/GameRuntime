@@ -9,6 +9,7 @@ import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ScaleAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.layer.Layer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
@@ -24,6 +25,7 @@ public class AnimationLevel implements Disposable {
     final SpriteActor imageAnimationActor;
     final SpriteActor translateAnimationActor;
     final SpriteActor rotateAnimationActor;
+    final SpriteActor scaleAnimationActor;
 
     float time =0;
 
@@ -66,6 +68,16 @@ public class AnimationLevel implements Disposable {
         rotateAnimationActor.setPosition(-2,4);
         spriteBatchLayer.addActor(rotateAnimationActor);
 
+        //ROTATE
+        final ScaleAnimation scaleAnimation = (ScaleAnimation)sceneLoader.getAnimation("scale",assetManager);
+        scaleAnimationActor = new SpriteActor(3, new TextureSet(assetManager.get(imageDef.path, Texture.class))
+                , imageDef.regionX, imageDef.regionY
+                , imageDef.regionWidth, imageDef.regionHeight
+                , imageDef.width, imageDef.height
+        );
+        scaleAnimationActor.setPosition(2,4);
+        spriteBatchLayer.addActor(scaleAnimationActor);
+
 
         Runtime.getInstance().addLayer(spriteBatchLayer);
 
@@ -91,6 +103,7 @@ public class AnimationLevel implements Disposable {
                 imageAnimationActor.playAnimation(imageAnimation,time);
                 translateAnimationActor.playAnimation(translateAnimation, time);
                 rotateAnimationActor.playAnimation(rotateAnimation, time);
+                scaleAnimationActor.playAnimation(scaleAnimation, time);
             }
         });
 

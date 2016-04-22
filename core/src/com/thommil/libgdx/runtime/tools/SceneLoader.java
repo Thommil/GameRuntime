@@ -8,16 +8,12 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.thommil.libgdx.runtime.GameRuntimeException;
-import com.thommil.libgdx.runtime.graphics.animation.Animation;
-import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
-import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.*;
 
 /**
  * Helper class to load extended Rube files.
@@ -318,6 +314,13 @@ public class SceneLoader extends JSONLoader{
             }
             return new RotateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (RotateAnimation.KeyFrame[]) keyFrames.toArray(RotateAnimation.KeyFrame.class));
         }
+        else if(animationDef instanceof ScaleAnimationDef){
+            final Array<ScaleAnimation.KeyFrame> keyFrames = new Array<ScaleAnimation.KeyFrame>(true, animationDef.keyFrames.length);
+            for(final ScaleAnimationDef.KeyFrame keyFrame : ((ScaleAnimationDef)animationDef).keyFrames){
+                keyFrames.add(new ScaleAnimation.KeyFrame(keyFrame.xOffset, keyFrame.yOffset, keyFrame.interpolator.toInterpolation()));
+            }
+            return new ScaleAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (ScaleAnimation.KeyFrame[]) keyFrames.toArray(ScaleAnimation.KeyFrame.class));
+        }
         return null;
     }
 
@@ -363,7 +366,7 @@ public class SceneLoader extends JSONLoader{
                 case IMAGE: animationDef = new ImageAnimationDef(); break;
                 case TRANSLATE : animationDef = new TranslateAnimationDef(); break;
                 case ROTATE : animationDef = new RotateAnimationDef(); break;
-                case SCALE : animationDef = new ImageAnimationDef(); break;
+                case SCALE : animationDef = new ScaleAnimationDef(); break;
                 case COLOR : animationDef = new ImageAnimationDef(); break;
             }
         }
@@ -435,6 +438,22 @@ public class SceneLoader extends JSONLoader{
                 }
             }
             return rotateAnimationDef;
+        }
+        else if(animationDef instanceof ScaleAnimationDef){
+            final ScaleAnimationDef scaleAnimationDef = ((ScaleAnimationDef) animationDef);
+            if(jsonAnimation.has("keyFrames")) {
+                animationDef.keyFrames = new ScaleAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+                for(int index=0; index < animationDef.keyFrames.length; index++){
+                    final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
+                    scaleAnimationDef.keyFrames[index] = new ScaleAnimationDef.KeyFrame();
+                    scaleAnimationDef.keyFrames[index].xOffset = jsonKeyFrame.getFloat("xOffset");
+                    scaleAnimationDef.keyFrames[index].yOffset = jsonKeyFrame.getFloat("yOffset");
+                    if(jsonKeyFrame.has("interpolator")) {
+                        scaleAnimationDef.keyFrames[index].interpolator = AnimationDef.Interpolator.valueOf(jsonKeyFrame.getString("interpolator"));
+                    }
+                }
+            }
+            return scaleAnimationDef;
         }
 
         return null;
@@ -1033,6 +1052,33 @@ public class SceneLoader extends JSONLoader{
      *
      */
     public static class TranslateAnimationDef extends AnimationDef<TranslateAnimationDef.KeyFrame>{
+        public static class KeyFrame{
+            public float xOffset;
+            public float yOffset;
+            public Interpolator interpolator = Interpolator.LINEAR;
+        }
+    }
+
+    /**
+     *  ScaleAnimation definition (in "animation")
+     *  {
+     *  "name" : name,
+     *  "type" : "SCALE",
+     *  "playMode" : "LOOP" | "REVERSED" | "LOOP_REVERSED" | "LOOP_PINGPONG", (optional -> default : NORMAL)
+     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
+     *  frameDuration : frame duration (seconds)
+     *  keyFrames : [
+     *      {
+     *          "xOffset" : x offset,
+     *          "yOffset" : y offset,
+     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
+     *      }
+     *      ...
+     *  ]
+     *  }
+     *
+     */
+    public static class ScaleAnimationDef extends AnimationDef<ScaleAnimationDef.KeyFrame>{
         public static class KeyFrame{
             public float xOffset;
             public float yOffset;

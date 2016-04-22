@@ -93,6 +93,30 @@
           "interpolator" : "SWING"
         }
       ]
+    },
+    {
+      "name" : "scale",
+      "type" : "SCALE",
+      "playMode" : "LOOP_PINGPONG",
+      "interpolator" : "LINEAR",
+      "frameDuration" : 2,
+      "keyFrames" : [
+        {
+          "xOffset" : 0,
+          "yOffset" : 0.5,
+          "interpolator" : "BOUNCE"
+        },
+        {
+          "xOffset" : 0.5,
+          "yOffset" : 0,
+          "interpolator" : "EXP10"
+        },
+        {
+          "xOffset" : 0.5,
+          "yOffset" : 0.5,
+          "interpolator" : "LINEAR"
+        }
+      ]
     }
 
 
