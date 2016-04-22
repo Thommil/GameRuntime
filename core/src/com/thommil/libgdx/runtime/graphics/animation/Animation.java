@@ -109,29 +109,29 @@ public abstract class Animation<T> {
      * @param stateTime
      * @return whether the animation is finished. */
     public boolean isAnimationFinished (float stateTime) {
-        int frameNumber = (int)(stateTime / frameDuration);
-        return keyFrames.length - 1 < frameNumber;
+        int frameNumber = (int)(stateTime / this.frameDuration);
+        return this.keyFrames.length - 1 < frameNumber;
     }
 
     /** Sets duration a frame will be displayed.
      * @param frameDuration in seconds */
     public void setFrameDuration (float frameDuration) {
         this.frameDuration = frameDuration;
-        this.animationDuration = keyFrames.length * frameDuration;
+        this.animationDuration = this.keyFrames.length * frameDuration;
     }
 
     /** @return the duration of a frame in seconds */
     public float getFrameDuration () {
-        return frameDuration;
+        return this.frameDuration;
     }
 
     /** @return the duration of the entire animation, number of frames times frame duration, in seconds */
     public float getAnimationDuration () {
-        return animationDuration;
+        return this.animationDuration;
     }
 
     public PlayMode getPlayMode() {
-        return playMode;
+        return this.playMode;
     }
 
     public void setPlayMode(PlayMode playMode) {
@@ -139,7 +139,7 @@ public abstract class Animation<T> {
     }
 
     public Interpolation getInterpolator() {
-        return interpolator;
+        return this.interpolator;
     }
 
     public void setInterpolator(Interpolation interpolator) {

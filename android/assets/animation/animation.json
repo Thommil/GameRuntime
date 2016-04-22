@@ -52,27 +52,49 @@
       "frameDuration" : 2,
       "keyFrames" : [
         {
-          "xOffset" : 7,
+          "xOffset" : 8,
           "yOffset" : 0,
           "interpolator" : "BOUNCE"
         },
         {
           "xOffset" : 0,
-          "yOffset" : -1,
+          "yOffset" : -2,
           "interpolator" : "EXP10_OUT"
         },
         {
-          "xOffset" : -7,
+          "xOffset" : -8,
           "yOffset" : 0,
           "interpolator" : "SWING"
         },
         {
           "xOffset" : 0,
-          "yOffset" : 1,
+          "yOffset" : 2,
           "interpolator" : "POW5"
         }
       ]
+    },
+    {
+      "name" : "rotate",
+      "type" : "ROTATE",
+      "playMode" : "LOOP",
+      "interpolator" : "LINEAR",
+      "frameDuration" : 2,
+      "keyFrames" : [
+        {
+          "angle" : 60,
+          "interpolator" : "FADE"
+        },
+        {
+          "angle" : -180,
+          "interpolator" : "EXP10"
+        },
+        {
+          "angle" : 90,
+          "interpolator" : "SWING"
+        }
+      ]
     }
+
 
   ]
 }

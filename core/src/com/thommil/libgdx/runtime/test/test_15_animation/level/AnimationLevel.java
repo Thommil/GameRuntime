@@ -8,6 +8,7 @@ import com.thommil.libgdx.runtime.Runtime;
 import com.thommil.libgdx.runtime.actor.graphics.SpriteActor;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.layer.Layer;
 import com.thommil.libgdx.runtime.layer.SpriteBatchLayer;
@@ -22,6 +23,7 @@ public class AnimationLevel implements Disposable {
 
     final SpriteActor imageAnimationActor;
     final SpriteActor translateAnimationActor;
+    final SpriteActor rotateAnimationActor;
 
     float time =0;
 
@@ -51,8 +53,18 @@ public class AnimationLevel implements Disposable {
                 , imageDef.regionWidth, imageDef.regionHeight
                 , imageDef.width, imageDef.height
         );
-        translateAnimationActor.setPosition(-3,4);
+        translateAnimationActor.setPosition(-4,2);
         spriteBatchLayer.addActor(translateAnimationActor);
+
+        //ROTATE
+        final RotateAnimation rotateAnimation = (RotateAnimation)sceneLoader.getAnimation("rotate",assetManager);
+        rotateAnimationActor = new SpriteActor(2, new TextureSet(assetManager.get(imageDef.path, Texture.class))
+                , imageDef.regionX, imageDef.regionY
+                , imageDef.regionWidth, imageDef.regionHeight
+                , imageDef.width, imageDef.height
+        );
+        rotateAnimationActor.setPosition(-2,4);
+        spriteBatchLayer.addActor(rotateAnimationActor);
 
 
         Runtime.getInstance().addLayer(spriteBatchLayer);
@@ -78,6 +90,7 @@ public class AnimationLevel implements Disposable {
                 time+=deltaTime;
                 imageAnimationActor.playAnimation(imageAnimation,time);
                 translateAnimationActor.playAnimation(translateAnimation, time);
+                rotateAnimationActor.playAnimation(rotateAnimation, time);
             }
         });
 

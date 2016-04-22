@@ -107,74 +107,78 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
         final float interpolatedStateTime = this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration);
 
         int toIndex= 0;
-        switch (playMode) {
+        switch (this.playMode) {
             case NORMAL:
                if(this.iteration == 0) {
-                   if (keyFrames.length > 1){
-                       toIndex = Math.min(keyFrames.length - 1, (int) (interpolatedStateTime / frameDuration));
+                   if (this.keyFrames.length > 1){
+                       toIndex = Math.min(this.keyFrames.length - 1, (int) (interpolatedStateTime / this.frameDuration));
                        if(this.lastFrameNumber != toIndex){
                            this.lastKeyFrame.set(0,0);
                        }
                    }
-                   this.translateKeyFrame.interpolate(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, keyFrames[toIndex].interpolation);
+                   this.translateKeyFrame.interpolate(this.keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.keyFrames[toIndex].interpolation);
                 }
-                else return this.translateKeyFrame;
+                else{
+                   return this.translateKeyFrame;
+               }
                 break;
             case REVERSED:
                 if(this.iteration == 0) {
-                    if (keyFrames.length > 1){
-                        toIndex = Math.min(keyFrames.length - 1, (int) (interpolatedStateTime / frameDuration));
+                    if (this.keyFrames.length > 1){
+                        toIndex = Math.min(this.keyFrames.length - 1, (int) (interpolatedStateTime / this.frameDuration));
                         if(this.lastFrameNumber != toIndex){
                             this.lastKeyFrame.set(0,0);
                         }
                     }
-                    this.translateKeyFrame.interpolate(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, inversedKeyFrames[toIndex].interpolation);
+                    this.translateKeyFrame.interpolate(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.inversedKeyFrames[toIndex].interpolation);
                 }
-                else return this.translateKeyFrame;
+                else{
+                    return this.translateKeyFrame;
+                }
                 break;
             case LOOP:
-                if (keyFrames.length > 1){
-                    toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                if (this.keyFrames.length > 1){
+                    toIndex = (int) (interpolatedStateTime / this.frameDuration) % this.keyFrames.length;
                     if(this.lastFrameNumber != toIndex){
                         this.lastKeyFrame.set(0,0);
                     }
                 }
-                else if(lastIteration != iteration){
+                else if(this.lastIteration != this.iteration){
                     this.lastKeyFrame.set(0,0);
                 }
-                this.translateKeyFrame.interpolate(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, keyFrames[toIndex].interpolation);
+                this.translateKeyFrame.interpolate(this.keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.keyFrames[toIndex].interpolation);
                 break;
             case LOOP_REVERSED:
-                if (keyFrames.length > 1){
-                    toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                if (this.keyFrames.length > 1){
+                    toIndex = (int) (interpolatedStateTime / this.frameDuration) % this.keyFrames.length;
                     if(this.lastFrameNumber != toIndex){
                         this.lastKeyFrame.set(0,0);
                     }
                 }
-                else if(lastIteration != iteration){
+                else if(this.lastIteration != this.iteration){
                     this.lastKeyFrame.set(0,0);
                 }
-                this.translateKeyFrame.interpolate(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, inversedKeyFrames[toIndex].interpolation);
+                this.translateKeyFrame.interpolate(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.inversedKeyFrames[toIndex].interpolation);
                 break;
             case LOOP_PINGPONG:
-                if (keyFrames.length > 1){
-                    toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                if (this.keyFrames.length > 1){
+                    toIndex = (int) (interpolatedStateTime / this.frameDuration) % this.keyFrames.length;
                     if(this.lastFrameNumber != toIndex){
                         this.lastKeyFrame.set(0,0);
                     }
                 }
-                else if(lastIteration != iteration){
+                else if(this.lastIteration != this.iteration){
                     this.lastKeyFrame.set(0,0);
                 }
                 if(this.iteration % 2 == 0){
-                    this.translateKeyFrame.interpolate(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, keyFrames[toIndex].interpolation);
+                    this.translateKeyFrame.interpolate(this.keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.keyFrames[toIndex].interpolation);
                 }
                 else{
-                    this.translateKeyFrame.interpolate(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, inversedKeyFrames[toIndex].interpolation);
+                    this.translateKeyFrame.interpolate(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.inversedKeyFrames[toIndex].interpolation);
                 }
                 break;
             default:
-                throw new GameRuntimeException(playMode.toString()+" playmode not supported");
+                throw new GameRuntimeException(this.playMode.toString()+" playmode not supported");
 
         }
 
@@ -182,7 +186,7 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
         this.translateKeyFrame.sub(this.lastKeyFrame);
         this.lastKeyFrame.set(this.tmpKeyFrame);
         this.lastFrameNumber = toIndex;
-        this.lastIteration = iteration;
+        this.lastIteration = this.iteration;
 
         return this.translateKeyFrame;
     }

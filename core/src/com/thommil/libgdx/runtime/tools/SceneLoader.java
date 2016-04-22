@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.thommil.libgdx.runtime.GameRuntimeException;
 import com.thommil.libgdx.runtime.graphics.animation.Animation;
 import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 
 /**
@@ -310,6 +311,13 @@ public class SceneLoader extends JSONLoader{
             }
             return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (TranslateAnimation.KeyFrame[]) keyFrames.toArray(TranslateAnimation.KeyFrame.class));
         }
+        else if(animationDef instanceof RotateAnimationDef){
+            final Array<RotateAnimation.KeyFrame> keyFrames = new Array<RotateAnimation.KeyFrame>(true, animationDef.keyFrames.length);
+            for(final RotateAnimationDef.KeyFrame keyFrame : ((RotateAnimationDef)animationDef).keyFrames){
+                keyFrames.add(new RotateAnimation.KeyFrame(keyFrame.angle, keyFrame.interpolator.toInterpolation()));
+            }
+            return new RotateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (RotateAnimation.KeyFrame[]) keyFrames.toArray(RotateAnimation.KeyFrame.class));
+        }
         return null;
     }
 
@@ -354,7 +362,7 @@ public class SceneLoader extends JSONLoader{
             switch(type){
                 case IMAGE: animationDef = new ImageAnimationDef(); break;
                 case TRANSLATE : animationDef = new TranslateAnimationDef(); break;
-                case ROTATE : animationDef = new ImageAnimationDef(); break;
+                case ROTATE : animationDef = new RotateAnimationDef(); break;
                 case SCALE : animationDef = new ImageAnimationDef(); break;
                 case COLOR : animationDef = new ImageAnimationDef(); break;
             }
@@ -412,6 +420,21 @@ public class SceneLoader extends JSONLoader{
                 }
             }
             return translateAnimationDef;
+        }
+        else if(animationDef instanceof RotateAnimationDef){
+            final RotateAnimationDef rotateAnimationDef = ((RotateAnimationDef) animationDef);
+            if(jsonAnimation.has("keyFrames")) {
+                animationDef.keyFrames = new RotateAnimationDef.KeyFrame[jsonAnimation.get("keyFrames").size];
+                for(int index=0; index < animationDef.keyFrames.length; index++){
+                    final JsonValue jsonKeyFrame = jsonAnimation.get("keyFrames").get(index);
+                    rotateAnimationDef.keyFrames[index] = new RotateAnimationDef.KeyFrame();
+                    rotateAnimationDef.keyFrames[index].angle = jsonKeyFrame.getFloat("angle");
+                    if(jsonKeyFrame.has("interpolator")) {
+                        rotateAnimationDef.keyFrames[index].interpolator = AnimationDef.Interpolator.valueOf(jsonKeyFrame.getString("interpolator"));
+                    }
+                }
+            }
+            return rotateAnimationDef;
         }
 
         return null;
@@ -996,13 +1019,13 @@ public class SceneLoader extends JSONLoader{
      *  "name" : name,
      *  "type" : "TRANSLATE",
      *  "playMode" : "LOOP" | "REVERSED" | "LOOP_REVERSED" | "LOOP_PINGPONG", (optional -> default : NORMAL)
-     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : NORMAL)
+     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
      *  frameDuration : frame duration (seconds)
      *  keyFrames : [
      *      {
      *          "xOffset" : x offset,
      *          "yOffset" : y offset,
-     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : NORMAL)
+     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
      *      }
      *      ...
      *  ]
@@ -1013,6 +1036,31 @@ public class SceneLoader extends JSONLoader{
         public static class KeyFrame{
             public float xOffset;
             public float yOffset;
+            public Interpolator interpolator = Interpolator.LINEAR;
+        }
+    }
+
+    /**
+     *  RotateAnimation definition (in "animation")
+     *  {
+     *  "name" : name,
+     *  "type" : "ROTATE",
+     *  "playMode" : "LOOP" | "REVERSED" | "LOOP_REVERSED" | "LOOP_PINGPONG", (optional -> default : NORMAL)
+     *  "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
+     *  frameDuration : frame duration (seconds)
+     *  keyFrames : [
+     *      {
+     *          "angle" : angle in degrees,
+     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
+     *      }
+     *      ...
+     *  ]
+     *  }
+     *
+     */
+    public static class RotateAnimationDef extends AnimationDef<RotateAnimationDef.KeyFrame>{
+        public static class KeyFrame{
+            public float angle;
             public Interpolator interpolator = Interpolator.LINEAR;
         }
     }

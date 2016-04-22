@@ -84,32 +84,32 @@ public class ImageAnimation extends Animation<TextureRegion> {
         this.iteration = (int)(stateTime / this.animationDuration);
         final float interpolatedStateTime = this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration);
 
-        if (keyFrames.length == 1) return this.keyFrames[0];
+        if (this.keyFrames.length == 1) return this.keyFrames[0];
 
-        switch (playMode) {
+        switch (this.playMode) {
             case NORMAL:
                 if(this.iteration == 0) {
-                    return this.keyFrames[Math.min(keyFrames.length - 1, (int) (interpolatedStateTime / frameDuration))];
+                    return this.keyFrames[Math.min(this.keyFrames.length - 1, (int) (interpolatedStateTime / this.frameDuration))];
                 }
-                return this.keyFrames[keyFrames.length - 1];
+                return this.keyFrames[this.keyFrames.length - 1];
             case REVERSED:
                 if(this.iteration == 0) {
-                    return this.keyFrames[Math.max(keyFrames.length - (int)(interpolatedStateTime / frameDuration) - 1, 0)];
+                    return this.keyFrames[Math.max(this.keyFrames.length - (int)(interpolatedStateTime / this.frameDuration) - 1, 0)];
                 }
                 return this.keyFrames[0];
             case LOOP:
-                return this.keyFrames[(int)(interpolatedStateTime / frameDuration) % keyFrames.length];
+                return this.keyFrames[(int)(interpolatedStateTime / this.frameDuration) % this.keyFrames.length];
             case LOOP_REVERSED:
-                return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
+                return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / this.frameDuration) % this.keyFrames.length - 1];
             case LOOP_PINGPONG:
                 if (this.iteration % 2 == 0) {
-                    return this.keyFrames[(int) (interpolatedStateTime / frameDuration) % keyFrames.length];
+                    return this.keyFrames[(int) (interpolatedStateTime / this.frameDuration) % this.keyFrames.length];
                 }
                 else{
-                    return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
+                    return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / this.frameDuration) % this.keyFrames.length - 1];
                 }
             default:
-                throw new GameRuntimeException(playMode.toString()+" playmode not supported");
+                throw new GameRuntimeException(this.playMode.toString()+" playmode not supported");
 
         }
     }

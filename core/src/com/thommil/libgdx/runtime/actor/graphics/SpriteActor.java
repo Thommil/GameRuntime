@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.NumberUtils;
 import com.thommil.libgdx.runtime.events.TouchListener;
 import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.animation.ImageAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
 import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
@@ -559,8 +560,20 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
      * @param stateTime The state time in seconds
      */
     public SpriteActor playAnimation(final TranslateAnimation animation, final float stateTime){
-        final Vector2 translation = animation.getKeyFrame(stateTime);
+        final TranslateAnimation.KeyFrame translation = animation.getKeyFrame(stateTime);
         this.translate(translation.x, translation.y);
+        return this;
+    }
+
+    /**
+     * Play a given rotate animation in current sprite actor at specified state time
+     *
+     * @param animation The rotate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public SpriteActor playAnimation(final RotateAnimation animation, final float stateTime){
+        final RotateAnimation.KeyFrame rotation = animation.getKeyFrame(stateTime);
+        this.rotate(rotation.angle);
         return this;
     }
 
