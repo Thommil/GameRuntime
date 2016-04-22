@@ -301,16 +301,14 @@ public class SceneLoader extends JSONLoader{
             for(final ImageAnimationDef.KeyFrame keyFrame : ((ImageAnimationDef)animationDef).keyFrames){
                 textureRegions.add(new TextureRegion(assetManager.get(((ImageAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
             }
-
             return new ImageAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
         }
         else if(animationDef instanceof TranslateAnimationDef){
-            final Array<Vector2> vectors = new Array<Vector2>(true, animationDef.keyFrames.length);
+            final Array<TranslateAnimation.KeyFrame> keyFrames = new Array<TranslateAnimation.KeyFrame>(true, animationDef.keyFrames.length);
             for(final TranslateAnimationDef.KeyFrame keyFrame : ((TranslateAnimationDef)animationDef).keyFrames){
-                vectors.add(new Vector2(keyFrame.xOffset, keyFrame.yOffset));
+                keyFrames.add(new TranslateAnimation.KeyFrame(keyFrame.xOffset, keyFrame.yOffset, keyFrame.interpolator.toInterpolation()));
             }
-
-            return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (Vector2[]) vectors.toArray(Vector2.class));
+            return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (TranslateAnimation.KeyFrame[]) keyFrames.toArray(TranslateAnimation.KeyFrame.class));
         }
         return null;
     }
@@ -408,6 +406,9 @@ public class SceneLoader extends JSONLoader{
                     translateAnimationDef.keyFrames[index] = new TranslateAnimationDef.KeyFrame();
                     translateAnimationDef.keyFrames[index].xOffset = jsonKeyFrame.getFloat("xOffset");
                     translateAnimationDef.keyFrames[index].yOffset = jsonKeyFrame.getFloat("yOffset");
+                    if(jsonKeyFrame.has("interpolator")) {
+                        translateAnimationDef.keyFrames[index].interpolator = AnimationDef.Interpolator.valueOf(jsonKeyFrame.getString("interpolator"));
+                    }
                 }
             }
             return translateAnimationDef;
@@ -1001,6 +1002,7 @@ public class SceneLoader extends JSONLoader{
      *      {
      *          "xOffset" : x offset,
      *          "yOffset" : y offset,
+     *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : NORMAL)
      *      }
      *      ...
      *  ]
@@ -1011,6 +1013,7 @@ public class SceneLoader extends JSONLoader{
         public static class KeyFrame{
             public float xOffset;
             public float yOffset;
+            public Interpolator interpolator = Interpolator.LINEAR;
         }
     }
 

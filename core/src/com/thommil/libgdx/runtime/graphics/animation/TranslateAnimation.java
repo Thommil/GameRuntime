@@ -10,13 +10,13 @@ import com.thommil.libgdx.runtime.GameRuntimeException;
  *
  * Created by thommil on 4/19/16.
  */
-public class TranslateAnimation extends Animation<Vector2> {
+public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
 
     protected int iteration = 0;
 
-    private Vector2 translateVector;
-    private Vector2 totalTranslateVector;
-    private Vector2[] inversedKeyFrames;
+    private TranslateAnimation.KeyFrame translateVector;
+    private TranslateAnimation.KeyFrame totalTranslateVector;
+    private TranslateAnimation.KeyFrame[] inversedKeyFrames;
 
     protected int lastIteration=0;
     private int lastFrameNumber;
@@ -27,7 +27,7 @@ public class TranslateAnimation extends Animation<Vector2> {
      * @param frameDuration the time between frames in seconds.
      * @param keyFrames     the objects representing the frames.
      */
-    public TranslateAnimation(float frameDuration, Vector2... keyFrames) {
+    public TranslateAnimation(float frameDuration, TranslateAnimation.KeyFrame... keyFrames) {
         super(frameDuration, keyFrames);
     }
 
@@ -38,7 +38,7 @@ public class TranslateAnimation extends Animation<Vector2> {
      * @param playMode      The animation playmode
      * @param keyFrames     the objects representing the frames.
      */
-    public TranslateAnimation(float frameDuration, PlayMode playMode, Vector2... keyFrames) {
+    public TranslateAnimation(float frameDuration, PlayMode playMode, TranslateAnimation.KeyFrame... keyFrames) {
         super(frameDuration, playMode, keyFrames);
     }
 
@@ -49,7 +49,7 @@ public class TranslateAnimation extends Animation<Vector2> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public TranslateAnimation(float frameDuration, Interpolation interpolator, Vector2... keyFrames) {
+    public TranslateAnimation(float frameDuration, Interpolation interpolator, TranslateAnimation.KeyFrame... keyFrames) {
         super(frameDuration, interpolator, keyFrames);
     }
 
@@ -61,7 +61,7 @@ public class TranslateAnimation extends Animation<Vector2> {
      * @param interpolator  The interpolator to use
      * @param keyFrames     the objects representing the frames.
      */
-    public TranslateAnimation(float frameDuration, PlayMode playMode, Interpolation interpolator, Vector2... keyFrames) {
+    public TranslateAnimation(float frameDuration, PlayMode playMode, Interpolation interpolator, TranslateAnimation.KeyFrame... keyFrames) {
         super(frameDuration, playMode, interpolator, keyFrames);
     }
 
@@ -72,11 +72,11 @@ public class TranslateAnimation extends Animation<Vector2> {
     public void initialize() {
         this.iteration = 0;
         this.lastIteration = 0;
-        this.translateVector = new Vector2();
-        this.totalTranslateVector = new Vector2();
-        this.inversedKeyFrames = new Vector2[this.keyFrames.length];
+        this.translateVector = new TranslateAnimation.KeyFrame();
+        this.totalTranslateVector = new TranslateAnimation.KeyFrame();
+        this.inversedKeyFrames = new TranslateAnimation.KeyFrame[this.keyFrames.length];
         for(int inversedIndex=0, index = this.keyFrames.length - 1; inversedIndex < this.keyFrames.length; inversedIndex++, index--){
-            this.inversedKeyFrames[inversedIndex] = new Vector2(-this.keyFrames[index].x, - this.keyFrames[index].y);
+            this.inversedKeyFrames[inversedIndex] = new TranslateAnimation.KeyFrame(-this.keyFrames[index].x, - this.keyFrames[index].y, this.keyFrames[index].interpolation);
         }
     }
 
@@ -99,7 +99,7 @@ public class TranslateAnimation extends Animation<Vector2> {
      * @return the object state at the given time
      */
     @Override
-    public Vector2 getKeyFrame(float stateTime) {
+    public TranslateAnimation.KeyFrame getKeyFrame(float stateTime) {
         this.translateVector.set(0,0);
         this.iteration = (int)(stateTime / this.animationDuration);
         final float interpolatedStateTime = this.interpolator.apply(0, this.animationDuration, (stateTime % this.animationDuration) / this.animationDuration);
@@ -114,7 +114,7 @@ public class TranslateAnimation extends Animation<Vector2> {
                            this.totalTranslateVector.set(0,0);
                        }
                    }
-                   this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                   this.translateVector.interpolate(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, keyFrames[toIndex].interpolation);
                    this.translateVector.sub(this.totalTranslateVector);
                    this.totalTranslateVector.add(this.translateVector);
                    this.lastFrameNumber = toIndex;
@@ -128,7 +128,7 @@ public class TranslateAnimation extends Animation<Vector2> {
                             this.totalTranslateVector.set(0,0);
                         }
                     }
-                    this.translateVector.lerp(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                    this.translateVector.interpolate(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, inversedKeyFrames[toIndex].interpolation);
                     this.translateVector.sub(this.totalTranslateVector);
                     this.totalTranslateVector.add(this.translateVector);
                     this.lastFrameNumber = toIndex;
@@ -144,7 +144,7 @@ public class TranslateAnimation extends Animation<Vector2> {
                 else if(lastIteration != iteration){
                     this.totalTranslateVector.set(0,0);
                 }
-                this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                this.translateVector.interpolate(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, keyFrames[toIndex].interpolation);
                 this.translateVector.sub(this.totalTranslateVector);
                 this.totalTranslateVector.add(this.translateVector);
                 this.lastFrameNumber = toIndex;
@@ -159,7 +159,7 @@ public class TranslateAnimation extends Animation<Vector2> {
                 else if(lastIteration != iteration){
                     this.totalTranslateVector.set(0,0);
                 }
-                this.translateVector.lerp(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                this.translateVector.interpolate(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, inversedKeyFrames[toIndex].interpolation);
                 this.translateVector.sub(this.totalTranslateVector);
                 this.totalTranslateVector.add(this.translateVector);
                 this.lastFrameNumber = toIndex;
@@ -175,10 +175,10 @@ public class TranslateAnimation extends Animation<Vector2> {
                     this.totalTranslateVector.set(0,0);
                 }
                 if(this.iteration % 2 == 0){
-                    this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                    this.translateVector.interpolate(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, keyFrames[toIndex].interpolation);
                 }
                 else{
-                    this.translateVector.lerp(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                    this.translateVector.interpolate(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, inversedKeyFrames[toIndex].interpolation);
                 }
                 this.translateVector.sub(this.totalTranslateVector);
                 this.totalTranslateVector.add(this.translateVector);
@@ -193,5 +193,65 @@ public class TranslateAnimation extends Animation<Vector2> {
 
 
         return this.translateVector;
+    }
+
+    /**
+     * Defines a keyframe for a TranslateAnimation
+     */
+    public static class KeyFrame extends Vector2{
+
+        final public Interpolation interpolation;
+
+        /**
+         * Constructs a new keyframe at (0,0) and linear interpolation
+         */
+        public KeyFrame() {
+            super();
+            this.interpolation = Interpolation.linear;
+        }
+
+        /**
+         * Constructs a keyframe with the given components and linear interpolation
+         *
+         * @param x The x-component
+         * @param y The y-component
+         */
+        public KeyFrame(float x, float y) {
+            super(x, y);
+            this.interpolation = Interpolation.linear;
+        }
+
+        /**
+         * Constructs a keyframe from the given vector and linear interpolation
+         *
+         * @param v The vector
+         */
+        public KeyFrame(Vector2 v) {
+            super(v);
+            this.interpolation = Interpolation.linear;
+        }
+
+        /**
+         * Constructs a keyframe with the given components and interpolation
+         *
+         * @param x The x-component
+         * @param y The y-component
+         * @param interpolation The interpolation used for this keyframe
+         */
+        public KeyFrame(final float x, final float y, final Interpolation interpolation) {
+            super(x, y);
+            this.interpolation = interpolation;
+        }
+
+        /**
+         * Constructs a vector from the given vector and interpolation
+         *
+         * @param v The vector
+         * @param interpolation The interpolation used for this keyframe
+         */
+        public KeyFrame(Vector2 v, final Interpolation interpolation) {
+            super(v);
+            this.interpolation = interpolation;
+        }
     }
 }
