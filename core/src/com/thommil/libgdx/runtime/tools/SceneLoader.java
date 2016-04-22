@@ -302,7 +302,7 @@ public class SceneLoader extends JSONLoader{
                 textureRegions.add(new TextureRegion(assetManager.get(((ImageAnimationDef)animationDef).path, Texture.class), keyFrame.regionX, keyFrame.regionY, keyFrame.regionWidth, keyFrame.regionHeight));
             }
 
-            return new ImageAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
+            return new ImageAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (TextureRegion[]) textureRegions.toArray(TextureRegion.class));
         }
         else if(animationDef instanceof TranslateAnimationDef){
             final Array<Vector2> vectors = new Array<Vector2>(true, animationDef.keyFrames.length);
@@ -310,7 +310,7 @@ public class SceneLoader extends JSONLoader{
                 vectors.add(new Vector2(keyFrame.xOffset, keyFrame.yOffset));
             }
 
-            return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator, (Vector2[]) vectors.toArray(Vector2.class));
+            return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (Vector2[]) vectors.toArray(Vector2.class));
         }
         return null;
     }
@@ -349,94 +349,6 @@ public class SceneLoader extends JSONLoader{
         return null;
     }
 
-    /*
-    static public final Pow pow2 = new Pow(2);
-
-    static public final Interpolation.PowIn pow2In = new Interpolation.PowIn(2);
-
-    static public final Interpolation.PowOut pow2Out = new Interpolation.PowOut(2);
-
-    static public final Interpolation.Pow pow3 = new Interpolation.Pow(3);
-    static public final Interpolation.PowIn pow3In = new Interpolation.PowIn(3);
-    static public final Interpolation.PowOut pow3Out = new Interpolation.PowOut(3);
-
-    static public final Interpolation.Pow pow4 = new Interpolation.Pow(4);
-    static public final Interpolation.PowIn pow4In = new Interpolation.PowIn(4);
-    static public final Interpolation.PowOut pow4Out = new Interpolation.PowOut(4);
-
-    static public final Interpolation.Pow pow5 = new Interpolation.Pow(5);
-    static public final Interpolation.PowIn pow5In = new Interpolation.PowIn(5);
-    static public final Interpolation.PowOut pow5Out = new Interpolation.PowOut(5);
-
-    static public final Interpolation sine = new Interpolation() {
-        public float apply (float a) {
-            return (1 - MathUtils.cos(a * MathUtils.PI)) / 2;
-        }
-    };
-
-    static public final Interpolation sineIn = new Interpolation() {
-        public float apply (float a) {
-            return 1 - MathUtils.cos(a * MathUtils.PI / 2);
-        }
-    };
-
-    static public final Interpolation sineOut = new Interpolation() {
-        public float apply (float a) {
-            return MathUtils.sin(a * MathUtils.PI / 2);
-        }
-    };
-
-    static public final Interpolation.Exp exp10 = new Interpolation.Exp(2, 10);
-    static public final Interpolation.ExpIn exp10In = new Interpolation.ExpIn(2, 10);
-    static public final Interpolation.ExpOut exp10Out = new Interpolation.ExpOut(2, 10);
-
-    static public final Interpolation.Exp exp5 = new Interpolation.Exp(2, 5);
-    static public final Interpolation.ExpIn exp5In = new Interpolation.ExpIn(2, 5);
-    static public final Interpolation.ExpOut exp5Out = new Interpolation.ExpOut(2, 5);
-
-    static public final Interpolation circle = new Interpolation() {
-        public float apply (float a) {
-            if (a <= 0.5f) {
-                a *= 2;
-                return (1 - (float)Math.sqrt(1 - a * a)) / 2;
-            }
-            a--;
-            a *= 2;
-            return ((float)Math.sqrt(1 - a * a) + 1) / 2;
-        }
-    };
-
-    static public final Interpolation circleIn = new Interpolation() {
-        public float apply (float a) {
-            return 1 - (float)Math.sqrt(1 - a * a);
-        }
-    };
-
-    static public final Interpolation circleOut = new Interpolation() {
-        public float apply (float a) {
-            a--;
-            return (float)Math.sqrt(1 - a * a);
-        }
-    };
-
-    static public final Interpolation.Elastic elastic = new Interpolation.Elastic(2, 10, 7, 1);
-    static public final Interpolation.ElasticIn elasticIn = new Interpolation.ElasticIn(2, 10, 6, 1);
-    static public final Interpolation.ElasticOut elasticOut = new Interpolation.ElasticOut(2, 10, 7, 1);
-
-    static public final Interpolation.Swing swing = new Interpolation.Swing(1.5f);
-    static public final Interpolation.SwingIn swingIn = new Interpolation.SwingIn(2f);
-    static public final Interpolation.SwingOut swingOut = new Interpolation.SwingOut(2f);
-
-    static public final Interpolation.Bounce bounce = new Interpolation.Bounce(4);
-    static public final Interpolation.BounceIn bounceIn = new Interpolation.BounceIn(4);
-    static public final Interpolation.BounceOut bounceOut = new Interpolation.BounceOut(4);
-     */
-
-    private Interpolation getInterpolationFromString(final String interpolationName){
-
-    }
-
-
     private AnimationDef getAnimationDefinition(final JsonValue jsonAnimation){
         AnimationDef animationDef = null;
         if(jsonAnimation.has("type")) {
@@ -461,21 +373,7 @@ public class SceneLoader extends JSONLoader{
             animationDef.frameDuration = jsonAnimation.getFloat("frameDuration");
         }
         if(jsonAnimation.has("interpolator")) {
-            final AnimationDef.Interpolator interpolator = AnimationDef.Interpolator.valueOf(jsonAnimation.getString("interpolator"));
-            switch(interpolator){
-                case FADE : animationDef.interpolator = Interpolation.linear; break;
-                case POW2 : animationDef.interpolator = Interpolation.pow2; break;
-                case POW3 : animationDef.interpolator = Interpolation.pow3; break;
-                case POW4 : animationDef.interpolator = Interpolation.pow4; break;
-                case POW5 : animationDef.interpolator = Interpolation.pow5; break;
-                case SINE : animationDef.interpolator = Interpolation.sine; break;
-                case EXP5 : animationDef.interpolator = Interpolation.exp5; break;
-                case EXP10 : animationDef.interpolator = Interpolation.exp10; break;
-                case CIRCLE : animationDef.interpolator = Interpolation.circle; break;
-                case ELASTIC : animationDef.interpolator = Interpolation.elastic; break;
-                case SWING : animationDef.interpolator = Interpolation.swing; break;
-                case BOUNCE : animationDef.interpolator = Interpolation.bounce; break;
-            }
+            animationDef.interpolator = AnimationDef.Interpolator.valueOf(jsonAnimation.getString("interpolator"));
         }
         if(animationDef instanceof ImageAnimationDef){
             final ImageAnimationDef imageAnimationDef = ((ImageAnimationDef)animationDef);
@@ -1150,66 +1048,64 @@ public class SceneLoader extends JSONLoader{
             EXP10_IN,
             EXP10_OUT,
             CIRCLE,
+            CIRCLE_IN,
+            CIRCLE_OUT,
             ELASTIC,
+            ELASTIC_IN,
+            ELASTIC_OUT,
             SWING,
-            BOUNCE
+            SWING_IN,
+            SWING_OUT,
+            BOUNCE,
+            BOUNCE_IN,
+            BOUNCE_OUT;
+
+            public Interpolation toInterpolation(){
+                switch(this){
+                    case FADE : return Interpolation.fade;
+                    case POW2 : return Interpolation.pow2;
+                    case POW2_IN : return Interpolation.pow2In;
+                    case POW2_OUT : return Interpolation.pow2Out;
+                    case POW3 : return Interpolation.pow3;
+                    case POW3_IN : return Interpolation.pow3In;
+                    case POW3_OUT : return Interpolation.pow3Out;
+                    case POW4 : return Interpolation.pow4;
+                    case POW4_IN : return Interpolation.pow4In;
+                    case POW4_OUT : return Interpolation.pow4Out;
+                    case POW5 : return Interpolation.pow5;
+                    case POW5_IN : return Interpolation.pow5In;
+                    case POW5_OUT : return Interpolation.pow5Out;
+                    case SINE : return Interpolation.sine;
+                    case SINE_IN : return Interpolation.sineIn;
+                    case SINE_OUT : return Interpolation.sineOut;
+                    case EXP5 : return Interpolation.exp5;
+                    case EXP5_IN : return Interpolation.exp5In;
+                    case EXP5_OUT : return Interpolation.exp5Out;
+                    case EXP10 : return Interpolation.exp10;
+                    case EXP10_IN : return Interpolation.exp10In;
+                    case EXP10_OUT : return Interpolation.exp10Out;
+                    case CIRCLE : return Interpolation.circle;
+                    case CIRCLE_IN : return Interpolation.circleIn;
+                    case CIRCLE_OUT : return Interpolation.circleOut;
+                    case ELASTIC : return Interpolation.elastic;
+                    case ELASTIC_IN : return Interpolation.elasticIn;
+                    case ELASTIC_OUT : return Interpolation.elasticOut;
+                    case SWING : return Interpolation.swing;
+                    case SWING_IN : return Interpolation.swingIn;
+                    case SWING_OUT : return Interpolation.swingOut;
+                    case BOUNCE : return Interpolation.bounce;
+                    case BOUNCE_IN : return Interpolation.bounceIn;
+                    case BOUNCE_OUT : return Interpolation.bounceOut;
+                    default : return Interpolation.linear;
+                }
+            }
         }
 
         public String name;
         public String type;
         public Animation.PlayMode playMode = Animation.PlayMode.NORMAL;
-        public Interpolation interpolator = Interpolation.linear;
+        public Interpolator interpolator = Interpolator.LINEAR;
         public float frameDuration;
         public T[] keyFrames;
     }
 }
-
-/*
-
-
-
-    static public final Interpolation.Exp exp10 = new Interpolation.Exp(2, 10);
-    static public final Interpolation.ExpIn exp10In = new Interpolation.ExpIn(2, 10);
-    static public final Interpolation.ExpOut exp10Out = new Interpolation.ExpOut(2, 10);
-
-    static public final Interpolation.Exp exp5 = new Interpolation.Exp(2, 5);
-    static public final Interpolation.ExpIn exp5In = new Interpolation.ExpIn(2, 5);
-    static public final Interpolation.ExpOut exp5Out = new Interpolation.ExpOut(2, 5);
-
-    static public final Interpolation circle = new Interpolation() {
-        public float apply (float a) {
-            if (a <= 0.5f) {
-                a *= 2;
-                return (1 - (float)Math.sqrt(1 - a * a)) / 2;
-            }
-            a--;
-            a *= 2;
-            return ((float)Math.sqrt(1 - a * a) + 1) / 2;
-        }
-    };
-
-    static public final Interpolation circleIn = new Interpolation() {
-        public float apply (float a) {
-            return 1 - (float)Math.sqrt(1 - a * a);
-        }
-    };
-
-    static public final Interpolation circleOut = new Interpolation() {
-        public float apply (float a) {
-            a--;
-            return (float)Math.sqrt(1 - a * a);
-        }
-    };
-
-    static public final Interpolation.Elastic elastic = new Interpolation.Elastic(2, 10, 7, 1);
-    static public final Interpolation.ElasticIn elasticIn = new Interpolation.ElasticIn(2, 10, 6, 1);
-    static public final Interpolation.ElasticOut elasticOut = new Interpolation.ElasticOut(2, 10, 7, 1);
-
-    static public final Interpolation.Swing swing = new Interpolation.Swing(1.5f);
-    static public final Interpolation.SwingIn swingIn = new Interpolation.SwingIn(2f);
-    static public final Interpolation.SwingOut swingOut = new Interpolation.SwingOut(2f);
-
-    static public final Interpolation.Bounce bounce = new Interpolation.Bounce(4);
-    static public final Interpolation.BounceIn bounceIn = new Interpolation.BounceIn(4);
-    static public final Interpolation.BounceOut bounceOut = new Interpolation.BounceOut(4);
-     */
