@@ -102,11 +102,11 @@ public class ImageAnimation extends Animation<TextureRegion> {
             case LOOP_REVERSED:
                 return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
             case LOOP_PINGPONG:
-                switch (this.iteration % 2){
-                    case 0:
-                        return this.keyFrames[(int)(interpolatedStateTime / frameDuration) % keyFrames.length];
-                    case 1 :
-                        return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
+                if (this.iteration % 2 == 0) {
+                    return this.keyFrames[(int) (interpolatedStateTime / frameDuration) % keyFrames.length];
+                }
+                else{
+                    return this.keyFrames[keyFrames.length - (int)(interpolatedStateTime / frameDuration) % keyFrames.length - 1];
                 }
             default:
                 throw new GameRuntimeException(playMode.toString()+" playmode not supported");

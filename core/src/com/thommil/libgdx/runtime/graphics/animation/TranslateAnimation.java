@@ -17,6 +17,8 @@ public class TranslateAnimation extends Animation<Vector2> {
     private Vector2 translateVector;
     private Vector2 totalTranslateVector;
     private Vector2[] inversedKeyFrames;
+
+    protected int lastIteration=0;
     private int lastFrameNumber;
 
     /**
@@ -68,6 +70,8 @@ public class TranslateAnimation extends Animation<Vector2> {
      */
     @Override
     public void initialize() {
+        this.iteration = 0;
+        this.lastIteration = 0;
         this.translateVector = new Vector2();
         this.totalTranslateVector = new Vector2();
         this.inversedKeyFrames = new Vector2[this.keyFrames.length];
@@ -82,6 +86,7 @@ public class TranslateAnimation extends Animation<Vector2> {
     @Override
     public void reset() {
         this.iteration = 0;
+        this.lastIteration = 0;
         this.translateVector.set(0,0);
         this.totalTranslateVector.set(0,0);
         this.lastFrameNumber = (this.playMode == PlayMode.LOOP_REVERSED || this.playMode == Animation.PlayMode.REVERSED) ? this.keyFrames.length - 1 : 0;
@@ -105,9 +110,9 @@ public class TranslateAnimation extends Animation<Vector2> {
                if(this.iteration == 0) {
                    if (keyFrames.length > 1){
                        toIndex = Math.min(keyFrames.length - 1, (int) (interpolatedStateTime / frameDuration));
-                   }
-                   if(this.lastFrameNumber != toIndex){
-                       this.totalTranslateVector.set(0,0);
+                       if(this.lastFrameNumber != toIndex){
+                           this.totalTranslateVector.set(0,0);
+                       }
                    }
                    this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
                    this.translateVector.sub(this.totalTranslateVector);
@@ -119,9 +124,9 @@ public class TranslateAnimation extends Animation<Vector2> {
                 if(this.iteration == 0) {
                     if (keyFrames.length > 1){
                         toIndex = Math.min(keyFrames.length - 1, (int) (interpolatedStateTime / frameDuration));
-                    }
-                    if(this.lastFrameNumber != toIndex){
-                        this.totalTranslateVector.set(0,0);
+                        if(this.lastFrameNumber != toIndex){
+                            this.totalTranslateVector.set(0,0);
+                        }
                     }
                     this.translateVector.lerp(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
                     this.translateVector.sub(this.totalTranslateVector);
@@ -132,8 +137,11 @@ public class TranslateAnimation extends Animation<Vector2> {
             case LOOP:
                 if (keyFrames.length > 1){
                     toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                    if(this.lastFrameNumber != toIndex){
+                        this.totalTranslateVector.set(0,0);
+                    }
                 }
-                if(this.lastFrameNumber != toIndex){
+                else if(lastIteration != iteration){
                     this.totalTranslateVector.set(0,0);
                 }
                 this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
@@ -144,8 +152,11 @@ public class TranslateAnimation extends Animation<Vector2> {
             case LOOP_REVERSED:
                 if (keyFrames.length > 1){
                     toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                    if(this.lastFrameNumber != toIndex){
+                        this.totalTranslateVector.set(0,0);
+                    }
                 }
-                if(this.lastFrameNumber != toIndex){
+                else if(lastIteration != iteration){
                     this.totalTranslateVector.set(0,0);
                 }
                 this.translateVector.lerp(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
@@ -154,25 +165,20 @@ public class TranslateAnimation extends Animation<Vector2> {
                 this.lastFrameNumber = toIndex;
                 break;
             case LOOP_PINGPONG:
-                switch (this.iteration % 2) {
-                    case 0:
-                        if (keyFrames.length > 1){
-                            toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
-                        }
-                        if(this.lastFrameNumber != toIndex){
-                            this.totalTranslateVector.set(0,0);
-                        }
-                        this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
-                        break;
-                    case 1:
-                        if (keyFrames.length > 1){
-                            toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
-                        }
-                        if(this.lastFrameNumber != toIndex){
-                            this.totalTranslateVector.set(0,0);
-                        }
-                        this.translateVector.lerp(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
-                        break;
+                if (keyFrames.length > 1){
+                    toIndex = (int) (interpolatedStateTime / frameDuration) % keyFrames.length;
+                    if(this.lastFrameNumber != toIndex){
+                        this.totalTranslateVector.set(0,0);
+                    }
+                }
+                else if(lastIteration != iteration){
+                    this.totalTranslateVector.set(0,0);
+                }
+                if(this.iteration % 2 == 0){
+                    this.translateVector.lerp(keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
+                }
+                else{
+                    this.translateVector.lerp(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration);
                 }
                 this.translateVector.sub(this.totalTranslateVector);
                 this.totalTranslateVector.add(this.translateVector);
@@ -183,6 +189,7 @@ public class TranslateAnimation extends Animation<Vector2> {
 
         }
 
+        this.lastIteration = iteration;
 
 
         return this.translateVector;
