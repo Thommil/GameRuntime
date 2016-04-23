@@ -3,6 +3,9 @@ package com.thommil.libgdx.runtime.actor.graphics;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Align;
 import com.thommil.libgdx.runtime.actor.Actor;
+import com.thommil.libgdx.runtime.graphics.animation.ColorAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ScaleAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 
 /**
@@ -92,6 +95,42 @@ public class BitmapFontActor extends Actor implements Renderable<SpriteBatchRend
     public void render(float deltaTime, SpriteBatchRenderer renderer) {
         this.bitmapFont.draw(renderer, this.text, x, y, 0, this.text.length() , this.targetWidth, this.halign, this.wrap, this.truncate);
      }
+
+    /**
+     * Play a given translate animation in current actor actor at specified state time
+     *
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public BitmapFontActor playAnimation(final TranslateAnimation animation, final float stateTime){
+        final TranslateAnimation.KeyFrame translation = animation.getKeyFrame(stateTime);
+        this.x += translation.x;
+        this.y += translation.y;
+        return this;
+    }
+
+    /**
+     * Play a given scale animation in current actor actor at specified state time
+     *
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public BitmapFontActor playAnimation(final ScaleAnimation animation, final float stateTime){
+        final ScaleAnimation.KeyFrame scale = animation.getKeyFrame(stateTime);
+        this.bitmapFont.getData().scale(Math.max(scale.x, scale.y));
+        return this;
+    }
+
+    /**
+     * Play a given color animation in current actor actor at specified state time
+     *
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public BitmapFontActor playAnimation(final ColorAnimation animation, final float stateTime){
+        this.bitmapFont.setColor(animation.getKeyFrame(stateTime));
+        return this;
+    }
 
     /**
      * Releases all resources of this object.

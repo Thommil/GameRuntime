@@ -2,7 +2,11 @@ package com.thommil.libgdx.runtime.actor.graphics;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.utils.Array;
+import com.thommil.libgdx.runtime.graphics.animation.RotateAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.ScaleAnimation;
+import com.thommil.libgdx.runtime.graphics.animation.TranslateAnimation;
 import com.thommil.libgdx.runtime.graphics.renderer.sprite.SpriteBatchRenderer;
 import com.thommil.libgdx.runtime.actor.Actor;
 
@@ -61,6 +65,50 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
             particleEffect.start();
         }
         this.particleEffects.add(particleEffect);
+        return particleEffect;
+    }
+
+    /**
+     * Play a given translate animation in given ParticleEffect at specified state time
+     *
+     * @param particleEffect The particle effect to animate
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public ParticleEffect playAnimation(final ParticleEffect particleEffect, final TranslateAnimation animation, final float stateTime){
+        final TranslateAnimation.KeyFrame translation = animation.getKeyFrame(stateTime);
+        for(final ParticleEmitter particleEmitter : particleEffect.getEmitters()){
+            particleEmitter.setPosition(particleEmitter.getX() + translation.x, particleEmitter.getY() +translation.y);
+        }
+        return particleEffect;
+    }
+
+    /**
+     * Play a given scale animation in given ParticleEffect at specified state time
+     *
+     * @param particleEffect The particle effect to animate
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public ParticleEffect playAnimation(final ParticleEffect particleEffect, final ScaleAnimation animation, final float stateTime){
+        final ScaleAnimation.KeyFrame scale = animation.getKeyFrame(stateTime);
+        particleEffect.scaleEffect(Math.max(scale.x,scale.y));
+        return particleEffect;
+    }
+
+    /**
+     * Play a given rotate animation in given ParticleEffect at specified state time
+     *
+     * @param particleEffect The particle effect to animate
+     * @param animation The translate animation to use
+     * @param stateTime The state time in seconds
+     */
+    public ParticleEffect playAnimation(final ParticleEffect particleEffect, final RotateAnimation animation, final float stateTime){
+        final RotateAnimation.KeyFrame rotation = animation.getKeyFrame(stateTime);
+        for(final ParticleEmitter particleEmitter : particleEffect.getEmitters()){
+            particleEmitter.getAngle().setHigh(particleEmitter.getAngle().getHighMin() + rotation.angle);
+            particleEmitter.getAngle().setLow(particleEmitter.getAngle().getLowMin() + rotation.angle);
+        }
         return particleEffect;
     }
 
