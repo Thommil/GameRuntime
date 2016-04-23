@@ -198,7 +198,7 @@ public class ScaleAnimation extends Animation<ScaleAnimation.KeyFrame> {
      */
     public static class KeyFrame extends Vector2{
 
-        final public Interpolation interpolation;
+        public Interpolation interpolation;
 
         /**
          * Constructs a new keyframe at (0,0) and linear interpolation

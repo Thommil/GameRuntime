@@ -194,7 +194,7 @@ public class RotateAnimation extends Animation<RotateAnimation.KeyFrame> {
     public static class KeyFrame{
 
         public float angle;
-        final public Interpolation interpolation;
+        public Interpolation interpolation;
 
         /**
          * Constructor with no rotation angle and LINEAR interpolation
