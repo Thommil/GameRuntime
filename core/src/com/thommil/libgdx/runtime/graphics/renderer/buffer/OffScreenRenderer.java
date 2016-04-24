@@ -270,7 +270,9 @@ public class OffScreenRenderer implements Disposable{
     public void dispose() {
         this.shader.dispose();
         this.mesh.dispose();
-        this.frameBuffer.dispose();
+        if(this.frameBuffer != null) {
+            this.frameBuffer.dispose();
+        }
     }
 
 }
