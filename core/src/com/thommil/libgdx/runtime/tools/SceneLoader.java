@@ -304,7 +304,7 @@ public class SceneLoader extends JSONLoader{
         else if(animationDef instanceof TranslateAnimationDef){
             final Array<TranslateAnimation.KeyFrame> keyFrames = new Array<TranslateAnimation.KeyFrame>(true, animationDef.keyFrames.length);
             for(final TranslateAnimationDef.KeyFrame keyFrame : ((TranslateAnimationDef)animationDef).keyFrames){
-                keyFrames.add(new TranslateAnimation.KeyFrame(keyFrame.xOffset, keyFrame.yOffset, keyFrame.interpolator.toInterpolation()));
+                keyFrames.add(new TranslateAnimation.KeyFrame(keyFrame.xOffset, keyFrame.yOffset, keyFrame.flipX, keyFrame.flipY, keyFrame.interpolator.toInterpolation()));
             }
             return new TranslateAnimation(animationDef.frameDuration, animationDef.playMode, animationDef.interpolator.toInterpolation(), (TranslateAnimation.KeyFrame[]) keyFrames.toArray(TranslateAnimation.KeyFrame.class));
         }
@@ -425,6 +425,12 @@ public class SceneLoader extends JSONLoader{
                     translateAnimationDef.keyFrames[index] = new TranslateAnimationDef.KeyFrame();
                     translateAnimationDef.keyFrames[index].xOffset = jsonKeyFrame.getFloat("xOffset");
                     translateAnimationDef.keyFrames[index].yOffset = jsonKeyFrame.getFloat("yOffset");
+                    if(jsonKeyFrame.has("flipX")) {
+                        translateAnimationDef.keyFrames[index].flipX = jsonKeyFrame.getBoolean("flipX");
+                    }
+                    if(jsonKeyFrame.has("flipY")) {
+                        translateAnimationDef.keyFrames[index].flipY = jsonKeyFrame.getBoolean("flipY");
+                    }
                     if(jsonKeyFrame.has("interpolator")) {
                         translateAnimationDef.keyFrames[index].interpolator = AnimationDef.Interpolator.valueOf(jsonKeyFrame.getString("interpolator"));
                     }
@@ -1067,6 +1073,8 @@ public class SceneLoader extends JSONLoader{
      *      {
      *          "xOffset" : x offset,
      *          "yOffset" : y offset,
+     *          "flipX" : x flip ? (optional -> default : false),
+     *          "flipY" : y offset ? (optional -> default : false),
      *          "interpolator" : "LINEAR" | "FADE" | "POW2" | "POW3" | "POW4" | "POW5" | "SINE" | "EXP5" | "EXP10" | "CIRCLE" | "ELASTIC" | "SWING" | "BOUNCE", (optional -> default : LINEAR)
      *      }
      *      ...
@@ -1078,6 +1086,8 @@ public class SceneLoader extends JSONLoader{
         public static class KeyFrame{
             public float xOffset;
             public float yOffset;
+            public boolean flipX = false;
+            public boolean flipY = false;
             public Interpolator interpolator = Interpolator.LINEAR;
         }
     }

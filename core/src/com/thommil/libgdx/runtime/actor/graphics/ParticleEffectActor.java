@@ -79,6 +79,7 @@ public class ParticleEffectActor extends Actor implements Renderable<SpriteBatch
         final TranslateAnimation.KeyFrame translation = animation.getKeyFrame(stateTime);
         for(final ParticleEmitter particleEmitter : particleEffect.getEmitters()){
             particleEmitter.setPosition(particleEmitter.getX() + translation.x, particleEmitter.getY() +translation.y);
+            particleEmitter.setFlip(translation.flipX, translation.flipY);
         }
         return particleEffect;
     }

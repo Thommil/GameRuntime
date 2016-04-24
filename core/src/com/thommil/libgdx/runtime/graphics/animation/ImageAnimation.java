@@ -128,19 +128,6 @@ public class ImageAnimation extends Animation<ImageAnimation.KeyFrame> {
          * @param regionY The region Y coord
          * @param regionWidth   The width of the texture region. May be negative to flip the sprite when drawn.
          * @param regionHeight  The height of the texture region. May be negative to flip the sprite when drawn.
-         */
-        public KeyFrame(Texture texture, int regionX, int regionY, int regionWidth, int regionHeight) {
-            super(texture, regionX, regionY, regionWidth, regionHeight);
-            this.width = 0f;
-            this.height = 0f;
-        }
-
-        /**
-         * @param texture The region texture
-         * @param regionX The region X coord
-         * @param regionY The region Y coord
-         * @param regionWidth   The width of the texture region. May be negative to flip the sprite when drawn.
-         * @param regionHeight  The height of the texture region. May be negative to flip the sprite when drawn.
          * @param width The key frame width
          * @param height The key frame height
          */

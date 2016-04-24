@@ -209,27 +209,6 @@ public class ScaleAnimation extends Animation<ScaleAnimation.KeyFrame> {
         }
 
         /**
-         * Constructs a keyframe with the given components and linear interpolation
-         *
-         * @param x The x-component
-         * @param y The y-component
-         */
-        public KeyFrame(float x, float y) {
-            super(x, y);
-            this.interpolation = Interpolation.linear;
-        }
-
-        /**
-         * Constructs a keyframe from the given vector and linear interpolation
-         *
-         * @param v The vector
-         */
-        public KeyFrame(Vector2 v) {
-            super(v);
-            this.interpolation = Interpolation.linear;
-        }
-
-        /**
          * Constructs a keyframe with the given components and interpolation
          *
          * @param x The x-component

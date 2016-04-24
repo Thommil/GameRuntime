@@ -572,6 +572,7 @@ public class SpriteActor extends Actor implements Renderable<SpriteBatchRenderer
     public SpriteActor playAnimation(final TranslateAnimation animation, final float stateTime){
         final TranslateAnimation.KeyFrame translation = animation.getKeyFrame(stateTime);
         this.translate(translation.x, translation.y);
+        this.flip(translation.flipX, translation.flipY);
         return this;
     }
 

@@ -204,15 +204,6 @@ public class RotateAnimation extends Animation<RotateAnimation.KeyFrame> {
         }
 
         /**
-         * Constructor with LINEAR interpolation
-         *
-         * @param angle The roation angle in degrees
-         */
-        public KeyFrame(float angle) {
-            this(angle, Interpolation.linear);
-        }
-
-        /**
          * Full constructor
          *
          * @param angle The roation angle in degrees

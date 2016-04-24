@@ -181,13 +181,18 @@
     {
       "name" : "run_translate",
       "type" : "TRANSLATE",
-      "playMode" : "LOOP_PINGPONG",
+      "playMode" : "LOOP",
       "interpolator" : "LINEAR",
       "frameDuration" : 2,
       "keyFrames" : [
         {
           "xOffset" : 8,
           "yOffset" : 0
+        },
+        {
+          "xOffset" : -8,
+          "yOffset" : 0,
+          "flipX" : true
         }
       ]
     },

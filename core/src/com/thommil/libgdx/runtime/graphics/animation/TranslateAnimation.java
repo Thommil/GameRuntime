@@ -79,7 +79,7 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
         this.lastKeyFrame = new TranslateAnimation.KeyFrame();
         this.inversedKeyFrames = new TranslateAnimation.KeyFrame[this.keyFrames.length];
         for(int inversedIndex=0, index = this.keyFrames.length - 1; inversedIndex < this.keyFrames.length; inversedIndex++, index--){
-            this.inversedKeyFrames[inversedIndex] = new TranslateAnimation.KeyFrame(-this.keyFrames[index].x, - this.keyFrames[index].y, this.keyFrames[index].interpolation);
+            this.inversedKeyFrames[inversedIndex] = new TranslateAnimation.KeyFrame(-this.keyFrames[index].x, -this.keyFrames[index].y, this.keyFrames[index].flipX, this.keyFrames[index].flipY, this.keyFrames[index].interpolation);
         }
     }
 
@@ -119,6 +119,8 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
                        }
                    }
                    this.translateKeyFrame.interpolate(this.keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.keyFrames[toIndex].interpolation);
+                   this.translateKeyFrame.flipX = this.keyFrames[toIndex].flipX;
+                   this.translateKeyFrame.flipY = this.keyFrames[toIndex].flipY;
                 }
                 else{
                    return this.translateKeyFrame;
@@ -133,6 +135,8 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
                         }
                     }
                     this.translateKeyFrame.interpolate(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.inversedKeyFrames[toIndex].interpolation);
+                    this.translateKeyFrame.flipX = this.inversedKeyFrames[toIndex].flipX;
+                    this.translateKeyFrame.flipY = this.inversedKeyFrames[toIndex].flipY;
                 }
                 else{
                     return this.translateKeyFrame;
@@ -149,6 +153,8 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
                     this.lastKeyFrame.set(0,0);
                 }
                 this.translateKeyFrame.interpolate(this.keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.keyFrames[toIndex].interpolation);
+                this.translateKeyFrame.flipX = this.keyFrames[toIndex].flipX;
+                this.translateKeyFrame.flipY = this.keyFrames[toIndex].flipY;
                 break;
             case LOOP_REVERSED:
                 if (this.keyFrames.length > 1){
@@ -161,6 +167,8 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
                     this.lastKeyFrame.set(0,0);
                 }
                 this.translateKeyFrame.interpolate(this.inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.inversedKeyFrames[toIndex].interpolation);
+                this.translateKeyFrame.flipX = this.inversedKeyFrames[toIndex].flipX;
+                this.translateKeyFrame.flipY = this.inversedKeyFrames[toIndex].flipY;
                 break;
             case LOOP_PINGPONG:
                 if (this.keyFrames.length > 1){
@@ -174,9 +182,13 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
                 }
                 if(this.iteration % 2 == 0){
                     this.translateKeyFrame.interpolate(this.keyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.keyFrames[toIndex].interpolation);
+                    this.translateKeyFrame.flipX = this.keyFrames[toIndex].flipX;
+                    this.translateKeyFrame.flipY = this.keyFrames[toIndex].flipY;
                 }
                 else{
                     this.translateKeyFrame.interpolate(inversedKeyFrames[toIndex],(interpolatedStateTime - (toIndex * this.frameDuration)) / this.frameDuration, this.inversedKeyFrames[toIndex].interpolation);
+                    this.translateKeyFrame.flipX = this.inversedKeyFrames[toIndex].flipX;
+                    this.translateKeyFrame.flipY = this.inversedKeyFrames[toIndex].flipY;
                 }
                 break;
             default:
@@ -198,6 +210,8 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
      */
     public static class KeyFrame extends Vector2{
 
+        public boolean flipX = false;
+        public boolean flipY = false;
         public Interpolation interpolation;
 
         /**
@@ -209,35 +223,18 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
         }
 
         /**
-         * Constructs a keyframe with the given components and linear interpolation
-         *
-         * @param x The x-component
-         * @param y The y-component
-         */
-        public KeyFrame(float x, float y) {
-            super(x, y);
-            this.interpolation = Interpolation.linear;
-        }
-
-        /**
-         * Constructs a keyframe from the given vector and linear interpolation
-         *
-         * @param v The vector
-         */
-        public KeyFrame(Vector2 v) {
-            super(v);
-            this.interpolation = Interpolation.linear;
-        }
-
-        /**
          * Constructs a keyframe with the given components and interpolation
          *
          * @param x The x-component
          * @param y The y-component
+         * @param flipX flip on X axis
+         * @param flipY flip on Y axis
          * @param interpolation The interpolation used for this keyframe
          */
-        public KeyFrame(final float x, final float y, final Interpolation interpolation) {
+        public KeyFrame(final float x, final float y, boolean flipX, boolean flipY, final Interpolation interpolation) {
             super(x, y);
+            this.flipX = flipX;
+            this.flipY = flipY;
             this.interpolation = interpolation;
         }
 
@@ -245,10 +242,14 @@ public class TranslateAnimation extends Animation<TranslateAnimation.KeyFrame> {
          * Constructs a vector from the given vector and interpolation
          *
          * @param v The vector
+         * @param flipX flip on X axis
+         * @param flipY flip on Y axis
          * @param interpolation The interpolation used for this keyframe
          */
-        public KeyFrame(Vector2 v, final Interpolation interpolation) {
+        public KeyFrame(Vector2 v, boolean flipX, boolean flipY, final Interpolation interpolation) {
             super(v);
+            this.flipX = flipX;
+            this.flipY = flipY;
             this.interpolation = interpolation;
         }
     }
