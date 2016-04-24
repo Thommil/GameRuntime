@@ -547,72 +547,74 @@ public class SceneLoader extends JSONLoader{
      * @return A list of FixtureDef
      */
     public Array<FixtureDef> getFixturesDefinition(final int bodyIndex){
-        if(this.jsonRoot.has("fixture") && this.jsonRoot.has("body")) {
+        if(this.jsonRoot.has("body")) {
             final JsonValue jsonBody = this.jsonRoot.get("body").get(bodyIndex);
-            final Array<FixtureDef> fixtureDefs = new Array<FixtureDef>(true, 16);
-            for (final JsonValue jsonFixture : jsonBody.get("fixture")) {
-                final FixtureDef fixtureDef = new FixtureDef();
-                if (jsonFixture.has("density")) {
-                    fixtureDef.density = jsonFixture.getFloat("density");
-                }
-                if (jsonFixture.has("filter-categoryBits")) {
-                    fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-categoryBits");
-                }
-                if (jsonFixture.has("filter-groupIndex")) {
-                    fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-groupIndex");
-                }
-                if (jsonFixture.has("filter-maskBits")) {
-                    fixtureDef.filter.maskBits = jsonFixture.getShort("filter-maskBits");
-                }
-                if (jsonFixture.has("friction")) {
-                    fixtureDef.friction = jsonFixture.getFloat("friction");
-                }
-                if (jsonFixture.has("restitution")) {
-                    fixtureDef.restitution = jsonFixture.getFloat("restitution");
-                }
+            if(jsonBody != null && jsonBody.has("fixture")) {
+                final Array<FixtureDef> fixtureDefs = new Array<FixtureDef>(true, 16);
+                for (final JsonValue jsonFixture : jsonBody.get("fixture")) {
+                    final FixtureDef fixtureDef = new FixtureDef();
+                    if (jsonFixture.has("density")) {
+                        fixtureDef.density = jsonFixture.getFloat("density");
+                    }
+                    if (jsonFixture.has("filter-categoryBits")) {
+                        fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-categoryBits");
+                    }
+                    if (jsonFixture.has("filter-groupIndex")) {
+                        fixtureDef.filter.categoryBits = jsonFixture.getShort("filter-groupIndex");
+                    }
+                    if (jsonFixture.has("filter-maskBits")) {
+                        fixtureDef.filter.maskBits = jsonFixture.getShort("filter-maskBits");
+                    }
+                    if (jsonFixture.has("friction")) {
+                        fixtureDef.friction = jsonFixture.getFloat("friction");
+                    }
+                    if (jsonFixture.has("restitution")) {
+                        fixtureDef.restitution = jsonFixture.getFloat("restitution");
+                    }
 
-                if (jsonFixture.has("sensor")) {
-                    fixtureDef.isSensor = jsonFixture.getBoolean("sensor");
+                    if (jsonFixture.has("sensor")) {
+                        fixtureDef.isSensor = jsonFixture.getBoolean("sensor");
+                    }
+                    if (jsonFixture.has("polygon")) {
+                        final PolygonShape polygonShape = new PolygonShape();
+                        final float[] xVertices = jsonFixture.get("polygon").get("vertices").get("x").asFloatArray();
+                        final float[] yVertices = jsonFixture.get("polygon").get("vertices").get("y").asFloatArray();
+                        final float[] vertices = new float[xVertices.length + yVertices.length];
+                        for (int inIndex = 0, outIndex = 0; inIndex < xVertices.length; inIndex++, outIndex += 2) {
+                            vertices[outIndex] = xVertices[inIndex];
+                            vertices[outIndex + 1] = yVertices[inIndex];
+                        }
+                        polygonShape.set(vertices);
+                        fixtureDef.shape = polygonShape;
+                    } else if (jsonFixture.has("chain")) {
+                        final ChainShape chainShape = new ChainShape();
+                        final float[] xVertices = jsonFixture.get("chain").get("vertices").get("x").asFloatArray();
+                        final float[] yVertices = jsonFixture.get("chain").get("vertices").get("y").asFloatArray();
+                        final float[] vertices = new float[xVertices.length + yVertices.length];
+                        for (int inIndex = 0, outIndex = 0; inIndex < xVertices.length; inIndex++, outIndex += 2) {
+                            vertices[outIndex] = xVertices[inIndex];
+                            vertices[outIndex + 1] = yVertices[inIndex];
+                        }
+                        if (jsonFixture.get("chain").has("hasPrevVertex") && jsonFixture.get("chain").getBoolean("hasPrevVertex")) {
+                            chainShape.setPrevVertex(jsonFixture.get("chain").get("prevVertex").getFloat("x"), jsonFixture.get("chain").get("prevVertex").getFloat("y"));
+                        }
+                        if (jsonFixture.get("chain").has("hasNextVertex") && jsonFixture.get("chain").getBoolean("hasNextVertex")) {
+                            chainShape.setPrevVertex(jsonFixture.get("chain").get("nextVertex").getFloat("x"), jsonFixture.get("chain").get("nextVertex").getFloat("y"));
+                        }
+                        chainShape.createChain(vertices);
+                        fixtureDef.shape = chainShape;
+                    } else if (jsonFixture.has("circle")) {
+                        final CircleShape circleShape = new CircleShape();
+                        if (jsonFixture.get("circle").get("center").has("x")) {
+                            circleShape.setPosition(new Vector2(jsonFixture.get("circle").get("center").getFloat("x"), jsonFixture.get("circle").get("center").getFloat("y")));
+                        }
+                        circleShape.setRadius(jsonFixture.get("circle").getFloat("radius"));
+                        fixtureDef.shape = circleShape;
+                    }
+                    fixtureDefs.add(fixtureDef);
                 }
-                if (jsonFixture.has("polygon")) {
-                    final PolygonShape polygonShape = new PolygonShape();
-                    final float[] xVertices = jsonFixture.get("polygon").get("vertices").get("x").asFloatArray();
-                    final float[] yVertices = jsonFixture.get("polygon").get("vertices").get("y").asFloatArray();
-                    final float[] vertices = new float[xVertices.length + yVertices.length];
-                    for (int inIndex = 0, outIndex = 0; inIndex < xVertices.length; inIndex++, outIndex += 2) {
-                        vertices[outIndex] = xVertices[inIndex];
-                        vertices[outIndex + 1] = yVertices[inIndex];
-                    }
-                    polygonShape.set(vertices);
-                    fixtureDef.shape = polygonShape;
-                } else if (jsonFixture.has("chain")) {
-                    final ChainShape chainShape = new ChainShape();
-                    final float[] xVertices = jsonFixture.get("chain").get("vertices").get("x").asFloatArray();
-                    final float[] yVertices = jsonFixture.get("chain").get("vertices").get("y").asFloatArray();
-                    final float[] vertices = new float[xVertices.length + yVertices.length];
-                    for (int inIndex = 0, outIndex = 0; inIndex < xVertices.length; inIndex++, outIndex += 2) {
-                        vertices[outIndex] = xVertices[inIndex];
-                        vertices[outIndex + 1] = yVertices[inIndex];
-                    }
-                    if (jsonFixture.get("chain").has("hasPrevVertex") && jsonFixture.get("chain").getBoolean("hasPrevVertex")) {
-                        chainShape.setPrevVertex(jsonFixture.get("chain").get("prevVertex").getFloat("x"), jsonFixture.get("chain").get("prevVertex").getFloat("y"));
-                    }
-                    if (jsonFixture.get("chain").has("hasNextVertex") && jsonFixture.get("chain").getBoolean("hasNextVertex")) {
-                        chainShape.setPrevVertex(jsonFixture.get("chain").get("nextVertex").getFloat("x"), jsonFixture.get("chain").get("nextVertex").getFloat("y"));
-                    }
-                    chainShape.createChain(vertices);
-                    fixtureDef.shape = chainShape;
-                } else if (jsonFixture.has("circle")) {
-                    final CircleShape circleShape = new CircleShape();
-                    if (jsonFixture.get("circle").get("center").has("x")) {
-                        circleShape.setPosition(new Vector2(jsonFixture.get("circle").get("center").getFloat("x"), jsonFixture.get("circle").get("center").getFloat("y")));
-                    }
-                    circleShape.setRadius(jsonFixture.get("circle").getFloat("radius"));
-                    fixtureDef.shape = circleShape;
-                }
-                fixtureDefs.add(fixtureDef);
+                return fixtureDefs;
             }
-            return fixtureDefs;
         }
         return new Array<FixtureDef>(true, 0);
     }

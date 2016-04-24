@@ -98,7 +98,19 @@ public class ViewportLayout {
      * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign){
-        this.layout(rectangle, hAlign, vAlign, 0, 0, false, false);
+        this.layout(rectangle, hAlign, vAlign, 0, 0, false, false, false);
+    }
+
+    /**
+     * Set a Rectangle instance to the right coordinates based on alignment (no margin)
+     *
+     * @param rectangle The rectangle to set (in/out parameter)
+     * @param hAlign The horizontal alignment (LEFT, CENTER or RIGHT)
+     * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
+     * @param originCenter If true the alignment is done based on retangle center, if false, bottom-left corner
+     */
+    public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final boolean originCenter){
+        this.layout(rectangle, hAlign, vAlign, 0, 0, false, false, originCenter);
     }
 
     /**
@@ -111,7 +123,21 @@ public class ViewportLayout {
      * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final float xMargin, final float yMargin){
-        this.layout(rectangle, hAlign, vAlign, xMargin, yMargin, false, false);
+        this.layout(rectangle, hAlign, vAlign, xMargin, yMargin, false, false, false);
+    }
+
+    /**
+     * Set a Rectangle instance to the right coordinates based on alignment with margin
+     *
+     * @param rectangle The rectangle to set (in/out parameter)
+     * @param xMargin The margin to add on left and right
+     * @param yMargin The margin to add on top and bottom
+     * @param hAlign The horizontal alignment (LEFT, CENTER or RIGHT)
+     * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
+     * @param originCenter If true the alignment is done based on retangle center, if false, bottom-left corner
+     */
+    public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final float xMargin, final float yMargin, final boolean originCenter){
+        this.layout(rectangle, hAlign, vAlign, xMargin, yMargin, false, false, originCenter);
     }
 
     /**
@@ -124,7 +150,21 @@ public class ViewportLayout {
      * @param yFill If true, the rectangle will be stretched to fill the vertical area
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final boolean xFill, final boolean yFill){
-        this.layout(rectangle, hAlign, vAlign, 0, 0, xFill, yFill);
+        this.layout(rectangle, hAlign, vAlign, 0, 0, xFill, yFill, false);
+    }
+
+    /**
+     * Set a Rectangle instance to the right coordinates based on alignment and filling (no margin)
+     *
+     * @param rectangle The rectangle to set (in/out parameter)
+     * @param hAlign The horizontal alignment (LEFT, CENTER or RIGHT)
+     * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
+     * @param xFill If true, the rectangle will be stretched to fill the horizontal area
+     * @param yFill If true, the rectangle will be stretched to fill the vertical area
+     * @param originCenter If true the alignment is done based on retangle center, if false, bottom-left corner
+     */
+    public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final boolean xFill, final boolean yFill, final boolean originCenter){
+        this.layout(rectangle, hAlign, vAlign, 0, 0, xFill, yFill, originCenter);
     }
 
     /**
@@ -139,6 +179,22 @@ public class ViewportLayout {
      * @param yFill If true, the rectangle will be stretched to fill the vertical area
      */
     public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final float xMargin, final float yMargin, final boolean xFill, final boolean yFill){
+        this.layout(rectangle, hAlign, vAlign, xMargin, yMargin, xFill, yFill, false);
+    }
+
+    /**
+     * Set a Rectangle instance to the right coordinates based on alignment, margins and filling
+     *
+     * @param rectangle The rectangle to set (in/out parameter)
+     * @param hAlign The horizontal alignment (LEFT, CENTER or RIGHT)
+     * @param vAlign The vertical alignment (TOP, CENTER or BOTTOM)
+     * @param xMargin The margin to add on left and right
+     * @param yMargin The margin to add on top and bottom
+     * @param xFill If true, the rectangle will be stretched to fill the horizontal area
+     * @param yFill If true, the rectangle will be stretched to fill the vertical area
+     * @param originCenter If true the alignment is done based on retangle center, if false, bottom-left corner
+     */
+    public void layout(final Rectangle rectangle, final Align hAlign, final Align vAlign, final float xMargin, final float yMargin, final boolean xFill, final boolean yFill, final boolean originCenter){
         if(xFill){
             rectangle.x = this.left + xMargin;
             rectangle.width = this.width - 2 * xMargin;
@@ -146,13 +202,13 @@ public class ViewportLayout {
         else {
             switch (hAlign) {
                 case LEFT:
-                    rectangle.x = this.left + xMargin;
+                    rectangle.x = this.left + xMargin + (originCenter ? rectangle.width/2 : 0);
                     break;
                 case CENTER:
-                    rectangle.x = -rectangle.width / 2;
+                    rectangle.x = (originCenter ? -rectangle.width/2 : 0);
                     break;
                 case RIGHT:
-                    rectangle.x = this.right - rectangle.width - xMargin;
+                    rectangle.x = this.right - rectangle.width - xMargin + (originCenter ? rectangle.width/2 : 0);
                     break;
             }
         }
@@ -164,13 +220,13 @@ public class ViewportLayout {
         else {
             switch (vAlign) {
                 case TOP:
-                    rectangle.y = this.top - rectangle.height - yMargin;
+                    rectangle.y = this.top - rectangle.height - yMargin + (originCenter ? rectangle.height/2 : 0);
                     break;
                 case CENTER:
-                    rectangle.y = -rectangle.height/ 2;
+                    rectangle.y = (originCenter ? -rectangle.height/2 : 0);
                     break;
                 case BOTTOM:
-                    rectangle.y = this.bottom + yMargin;
+                    rectangle.y = this.bottom + yMargin + (originCenter ? rectangle.height/2 : 0);;
                     break;
             }
         }
