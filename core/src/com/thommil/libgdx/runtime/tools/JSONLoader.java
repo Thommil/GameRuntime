@@ -47,4 +47,13 @@ public abstract class JSONLoader {
     public void parse(final JsonValue jsonRoot){
         this.jsonRoot = jsonRoot;
     }
+
+    /**
+     * Get JSONRoot for custom values
+     *
+     * @return The Json root of the loader
+     */
+    public JsonValue getJsonRoot() {
+        return jsonRoot;
+    }
 }
