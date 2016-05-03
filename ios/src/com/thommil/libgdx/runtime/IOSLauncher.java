@@ -14,6 +14,7 @@ import com.thommil.libgdx.runtime.test.test_12_layout.LayoutGame;
 import com.thommil.libgdx.runtime.test.test_13_rube.RubeGame;
 import com.thommil.libgdx.runtime.test.test_14_sunset.SunsetGame;
 import com.thommil.libgdx.runtime.test.test_15_animation.AnimationGame;
+import com.thommil.libgdx.runtime.test.test_16_blob.BlobGame;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -70,7 +71,10 @@ public class IOSLauncher extends IOSApplication.Delegate {
         //game= new SunsetGame();
 
         // TEST 15 - Animation
-        game= new AnimationGame();
+        //game= new AnimationGame();
+
+        // TEST 16 - Blob
+        game= new BlobGame();
 
         return new IOSApplication(game, config);
     }
