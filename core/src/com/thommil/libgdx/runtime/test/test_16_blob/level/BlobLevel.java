@@ -1,6 +1,7 @@
 package com.thommil.libgdx.runtime.test.test_16_blob.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,7 @@ import com.thommil.libgdx.runtime.graphics.TextureSet;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.ColoredParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.graphics.renderer.particles.TexturedParticlesBatchRenderer;
 import com.thommil.libgdx.runtime.layer.CacheLayer;
+import com.thommil.libgdx.runtime.layer.Layer;
 import com.thommil.libgdx.runtime.layer.OffScreenLayer;
 import com.thommil.libgdx.runtime.layer.ParticlesBatchLayer;
 import com.thommil.libgdx.runtime.tools.RuntimeProfiler;
@@ -44,8 +46,7 @@ public class BlobLevel implements InputProcessor, Disposable {
         cacheLayer.addActor(new GroundActor(3, groundTextureSet,-20f,19f,40f,1f,0f,1f,20f,0f, Color.WHITE.toFloatBits()));
         Runtime.getInstance().addLayer(cacheLayer);
 
-        TexturedParticlesBatchRenderer texturedParticlesBatchRenderer = new TexturedParticlesBatchRenderer(2000);
-        particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(),2000, texturedParticlesBatchRenderer);
+        particlesBatchLayer = new ParticlesBatchLayer(Runtime.getInstance().getViewport(),2000, new BlobParticlesRenderer(2000));
         particlesBatchLayer.setScaleFactor(4);
         blobActor = new BlobActor(0);
         particlesBatchLayer.addActor(blobActor);
@@ -53,6 +54,44 @@ public class BlobLevel implements InputProcessor, Disposable {
         BlobRenderer blobRenderer = new BlobRenderer(Runtime.getInstance().getViewport());
         offScreenLayer = new OffScreenLayer<ParticlesBatchLayer>(Runtime.getInstance().getViewport(), particlesBatchLayer, blobRenderer);
         Runtime.getInstance().addLayer(offScreenLayer);
+
+        Runtime.getInstance().addLayer(new Layer(Runtime.getInstance().getViewport(), 1) {
+            @Override
+            protected void onShow() {
+
+            }
+
+            @Override
+            protected void onResize(int width, int height) {
+
+            }
+
+            @Override
+            protected void onHide() {
+
+            }
+
+            @Override
+            public void render(float deltaTime) {
+
+            }
+
+            /**
+             * Step call
+             *
+             * @param deltaTime Time since last call since last call in seconds
+             */
+            @Override
+            public void step(float deltaTime) {
+                if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+                    BlobLevel.this.blobActor.push(-100000, 0);
+                }
+                else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+                    BlobLevel.this.blobActor.push(100000, 0);
+                }
+
+            }
+        });
 
         RuntimeProfiler.profile();
         Gdx.input.setInputProcessor(this);
@@ -74,6 +113,12 @@ public class BlobLevel implements InputProcessor, Disposable {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector2 force = Runtime.getInstance().getViewport().unproject(new Vector2(screenX,screenY));
         this.blobActor.push(force.x * 50000, 0);
+        return false;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+
         return false;
     }
 
@@ -105,7 +150,7 @@ public class BlobLevel implements InputProcessor, Disposable {
         private ParticleGroup particleGroup;
 
         public BlobActor(int id) {
-            super(id, 0.15f, new TextureSet(new Texture(Gdx.files.internal("effects/particle-blob.png"))));
+            super(id, 0.15f, new TextureSet(new Texture(Gdx.files.internal("effects/particle.png"))));
         }
 
         /**
@@ -116,25 +161,31 @@ public class BlobLevel implements InputProcessor, Disposable {
         @Override
         public ParticleSystemDef getDefinition() {
             final ParticleSystemDef particleSystemDef = super.getDefinition();
-            particleSystemDef.strictContactCheck = false;
-            particleSystemDef.density = 0.5F;
+            particleSystemDef.strictContactCheck = true;
+            particleSystemDef.density = 1F;
             particleSystemDef.gravityScale = 1.0F;
-            particleSystemDef.pressureStrength = 0.05F;
-            particleSystemDef.dampingStrength = 1.0F;
+            particleSystemDef.viscousStrength = 1F;
+
+
+
+            /*particleSystemDef.pressureStrength = 0.05F;
+            particleSystemDef.ejectionStrength = 0.0F;
+            particleSystemDef.dampingStrength = 2.0F;
+            particleSystemDef.pressureStrength = 0.2F;
             particleSystemDef.elasticStrength = 0.25F;
             particleSystemDef.springStrength = 0.25F;
-            particleSystemDef.viscousStrength = 0.2F;
+            particleSystemDef.viscousStrength = 0.1F;
             particleSystemDef.surfaceTensionPressureStrength = 0.2F;
             particleSystemDef.surfaceTensionNormalStrength = 0.2F;
-            particleSystemDef.repulsiveStrength = 0.01F;
+            particleSystemDef.repulsiveStrength = 0.1F;
             particleSystemDef.powderStrength = 0.5F;
-            particleSystemDef.ejectionStrength = 0.01F;
+            particleSystemDef.ejectionStrength = 0.1F;
             particleSystemDef.staticPressureStrength = 0.2F;
             particleSystemDef.staticPressureRelaxation = 0.2F;
             particleSystemDef.staticPressureIterations = 10;
             particleSystemDef.colorMixingStrength = 0.5F;
             particleSystemDef.destroyByAge = true;
-            particleSystemDef.lifetimeGranularity = 0.016666668F;
+            particleSystemDef.lifetimeGranularity = 0.016666668F;*/
             return particleSystemDef;
         }
 
@@ -148,7 +199,7 @@ public class BlobLevel implements InputProcessor, Disposable {
             super.setBody(particleSystem);
 
             PolygonShape shape = new PolygonShape();
-            shape.setAsBox(5,5);
+            shape.setAsBox(4,4);
 
             ParticleGroupDef particleGroupDef = new ParticleGroupDef();
             particleGroupDef.shape = shape;
@@ -169,12 +220,6 @@ public class BlobLevel implements InputProcessor, Disposable {
         public void dispose() {
             this.textureSet.dispose();
         }
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-
-        return false;
     }
 
 

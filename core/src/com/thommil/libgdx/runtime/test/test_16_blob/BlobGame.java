@@ -23,7 +23,9 @@ public class BlobGame extends Game{
         settings.viewport.type = Settings.Viewport.FIT;
         settings.viewport.width = 40;
         settings.viewport.height = 40;
-        settings.physics.particleIterations = 4;
+        //settings.physics.positionIterations = 3;
+        //settings.physics.velocityIterations = 6;
+        settings.physics.particleIterations = 8;
         settings.physics.enabled = true;
     }
 

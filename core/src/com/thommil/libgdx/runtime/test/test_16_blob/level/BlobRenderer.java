@@ -40,20 +40,6 @@ public class BlobRenderer extends OffScreenRenderer {
                 + "void main()\n"//
                 + "{\n" //
                 + "  vec4 color = texture2D("+ TextureSet.UNIFORM_TEXTURE_0+", v_texCoords);\n" //
-                + "  if( color.a < 0.15){\n" //
-                + "     color = vec4(0,0,0,0);\n" //
-                + "  }\n" //
-                + "  else if( color.a < 0.8){\n" //
-                + "     if( color.g > 0.9 && color.r < 0.9){\n" //
-                + "         color = vec4(1.0,1.0,1.0,color.a);\n" //
-                + "     }\n" //
-                + "     else{\n" //
-                + "         color = vec4(0.0,0.0,1.0,color.a);\n" //
-                + "     }\n" //
-                + "  }\n" //
-                + "  else{\n" //
-                + "         color = vec4(0.0,0.0,1.0,color.a);\n" //
-                + "  }\n" //
                 + "  gl_FragColor = color;\n" //
                 + "}";
 
