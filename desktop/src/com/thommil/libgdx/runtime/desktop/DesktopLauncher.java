@@ -64,13 +64,13 @@ public class DesktopLauncher {
 		//game= new LayoutGame();
 
 		// TEST 13 - Rube loader
-		//game= new RubeGame();
+		game= new RubeGame();
 
 		// TEST 14 - Sunset
 		//game= new SunsetGame();
 
 		// TEST 15 - Animation
-		game= new AnimationGame();
+		//game= new AnimationGame();
 
 		new LwjglApplication(game, config);
 	}
